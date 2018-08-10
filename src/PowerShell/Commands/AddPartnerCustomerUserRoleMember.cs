@@ -1,0 +1,105 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="AddPartnerCustomerUserRoleMember.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
+{
+    using System.Management.Automation;
+    using System.Text.RegularExpressions;
+    using Common;
+    using Exceptions;
+    using PartnerCenter.Models.Roles;
+    using PartnerCenter.Models.Users;
+
+    /// <summary>
+    /// Gets a list of roles for the specified customer user from Partner Center.
+    /// </summary>
+    [Cmdlet(VerbsCommon.Add, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
+    public class AddPartnerCustomerUserRoleMember : PartnerPSCmdlet
+    {
+        /// <summary>
+        /// Gets or sets the required customer identifier.
+        /// </summary>
+        [Parameter(Mandatory = true, HelpMessage = "The identifier for the customer.")]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
+        [Parameter(Mandatory = false, HelpMessage = "The identifier for the customer user.")]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the role  identifier.
+        /// </summary>
+        [Parameter(Mandatory = false, HelpMessage = "The identifier for the role.")]
+        [ValidateNotNull]
+        public string RoleId { get; set; }
+
+        /// <summary>
+        /// Executes the operations associated with the cmdlet.
+        /// </summary>
+        public override void ExecuteCmdlet()
+        {
+            UserId.AssertNotEmpty(nameof(UserId));
+            RoleId.AssertNotEmpty(nameof(RoleId));
+
+            CustomerUser user = GetUserById(CustomerId, UserId);
+
+            try
+            {
+                UserMember newMember = new UserMember()
+                {
+                    UserPrincipalName = user.UserPrincipalName,
+                    DisplayName = user.DisplayName,
+                    Id = user.Id
+                };
+
+                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.Create(newMember);
+                WriteObject(true);
+            }
+            catch (PSPartnerException ex)
+            {
+                throw new PSPartnerException($"Error adding user {UserId} to role {RoleId}", ex);
+            }
+            finally
+            {
+                user = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets details for a specified user and customer from Partner Center.
+        /// </summary>
+        /// <param name="customerId">Identifier of the customer.</param>
+        /// <param name="userId">Identifier of the user.</param>
+        /// <exception cref="System.ArgumentException">
+        /// <paramref name="customerId"/> is empty or null.
+        /// </exception>
+        private CustomerUser GetUserById(string customerId, string userId)
+        {
+            CustomerUser user;
+
+            customerId.AssertNotEmpty(nameof(customerId));
+            userId.AssertNotEmpty(nameof(userId));
+
+            try
+            {
+                user = Partner.Customers[customerId].Users[userId].Get();
+                return user;
+            }
+            catch (PSPartnerException ex)
+            {
+                throw new PSPartnerException("Error finding user:" + userId, ex);
+            }
+            finally
+            {
+                user = null;
+            }
+        }
+    }
+}

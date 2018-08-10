@@ -1,0 +1,122 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="PSAzureUtilizationRecord.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
+{
+    using System;
+    using System.Collections.Generic;
+    using Common;
+    using PartnerCenter.Models.Utilizations;
+
+    /// <summary>
+    /// A utilization record for an Azure subscription resource.
+    /// </summary>
+    public sealed class PSAzureUtilizationRecord
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSAzureUtilizationRecord" /> class.
+        /// </summary>
+        public PSAzureUtilizationRecord()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSAzureUtilizationRecord" /> class.
+        /// </summary>
+        /// <param name="azureUtilizationRecord">A utilization record for an Azure subscription resource.</param>
+        public PSAzureUtilizationRecord(AzureUtilizationRecord azureUtilizationRecord)
+        {
+            azureUtilizationRecord.AssertNotNull(nameof(azureUtilizationRecord));
+
+            this.CopyFrom(azureUtilizationRecord);
+        }
+
+        /// <summary>
+        /// Gets or sets the the additional info fields.
+        /// </summary>
+        public IDictionary<string, string> AdditionalInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category of the consumed Azure resource.
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the Azure resource that was consumed. Also known as resourceID or resourceGUID.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the key-value pairs of instance-level details.
+        /// </summary>
+        public IDictionary<string, string> InfoFields { get; set; }
+
+        /// <summary>
+        /// Gets or sets the region in which the this service was run.
+        /// </summary>
+        public string Location { get; set; }
+
+        /// <summary>
+        /// Gets or sets the friendly name of the Azure resource being consumed.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique namespace used to identify the 3rd party order for Azure Marketplace.
+        /// </summary>
+        public string OrderNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique namespace used to identify the resource for Azure Marketplace 3rd party usage.
+        /// </summary>
+        public string PartNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the quantity consumed of the Azure resource.
+        /// </summary>
+        public decimal Quantity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the region of the consumed Azure resource.
+        /// </summary>
+        public string Region { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fully qualified Azure resource ID, which includes the resource groups and the instance name.
+        /// </summary>
+        public Uri ResourceUri { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sub-category of the consumed Azure resource.
+        /// </summary>
+        public string Subcategory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the the resource tags specified by the user.
+        /// </summary>
+        public IDictionary<string, string> Tags { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of quantity (hours, bytes, etc...).
+        /// </summary>
+        public string Unit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the end of the usage aggregation time range.
+        /// </summary>
+        /// <remarks>
+        /// The response is grouped by the time of consumption (when the resource was actually used VS. when was it reported to the billing system).
+        /// </remarks>
+        public DateTimeOffset UsageEndTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the start of the usage aggregation time range.
+        /// </summary>
+        /// <remarks>
+        /// The response is grouped by the time of consumption (when the resource was actually used VS. when was it reported to the billing system).
+        /// </remarks>
+        public DateTimeOffset UsageStartTime { get; set; }
+    }
+}

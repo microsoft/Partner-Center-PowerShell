@@ -1,0 +1,104 @@
+---
+external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
+Module Name: PartnerCenter
+online version:
+schema: 2.0.0
+---
+
+# Get-PartnerCustomerSubscription
+
+## SYNOPSIS
+Gets a list or a single customer subscription.
+
+## SYNTAX
+
+### Customer (Default)
+```
+Get-PartnerCustomerSubscription -CustomerId <String> [-SubscriptionId <String>] [<CommonParameters>]
+```
+
+### CustomerObject
+```
+Get-PartnerCustomerSubscription -InputObject <PSCustomer> [-SubscriptionId <String>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+Gets a list or a single customer subscription.
+
+## EXAMPLES
+
+### Example 1
+```powershell
+PS C:\> Get-PartnerCustomerSubscription -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08
+```
+
+Gets a list of subscriptions for the specified customer.
+
+### Example 2
+```powershell
+PS C:\> Get-PartnerCustomerSubscription -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -SubscriptionId a2138cdf-769e-45d3-b957-ae9864b82bf6
+```
+
+Gets the specified customer subscription.
+
+## PARAMETERS
+
+### -CustomerId
+The customer identifier used to scope the request.
+
+```yaml
+Type: String
+Parameter Sets: Customer
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -InputObject
+The customer object used to scope the request.
+
+```yaml
+Type: PSCustomer
+Parameter Sets: CustomerObject
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+### -SubscriptionId
+The subscription identifier used to scope the request.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Customers.PSCustomer
+
+## OUTPUTS
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions.PSSubscription
+
+## NOTES
+
+## RELATED LINKS
