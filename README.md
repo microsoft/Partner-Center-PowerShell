@@ -1,22 +1,26 @@
 # Microsoft Partner Center PowerShell
 
-[![Build status](https://partnercenter.visualstudio.com/powershell/_apis/build/status/PowerShell%20master%20CI)](https://partnercenter.visualstudio.com/powershell/_build/latest?definitionId=0)
-
 This repository contains a set of PowerShell cmdlets for developers and administrators to manage Cloud Solution Provider program resources.
 
 ## Installation
 
 ### PowerShell Gallery
 
-Run the following command in an elevated PowerShell session to install the Partner Center module:
+Currently, there is only a pre-release version of the Partner Center module available. To install pre-release items using the _Install-Module_ command the latest version of _PowerShellGet_ must be installed. If you do not have the latest version installed, run the following command from an elevated PowerShell session:
 
 ```powershell
-Install-Module -Name PartnerCenter
+Install-Module -Name PowerShellGet -Force
+```
+
+ Run the following command in an elevated PowerShell session to install the Partner Center module:
+
+```powershell
+Install-Module -Name PartnerCenter -AllowPrerelease
 ```
 
 If you have an earlier version of the Partner Center PowerShell modules installed from the PowerShell Gallery and would like to update to the latest version, run the following commands from an elevated PowerShell session.
 
-**Note:** `Update-Module` installs the new version, however it does not remove the old version.
+**Note:** `Update-Module` installs the new version, however, it does not remove the old version.
 
 ```powershell
 # Install the latest version of the Partner Center PowerShell module
@@ -65,7 +69,7 @@ Connect-PartnerCenter -Environment GermanCloud
 Use the `Get-Command` cmdlet to discover cmdlets within a specific module, or cmdlets that follow a specific search pattern:
 
 ```powershell
-# View all cmdlets in the PartnerCenter module
+# View all cmdlets in the Partner Center module
 Get-Command -Module PartnerCenter
 
 # View all cmdlets that contain "Customer" in the PartnerCenter module
