@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PartnerAuditRecord
 
 ## SYNOPSIS
-Retrieves audit records from Partner Center.
+Gets audit records from Partner Center.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PartnerAuditRecord [-EndDate <DateTime>] [-StartDate <DateTime>] [<CommonPar
 ```
 
 ## DESCRIPTION
-Retrieves audit records for the previous 30 days from the current date, or for a date range specified by including the start date and/or the end date. Note, however, that for performance reasons activity log data availability is limited to the previous 90 days.
+Gets audit records for the previous 30 days from the current date, or for a date range specified by including the start date and/or the end date. Note, however, that for performance reasons activity log data availability is limited to the previous 90 days.
 
 ## EXAMPLES
 

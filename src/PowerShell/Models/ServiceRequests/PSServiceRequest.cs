@@ -32,16 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceRequests
         }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="ServiceRequest "/> to an instance of <see cref="PSServiceRequest" />. 
-        /// </summary>
-        /// <param name="request">The product being cloned.</param>
-        private void CloneAdditionalOperations(ServiceRequest request)
-        {
-            ServiceRequestId = request.Id;
-        }
-
-        /// <summary>
-        /// Gets or sets the service request Id.
+        /// Gets or sets the service request identifier.
         /// </summary>
         public string ServiceRequestId { get; set; }
 
@@ -129,5 +120,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceRequests
         /// Gets or sets the country code in ISO 2 alpha format.
         /// </summary>
         public string CountryCode { get; set; }
+
+        /// <summary>
+        /// Addtional operations to be performed when cloning an instance of <see cref="ServiceRequest "/> to an instance of <see cref="PSServiceRequest" />. 
+        /// </summary>
+        /// <param name="request">The service request being cloned.</param>
+        private void CloneAdditionalOperations(ServiceRequest request)
+        {
+            ServiceRequestId = request.Id;
+        }
     }
 }

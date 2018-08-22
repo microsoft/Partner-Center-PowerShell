@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
+    using Common;
     using PartnerCenter.Models.Invoices;
 
     /// <summary>
@@ -13,6 +14,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
     /// </summary>
     public sealed class PSUsageBasedLineItem : PSBaseUsageBasedLineItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSUsageBasedLineItem" /> class.
+        /// </summary>
+        public PSUsageBasedLineItem()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSUsageBasedLineItem" /> class.
+        /// </summary>
+        /// <param name="lineItem">The base line item for this instance.</param>
+        public PSUsageBasedLineItem(UsageBasedLineItem lineItem)
+        {
+            this.CopyFrom(lineItem);
+        }
+
         /// <summary>
         /// Gets or sets the charge type.
         /// </summary>
@@ -47,7 +63,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// </summary>
         public decimal IncludedQuantity { get; set; }
 
-        /// <summary>Gets the type of invoice line item.</summary>
+        /// <summary>
+        /// Gets the type of invoice line item.
+        /// </summary>
         public override InvoiceLineItemType InvoiceLineItemType => InvoiceLineItemType.BillingLineItems;
 
         /// <summary>

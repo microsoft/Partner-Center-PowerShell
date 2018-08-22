@@ -1,0 +1,14 @@
+{
+  "mpnId": "9999999",
+  "profileType": "MpnProfile",
+  "links": {
+    "self": {
+      "uri": "/profiles/mpn",
+      "method": "GET",
+      "headers": []
+    }
+  },
+  "attributes": {
+    "objectType": "MpnProfile"
+  }
+}

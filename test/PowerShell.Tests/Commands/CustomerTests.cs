@@ -19,6 +19,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
     using PartnerCenter.Models.Licenses;
     using PartnerCenter.Models.ManagedServices;
     using PartnerCenter.Models.Query;
+    using PartnerCenter.Models.RelationshipRequests;
+    using PartnerCenter.Models.Relationships;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Subscriptions;
     using PartnerCenter.Models.Users;
@@ -103,12 +105,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         }
 
         /// <summary>
-        /// Unit test for the Get-PartnerCustomerLicense cmdlet.
+        /// Unit test for the Get-PartnerCustomerSubscribedSku cmdlet.
         /// </summary>
         [TestMethod]
-        public void GetPartnerCustomerLicenseTest()
+        public void GetPartnerCustomerSubscribedSkuTest()
         {
-            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerCustomerLicense");
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerCustomerSubscribedSku");
         }
 
         /// <summary>
@@ -229,6 +231,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         }
 
         /// <summary>
+        /// Unit test for the Remove-PartnerResellerRelationship cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void RemovePartnerResellerRelationshipTest()
+        {
+            RunPowerShellTest(CreateResellerPartnerOperations, "Test-RemovePartnerResellerRelationship");
+        }
+
+        /// <summary>
+        /// Unit test for the Get-PartnerCustomerRelationshipTest cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void GetPartnerCustomerRelationshipTest()
+        {
+            RunPowerShellTest(CreateResellerPartnerOperations, "Test-GetPartnerCustomerRelationship");
+        }
+
+        /// <summary>
+        /// Unit test for the Get-PartnerResellerRequestLink cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void GetPartnerResellerRequestLinkTest()
+        {
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerResellerRequestLink");
+        }
+
+        /// <summary>
+        /// Unit test for the Set-PartnerCustomerUserLicense cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void SetPartnerCustomerUserLicenseTest()
+        {
+            RunPowerShellTest(CreatePartnerOperations, "Test-SetPartnerCustomerUserLicense");
+        }
+
+        /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
@@ -236,6 +274,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         private static IPartner CreatePartnerOperations(PartnerContext context)
         {
             Mock<IPartner> partnerOperations = new Mock<IPartner>();
+
+            // Customer Configuration Policy
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<ConfigurationPolicy>>("GetCustomerConfigurationPolicies"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<ConfigurationPolicy>>("GetCustomerConfigurationPolicies"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Get()).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Get()).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Patch(It.IsAny<ConfigurationPolicy>())).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Patch(It.IsAny<ConfigurationPolicy>())).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Create(It.IsAny<ConfigurationPolicy>())).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.Create(It.IsAny<ConfigurationPolicy>())).
+                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Delete());
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Delete());
 
             // Country Valiation Operations
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("US").Get())
@@ -256,29 +314,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Entitlements.Get()).
                 Returns(OperationFactory.Instance.GetResource<ResourceCollection<Entitlement>>("GetEntitlement"));
 
+            // Customer User Role Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Users[It.IsAny<string>()].DirectoryRoles.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).Users.ById(It.IsAny<string>()).DirectoryRoles.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles[It.IsAny<string>()].UserMembers.Create(It.IsAny<UserMember>())).
+                Returns(OperationFactory.Instance.GetResource<UserMember>("AddCustomerUserRoleMember"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.ById(It.IsAny<string>()).UserMembers.Create(It.IsAny<UserMember>())).
+                Returns(OperationFactory.Instance.GetResource<UserMember>("AddCustomerUserRoleMember"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles[It.IsAny<string>()].UserMembers[It.IsAny<string>()].Delete());
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.ById(It.IsAny<string>()).UserMembers.ById(It.IsAny<string>()).Delete());
+
             // Delete Operations 
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Delete()).Verifiable();
-
-            // Domain Operations
-            partnerOperations.Setup(p => p.Domains.ByDomain(It.IsAny<string>()).Exists()).Returns(false);
-
-
-            // Enumerator Operations
-            partnerOperations.Setup(p => p.Enumerators.Customers.Create(It.IsAny<SeekBasedResourceCollection<Customer>>()))
-                .Returns(new ResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>>(OperationFactory.Instance.GetCustomers()));
-            
-            // Managed Service Operations
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ManagedServices.Get()).Returns(
-                OperationFactory.Instance.GetResource<ResourceCollection<ManagedService>>("GetCustomerManagedServices"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ManagedServices.Get()).Returns(
-                OperationFactory.Instance.GetResource<ResourceCollection<ManagedService>>("GetCustomerManagedServices"));
-
-            // Subscription Operations
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Subscriptions.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<Subscription>>("GetCustomerSubscription"));
-
-            // Validation Operations
-            partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
 
             // Device Operations
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DeviceBatches.Get()).
@@ -288,11 +341,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DeviceBatches.ById(It.IsAny<string>()).Devices.Get())
                 .Returns(OperationFactory.Instance.GetResource<ResourceCollection<Device>>("GetCustomerDevice"));
 
+            // Domain Operations
+            partnerOperations.Setup(p => p.Domains.ByDomain(It.IsAny<string>()).Exists()).Returns(false);
+
+            // Enumerator Operations
+            partnerOperations.Setup(p => p.Enumerators.Customers.Create(It.IsAny<SeekBasedResourceCollection<Customer>>()))
+                .Returns(new ResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>>(OperationFactory.Instance.GetCustomers()));
+
             // License Operations
             List<LicenseGroupId> licenseGroupIds = new List<LicenseGroupId>() { LicenseGroupId.Group1 };
 
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].SubscribedSkus.Get(licenseGroupIds)).
-                 Returns(OperationFactory.Instance.GetResource<ResourceCollection<SubscribedSku>>("GetCustomerLicenseByGroup"));
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<SubscribedSku>>("GetCustomerLicenseByGroup"));
             partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).SubscribedSkus.Get(licenseGroupIds)).
                  Returns(OperationFactory.Instance.GetResource<ResourceCollection<SubscribedSku>>("GetCustomerLicenseByGroup"));
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].SubscribedSkus.Get(null)).
@@ -303,6 +363,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
                 Returns(OperationFactory.Instance.GetResource<ResourceCollection<License>>("GetCustomerLicenseUser"));
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Users[It.IsAny<string>()].Licenses.Get(null)).
                 Returns(OperationFactory.Instance.GetResource<ResourceCollection<License>>("GetCustomerLicenseUser"));
+
+            // Managed Service Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ManagedServices.Get()).Returns(
+                OperationFactory.Instance.GetResource<ResourceCollection<ManagedService>>("GetCustomerManagedServices"));
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ManagedServices.Get()).Returns(
+                OperationFactory.Instance.GetResource<ResourceCollection<ManagedService>>("GetCustomerManagedServices"));
+
+            // Request Relationship Operations 
+            partnerOperations.Setup(p => p.Customers.RelationshipRequest.Get()).Returns(
+                OperationFactory.Instance.GetResource<CustomerRelationshipRequest>("GetResellerRelationshipLink"));
+
+            // Subscription Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Subscriptions.Get()).
+                Returns(OperationFactory.Instance.GetResource<ResourceCollection<Subscription>>("GetCustomerSubscription"));
 
             // User Operations
             partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).Users.Get()).
@@ -329,46 +403,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
                 Returns(OperationFactory.Instance.GetResource<CustomerUser>("GetCustomerUserById"));
             partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).Users.Create(It.IsAny<CustomerUser>())).
                 Returns(OperationFactory.Instance.GetResource<CustomerUser>("GetCustomerUserById"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Users[It.IsAny<string>()].LicenseUpdates.Create(It.IsAny<LicenseUpdate>())).Returns(
+                OperationFactory.Instance.GetResource<LicenseUpdate>("UpdateUserLicense"));
 
-            // Customer User role operations
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Users[It.IsAny<string>()].DirectoryRoles.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).Users.ById(It.IsAny<string>()).DirectoryRoles.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<DirectoryRole>>("GetCustomerUserRoleById"));
+            // Validation Operations
+            partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
 
-            // Customer User Role operations
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles[It.IsAny<string>()].UserMembers.Create(It.IsAny<UserMember>())).
-                Returns(OperationFactory.Instance.GetResource<UserMember>("AddCustomerUserRoleMember"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.ById(It.IsAny<string>()).UserMembers.Create(It.IsAny<UserMember>())).
-                Returns(OperationFactory.Instance.GetResource<UserMember>("AddCustomerUserRoleMember"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].DirectoryRoles[It.IsAny<string>()].UserMembers[It.IsAny<string>()].Delete());
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).DirectoryRoles.ById(It.IsAny<string>()).UserMembers.ById(It.IsAny<string>()).Delete());
+            return partnerOperations.Object;
+        }
 
-            // Customer Configuration Policy
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<ConfigurationPolicy>>("GetCustomerConfigurationPolicies"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Get()).
-                Returns(OperationFactory.Instance.GetResource<ResourceCollection<ConfigurationPolicy>>("GetCustomerConfigurationPolicies"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Get()).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Get()).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Patch(It.IsAny<ConfigurationPolicy>())).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Patch(It.IsAny<ConfigurationPolicy>())).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Create(It.IsAny<ConfigurationPolicy>())).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.Create(It.IsAny<ConfigurationPolicy>())).
-                Returns(OperationFactory.Instance.GetResource<ConfigurationPolicy>("GetCustomerConfigurationPolicyById"));
-            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies[It.IsAny<string>()].Delete());
-            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).ConfigurationPolicies.ById(It.IsAny<string>()).Delete());
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <param name="context">The partner's execution context.</param>
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        private static IPartner CreateResellerPartnerOperations(PartnerContext context)
+        {
+            Mock<IPartner> partnerOperations = new Mock<IPartner>();
 
-            // Return everything
+            // Customer Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Patch(It.IsAny<Customer>())).Returns(
+                OperationFactory.Instance.GetResource<Customer>("RemoveResellerRelationship"));
+
+            // Relationship Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Relationships.Get()).Returns(
+                OperationFactory.Instance.GetResource<ResourceCollection<PartnerRelationship>>("GetPartnerRelationship"));
+
+            // Subscription Operations
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Subscriptions.Get()).Returns(
+                OperationFactory.Instance.GetResource<ResourceCollection<Subscription>>("GetCustomerSubscription"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Subscriptions[It.IsAny<string>()]
+                .Patch(It.IsAny<Subscription>())).Returns(OperationFactory.Instance.GetResource<Subscription>("SuspendSubscription"));
+
             return partnerOperations.Object;
         }
     }

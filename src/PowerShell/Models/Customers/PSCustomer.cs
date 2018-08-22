@@ -79,8 +79,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         private void CloneAdditionalOperations(Customer customer)
         {
             CustomerId = customer.Id;
-            Domain = customer.CompanyProfile.Domain;
-            Name = customer.CompanyProfile.CompanyName;
+            Domain = customer?.CompanyProfile?.Domain;
+            Name = customer?.CompanyProfile?.CompanyName;
         }
     }
 }

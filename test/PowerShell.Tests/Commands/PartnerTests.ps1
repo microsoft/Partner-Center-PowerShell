@@ -13,6 +13,19 @@ function Test-GetPartnerBillingProfile
 
 <#
 .SYNOPSIS
+Tests to be performed using the Get-PartnerMpnProfile cmdlet.
+#>
+function Test-GetPartnerMpnProfile 
+{
+    $profile = Get-PartnerMpnProfile
+
+    Assert-NotNull $profile 
+    Assert-NotNullOrEmpty $profile.MpnId
+}
+
+
+<#
+.SYNOPSIS
 Tests to be performed using the Get-PartnerLegalProfile cmdlet.
 #>
 function Test-GetPartnerLegalProfile

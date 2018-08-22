@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
     using System;
+    using Common;
     using PartnerCenter.Models.Invoices;
 
     /// <summary>
@@ -14,6 +15,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
     /// </summary>
     public sealed class PSLicenseBasedLineItem : PSInvoiceLineItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSLicenseBasedLineItem" /> class.
+        /// </summary>
+        public PSLicenseBasedLineItem()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSLicenseBasedLineItem" /> class.
+        /// </summary>
+        /// <param name="lineItem">The base line item for this instance.</param>
+        public PSLicenseBasedLineItem(LicenseBasedLineItem lineItem)
+        {
+            this.CopyFrom(lineItem);
+        }
+
         /// <summary>
         /// Gets or sets the total amount. Total amount = unit price * quantity.
         /// </summary>

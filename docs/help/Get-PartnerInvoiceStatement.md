@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PartnerInvoiceStatement
 
 ## SYNOPSIS
-Retrieves an invoice statement using the invoice identifier.
+Gets an invoice statement using the invoice identifier.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PartnerInvoiceStatement -InvoiceId <String> [-OutputPath <String>] [-Overwri
 ```
 
 ## DESCRIPTION
-Retrieves an invoice statement using the invoice identifier and writes it to the specified path.
+Gets an invoice statement using the invoice identifier and writes it to the specified path.
 
 ## EXAMPLES
 

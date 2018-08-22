@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
@@ -39,8 +38,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             Cart cart;
-            CartLineItem cartLineItem;
-            List<CartLineItem> cartLineItems;
 
             try
             {
@@ -49,19 +46,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     return;
                 }
 
-                cartLineItems = new List<CartLineItem>();
-
-                foreach (PSCartLineItem item in LineItems)
-                {
-                    cartLineItem = new CartLineItem();
-                    cartLineItem.CopyFrom(item);
-
-                    cartLineItems.Add(cartLineItem);
-                }
-
                 cart = new Cart
                 {
-                    LineItems = cartLineItems
+                    LineItems = LineItems.Select(o => o.ToCartLineItem()),
                 };
 
                 cart = Partner.Customers[CustomerId].Carts.Create(cart);
@@ -71,8 +58,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             finally
             {
                 cart = null;
-                cartLineItem = null;
-                cartLineItems = null;
             }
         }
     }

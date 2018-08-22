@@ -120,20 +120,13 @@ function Test-GetPartnerCustomerDevice
 
 <#
 .SYNOPSIS
-Tests to be performed using the Get-PartnerCustomerLicense cmdlet.
+Tests to be performed using the Get-PartnerCustomerSubscribedSku cmdlet.
 #>
-function Test-GetPartnerCustomerLicense
+function Test-GetPartnerCustomerSubscribedSku
 {
-    $Licenses = Get-PartnerCustomerLicense -CustomerId $ContosoCustomerId -LicenseGroupId "Group1"
+    $Licenses = Get-PartnerCustomerSubscribedSku -CustomerId $ContosoCustomerId -LicenseGroup "Group1"
     Assert-NotNull $Licenses
-    Assert-NotNullOrEmpty $Licenses[0].ProductSku.Id 'ProductSku.Id should not be null'
-
-    $Licenses = Get-PartnerCustomerLicense -CustomerId $ContosoCustomerId -UserId $ContosoUserId
-    Assert-NotNull $Licenses
-    Assert-NotNullOrEmpty $Licenses[0].ProductSku.Id 'ProductSku.Id should not be null'
-    Assert-NotNullOrEmpty $Licenses[0].ServicePlans.DisplayName[0] 'ServicePlans should not be null'
-    Assert-NotNullOrEmpty $Licenses[0].Name 'Name should not be null'
-    Assert-NotNullOrEmpty $Licenses[0].LicenseGroupId 'LicenseGroupId should not be null'
+    Assert-NotNullOrEmpty $Licenses[0].SkuId 'SkuId should not be null'
 }
 
 <#
@@ -295,6 +288,61 @@ function Test-RemovePartnerSandboxCustomer
     $removed = Remove-PartnerSandboxCustomer $ContosoCustomerId -Confirm:$false
     Assert-AreEqual $removed $true
 
-    Remove-PartnerSandboxCustomer -CustomerId $ContosoCustomerId -Confirm:$false
+    $removed = Remove-PartnerSandboxCustomer -CustomerId $ContosoCustomerId -Confirm:$false
     Assert-AreEqual $removed $true
+}
+
+<#
+.SYNOPSIS
+Tests to be performed using the Remove-PartnerResellerRelationship cmdlet.
+#>
+function Test-RemovePartnerResellerRelationship
+{
+    $customer = Remove-PartnerResellerRelationship -CustomerId $ContosoCustomerId -Confirm:$false
+
+    Assert-NotNull $customer
+}
+
+<#
+.SYNOPSIS
+Tests to be performed using the Get-PartnerCustomerRelationship cmdlet.
+#>
+function Test-GetPartnerCustomerRelationship
+{
+    $relationship = Get-PartnerCustomerRelationship -CustomerId $ContosoCustomerId
+
+    Assert-NotNull $relationship
+    Assert-NotNullOrEmpty $relationship[0].MpnId
+}
+
+<#
+.SYNOPSIS
+Tests to be performed using the Get-PartnerResellerRequestLink cmdlet.
+#>
+function Test-GetPartnerResellerRequestLink
+{
+    $link = Get-PartnerResellerRequestLink
+
+    Assert-NotNull $link
+}
+
+<#
+.SYNOPSIS
+Tests to be performed using the Set-PartnerCustomerUserLicense cmdlet.
+#>
+function Test-SetPartnerCustomerUserLicense
+{
+    # Create the objects that will be needed
+    $license = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses.PSLicenseAssignment
+    $licenses = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses.PSLicenseUpdate
+
+    $license.SkuId = '031C9E47-4802-4248-838E-778FB1D2CC05'
+
+    # Add the license to the update statement. 
+    $licenses.LicensesToAssign.Add($license)
+
+    # Call the command to update the license assignment. 
+   $licenseUpdate = Set-PartnerCustomerUserLicense -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LicenseUpdate $licenses -UserId '67e57a6a-6f26-4d6c-af64-533bb7f6a99e'
+
+   Assert-NotNull $licenseUpdate 
 }

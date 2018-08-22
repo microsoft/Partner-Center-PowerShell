@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PartnerLicenseUsageInfo
 
 ## SYNOPSIS
-Retrieves aggregated data on licenses deployment
+Gets aggregated data on licenses deployment
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PartnerLicenseUsageInfo [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves aggregated data on licenses deployment for all customers.
+Gets aggregated data on licenses deployment for all customers.
 
 ## EXAMPLES
 
@@ -26,7 +26,7 @@ Retrieves aggregated data on licenses deployment for all customers.
 PS C:\> Get-PartnerLicenseUsageInfo
 ```
 
-Retrieves aggregated data on licenses deployment for all customers.
+Gets aggregated data on licenses deployment for all customers.
 
 ## PARAMETERS
 

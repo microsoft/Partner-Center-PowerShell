@@ -30,20 +30,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
             LicensedProductSku = license.ProductSku.Id;
             Name = license.ProductSku.Name;
             LicenseGroupId = license.ProductSku.LicenseGroupId.ToString();
-            this.CopyFrom(license, CloneAdditionalOperations);
+
+            this.CopyFrom(license);
         }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="License"/> to an instance of <see cref="PSLicense" />. 
-        /// </summary>
-        /// <param name="license">The license being cloned.</param>
-        private void CloneAdditionalOperations(License license)
-        { }
-
-        /// <summary>
         /// Gets or sets the service plan collection. Service plans refer to services that
-        ///     user is assigned to use. For example , Delve is a service plan which a user is
-        ///     either assigned to use or can be assigned to use.
+        /// user is assigned to use. For example , Delve is a service plan which a user is
+        /// either assigned to use or can be assigned to use.
         /// </summary>
         public IEnumerable<ServicePlan> ServicePlans { get; set; }
 
@@ -68,4 +62,3 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public string LicenseGroupId { get; set; }
     }
 }
-

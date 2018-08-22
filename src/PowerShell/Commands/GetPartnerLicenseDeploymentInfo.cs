@@ -21,12 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
-        public override void ExecuteCmdlet() { GetLicenseDeploymentInfo(); }
-
-        /// <summary>
-        ///  Get partner licenses deployment information aggregated to include all customers from Partner Center..
-        /// </summary>
-        private void GetLicenseDeploymentInfo()
+        public override void ExecuteCmdlet()
         {
             IEnumerable<PartnerLicensesDeploymentInsights> insights;
 
