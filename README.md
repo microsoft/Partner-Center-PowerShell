@@ -6,16 +6,10 @@ This repository contains a set of PowerShell cmdlets for developers and administ
 
 ### PowerShell Gallery
 
-Currently, there is only a pre-release version of the Partner Center module available. To install pre-release items using the _Install-Module_ command the latest version of _PowerShellGet_ must be installed. If you do not have the latest version installed, run the following command from an elevated PowerShell session:
+Run the following command in an elevated PowerShell session to install the Partner Center module:
 
 ```powershell
-Install-Module -Name PowerShellGet -Force
-```
-
- Run the following command in an elevated PowerShell session to install the Partner Center module:
-
-```powershell
-Install-Module -Name PartnerCenter -AllowPrerelease
+Install-Module -Name PartnerCenter
 ```
 
 If you have an earlier version of the Partner Center PowerShell modules installed from the PowerShell Gallery and would like to update to the latest version, run the following commands from an elevated PowerShell session.
