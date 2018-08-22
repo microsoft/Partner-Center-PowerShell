@@ -22,7 +22,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         [TestMethod]
         public void GetPartnerLicenseDeploymentInformationTest()
         {
-            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerLicenseDeploymentInformation");
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerLicenseDeploymentInfo");
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         [TestMethod]
         public void GetPartnerLicenseUsageInformationTest()
         {
-            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerLicenseUsageInformation");
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerLicenseUsageInfo");
         }
 
         /// <summary>

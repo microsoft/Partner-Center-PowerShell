@@ -13,7 +13,7 @@ Creates an order for a customer.
 ## SYNTAX
 
 ```
-New-PartnerCustomerCart -CustomerId <String> -LineItems <CartLineItem[]> [-WhatIf] [-Confirm]
+New-PartnerCustomerCart -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -24,9 +24,17 @@ Creates an order for a customer.
 
 ### Example 1
 ```powershell
-PS C:\> $lineItems = @()
-PS C:\> $lineItems += New-PartnerCustomerCartLineItem -BillingCycle 'OneTime' -CatalogItemId 'DG7GMGF0DWTL:0001:DG7GMGF0DSJB' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -FriendlyName 'Sample RI Purchase' -ProvisioningContext @{duration='1Year'; scope='shared'; subscriptionId='b35d5324-df8e-4306-9023-6edac2d4896c'} -Quantity 10
-PS C:\> New-PartnerCustomerCart -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItems
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
+PS C:\>
+PS C:\> $lineItem.BillingCycle = 'OneTime'
+PS C:\> $lineItem.CatalogItemId = 'DG7GMGF0DWTL:0001:DG7GMGF0DSJB'
+PS C:\> $lineItem.FriendlyName = 'Sample RI Purchase'
+PS C:\> $lineItem.ProvisioningContext.Add('duration', '1Year')
+PS C:\> $lineItem.ProvisioningContext.Add('scope', 'shared')
+PS C:\> $lineItem.ProvisioningContext.Add('subscriptionId', 'D526EF3A-35E6-477F-A64C-906F6177FBFA')
+PS C:\> $lineItem.Quantity = 10
+PS C:\>
+PS C:\> New-PartnerCustomerCart -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItem
 ```
 
 Creates an order for a customer.
@@ -52,7 +60,7 @@ Accept wildcard characters: False
 A list of cart line items.
 
 ```yaml
-Type: CartLineItem[]
+Type: PSCartLineItem[]
 Parameter Sets: (All)
 Aliases:
 

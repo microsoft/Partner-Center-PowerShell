@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
-{
-
-
+namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -205,20 +205,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creates a new cart line item in memory..
-        /// </summary>
-        internal static string NewPartnerCustomerCartLineItemWhatIf {
-            get {
-                return ResourceManager.GetString("NewPartnerCustomerCartLineItemWhatIf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Creates a new customer configuration policy..
         /// </summary>
         internal static string NewPartnerCustomerConfigurationPolicyWhatIf {
             get {
                 return ResourceManager.GetString("NewPartnerCustomerConfigurationPolicyWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a batch of devices with the identifier of {0}..
+        /// </summary>
+        internal static string NewPartnerCustomerDeviceBatchWhatIf {
+            get {
+                return ResourceManager.GetString("NewPartnerCustomerDeviceBatchWhatIf", resourceCulture);
             }
         }
         
@@ -250,6 +250,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new partner service request..
+        /// </summary>
+        internal static string NewPartnerServiceRequestWhatIf {
+            get {
+                return ResourceManager.GetString("NewPartnerServiceRequestWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Postal code is a required field. Please update the input and try again..
         /// </summary>
         internal static string PostalCoderequiredError {
@@ -273,6 +282,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         internal static string RemovePartnerCustomerUserWhatIf {
             get {
                 return ResourceManager.GetString("RemovePartnerCustomerUserWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the relationship between the customer with the identifier of {0} and the partner. This operation will suspend all active subscriptions..
+        /// </summary>
+        internal static string RemovePartnerResellerRelationshipWhatIf {
+            get {
+                return ResourceManager.GetString("RemovePartnerResellerRelationshipWhatIf", resourceCulture);
             }
         }
         
@@ -304,6 +322,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updates the cart with the identifier of {0}..
+        /// </summary>
+        internal static string SetPartnerCustomerCartWhatIf {
+            get {
+                return ResourceManager.GetString("SetPartnerCustomerCartWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updates the configuration policy with the identifer of {0}..
         /// </summary>
         internal static string SetPartnerCustomerConfigurationPolicyWhatIf {
@@ -313,11 +340,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updates the support contact for the subscription with the identifier of {0}..
+        /// </summary>
+        internal static string SetPartnerCustomerSubscriptionSupportContactWhatIf {
+            get {
+                return ResourceManager.GetString("SetPartnerCustomerSubscriptionSupportContactWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updates the subscription {0} that belongs to the customer with the identifier of {1}..
         /// </summary>
         internal static string SetPartnerCustomerSubscriptionWhatIf {
             get {
                 return ResourceManager.GetString("SetPartnerCustomerSubscriptionWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates the license assignment for the user with the identifier of {0}..
+        /// </summary>
+        internal static string SetPartnerCustomerUserLicenseWhatIf {
+            get {
+                return ResourceManager.GetString("SetPartnerCustomerUserLicenseWhatIf", resourceCulture);
             }
         }
         
@@ -345,6 +390,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         internal static string SetPartnerLegalProfileWhatIf {
             get {
                 return ResourceManager.GetString("SetPartnerLegalProfileWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates the service request with the identifier of {0}..
+        /// </summary>
+        internal static string SetPartnerServiceRequestWhatIf {
+            get {
+                return ResourceManager.GetString("SetPartnerServiceRequestWhatIf", resourceCulture);
             }
         }
         

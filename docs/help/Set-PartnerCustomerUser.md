@@ -14,16 +14,16 @@ Updates the specified customer user account.
 
 ### UserId (Default)
 ```
-Set-PartnerCustomerUser [-CustomerId] <String> -UserId <String> [-UserPrincipalName <String>]
- [-FirstName <String>] [-LastName <String>] [-DisplayName <String>] [-Password <SecureString>]
- [-ForceChangePasswordNextLogin] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PartnerCustomerUser [-DisplayName <String>] [-ForceChangePasswordNextLogin] [-CustomerId] <String>
+ [-FirstName <String>] [-LastName <String>] [-Password <SecureString>] [-UsageLocation <String>]
+ -UserId <String> [-UserPrincipalName <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### UserObject
 ```
-Set-PartnerCustomerUser -InputObject <PSCustomerUser> [-CustomerId] <String> [-UserPrincipalName <String>]
- [-FirstName <String>] [-LastName <String>] [-DisplayName <String>] [-Password <SecureString>]
- [-ForceChangePasswordNextLogin] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PartnerCustomerUser [-DisplayName <String>] [-ForceChangePasswordNextLogin] [-CustomerId] <String>
+ -InputObject <PSCustomerUser> [-FirstName <String>] [-LastName <String>] [-Password <SecureString>]
+ [-UsageLocation <String>] [-UserPrincipalName <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -146,6 +146,21 @@ User's new password.
 
 ```yaml
 Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UsageLocation
+The usage location, the location where user intends to use the license.
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 

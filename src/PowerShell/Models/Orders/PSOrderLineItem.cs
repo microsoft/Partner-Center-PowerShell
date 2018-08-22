@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
 {
+    using System.Collections;
     using System.Collections.Generic;
     using Common;
     using PartnerCenter.Models.Orders;
@@ -20,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// </summary>
         public PSOrderLineItem()
         {
-            ProvisioningContext = new Dictionary<string, string>();
+            ProvisioningContext = new Hashtable();
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// <param name="orderLineItem">The base order line item for this instance.</param>
         public PSOrderLineItem(OrderLineItem orderLineItem)
         {
-            this.CopyFrom(orderLineItem);
+            this.CopyFrom(orderLineItem, CloneAdditionalOperations);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// <summary>
         /// Gets the provisioning context for the offer.
         /// </summary>
-        public Dictionary<string, string> ProvisioningContext { get; }
+        public Hashtable ProvisioningContext { get; }
 
         /// <summary>
         /// Gets or sets the product quantity.
@@ -74,5 +75,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// Gets or sets the resulting subscription identifier.
         /// </summary>
         public string SubscriptionId { get; set; }
+
+        /// <summary>
+        /// Addtional operations to be performed when cloning an instance of <see cref="OrderLineItem" /> to an instance of <see cref="PSOrderLineItem" />. 
+        /// </summary>
+        /// <param name="lineItem">An instance of the <see cref="OrderLineItem" /> class that will serve as base for this instance.</param>
+        private void CloneAdditionalOperations(OrderLineItem lineItem)
+        {
+            if (lineItem.ProvisioningContext == null)
+            {
+                return;
+            }
+
+            foreach (KeyValuePair<string, string> item in lineItem.ProvisioningContext)
+            {
+                ProvisioningContext.Add(item.Key, item.Value);
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
 {
+    using System.Collections;
     using System.Collections.Generic;
     using Common;
     using PartnerCenter.Models.Carts;
@@ -22,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// </summary>
         public PSCartLineItem()
         {
-            ProvisioningContext = new Dictionary<string, string>();
+            ProvisioningContext = new Hashtable();
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// <param name="lineItem">An instance of the <see cref="CartLineItem" /> class that will serve as a base for this instance.</param>
         public PSCartLineItem(CartLineItem lineItem)
         {
-            ProvisioningContext = new Dictionary<string, string>();
+            ProvisioningContext = new Hashtable();
             this.CopyFrom(lineItem, CloneAdditionalOperations);
         }
 
@@ -78,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// <summary>
         /// Gets or sets a context that will be used for provisioning of the catalog item.
         /// </summary>
-        public Dictionary<string, string> ProvisioningContext { get; }
+        public Hashtable ProvisioningContext { get; }
 
         /// <summary>
         /// Gets or sets the product quantity.

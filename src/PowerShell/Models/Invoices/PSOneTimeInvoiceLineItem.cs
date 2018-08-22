@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
     using System;
+    using Common;
     using PartnerCenter.Models.Invoices;
 
     /// <summary>
@@ -14,6 +15,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
     /// </summary>
     public class PSOneTimeInvoiceLineItem : PSInvoiceLineItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSOneTimeInvoiceLineItem" /> class.
+        /// </summary>
+        public PSOneTimeInvoiceLineItem()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSOneTimeInvoiceLineItem" /> class.
+        /// </summary>
+        /// <param name="lineItem">The base line item for this instance.</param>
+        public PSOneTimeInvoiceLineItem(OneTimeInvoiceLineItem lineItem)
+        {
+            this.CopyFrom(lineItem);
+        }
+
         /// <summary>
         /// Gets or sets the availability unique identifier.
         /// </summary>

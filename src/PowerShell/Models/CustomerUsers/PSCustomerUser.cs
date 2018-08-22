@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
     using PartnerCenter.Models.Users;
 
     /// <summary>
-    /// Represents a form of customer users.
+    /// Entity to define customer user.
     /// </summary>
     public sealed class PSCustomerUser
     {
@@ -31,50 +31,55 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
         }
 
         /// <summary>
-        ///     Gets or sets the user object identifier.
+        /// Gets or sets the user object identifier.
         /// </summary>
         public string UserId { get; set; }
 
         /// <summary>
-        ///     Gets or sets the display name.
+        /// Gets or sets the display name.
         /// </summary>
         public string DisplayName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the name of the user principal.
+        /// Gets or sets the name of the user principal.
         /// </summary>
         public string UserPrincipalName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the first name.
+        /// Gets or sets the first name.
         /// </summary>
         public string FirstName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the last name.
+        /// Gets or sets the last name.
         /// </summary>
         public string LastName { get; set; }
 
         /// <summary>
-        ///     Gets or sets user domain type.
+        /// Gets or sets user domain type.
         /// </summary>
         public UserDomainType UserDomainType { get; set; }
 
         /// <summary>
-        ///     Gets or sets the state of the user, for the deleted user this is "Inactive" and
-        ///     for the normal user it is "Active".
+        /// Gets or sets the state of the user, for the deleted user this is "Inactive" and
+        /// for the normal user it is "Active".
         /// </summary>
         public UserState State { get; set; }
 
         /// <summary>
-        ///     Gets or sets the deleted time for the inactive user.
+        /// Gets or sets the deleted time for the inactive user.
         /// </summary>
         public DateTime? SoftDeletionTime { get; set; }
 
         /// <summary>
-        ///     Gets or sets the last directory sync time for the user.
+        /// Gets or sets the last directory sync time for the user.
         /// </summary>
         public DateTime? LastDirectorySyncTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets usage location, the location where user intends to use the license.
+        /// </summary>
+        public string UsageLocation { get; set; }
 
         /// <summary>
         /// Addtional operations to be performed when cloning an instance of <see cref="User" /> to an instance of <see cref="PSCustomerUser" />. 

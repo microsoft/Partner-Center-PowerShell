@@ -25,8 +25,13 @@ Create a new order for the specified services on behalf of the customer.
 ### Example 1
 
 ```powershell
-PS C:\> $lineItem = New-PartnerCustomerOrderLineItem -LineItemNumber 0 -OfferId 031C9E47-4802-4248-838E-778FB1D2CC05 -Quantity 1
-PS C:\> New-PartnerCustomerOrder -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -LineItems @($lineItem)
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Orders.PSOrderLineItem
+PS C:\>
+PS C:\> $lineItem.LineItemNumber = 0
+PS C:\> $lineItem.OfferId = '031C9E47-4802-4248-838E-778FB1D2CC05'
+PS C:\> $lineItem.Quantity = 1
+PS C:\>
+PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItem
 ```
 
 Create a new order for the specified services on behalf of the customer.

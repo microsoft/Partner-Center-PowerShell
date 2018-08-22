@@ -95,7 +95,6 @@
     <Compile Include="Commands\ProductTests.cs" />
     <Compile Include="Commands\RateCardTests.cs" />
     <Compile Include="Commands\ValidationTests.cs" />
-    <Compile Include="Converters\CustomerConverTests.cs" />
     <Compile Include="Enumerators\ResourceCollectionEnumerator.cs" />
     <Compile Include="Factories\MockClientFactory.cs" />
     <Compile Include="Factories\MockAuthenticationFactory.cs" />
@@ -217,6 +216,9 @@
     <None Include="SessionRecords\GetInvoiceSummary.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SessionRecords\GetMpnProfile.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SessionRecords\GetOfferAddon.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -224,6 +226,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\GetPartnerLicenseDeploymentInsights.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\GetPartnerRelationship.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\GetPartnerSupportProfile.json">
@@ -262,10 +267,22 @@
     <None Include="SessionRecords\GetPartnerLicensesUsageInsights.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SessionRecords\GetResellerRelationshipLink.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\RemoveResellerRelationship.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\SuspendSubscription.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SessionRecords\UpdatePartnerSupportProfile.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SessionRecords\UpdatePartnerLegalProfile.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SessionRecords\UpdateUserLicense.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

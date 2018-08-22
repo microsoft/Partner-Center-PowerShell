@@ -14,12 +14,29 @@ Gets a list or a single customer subscription.
 
 ### Customer (Default)
 ```
-Get-PartnerCustomerSubscription -CustomerId <String> [-SubscriptionId <String>] [<CommonParameters>]
+Get-PartnerCustomerSubscription [<CommonParameters>]
 ```
 
-### CustomerObject
+### ByCustomerObject
 ```
-Get-PartnerCustomerSubscription -InputObject <PSCustomer> [-SubscriptionId <String>] [<CommonParameters>]
+Get-PartnerCustomerSubscription -InputObject <PSCustomer> [-OrderId <String>] [-MpnId <String>]
+ [-SubscriptionId <String>] [<CommonParameters>]
+```
+
+### ByCustomer
+```
+Get-PartnerCustomerSubscription -CustomerId <String> [-OrderId <String>] [-MpnId <String>]
+ [-SubscriptionId <String>] [<CommonParameters>]
+```
+
+### ByOrder
+```
+Get-PartnerCustomerSubscription -CustomerId <String> -OrderId <String> [<CommonParameters>]
+```
+
+### ByPartner
+```
+Get-PartnerCustomerSubscription -CustomerId <String> -MpnId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -48,7 +65,7 @@ The customer identifier used to scope the request.
 
 ```yaml
 Type: String
-Parameter Sets: Customer
+Parameter Sets: ByCustomer, ByOrder, ByPartner
 Aliases:
 
 Required: True
@@ -63,7 +80,7 @@ The customer object used to scope the request.
 
 ```yaml
 Type: PSCustomer
-Parameter Sets: CustomerObject
+Parameter Sets: ByCustomerObject
 Aliases:
 
 Required: True
@@ -73,12 +90,66 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
+### -MpnId
+The Microsoft Parnter Network identifier that identifies the partner.
+
+```yaml
+Type: String
+Parameter Sets: ByCustomerObject, ByCustomer
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ByPartner
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderId
+The identifier corresponding to the order.
+
+```yaml
+Type: String
+Parameter Sets: ByCustomerObject, ByCustomer
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ByOrder
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SubscriptionId
 The subscription identifier used to scope the request.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: ByCustomerObject, ByCustomer
 Aliases:
 
 Required: False

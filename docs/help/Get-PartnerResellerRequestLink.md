@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PartnerResellerRequestLink
 
 ## SYNOPSIS
-Retrieves a relationship request URL to send to a customer.
+Gets a relationship request URL to send to a customer.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PartnerResellerRequestLink [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves a relationship request URL to send to a customer.
+Gets a relationship request URL to send to a customer.
 
 ## EXAMPLES
 
@@ -26,7 +26,7 @@ Retrieves a relationship request URL to send to a customer.
 PS C:\> Get-PartnerResellerRequestLink
 ```
 
-Retrieves a relationship request URL to send to a customer.
+Gets a relationship request URL to send to a customer.
 
 ## PARAMETERS
 

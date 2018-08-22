@@ -24,10 +24,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class SetPartnerCustomerUser : PartnerPSCmdlet
     {
         /// <summary>
-        /// Gets or sets the customer user being modified.
+        /// Sets the optional user display name.
         /// </summary>
-        [Parameter(Mandatory = true, ParameterSetName = "UserObject", ValueFromPipeline = true, HelpMessage = "The customer user object to be modified.")]
-        public PSCustomerUser InputObject { get; set; }
+        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "User's display name.")]
+        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "User's display name.")]
+        public string DisplayName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag that specifies whether user must change password on next login.
+        /// </summary>
+        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "Forces user to change password during next login.")]
+        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "Forces user to change password during next login.")]
+        public SwitchParameter ForceChangePasswordNextLogin { get; set; }
 
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -38,18 +46,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the required user identifier.
+        /// Gets or sets the customer user being modified.
         /// </summary>
-        [Parameter(Mandatory = true, ParameterSetName = "UserId", HelpMessage = "The identifier of the user.")]
-        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the optional user principal name.
-        /// </summary>
-        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "The user principal name.")]
-        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "The user principal name.")]
-        public string UserPrincipalName { get; set; }
+        [Parameter(Mandatory = true, ParameterSetName = "UserObject", ValueFromPipeline = true, HelpMessage = "The customer user object to be modified.")]
+        public PSCustomerUser InputObject { get; set; }
 
         /// <summary>
         /// Sets the optional user first name.
@@ -68,23 +68,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Sets the optional user display name.
         /// </summary>
-        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "User's display name.")]
-        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "User's display name.")]
-        public string DisplayName { get; set; }
-
-        /// <summary>
-        /// Sets the optional user display name.
-        /// </summary>
         [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "User's new password.")]
         [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "User's new password.")]
         public SecureString Password { get; set; }
 
         /// <summary>
-        /// Specifies whether user must change password on next login
+        /// Gets or sets usage location, the location where user intends to use the license.
         /// </summary>
-        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "Forces user to change password during next login.")]
-        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "Forces user to change password during next login.")]
-        public SwitchParameter ForceChangePasswordNextLogin { get; set; }
+        [Parameter(HelpMessage = "The usage location, the location where user intends to use the license.", ParameterSetName = "UserId", Mandatory = false)]
+        [Parameter(HelpMessage = "The usage location, the location where user intends to use the license.", ParameterSetName = "UserObject", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string UsageLocation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required user identifier.
+        /// </summary>
+        [Parameter(Mandatory = true, ParameterSetName = "UserId", HelpMessage = "The identifier of the user.")]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the optional user principal name.
+        /// </summary>
+        [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "The user principal name.")]
+        [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "The user principal name.")]
+        public string UserPrincipalName { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
@@ -120,6 +128,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     if (DisplayName != null)
                     {
                         user.DisplayName = DisplayName;
+                    }
+
+                    if (UsageLocation != null)
+                    {
+                        user.UsageLocation = UsageLocation;
                     }
 
                     PasswordProfile profile = null;

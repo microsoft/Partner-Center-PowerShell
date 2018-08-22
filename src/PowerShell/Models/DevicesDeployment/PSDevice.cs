@@ -30,6 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// <param name="device">The base PSDevice for this instance.</param>
         public PSDevice(Device device)
         {
+            Policies = new List<KeyValuePair<PolicyCategory, string>>();
             this.CopyFrom(device, CloneAdditionalOperations);
         }
 

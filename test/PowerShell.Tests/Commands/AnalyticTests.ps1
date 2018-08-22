@@ -1,8 +1,8 @@
 ﻿<#
 .SYNOPSIS
-Tests to be performed using the Get-PartnerLicenseDeploymentInformation cmdlet.
+Tests to be performed using the Get-PartnerLicenseDeploymentInfo cmdlet.
 #>
-function Test-GetPartnerLicenseDeploymentInformation
+function Test-GetPartnerLicenseDeploymentInfo
 {
     $deploymentInfo = Get-PartnerLicenseDeploymentInfo
 
@@ -11,9 +11,9 @@ function Test-GetPartnerLicenseDeploymentInformation
 
 <#
 .SYNOPSIS
-Tests to be performed using the Get-PartnerLicenseUsageInformation cmdlet.
+Tests to be performed using the Get-PartnerLicenseUsageInfo cmdlet.
 #>
-function Test-GetPartnerLicenseUsageInformation
+function Test-GetPartnerLicenseUsageInfo
 {
     $usageInfo = Get-PartnerLicenseUsageInfo
 

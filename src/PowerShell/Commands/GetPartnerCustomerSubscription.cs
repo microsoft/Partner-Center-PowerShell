@@ -21,22 +21,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the customer object used to scope the request.
         /// </summary>
-        [Parameter(HelpMessage = "The customer object.", ParameterSetName = "CustomerObject", Mandatory = true, ValueFromPipeline = true)]
+        [Parameter(HelpMessage = "The customer object.", ParameterSetName = "ByCustomerObject", Mandatory = true, ValueFromPipeline = true)]
         [ValidateNotNull]
         public PSCustomer InputObject { get; set; }
 
         /// <summary>
         /// Gets or sets the customer identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier of the customer.", ParameterSetName = "Customer", Mandatory = true)]
+        [Parameter(HelpMessage = "The identifier of the customer.", ParameterSetName = "ByCustomer", Mandatory = true)]
+        [Parameter(HelpMessage = "The identifier of the customer.", ParameterSetName = "ByOrder", Mandatory = true)]
+        [Parameter(HelpMessage = "The identifier of the customer.", ParameterSetName = "ByPartner", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
         public string CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets the order identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier corresponding to the order.", ParameterSetName = "ByCustomer", Mandatory = false)]
+        [Parameter(HelpMessage = "The identifier corresponding to the order.", ParameterSetName = "ByCustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "The identifier corresponding to the order.", ParameterSetName = "ByOrder", Mandatory = true)]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string OrderId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MPN identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The Microsoft Parnter Network identifier that identifies the partner.", ParameterSetName = "ByCustomer", Mandatory = false)]
+        [Parameter(HelpMessage = "The Microsoft Parnter Network identifier that identifies the partner.", ParameterSetName = "ByCustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "The Microsoft Parnter Network identifier that identifies the partner.", ParameterSetName = "ByPartner", Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public string MpnId { get; set; }
+
+        /// <summary>
         /// Gets or sets the subscriptions identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
-        [Parameter(HelpMessage = "The identifier of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "The identifier of the subscription.", ParameterSetName = "ByCustomer", Mandatory = false)]
+        [Parameter(HelpMessage = "The identifier of the subscription.", ParameterSetName = "ByCustomerObject", Mandatory = false)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
         public string SubscriptionId { get; set; }
 
@@ -45,35 +65,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
+            string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
+
+
             if (string.IsNullOrEmpty(SubscriptionId))
             {
-                GetSubscriptions();
+                GetSubscriptions(customerId, MpnId, OrderId);
             }
             else
             {
-                GetSubscription(SubscriptionId);
+                GetSubscription(customerId, SubscriptionId);
             }
         }
 
-        /// <summary>
-        /// Gets a specified subscription associated with the customer.
-        /// </summary>
-        /// <param name="subscriptionId">The identifier of the subscription.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="subscriptionId"/> is empty or null.
-        /// </exception>
-        public void GetSubscription(string subscriptionId)
+        private void GetSubscription(string customerId, string subscriptionId)
         {
             Subscription subscription;
-            string customerId;
 
+            customerId.AssertNotEmpty(nameof(customerId));
             subscriptionId.AssertNotEmpty(nameof(subscriptionId));
 
             try
             {
-                customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
                 subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].Get();
-
                 WriteObject(new PSSubscription(subscription));
             }
             finally
@@ -82,18 +96,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
         }
 
-        /// <summary>
-        /// Gets a list of subscription of subscriptions associated with the customer.
-        /// </summary>
-        private void GetSubscriptions()
+        private void GetSubscriptions(string customerId, string mpnId = null, string orderId = null)
         {
             ResourceCollection<Subscription> subscriptions;
-            string customerId;
 
             try
             {
-                customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-                subscriptions = Partner.Customers[customerId].Subscriptions.Get();
+                if (!string.IsNullOrWhiteSpace(mpnId))
+                {
+                    subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).Get();
+                }
+                else if (!string.IsNullOrWhiteSpace(orderId))
+                {
+                    subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).Get();
+                }
+                else
+                {
+                    subscriptions = Partner.Customers[customerId].Subscriptions.Get();
+                }
 
                 WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
             }
