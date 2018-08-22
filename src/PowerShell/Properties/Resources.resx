@@ -165,11 +165,11 @@
   <data name="NewPartnerCustomerAgreementWhatIf" xml:space="preserve">
     <value>Accepts the specified agreement for the customer.</value>
   </data>
-  <data name="NewPartnerCustomerCartLineItemWhatIf" xml:space="preserve">
-    <value>Creates a new cart line item in memory.</value>
-  </data>
   <data name="NewPartnerCustomerConfigurationPolicyWhatIf" xml:space="preserve">
     <value>Creates a new customer configuration policy.</value>
+  </data>
+  <data name="NewPartnerCustomerDeviceBatchWhatIf" xml:space="preserve">
+    <value>Creates a batch of devices with the identifier of {0}.</value>
   </data>
   <data name="NewPartnerCustomerOrderLineItemWhatIf" xml:space="preserve">
     <value>Creates a new customer order line item in memory.</value>
@@ -180,6 +180,9 @@
   <data name="NewPartnerCustomerWhatIf" xml:space="preserve">
     <value>Creates a new {0} as a new customer.</value>
   </data>
+  <data name="NewPartnerServiceRequestWhatIf" xml:space="preserve">
+    <value>Create a new partner service request.</value>
+  </data>
   <data name="PostalCoderequiredError" xml:space="preserve">
     <value>Postal code is a required field. Please update the input and try again.</value>
   </data>
@@ -188,6 +191,9 @@
   </data>
   <data name="RemovePartnerCustomerUserWhatIf" xml:space="preserve">
     <value>Deletes the customer user account with the identifier of {0}.</value>
+  </data>
+  <data name="RemovePartnerResellerRelationshipWhatIf" xml:space="preserve">
+    <value>Removes the relationship between the customer with the identifier of {0} and the partner. This operation will suspend all active subscriptions.</value>
   </data>
   <data name="RemovePartnerSandboxCustomer" xml:space="preserve">
     <value>Deletes the customer with the identifier of {0} from the integration sandbox.</value>
@@ -198,11 +204,20 @@
   <data name="RunConnectPartnerCenter" xml:space="preserve">
     <value>Run Connect-PartnerCenter to login.</value>
   </data>
+  <data name="SetPartnerCustomerCartWhatIf" xml:space="preserve">
+    <value>Updates the cart with the identifier of {0}.</value>
+  </data>
   <data name="SetPartnerCustomerConfigurationPolicyWhatIf" xml:space="preserve">
     <value>Updates the configuration policy with the identifer of {0}.</value>
   </data>
+  <data name="SetPartnerCustomerSubscriptionSupportContactWhatIf" xml:space="preserve">
+    <value>Updates the support contact for the subscription with the identifier of {0}.</value>
+  </data>
   <data name="SetPartnerCustomerSubscriptionWhatIf" xml:space="preserve">
     <value>Updates the subscription {0} that belongs to the customer with the identifier of {1}.</value>
+  </data>
+  <data name="SetPartnerCustomerUserLicenseWhatIf" xml:space="preserve">
+    <value>Updates the license assignment for the user with the identifier of {0}.</value>
   </data>
   <data name="SetPartnerCustomerUserWhatIf" xml:space="preserve">
     <value>Updates the specified customer user information for a user with the identifier of {0}.</value>
@@ -212,6 +227,9 @@
   </data>
   <data name="SetPartnerLegalProfileWhatIf" xml:space="preserve">
     <value>Updates the partner's legal business profile.</value>
+  </data>
+  <data name="SetPartnerServiceRequestWhatIf" xml:space="preserve">
+    <value>Updates the service request with the identifier of {0}.</value>
   </data>
   <data name="StateRequiredError" xml:space="preserve">
     <value>State is a required feild. Please update the input and try again.</value>

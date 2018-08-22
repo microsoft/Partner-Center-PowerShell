@@ -6,10 +6,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Converts;
     using Exceptions;
     using Models.Customers;
     using PartnerCenter.Exceptions;
@@ -109,7 +109,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerConverter converter;
             Customer customer;
             IValidator<Address> validator;
             string customerId;
@@ -127,8 +126,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     customer = Partner.Customers[customerId].Get();
 
-                    converter = new CustomerConverter(this, customer);
-                    converter.Convert();
+                    customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(Name, customer.BillingProfile.DefaultAddress.AddressLine1);
+                    customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(Name, customer.BillingProfile.DefaultAddress.AddressLine2);
+                    customer.BillingProfile.DefaultAddress.City = UpdateValue(Name, customer.BillingProfile.DefaultAddress.City);
+                    customer.BillingProfile.DefaultAddress.Country = UpdateValue(Name, customer.BillingProfile.DefaultAddress.Country);
+                    customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(Name, customer.BillingProfile.DefaultAddress.PhoneNumber);
+                    customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(Name, customer.BillingProfile.DefaultAddress.PostalCode);
+                    customer.BillingProfile.DefaultAddress.Region = UpdateValue(Name, customer.BillingProfile.DefaultAddress.Region);
+                    customer.BillingProfile.DefaultAddress.State = UpdateValue(Name, customer.BillingProfile.DefaultAddress.State);
+                    customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
 
                     validator = new AddressValidator(Partner);
 
@@ -150,9 +156,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             finally
             {
-                converter = null;
                 customer = null;
             }
+        }
+
+        private static string UpdateValue(string input, string output)
+        {
+            string newValue = output;
+
+            if (!string.IsNullOrEmpty(input) && !input.Equals(output, StringComparison.OrdinalIgnoreCase))
+            {
+                newValue = input;
+            }
+
+            return newValue;
         }
     }
 }

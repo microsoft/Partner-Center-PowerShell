@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PartnerCustomerAgreement
 
 ## SYNOPSIS
-Retrieves confirmation of customer acceptance provided previously.
+Gets confirmation of customer acceptance provided previously.
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PartnerCustomerAgreement -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves confirmation of customer acceptance provided previously. This operation is currently supported by Partner Center in the Microsoft public cloud only.
+Gets confirmation of customer acceptance provided previously. This operation is currently supported by Partner Center in the Microsoft public cloud only.
 
 ## EXAMPLES
 
@@ -26,7 +26,7 @@ Retrieves confirmation of customer acceptance provided previously. This operatio
 PS C:\> Get-PartnerCustomerAgreement -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08'
 ```
 
-Retrieves confirmation of customer acceptance provided previously.
+Gets confirmation of customer acceptance provided previously.
 
 ## PARAMETERS
 

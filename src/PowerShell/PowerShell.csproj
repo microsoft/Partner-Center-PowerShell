@@ -73,7 +73,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddPartnerCustomerCartLineItem.cs" />
+    <Compile Include="Commands\GetPartnerCustomerUserLicense.cs" />
+    <Compile Include="Commands\NewPartnerCustomerDeviceBatch.cs" />
+    <Compile Include="Commands\SetPartnerCustomerUserLicense.cs" />
+    <Compile Include="Commands\GetPartnerCustomerSubscriptionUsage.cs" />
+    <Compile Include="Commands\GetPartnerCustomerRelationship.cs" />
+    <Compile Include="Commands\GetPartnerCustomerServiceCostsSummary.cs" />
+    <Compile Include="Commands\GetPartnerCustomerSubscriptionSupportContact.cs" />
+    <Compile Include="Commands\GetPartnerCustomerUsageSummary.cs" />
+    <Compile Include="Commands\GetPartnerInvoiceLineItem.cs" />
+    <Compile Include="Commands\GetPartnerMpnProfile.cs" />
+    <Compile Include="Commands\NewPartnerServiceRequest.cs" />
+    <Compile Include="Commands\GetPartnerCustomerServiceCosts.cs" />
     <Compile Include="Commands\RemovePartnerCustomerConfigurationPolicy.cs" />
+    <Compile Include="Commands\RemovePartnerResellerRelationship.cs" />
+    <Compile Include="Commands\SetPartnerCustomerCart.cs" />
+    <Compile Include="Commands\SetPartnerCustomerSubscriptionSupportContact.cs" />
+    <Compile Include="Commands\SetPartnerServiceRequest.cs" />
     <Compile Include="Commands\SubmitPartnerCustomerCart.cs" />
     <Compile Include="Commands\GetPartnerCustomerConfigurationPolicy.cs" />
     <Compile Include="Commands\SetPartnerCustomerConfigurationPolicy.cs" />
@@ -86,7 +102,7 @@
     <Compile Include="Commands\GetPartnerResellerRequestLink.cs" />
     <Compile Include="Commands\GetPartnerCustomerSubscriptionUpgrades.cs" />
     <Compile Include="Commands\RemovePartnerCustomerUserRoleMember.cs" />
-    <Compile Include="Commands\GetPartnerCustomerLicense.cs" />
+    <Compile Include="Commands\GetPartnerCustomerSubscribedSku.cs" />
     <Compile Include="Commands\AddPartnerCustomerUserRoleMember.cs" />
     <Compile Include="Commands\NewPartnerCustomerUser.cs" />
     <Compile Include="Commands\RemovePartnerSandboxCustomer.cs" />
@@ -126,7 +142,6 @@
     <Compile Include="Commands\GetPartnerInvoice.cs" />
     <Compile Include="Commands\GetPartnerInvoiceSummary.cs" />
     <Compile Include="Commands\NewPartnerCustomerCart.cs" />
-    <Compile Include="Commands\NewPartnerCustomerCartLineItem.cs" />
     <Compile Include="Commands\NewPartnerCustomerSubscriptionRegistration.cs" />
     <Compile Include="Commands\SetPartnerCustomerUser.cs" />
     <Compile Include="Commands\SetPartnerLegalProfile.cs" />
@@ -137,14 +152,12 @@
     <Compile Include="Commands\GetPartnerOffer.cs" />
     <Compile Include="Commands\NewPartnerCustomer.cs" />
     <Compile Include="Commands\NewPartnerCustomerOrder.cs" />
-    <Compile Include="Commands\NewPartnerCustomerOrderLineItem.cs" />
     <Compile Include="Commands\SetPartnerBillingProfile.cs" />
     <Compile Include="Commands\SetPartnerCustomer.cs" />
     <Compile Include="Commands\SetPartnerCustomerSubscription.cs" />
     <Compile Include="Common\ResourceExtensions.cs" />
     <Compile Include="Common\PSPartnerException.cs" />
     <Compile Include="Common\SecureStringExtensions.cs" />
-    <Compile Include="Converts\CustomerConverter.cs" />
     <Compile Include="Factories\AuthenticationFactory.cs" />
     <Compile Include="Factories\ClientFactory.cs" />
     <Compile Include="Factories\IClientFactory.cs" />
@@ -177,8 +190,11 @@
     <Compile Include="Models\CustomerTrialConversion\PSCustomerTrialConversion.cs" />
     <Compile Include="Models\DevicesDeployment\PSDeviceBatch.cs" />
     <Compile Include="Models\Entitlements\PSEntitlement.cs" />
+    <Compile Include="Models\Invoices\PSAzureDataMarketDailyUsageLineItem.cs" />
+    <Compile Include="Models\Invoices\PSAzureDataMarketLineItem.cs" />
     <Compile Include="Models\Invoices\PSBaseAzureDataMarketLineItem.cs" />
     <Compile Include="Models\Invoices\PSBaseUsageBasedLineItem.cs" />
+    <Compile Include="Models\Invoices\PSDailyUsageLineItem.cs" />
     <Compile Include="Models\Invoices\PSInvoice.cs" />
     <Compile Include="Models\Invoices\PSInvoiceLineItem.cs" />
     <Compile Include="Models\Invoices\PSInvoiceSummary.cs" />
@@ -188,11 +204,14 @@
     <Compile Include="Models\DevicesDeployment\PSDevice.cs" />
     <Compile Include="Models\Analytics\PSLicensesInsightsBase.cs" />
     <Compile Include="Models\Licenses\PSLicense.cs" />
+    <Compile Include="Models\Licenses\PSLicenseAssignment.cs" />
+    <Compile Include="Models\Licenses\PSLicenseUpdate.cs" />
     <Compile Include="Models\Licenses\PSSubscribedSku.cs" />
     <Compile Include="Models\ManagedServices\PSManagedService.cs" />
     <Compile Include="Models\Offers\PSOffer.cs" />
     <Compile Include="Models\Orders\PSOrder.cs" />
     <Compile Include="Models\Orders\PSOrderLineItem.cs" />
+    <Compile Include="Models\Partners\PSMpnProfile.cs" />
     <Compile Include="Models\Partners\PSSupportProfile.cs" />
     <Compile Include="Models\Partners\PSLegalBusinessProfile.cs" />
     <Compile Include="Models\Partners\PSOrganizationProfile.cs" />
@@ -204,6 +223,8 @@
     <Compile Include="Models\ConfigurationPolicies\PSConfigurationPolicy.cs" />
     <Compile Include="Models\RateCards\PSAzureRateCard.cs" />
     <Compile Include="Models\Relationships\PSPartnerRelationship.cs" />
+    <Compile Include="Models\ServiceCosts\PSServiceCostsSummary.cs" />
+    <Compile Include="Models\ServiceCosts\PSServiceCostLineItem.cs" />
     <Compile Include="Models\ServiceRequests\PSSupportTopic.cs" />
     <Compile Include="Models\ServiceRequests\PSServiceRequest.cs" />
     <Compile Include="Models\Roles\PSDirectoryRole.cs" />
@@ -211,6 +232,12 @@
     <Compile Include="Models\Subscriptions\PSSubscriptionProvisioningStatus.cs" />
     <Compile Include="Models\Subscriptions\PSSubscriptionRegistrationStatus.cs" />
     <Compile Include="Models\CustomerUsers\PSCustomerUser.cs" />
+    <Compile Include="Models\Subscriptions\PSSupportContact.cs" />
+    <Compile Include="Models\Usage\PSAzureResourceMonthlyUsageRecord.cs" />
+    <Compile Include="Models\Usage\PSCustomerUsageSummary.cs" />
+    <Compile Include="Models\Usage\PSSpendingBudget.cs" />
+    <Compile Include="Models\Usage\PSUsageRecordBase.cs" />
+    <Compile Include="Models\Usage\PSUsageSummaryBase.cs" />
     <Compile Include="Models\Utilizations\PSAzureUtilizationRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

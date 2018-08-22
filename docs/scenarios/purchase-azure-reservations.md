@@ -71,14 +71,22 @@ To submit your Azure reservation order, do the following:
 1. Create a cart to hold the collection of catalog items that you intend to buy. When you create a cart, the cart line items are automatically grouped based on what can be purchased in the same order. To do this, run the [New-PartnerCustomerCart](../help/New-PartnerCustomerCart.md) cmdlet.
 
     ```powershell
-    $lineItems = @()
-    $lineItems += New-PartnerCustomerCartLineItem -BillingCycle 'OneTime' -CatalogItemId '<Catalog-Item-Id>' -CustomerId '<Customer-Id>' -FriendlyName '<Friendly-Name>' -ProvisioningContext @{duration='1Year'; scope='shared'; subscriptionId='<Subscription-Id>'} -Quantity 1
+    $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
 
-    New-PartnerCustomerCart -CustomerId '<Customer-Id>' -LineItems $lineItems
+    $lineItem.BillingCycle = 'OneTime'
+    $lineItem.CatalogItemId = '<CatalogItemId>'
+    $lineItem.CustomerId = '<CustomerId>'
+    $lineItem.FriendlyName 'Sample RI Purchase'
+    $lineItem.ProvisioningContext.Add('duration', '1Year')
+    $lineItem.ProvisioningContext.Add('scope', 'shared')
+    $lineItem.ProvisioningContext.Add('subscriptionId', '<SubscriptionId>')
+    $lineItem.Quantity = 1
+
+    New-PartnerCustomerCart -CustomerId '<CustomerId>' -LineItems $lineItem
     ```
 
 2. Submit the cart. Checking out (submitting) a cart results in an order. To do this, run the [Submit-PartnerCustomerCart](../help/Submit-PartnerCustomerCart.md) cmdlet.
 
     ```powershell
-    Submit-PartnerCustomerCart -CartId '<Cart-Id>' -CustomerId '<Customer-Id>'
+    Submit-PartnerCustomerCart -CartId '<CartId>' -CustomerId '<CustomerId>'
     ```

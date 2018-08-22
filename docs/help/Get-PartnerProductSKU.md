@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-PartnerProductSKU
+# Get-PartnerProductSku
 
 ## SYNOPSIS
 Gets the list of SKUs for a product.
@@ -14,17 +14,17 @@ Gets the list of SKUs for a product.
 
 ### ByProductId (Default)
 ```
-Get-PartnerProductSKU [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
 ```
 
 ### BySkuId
 ```
-Get-PartnerProductSKU [-CountryCode <String>] -ProductId <String> -SkuId <String> [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> -SkuId <String> [<CommonParameters>]
 ```
 
 ### BySegment
 ```
-Get-PartnerProductSKU [-CountryCode <String>] -ProductId <String> [-Segment <String>] [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-Segment <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -6,12 +6,14 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Common;
     using Models.ServiceRequests;
+    using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceRequests;
 
@@ -85,9 +87,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets the specified service request for a customer.
         /// </summary>
-        /// <param name="customerId">Identifier for the customer.</param>
-        /// <param name="requestId">Identifier for the service request.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <param name="customerId">The identifier for the customer.</param>
+        /// <param name="requestId">The identifier for the service request.</param>
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// or
         /// <paramref name="requestId"/> is empty or null.
@@ -104,7 +106,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).Get();
 
                 if (request != null)
+                {
                     WriteObject(new PSServiceRequest(request));
+                }
             }
             finally
             {
@@ -115,16 +119,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets a list of service requests for a customer.
         /// </summary>
-        /// <param name="customerId">Identifier for the customer.</param>
-        /// <param name="status">Identifier for the service request.</param>
-        /// <param name="severity">Identifier for the service request.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <param name="customerId">The identifier of the customer.</param>
+        /// <param name="status">The status of the service request.</param>
+        /// <param name="severity">The severity of the service request.</param>
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private void GetCustomerServiceRequests(string customerId, ServiceRequestStatus? status, ServiceRequestSeverity? severity)
         {
             ResourceCollection<ServiceRequest> requests;
-            IEnumerable<ServiceRequest> results;
 
             customerId.AssertNotEmpty(nameof(customerId));
 
@@ -134,21 +137,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (requests.TotalCount > 0)
                 {
-                    results = requests.Items;
-
-                    if (status.HasValue)
-                        results = results.Where(r => r.Status == status);
-
-                    if (severity.HasValue)
-                        results = results.Where(r => r.Severity == severity);
-
-                    WriteObject(results.Select(r => new PSServiceRequest(r)), true);
+                    HandleOutput(requests, severity, status);
                 }
             }
             finally
             {
                 requests = null;
-                results = null;
             }
         }
 
@@ -156,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets the specified service request for a partner.
         /// </summary>
         /// <param name="requestId">Identifier for the service request.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="requestId"/> is empty or null.
         /// </exception>
         private void GetServiceRequest(string requestId)
@@ -170,7 +164,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 request = Partner.ServiceRequests.ById(requestId).Get();
 
                 if (request != null)
+                {
                     WriteObject(new PSServiceRequest(request));
+                }
             }
             finally
             {
@@ -186,7 +182,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private void GetServiceRequests(ServiceRequestStatus? status, ServiceRequestSeverity? severity)
         {
             ResourceCollection<ServiceRequest> requests;
-            IEnumerable<ServiceRequest> results;
 
             try
             {
@@ -194,21 +189,52 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (requests.TotalCount > 0)
                 {
-                    results = requests.Items;
-
-                    if (status.HasValue)
-                        results = results.Where(r => r.Status == status);
-
-                    if (severity.HasValue)
-                        results = results.Where(r => r.Severity == severity);
-
-                    WriteObject(results.Select(r => new PSServiceRequest(r)), true);
+                    HandleOutput(requests, severity, status);
                 }
             }
             finally
             {
                 requests = null;
-                results = null;
+            }
+        }
+
+        private void HandleOutput(ResourceCollection<ServiceRequest> requests, ServiceRequestSeverity? severity, ServiceRequestStatus? status)
+        {
+            IResourceCollectionEnumerator<ResourceCollection<ServiceRequest>> enumerator;
+            List<ServiceRequest> serviceRequests;
+
+            try
+            {
+                enumerator = Partner.Enumerators.ServiceRequests.Create(requests);
+                serviceRequests = new List<ServiceRequest>();
+
+                while (enumerator.HasValue)
+                {
+                    serviceRequests.AddRange(enumerator.Current.Items);
+                    enumerator.Next();
+                }
+
+                if (severity.HasValue && status.HasValue)
+                {
+                    WriteObject(serviceRequests.Where(r => r.Severity == severity && r.Status == status).Select(r => new PSServiceRequest(r)), true);
+                }
+                else if (severity.HasValue)
+                {
+                    WriteObject(serviceRequests.Where(r => r.Severity == severity).Select(r => new PSServiceRequest(r)), true);
+                }
+                else if (status.HasValue)
+                {
+                    WriteObject(serviceRequests.Where(r => r.Status == status).Select(r => new PSServiceRequest(r)), true);
+                }
+                else
+                {
+                    WriteObject(serviceRequests.Select(r => new PSServiceRequest(r)), true);
+                }
+            }
+            finally
+            {
+                enumerator = null;
+                serviceRequests = null;
             }
         }
     }

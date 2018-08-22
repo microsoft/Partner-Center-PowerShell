@@ -34,15 +34,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="SubscribedSku"/> to an instance of <see cref="PSSubscribedSku" />. 
-        /// </summary>
-        /// <param name="sku">The sku being cloned.</param>
-        private void CloneAdditionalOperations(SubscribedSku sku)
-        {
-            ServicePlans.AddRange(sku.ServicePlans);
-        }
-
-        /// <summary>
         /// Gets or sets the number of units available for assignment. This is calculated as Total units - Consumed units.
         /// </summary>
         public int AvailableUnits { get; set; }
@@ -53,14 +44,49 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public int ActiveUnits { get; set; }
 
         /// <summary>
+        /// Gets or sets the SKU status of a product.
+        /// </summary>
+        public string CapabilityStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of consumed units.
         /// </summary>
         public int ConsumedUnits { get; set; }
 
         /// <summary>
+        /// Gets or sets the license group identifier.
+        /// </summary>
+        public LicenseGroupId LicenseGroupId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the product name.
+        /// </summary>
+        public string ProductName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of service plans of a product.
+        /// </summary>
+        public List<ServicePlan> ServicePlans { get; }
+
+        /// <summary>
+        /// Gets or sets the SKU identifier.
+        /// </summary>
+        public string SkuId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SKU partner number.
+        /// </summary>
+        public string SkuPartNumber { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of suspended units.
         /// </summary>
         public int SuspendedUnits { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target type for the product.
+        /// </summary>
+        public string TargetType { get; set; }
 
         /// <summary>
         /// Gets or sets the total units, which is sum of active and warning units.
@@ -73,19 +99,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public int WarningUnits { get; set; }
 
         /// <summary>
-        /// Gets or sets the products.
+        /// Addtional operations to be performed when cloning an instance of <see cref="SubscribedSku"/> to an instance of <see cref="PSSubscribedSku" />. 
         /// </summary>
-        public ProductSku ProductSku { get; set; }
+        /// <param name="sku">The sku being cloned.</param>
+        private void CloneAdditionalOperations(SubscribedSku sku)
+        {
+            ServicePlans.AddRange(sku.ServicePlans);
 
-        /// <summary>
-        /// Gets or sets the collection of service plans of a product.
-        /// </summary>
-        public List<ServicePlan> ServicePlans { get; }
-
-        /// <summary>
-        /// Gets or sets the SKU status of a product.
-        /// </summary>
-        public string CapabilityStatus { get; set; }
+            LicenseGroupId = sku.ProductSku.LicenseGroupId;
+            ProductName = sku.ProductSku.Name;
+            SkuId = sku.ProductSku.Id;
+            SkuPartNumber = sku.ProductSku.SkuPartNumber;
+            TargetType = sku.ProductSku.TargetType;
+        }
     }
 }
-

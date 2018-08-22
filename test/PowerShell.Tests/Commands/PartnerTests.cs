@@ -25,10 +25,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// Unit test for the Get-PartnerBillingProfile cmdlet.
         /// </summary>
         [TestMethod]
-        public void GetBillingProfileTest()
+        public void GetPartnerBillingProfileTest()
         {
             RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerBillingProfile");
-        }
+        }        
 
         /// <summary>
         /// Unit test for the Get-PartnerLegalProfile cmdlet.
@@ -37,6 +37,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         public void GetPartnerLegalProfileTest()
         {
             RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerLegalProfile");
+        }
+
+        /// <summary>
+        /// Unit test for the Get-PartnerMpnProfile cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void GetPartnerMpnProfileTest()
+        {
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerMpnProfile");
         }
 
         /// <summary>
@@ -107,6 +116,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
             partnerOperations.Setup(p => p.Profiles.LegalBusinessProfile.Update(It.IsAny<LegalBusinessProfile>())).Returns(
                 OperationFactory.Instance.GetResource<LegalBusinessProfile>("UpdatePartnerLegalProfile"));
 
+            // MPN Profile
+            partnerOperations.Setup(p => p.Profiles.MpnProfile.Get()).Returns(
+                OperationFactory.Instance.GetResource<MpnProfile>("GetMpnProfile"));
+
             // Support Profile
             partnerOperations.Setup(p => p.Profiles.SupportProfile.Get()).Returns(
                 OperationFactory.Instance.GetResource<SupportProfile>("GetPartnerSupportProfile"));
@@ -116,6 +129,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
             // Validations
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry(It.IsAny<string>()).Get()).Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-US"));
+
             return partnerOperations.Object;
         }
 

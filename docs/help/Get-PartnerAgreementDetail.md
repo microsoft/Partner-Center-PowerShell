@@ -17,7 +17,7 @@ Get-PartnerAgreementDetail [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Retrieves agreement metadata for the  Microsoft Cloud Agreement. This operation is currently supported by Partner Center in the Microsoft public cloud only.
+Gets the agreement metadata for the  Microsoft Cloud Agreement. This operation is currently supported by Partner Center in the Microsoft public cloud only.
 
 ## EXAMPLES
 

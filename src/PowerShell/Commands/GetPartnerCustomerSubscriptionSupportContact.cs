@@ -1,0 +1,49 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="GetPartnerCustomerSubscriptionSupportContact.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
+{
+    using System.Management.Automation;
+    using System.Text.RegularExpressions;
+    using Models.Subscriptions;
+    using PartnerCenter.Models.Subscriptions;
+
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionSupportContact"), OutputType(typeof(PSSupportContact))]
+    public class GetPartnerCustomerSubscriptionSupportContact : PartnerPSCmdlet
+    {
+        /// <summary>
+        /// Gets or sets the required customer identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier for the customer.", Mandatory = true)]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required subscription identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier for the subscription.", Mandatory = true)]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
+        public string SubscriptionId { get; set; }
+
+        /// <summary>
+        /// Executes the operations associated with the cmdlet.
+        /// </summary>
+        public override void ExecuteCmdlet()
+        {
+            SupportContact contact;
+
+            try
+            {
+                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Get();
+                WriteObject(new PSSupportContact(contact));
+            }
+            finally
+            {
+                contact = null;
+            }
+        }
+    }
+}
