@@ -6,10 +6,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using Common;
+    using Exceptions;
     using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.CountryValidationRules;
@@ -26,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// Initializes a new instance of the <see cref="AddressValidator" /> class.
         /// </summary>
         /// <param name="partner">Provides the ability interact with Partner Center.</param>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// <paramref name="partner"/> is null.
         /// </exception>
         public AddressValidator(IPartner partner)
@@ -48,62 +50,72 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 
             try
             {
-                validationRules = partner.CountryValidationRules.ByCountry(resource.Country).Get();
-
-                if (validationRules.IsCityRequired)
+                if (resource.Country.Equals("CN", StringComparison.InvariantCultureIgnoreCase) ||
+                    resource.Country.Equals("MX", StringComparison.InvariantCultureIgnoreCase) ||
+                    resource.Country.Equals("US", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (string.IsNullOrEmpty(resource.City))
-                    {
-                        throw new ValidationException(Resources.CityRequiredError);
-                    }
-                }
+                    validationRules = partner.CountryValidationRules.ByCountry(resource.Country).Get();
 
-                if (validationRules.IsPostalCodeRequired)
-                {
-                    if (string.IsNullOrEmpty(resource.PostalCode))
+                    if (validationRules.IsCityRequired)
                     {
-                        throw new ValidationException(Resources.PostalCoderequiredError);
+                        if (string.IsNullOrEmpty(resource.City))
+                        {
+                            throw new ValidationException(Resources.CityRequiredError);
+                        }
                     }
-                }
 
-                if (validationRules.IsStateRequired)
-                {
-                    if (string.IsNullOrEmpty(resource.State))
+                    if (validationRules.IsPostalCodeRequired)
                     {
-                        throw new ValidationException(Resources.StateRequiredError);
+                        if (string.IsNullOrEmpty(resource.PostalCode))
+                        {
+                            throw new ValidationException(Resources.PostalCoderequiredError);
+                        }
                     }
-                    else
+
+                    if (validationRules.IsStateRequired)
                     {
-                        if (!validationRules.SupportedStatesList.Contains(resource.State))
+                        if (string.IsNullOrEmpty(resource.State))
+                        {
+                            throw new ValidationException(Resources.StateRequiredError);
+                        }
+                        else
+                        {
+                            if (!validationRules.SupportedStatesList.Contains(resource.State))
+                            {
+                                throw new ValidationException(
+                                    string.Format(
+                                        CultureInfo.CurrentCulture,
+                                        Resources.InvalidStateError,
+                                        resource.State,
+                                        string.Join(",", validationRules.SupportedStatesList)));
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex) && !string.IsNullOrEmpty(resource.PhoneNumber))
+                    {
+                        if (!Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
                         {
                             throw new ValidationException(
                                 string.Format(
                                     CultureInfo.CurrentCulture,
-                                    Resources.InvalidStateError,
-                                    resource.State,
-                                    string.Join(",", validationRules.SupportedStatesList)));
+                                    Resources.InvalidPhoneFormatError,
+                                    resource.PhoneNumber));
                         }
                     }
-                }
 
-                if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex) && !string.IsNullOrEmpty(resource.PhoneNumber))
-                {
-                    if (!Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
-                    {
-                        throw new ValidationException(
-                            string.Format(
-                                CultureInfo.CurrentCulture,
-                                Resources.InvalidPhoneFormatError,
-                                resource.PhoneNumber));
-                    }
                 }
 
                 return partner.Validations.IsAddressValid(resource);
             }
-            catch (PartnerException)
+            catch (PartnerException ex)
             {
-                // TODO - Handle the parsing of the exception.
-                return false;
+                if (ex.ServiceErrorPayload != null)
+                {
+                    throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}", ex);
+                }
+
+                throw;
             }
             finally
             {
