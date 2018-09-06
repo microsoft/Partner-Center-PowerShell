@@ -214,7 +214,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -DomainDomain
+### -Domain
 The customer's domain name, such as contoso.onmicrosoft.com.
 27 characters maximum domain prefix + 16 maximum characters suffix for '.onmicrosoft.com'
 
