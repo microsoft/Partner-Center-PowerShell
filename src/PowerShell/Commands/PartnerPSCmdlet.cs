@@ -8,6 +8,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using Authentication;
+    using Exceptions;
+    using PartnerCenter.Exceptions;
     using Properties;
 
     /// <summary>
@@ -53,7 +55,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
-            ExecuteCmdlet();
+
+            try
+            {
+                ExecuteCmdlet();
+            }
+            catch (PartnerException ex)
+            {
+                if (ex.ServiceErrorPayload != null)
+                {
+                    throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
+                }
+
+                throw;               
+            }
         }
 
         /// <summary>

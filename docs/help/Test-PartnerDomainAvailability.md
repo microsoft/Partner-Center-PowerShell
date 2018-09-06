@@ -34,6 +34,7 @@ Tests if the domain contoso.onmicrosoft.com is available. Returns true if yes, f
 ### -Domain
 A string that identifies the domain to check, e.g.
 "contoso.onmicrosoft.com" .
+27 characters is maximum domain prefix + 16 maximum characters for the ".onmicrosoft.com" suffix
 
 ```yaml
 Type: String
@@ -59,5 +60,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Boolean
 
 ## NOTES
+
+27 characters is maximum domain prefix + 16 maximum characters for the ".onmicrosoft.com" suffix
 
 ## RELATED LINKS

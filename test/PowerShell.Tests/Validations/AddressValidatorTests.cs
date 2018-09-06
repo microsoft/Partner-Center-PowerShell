@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
                 {
                     AddressLine1 = "1 Microsoft Way",
                     City = "Redmond",
-                    Country = "USA",
+                    Country = "US",
                     FirstName = "John",
                     LastName = "Doe",
                     PhoneNumber = "425-55-5555",
@@ -48,7 +48,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
                     State = "Washington"
                 };
 
-                Assert.AreEqual(true, validator.IsValid(address));
+                validator.IsValid(address);
             }
             finally
             {
