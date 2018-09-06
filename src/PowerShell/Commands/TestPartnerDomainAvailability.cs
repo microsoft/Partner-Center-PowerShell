@@ -18,8 +18,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Test if the specified domain name is available.
         /// </summary>
-        [Parameter(HelpMessage = "A string that identifies the domain to check, e.g. \"contoso.onmicrosoft.com\" .", Mandatory = true, Position = 0)]
-        [ValidateNotNullOrEmpty]
+        [Parameter(HelpMessage = "A string that identifies the domain to check, e.g. \"contoso.onmicrosoft.com\" . - 27 characters maximum domain prefix + 16 maximum characters suffix for '.onmicrosoft.com', Mandatory = true, Position = 0)]
+        [ValidateLength(17, 43)]
         public string Domain { get; set; }
 
         /// <summary>

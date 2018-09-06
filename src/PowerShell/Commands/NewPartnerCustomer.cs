@@ -107,8 +107,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the domain of the customer.
         /// </summary>
-        [Parameter(HelpMessage = "The customer's domain name, such as contoso.onmicrosoft.com.", Mandatory = true)]
-        [ValidateNotNullOrEmpty]
+        [Parameter(HelpMessage = "The customer's domain name, such as contoso.onmicrosoft.com. - 27 characters maximum domain prefix + 16 maximum characters suffix for '.onmicrosoft.com'", Mandatory = true)]
+        [ValidateLength(17, 43)]
         public string Domain { get; set; }
 
         /// <summary>
