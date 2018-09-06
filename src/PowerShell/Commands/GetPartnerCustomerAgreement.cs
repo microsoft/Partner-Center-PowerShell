@@ -6,10 +6,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Agreements;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Agreements;
 
@@ -35,9 +37,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
+
                 agreements = Partner.Customers[CustomerId].Agreements.Get();
 
                 WriteObject(agreements.Items.Select(a => new PSAgreement(a)), true);
+            }
+            catch (PartnerException ex)
+            {
+                if (ex.ServiceErrorPayload != null)
+                {
+                    if (ex.ServiceErrorPayload.ErrorCode.Equals("600009", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return;
+                    }
+                }
+
+                throw;
             }
             finally
             {

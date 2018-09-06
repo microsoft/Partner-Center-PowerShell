@@ -158,6 +158,7 @@
     <Compile Include="Common\ResourceExtensions.cs" />
     <Compile Include="Common\PSPartnerException.cs" />
     <Compile Include="Common\SecureStringExtensions.cs" />
+    <Compile Include="Exceptions\PartnerPSException.cs" />
     <Compile Include="Factories\AuthenticationFactory.cs" />
     <Compile Include="Factories\ClientFactory.cs" />
     <Compile Include="Factories\IClientFactory.cs" />
