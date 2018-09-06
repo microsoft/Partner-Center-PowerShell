@@ -214,8 +214,9 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Domain
+### -DomainDomain
 The customer's domain name, such as contoso.onmicrosoft.com.
+27 characters maximum domain prefix + 16 maximum characters suffix for '.onmicrosoft.com'
 
 ```yaml
 Type: String
