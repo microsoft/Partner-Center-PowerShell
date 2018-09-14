@@ -8,7 +8,7 @@ schema: 2.0.0
 # Test-PartnerDomainAvailability
 
 ## SYNOPSIS
-Tests if the specified domain name is available for creating a new tenant
+Tests if the specified domain name is available for creating a new tenant.
 
 ## SYNTAX
 
@@ -32,9 +32,7 @@ Tests if the domain contoso.onmicrosoft.com is available. Returns true if yes, f
 ## PARAMETERS
 
 ### -Domain
-A string that identifies the domain to check, e.g.
-"contoso.onmicrosoft.com" .
-27 characters is maximum domain prefix + 16 maximum characters for the ".onmicrosoft.com" suffix
+A string that identifies the domain to check, e.g. "contoso.onmicrosoft.com". The domain prefix cannot be longer than 27 characters.
 
 ```yaml
 Type: String

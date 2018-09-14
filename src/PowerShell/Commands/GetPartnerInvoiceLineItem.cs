@@ -9,10 +9,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Models.Invoices;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
+    using PartnerCenter.PowerShell.Models.Invoices;
 
     /// <summary>
     /// Gets a list of line items for the specified invoice from Partner Center.
@@ -24,6 +24,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the billing provider.
         /// </summary>
         [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true)]
+        [ValidateSet(nameof(BillingProvider.Azure), nameof(BillingProvider.AzureDataMarket), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime))]
         public BillingProvider BillingProvider { get; set; }
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the invoice line item type.
         /// </summary>
         [Parameter(HelpMessage = "The type of invoice line items.", Mandatory = true)]
+        [ValidateSet(nameof(InvoiceLineItemType.BillingLineItems), nameof(InvoiceLineItemType.UsageLineItems))]
         public InvoiceLineItemType LineItemType { get; set; }
 
         /// <summary>

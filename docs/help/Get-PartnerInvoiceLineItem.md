@@ -38,7 +38,7 @@ The billing provide for the line items.
 Type: BillingProvider
 Parameter Sets: (All)
 Aliases:
-Accepted values: None, Office, Azure, AzureDataMarket, OneTime
+Accepted values: Azure, AzureDataMarket, Office, OneTime
 
 Required: True
 Position: Named
@@ -69,7 +69,7 @@ The type of invoice line items.
 Type: InvoiceLineItemType
 Parameter Sets: (All)
 Aliases:
-Accepted values: None, UsageLineItems, BillingLineItems
+Accepted values: BillingLineItems, UsageLineItems
 
 Required: True
 Position: Named

@@ -15,9 +15,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class TestPartnerDomainAvailability : PartnerPSCmdlet
     {
         /// <summary>
-        /// Test if the specified domain name is available.
+        /// The domain name to be checked.
         /// </summary>
-        [Parameter(HelpMessage = "A string that identifies the domain to check, e.g. \"contoso.onmicrosoft.com\" . - 27 characters maximum domain prefix + 16 maximum characters suffix for '.onmicrosoft.com'", Mandatory = true, Position = 0)]
+        [Parameter(HelpMessage = "A string that identifies the domain to check, e.g. \"contoso.onmicrosoft.com\". There is a 27 characters maximum for the domain prefix.'", Mandatory = true, Position = 0)]
         [ValidateNotNullOrEmpty]
         [ValidateLength(17, 43)]
         public string Domain { get; set; }

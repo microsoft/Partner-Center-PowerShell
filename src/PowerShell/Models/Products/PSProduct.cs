@@ -38,9 +38,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
         /// Gets or sets the id.
         /// </summary>
         public string ProductId { get; set; }
-        //
-        // Summary:
-        //     Gets or sets the product type.
+
+        /// <summary>
+        /// Gets or sets the product type.
+        /// </summary>
         public ItemType ProductType { get; set; }
 
         /// <summary>
