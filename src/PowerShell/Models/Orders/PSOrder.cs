@@ -32,6 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// <param name="order">The base order for this instance.</param>
         public PSOrder(Order order)
         {
+            LineItems = new List<PSOrderLineItem>();
             this.CopyFrom(order, CloneAdditionalOperations);
         }
 
