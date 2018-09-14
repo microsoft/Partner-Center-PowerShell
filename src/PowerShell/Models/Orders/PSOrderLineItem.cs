@@ -30,6 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// <param name="orderLineItem">The base order line item for this instance.</param>
         public PSOrderLineItem(OrderLineItem orderLineItem)
         {
+            ProvisioningContext = new Hashtable();
             this.CopyFrom(orderLineItem, CloneAdditionalOperations);
         }
 
