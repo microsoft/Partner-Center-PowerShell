@@ -33,14 +33,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the end date (in UTC) of the usages to filter.
         /// </summary>
         [Parameter(HelpMessage = "The end date (in UTC) of the usages to filter.", Mandatory = false)]
-        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the resource usage time granularity. Can either be daily or hourly. The default value is daily.
         /// </summary>
         [Parameter(HelpMessage = "The resource usage time granularity. Can either be daily or hourly. The default value is daily", Mandatory = false)]
-        [ValidateNotNull]
         public AzureUtilizationGranularity? Granularity { get; set; }
 
         /// <summary>
