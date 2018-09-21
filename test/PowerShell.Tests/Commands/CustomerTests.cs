@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
+    using System;
     using System.Collections.Generic;
     using Authentication;
     using Enumerators;
@@ -24,6 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Subscriptions;
     using PartnerCenter.Models.Users;
+    using PartnerCenter.Models.Utilizations;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -57,6 +59,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         public void GetPartnerCustomerSubscriptionTest()
         {
             RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerCustomerSubscription");
+        }
+
+        /// <summary>
+        /// Unit test for the Get-PartnerCustomerSubscriptionUtilization cmdlet.
+        /// </summary>
+        [TestMethod]
+        public void GetPartnerCustomerSubscriptionUtilizationTest()
+        {
+            RunPowerShellTest(CreatePartnerOperations, "Test-GetPartnerCustomerSubscriptionUtilization");
         }
 
         /// <summary>
@@ -347,6 +358,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
             // Enumerator Operations
             partnerOperations.Setup(p => p.Enumerators.Customers.Create(It.IsAny<SeekBasedResourceCollection<Customer>>()))
                 .Returns(new ResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>>(OperationFactory.Instance.GetCustomers()));
+            partnerOperations.Setup(p => p.Enumerators.Utilization.Azure.Create(It.IsAny<SeekBasedResourceCollection<AzureUtilizationRecord>>()))
+                .Returns(new ResourceCollectionEnumerator<ResourceCollection<AzureUtilizationRecord>>(
+                    OperationFactory.Instance.GetResource<ResourceCollection<AzureUtilizationRecord>>("GetUtilizationRecords")));
 
             // License Operations
             List<LicenseGroupId> licenseGroupIds = new List<LicenseGroupId>() { LicenseGroupId.Group1 };
@@ -405,6 +419,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
                 Returns(OperationFactory.Instance.GetResource<CustomerUser>("GetCustomerUserById"));
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Users[It.IsAny<string>()].LicenseUpdates.Create(It.IsAny<LicenseUpdate>())).Returns(
                 OperationFactory.Instance.GetResource<LicenseUpdate>("UpdateUserLicense"));
+
+            // Utilization Operations 
+            partnerOperations.Setup(p => p.Customers.ById(It.IsAny<string>()).Subscriptions.ById(It.IsAny<string>())
+                .Utilization.Azure.Query(
+                    It.IsAny<DateTimeOffset>(),
+                    It.IsAny<DateTimeOffset>(),
+                    It.IsAny<AzureUtilizationGranularity>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<int>())).Returns(
+                        OperationFactory.Instance.GetResource<ResourceCollection<AzureUtilizationRecord>>("GetUtilizationRecords"));
+            partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Subscriptions[It.IsAny<string>()]
+                .Utilization.Azure.Query(
+                    It.IsAny<DateTimeOffset>(),
+                    It.IsAny<DateTimeOffset>(),
+                    It.IsAny<AzureUtilizationGranularity>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<int>())).Returns(
+                        OperationFactory.Instance.GetResource<ResourceCollection<AzureUtilizationRecord>>("GetUtilizationRecords"));
+
+
 
             // Validation Operations
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);

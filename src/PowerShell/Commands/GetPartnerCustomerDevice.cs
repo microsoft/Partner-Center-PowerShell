@@ -22,8 +22,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the required customer identifier.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         [Parameter(Mandatory = true, Position =0, HelpMessage = "Identifier for the customer.")]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled)]
         public string CustomerId { get; set; }
@@ -31,8 +29,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the batch identifier.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
         [Parameter(Mandatory = true, HelpMessage = "Identifier for the device batch.")]
         [ValidateNotNullOrEmpty]
         public string BatchId { get; set; }

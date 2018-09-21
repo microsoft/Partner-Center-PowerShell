@@ -55,6 +55,18 @@ function Test-GetPartnerCustomerSubscription
 
 <#
 .SYNOPSIS
+Tests to be performed using the Get-PartnerCustomerSubscriptionUtilization cmdlet.
+#>
+function Test-GetPartnerCustomerSubscriptionUtilization
+{
+    $usage = Get-PartnerCustomerSubscriptionUtilization -CustomerId $ContosoCustomerId -SubscriptionId ab7e2384-eeee-489a-a14f-1eb41ddd261d -StartDate (Get-Date).AddDays(-2).ToUniversalTime() -EndDate (Get-Date).ToUniversalTime() -Granularity Daily -ShowDetails
+
+    Assert-NotNull $usage
+    Assert-NotNullOrEmpty $usage[0].Name
+}
+
+<#
+.SYNOPSIS
 Tests to be performed using the New-PartnerCustomer cmdlet.
 #>
 function Test-NewPartnerCustomer
