@@ -29,7 +29,15 @@ Gets the utilization of a customer's Azure subscription with a daily or hourly g
 PS C:\> Get-PartnerCustomerSubscriptionUtilization -CustomerId <Customer ID> -SubscriptionId <Subscription ID> -StartDate (Get-Date).AddDays(-2).ToUniversalTime() -Granularity Hourly -ShowDetails
 ```
 
-Gets a customer's Azure utilization for a specific subscription from a start date (specified in UTC) with an hourly granularity.
+Gets a customer's Azure utilization for a specific subscription from a start date (specified in UTC) with a hourly granularity.
+
+### Example 2
+
+```powershell
+PS C:\> Get-PartnerCustomerSubscriptionUtilization -CustomerId <Customer ID> -SubscriptionId <Subscription ID> -StartDate (Get-Date).AddDays(-2).ToUniversalTime() -EndDate (Get-Date).ToUniversalTime() -Granularity Daily -ShowDetails
+```
+
+Gets a customer's Azure utilization for a specific subscription from a start date (specified in UTC) with a daily granularity.
 
 ## PARAMETERS
 
