@@ -74,5 +74,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-<https://msdn.microsoft.com/en-us/library/partnercenter/mt774567.aspx>

@@ -258,5 +258,3 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
-
-Partner Center SDK reference for updating the partner billing profile: <https://docs.microsoft.com/en-us/partner-center/develop/update-partner-billing-profile>

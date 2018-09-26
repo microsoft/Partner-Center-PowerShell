@@ -68,6 +68,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the postal code of the billing address.
         /// </summary>
+        [Parameter(HelpMessage = "The phone number of the customer's billing address.", Mandatory = false, ParameterSetName = "Customer")]
+        [Parameter(HelpMessage = "The phone number of the customer's billing address.", Mandatory = false, ParameterSetName = "CustomerObject")]
+        [ValidateNotNullOrEmpty]
+        public string BillingAddressPhoneNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the postal code of the billing address.
+        /// </summary>
         [Parameter(HelpMessage = "The postal code of the customer's billing address.", Mandatory = false, ParameterSetName = "Customer")]
         [Parameter(HelpMessage = "The postal code of the customer's billing address.", Mandatory = false, ParameterSetName = "CustomerObject")]
         [ValidateNotNullOrEmpty]
@@ -126,14 +134,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     customer = Partner.Customers[customerId].Get();
 
-                    customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(Name, customer.BillingProfile.DefaultAddress.AddressLine1);
-                    customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(Name, customer.BillingProfile.DefaultAddress.AddressLine2);
-                    customer.BillingProfile.DefaultAddress.City = UpdateValue(Name, customer.BillingProfile.DefaultAddress.City);
-                    customer.BillingProfile.DefaultAddress.Country = UpdateValue(Name, customer.BillingProfile.DefaultAddress.Country);
-                    customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(Name, customer.BillingProfile.DefaultAddress.PhoneNumber);
-                    customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(Name, customer.BillingProfile.DefaultAddress.PostalCode);
-                    customer.BillingProfile.DefaultAddress.Region = UpdateValue(Name, customer.BillingProfile.DefaultAddress.Region);
-                    customer.BillingProfile.DefaultAddress.State = UpdateValue(Name, customer.BillingProfile.DefaultAddress.State);
+                    customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
+                    customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
+                    customer.BillingProfile.DefaultAddress.City = UpdateValue(BillingAddressCity, customer.BillingProfile.DefaultAddress.City);
+                    customer.BillingProfile.DefaultAddress.Country = UpdateValue(BillingAddressCountry, customer.BillingProfile.DefaultAddress.Country);
+                    customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(BillingAddressPhoneNumber, customer.BillingProfile.DefaultAddress.PhoneNumber);
+                    customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(BillingAddressPostalCode, customer.BillingProfile.DefaultAddress.PostalCode);
+                    customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
+                    customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
                     customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
 
                     validator = new AddressValidator(Partner);
