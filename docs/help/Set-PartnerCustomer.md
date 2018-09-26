@@ -15,17 +15,17 @@ Updates a customer's billing profile, including the address associated with the 
 ### Customer (Default)
 ```
 Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
- [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPostalCode <String>]
- [-BillingAddressRegion <String>] [-BillingAddressState <String>] -CustomerId <String> [-Name <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
+ [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
+ -CustomerId <String> [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
 ```
 Set-PartnerCustomer -InputObject <PSCustomer> [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
- [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPostalCode <String>]
- [-BillingAddressRegion <String>] [-BillingAddressState <String>] [-Name <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
+ [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
+ [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -97,6 +97,21 @@ Accept wildcard characters: False
 
 ### -BillingAddressLine2
 The second line of the customer's billing address.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BillingAddressPhoneNumber
+The phone number of the customer's billing address.
 
 ```yaml
 Type: String
