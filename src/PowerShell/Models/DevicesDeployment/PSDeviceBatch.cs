@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
     using PartnerCenter.Models.DevicesDeployment;
 
     /// <summary>
-    /// Represents a customer device.
+    /// Represents a customer's device batch.
     /// </summary>
     public sealed class PSDeviceBatch
     {

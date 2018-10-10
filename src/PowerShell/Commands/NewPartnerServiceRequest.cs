@@ -10,9 +10,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
     using Models.ServiceRequests;
     using PartnerCenter.Models.ServiceRequests;
+    using Profile;
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
@@ -64,7 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 if (ShouldProcess(Resources.NewPartnerServiceRequestWhatIf))
                 {
-                    agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerProfile.Instance.Context.Locale : AgentLocale;
+                    agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
 
                     if (!IsValidCulture(agentLocale))
                     {
@@ -93,14 +93,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private static bool IsValidCulture(string locale)
         {
             CultureInfo[] cultures;
-            CultureInfo culture; 
+            CultureInfo culture;
 
             try
             {
                 cultures = CultureInfo.GetCultures(CultureTypes.UserCustomCulture);
                 culture = cultures.Where(x => x.Name.Equals(locale, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-                return culture != null; 
+                return culture != null;
             }
             finally
             {

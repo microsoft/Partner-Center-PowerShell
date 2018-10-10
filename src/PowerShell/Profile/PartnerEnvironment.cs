@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
+namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     /// <summary>
-    /// A record of metadata necessary to manage assets in a specific azure cloud, including necessary endpoints,
+    /// A record of metadata necessary to manage assets in a specific cloud, including necessary endpoints,
     /// location of service-specific endpoints, and information for bootstrapping authentication
     /// </summary>
     [Serializable]
@@ -38,11 +38,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         public static IDictionary<EnvironmentName, PartnerEnvironment> PublicEnvironments { get; } = InitializeEnvironments();
 
         /// <summary>
-        /// Gets or sets the name of the tenant in this environment.
-        /// </summary>
-        public string Tenant { get; set; }
-
-        /// <summary>
         /// Initializes a list of known environments.
         /// </summary>
         /// <returns>A dictionary containing the known environments.</returns>
@@ -55,7 +50,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
                     ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
-                    Tenant = "Common"
                 },
 
                 [EnvironmentName.ChinaCloud] = new PartnerEnvironment
@@ -63,7 +57,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
                     ActiveDirectoryAuthority = EnvironmentConstants.ChinaActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.ChinaGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
-                    Tenant = "Common"
                 },
 
                 [EnvironmentName.USGovernment] = new PartnerEnvironment
@@ -71,7 +64,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
                     ActiveDirectoryAuthority = EnvironmentConstants.USGovernmentActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.USGovernmentGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
-                    Tenant = "Common"
                 },
 
                 [EnvironmentName.GermanCloud] = new PartnerEnvironment
@@ -79,7 +71,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
                     ActiveDirectoryAuthority = EnvironmentConstants.GermanActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.GermanGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
-                    Tenant = "Common"
                 }
             };
         }

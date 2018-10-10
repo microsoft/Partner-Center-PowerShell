@@ -17,7 +17,7 @@ Get-PartnerLegalProfile [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The Get-PartnerLegalProfile cmdlet gets the partner legal business profile from Partner Center.
+Gets the partner legal business profile from Partner Center.
 
 ## EXAMPLES
 

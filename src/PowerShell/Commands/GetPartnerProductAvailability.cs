@@ -8,12 +8,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
     using Exceptions;
     using Models.Products;
     using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
+    using Profile;
 
     /// <summary>
     /// Get a product, or a list products, from Partner Center.
@@ -60,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerProfile.Instance.Context.CountryCode : CountryCode;
+            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
             if (string.IsNullOrEmpty(AvailabilityId))
             {

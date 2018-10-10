@@ -6,10 +6,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using Authentication;
     using Common;
-    using Extensions;
     using IdentityModel.Clients.ActiveDirectory;
+    using Profile;
 
     /// <summary>
     /// Factory that provides initialized clients used to interact with online services.
@@ -24,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <exception cref="System.ArgumentNullException">
         /// <paramref name="context" /> is null.
         /// </exception>
-        public virtual IPartner CreatePartnerOperations(PartnerContext context)
+        public virtual IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
             AuthenticationResult authResult;
 
@@ -32,21 +31,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             try
             {
-                authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                    context,
-                    null);
+                authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
 
-                IPartnerCredentials credentials = PartnerCredentials.Instance.GenerateByUserCredentials(
-                    context.ApplicationId,
-                    new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn));
-
-                PartnerService.Instance.ApplicationName = "Partner Center PowerShell (Preview)";
-
-                return PartnerService.Instance.CreatePartnerOperations(credentials);
+                return PartnerService.Instance.CreatePartnerOperations(new PowerShellCredentials(authResult));
             }
             finally
             {
-                authResult = null;
+                authResult = null; 
             }
         }
     }

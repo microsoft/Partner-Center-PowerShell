@@ -7,12 +7,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
     using System.Management.Automation;
-    using Authentication;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.CountryValidationRules;
     using PartnerCenter.Models.Partners;
     using PartnerCenter.PowerShell.Tests.Factories;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -99,9 +99,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations(PartnerContext context)
+        public IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             // Billing Profile 
             partnerOperations.Setup(p => p.Profiles.BillingProfile.Get()).Returns(GetPartnerBillingProfile());
@@ -138,9 +138,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private IPartner CreatePartnerOperationsWithInvalidAddress(PartnerContext context)
+        private IAggregatePartner CreatePartnerOperationsWithInvalidAddress(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             partnerOperations.Setup(p => p.Profiles.BillingProfile.Get()).Returns(GetPartnerBillingProfile());
             partnerOperations.Setup(p => p.Profiles.BillingProfile.Update(It.IsAny<BillingProfile>())).Returns(GetPartnerBillingProfileUpdated());

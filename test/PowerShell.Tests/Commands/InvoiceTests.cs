@@ -6,12 +6,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
-    using Authentication;
     using Enumerators;
     using Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -31,9 +31,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             // Enumerator Operations
             partnerOperations.Setup(p => p.Enumerators.Invoices.Create(It.IsAny<ResourceCollection<Invoice>>()))

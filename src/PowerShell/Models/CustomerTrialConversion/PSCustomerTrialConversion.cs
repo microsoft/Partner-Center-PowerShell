@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerTrialConversio
         public string TargetOfferId { get; set; }
 
         /// <summary>
-        /// Gets or sets the order id.
+        /// Gets or sets the order identifier.
         /// </summary>
         public string OrderId { get; set; }
 

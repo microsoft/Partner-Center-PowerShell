@@ -141,6 +141,9 @@
   <data name="CityRequiredError" xml:space="preserve">
     <value>City is a required feild. Please update the input and try again.</value>
   </data>
+  <data name="DisconnectWhatIf" xml:space="preserve">
+    <value>Disconnects the current session from Partner Center.</value>
+  </data>
   <data name="DomainExistsError" xml:space="preserve">
     <value>The domain {0} already exists. Please modify the domain value and try again.</value>
   </data>

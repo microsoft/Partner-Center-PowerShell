@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         /// <param name="summary">The base summary for the instance.</param>
         public PSCustomerUsageSummary(CustomerUsageSummary summary)
         {
-            this.CopyFrom(summary);
+            this.CopyFrom(summary, CloneAdditionalOperations);
         }
 
         /// <summary>
@@ -43,5 +43,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         /// Gets or sets the name of the customer which this usage summary applies to.
         /// </summary>
         public new string ResourceName { get; set; }
+
+        /// <summary>
+        /// Addtional operations to be performed when cloning an instance of <see cref="CustomerUsageSummary" /> to an instance of <see cref="PSCustomerUsageSummary" />. 
+        /// </summary>
+        /// <param name="customerUsageSummary">The cart being cloned.</param>
+        private void CloneAdditionalOperations(CustomerUsageSummary summary)
+        {
+            Budget = new PSSpendingBudget(summary.Budget);
+        }
     }
 }
