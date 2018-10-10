@@ -4,16 +4,25 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
+namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
-    using System;
+    using System.Management.Automation;
 
     /// <summary>
-    /// Partner and user details used by the Partner Center cmdlets.
+    /// Context information used for the execution of various tasks.
     /// </summary>
-    [Serializable]
     public class PartnerContext
     {
+        /// <summary>
+        /// Gets or sets the account identifier.
+        /// </summary>
+        public string AccountId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of account.
+        /// </summary>
+        public AccountType AccountType { get; set; }
+
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
@@ -25,28 +34,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Gets or set the envrionment.
+        /// Gets or sets the credentials.
+        /// </summary>
+        public PSCredential Credentials { get; set; }
+
+        /// <summary>
+        /// Gets the environment used for authentication.
         /// </summary>
         public EnvironmentName Environment { get; set; }
 
         /// <summary>
-        /// Gets or sets the locale of the authenicated user.
+        /// Gets or sets the locale.
         /// </summary>
         public string Locale { get; set; }
 
         /// <summary>
-        /// Gets or sets the tenant identifier.
+        /// Gets or sets the Azure AD tenant identifier.
         /// </summary>
         public string TenantId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user identifier.
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user name.
-        /// </summary>
-        public string Username { get; set; }
     }
 }

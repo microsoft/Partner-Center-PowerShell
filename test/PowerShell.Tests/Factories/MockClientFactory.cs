@@ -7,8 +7,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
 {
     using System;
-    using Authentication;
     using PowerShell.Factories;
+    using Profile;
 
     /// <summary>
     /// Factory that provides initialized clients used to mock interactions with online services.
@@ -18,12 +18,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         /// <summary>
         /// Delegate used to initialize the partner operations.
         /// </summary>
-        private readonly Func<PartnerContext, IPartner> initializeFunc;
+        private readonly Func<PartnerContext, IAggregatePartner> initializeFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MockClientFactory" /> class.
         /// </summary>
-        public MockClientFactory(Func<PartnerContext, IPartner> initializeFunc)
+        public MockClientFactory(Func<PartnerContext, IAggregatePartner> initializeFunc)
         {
             this.initializeFunc = initializeFunc;
         }
@@ -33,7 +33,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations(PartnerContext context)
+        public IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
             return initializeFunc(context);
         }

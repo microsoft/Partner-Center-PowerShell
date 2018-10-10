@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Analytics
         public string CustomerId { get; set; }
 
         /// <summary
-        /// >Gets or sets the customer name.
+        /// Gets or sets the customer name.
         /// </summary>
         public string CustomerName { get; set; }
 

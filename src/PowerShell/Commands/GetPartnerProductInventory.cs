@@ -10,12 +10,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
     using Common;
     using Exceptions;
     using Models.Products;
     using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Products;
+    using Profile;
 
     /// <summary>
     /// Get a product, or a list products, from Partner Center.
@@ -59,7 +59,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ProductId.AssertNotEmpty(nameof(ProductId));
 
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerProfile.Instance.Context.CountryCode : CountryCode;
+            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
             if (Variables == null)
                 Variables = new Hashtable();

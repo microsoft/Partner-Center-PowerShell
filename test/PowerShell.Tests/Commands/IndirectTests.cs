@@ -6,11 +6,11 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
-    using Authentication;
     using Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Relationships;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -30,9 +30,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             partnerOperations.Setup(p => p.Relationships.Get(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf)).Returns(
                 OperationFactory.Instance.GetResource<ResourceCollection<PartnerRelationship>>("GetIndirectResellers"));

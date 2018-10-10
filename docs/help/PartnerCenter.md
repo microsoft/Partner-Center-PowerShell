@@ -20,6 +20,9 @@ Adds a customer user to a specified role.
 ### [Connect-PartnerCenter](Connect-PartnerCenter.md)
 Connect to Partner Center with an authenticated account for use with cmdlet requests.
 
+### [Disconnect-PartnerCenter](Disconnect-PartnerCenter.md)
+Disconnects the current session from Partner Center.
+
 ### [Get-PartnerAgreementDetail](Get-PartnerAgreementDetail.md)
 Gets the agreement metadata for the Microsoft Cloud Agreement.
 
@@ -41,8 +44,14 @@ Gets a specific customer or a list of available customers.
 ### [Get-PartnerCustomerAgreement](Get-PartnerCustomerAgreement.md)
 Gets confirmation of customer acceptance provided previously.
 
+### [Get-PartnerCustomerBillingProfile](Get-PartnerCustomerBillingProfile.md)
+Gets the customer's billing profile.
+
 ### [Get-PartnerCustomerCart](Get-PartnerCustomerCart.md)
 Gets a specific cart for the specified partner.
+
+### [Get-PartnerCustomerCompanyProfile](Get-PartnerCustomerCompanyProfile.md)
+Gets the customer's company profile.
 
 ### [Get-PartnerCustomerConfigurationPolicy](Get-PartnerCustomerConfigurationPolicy.md)
 Gets a list of all of a customer's policies.
@@ -138,7 +147,7 @@ Gets aggregated data on licenses deployment
 Gets aggregated data on licenses deployment
 
 ### [Get-PartnerMpnProfile](Get-PartnerMpnProfile.md)
-{{Fill in the Synopsis}}
+Gets the partner MPN from Partner Center.
 
 ### [Get-PartnerOffer](Get-PartnerOffer.md)
 Gets a specific offer or a list of available offers from Partner Center.

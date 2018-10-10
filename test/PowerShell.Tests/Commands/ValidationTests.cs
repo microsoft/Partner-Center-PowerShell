@@ -6,11 +6,11 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
-    using Authentication;
     using Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.CountryValidationRules;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -33,9 +33,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             // Country Valiation Operations
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("US").Get())

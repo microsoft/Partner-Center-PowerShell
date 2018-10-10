@@ -10,10 +10,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Customers;
+    using Profile;
     using Properties;
     using Validations;
 
@@ -149,8 +149,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                                 Domain));
                     }
 
-                    country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerProfile.Instance.Context.CountryCode : BillingAddressCountry;
-                    culture = (string.IsNullOrEmpty(Culture)) ? PartnerProfile.Instance.Context.Locale : Culture;
+                    country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
+                    culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
 
                     if (string.IsNullOrEmpty(BillingAddressRegion))
                     {

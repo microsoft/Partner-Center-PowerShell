@@ -7,10 +7,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerSubscriptionUpgrades
 {
     using Common;
-    using Microsoft.Store.PartnerCenter.Models.Offers;
-    using Microsoft.Store.PartnerCenter.Models.Subscriptions;
+    using PartnerCenter.Models.Offers;
+    using PartnerCenter.Models.Subscriptions;
 
-    /// <summary>Holds customer trial conversion offers.</summary>
+    /// <summary>
+    /// Holds customer trial conversion offers.
+    /// </summary>
     public sealed class PSCustomerSubscriptionUpgrades
     {
         /// <summary>
@@ -22,34 +24,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerSubscriptionUp
         /// <summary>
         /// Initializes a new instance of the <see cref="PSCustomerSubscriptionUpgrades" /> class.
         /// </summary>
-        /// <param name="Upgrade">The base conversion for this instance.</param>
-        
+        /// <param name="upgrade">The base conversion for this instance.</param>
+
         public PSCustomerSubscriptionUpgrades(Upgrade upgrade)
         {
             this.CopyFrom(upgrade);
         }
 
-        //
-        // Summary:
-        //     Gets or sets the offer to upgrade to.
-        public Offer TargetOffer { get; set; }
-
-        //
-        // Summary:
-        //     Gets or sets the type of upgrade.
-        public UpgradeType UpgradeType { get; set; }
-
-        //
-        // Summary:
-        //     Gets or sets a value indicating whether the upgrade can be performed.
+        /// <summary>
+        /// Gets or sets a value indicating whether the upgrade can be performed.
+        /// </summary>
         public bool IsEligible { get; set; }
 
-        //
-        // Summary:
-        //     Gets or sets the quantity to be purchased. Defaults to the source subscription
-        //     quantity.
+        /// <summary>
+        /// Gets or sets the quantity to be purchased. Defaults to the source subscription quantity.
+        /// </summary>
         public int Quantity { get; set; }
 
-    }
+        /// <summary>
+        /// Gets or sets the target offer.
+        /// </summary>
+        public Offer TargetOffer { get; set; }
 
+        /// <summary>
+        /// Gets or sets the type of upgrade.
+        /// </summary>
+        public UpgradeType UpgradeType { get; set; }
+    }
 }
