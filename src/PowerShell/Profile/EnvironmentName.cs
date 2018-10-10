@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
+namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
     /// <summary>
     /// Collection of names for the available instances of Microsoft Partner Center.

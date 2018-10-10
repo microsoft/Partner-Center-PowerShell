@@ -7,11 +7,11 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
     using System.Collections.Generic;
-    using Authentication;
     using Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -43,9 +43,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             partnerOperations.Setup(p => p.Offers.ByCountry("US").ById("031C9E47-4802-4248-838E-778FB1D2CC05").Get()).Returns(GetOffer());
             partnerOperations.Setup(p => p.Offers.ByCountry("US").Get()).Returns(GetOffers());

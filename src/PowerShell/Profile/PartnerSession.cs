@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
+namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
     using System;
     using Factories;
 
     /// <summary>
-    /// Represents the current partner session.
+    /// Contains session information for the execution of the commands.
     /// </summary>
     public class PartnerSession
     {
@@ -18,6 +18,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// Singleton instance of the <see cref="PartnerSession" /> class.
         /// </summary>
         private static readonly Lazy<PartnerSession> partnerSession = new Lazy<PartnerSession>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartnerSession" /> class.
+        /// </summary>
+        public PartnerSession()
+        { }
+
 
         /// <summary>
         /// Gets or sets an instance of the authentication factory.
@@ -28,6 +35,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// Gets or sets an instance of the client facotry.
         /// </summary>
         public IClientFactory ClientFactory { get; set; }
+
+        /// <summary>
+        /// Gets the operating context information.
+        /// </summary>
+        public PartnerContext Context { get; set; }
 
         /// <summary>
         /// Gets an instance of the <see cref="PartnerSession" /> class.

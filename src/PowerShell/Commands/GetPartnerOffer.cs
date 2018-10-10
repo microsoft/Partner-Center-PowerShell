@@ -9,11 +9,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
     using Common;
     using Models.Offers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
+    using Profile;
 
     /// <summary>
     /// Get an offer, or a list offers, from Partner Center.
@@ -56,7 +56,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerProfile.Instance.Context.CountryCode : CountryCode;
+            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
             if (!string.IsNullOrEmpty(Category) && string.IsNullOrEmpty(OfferId))
             {
@@ -159,8 +159,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             WriteObject(
                 offers
                     .Where(o => o.IsAddOn == isAddOn && o.IsTrial == isTrial)
-                    .Select(o => new PSOffer(o))
-                    .ToList());
+                    .Select(o => new PSOffer(o)), true);
         }
     }
 }

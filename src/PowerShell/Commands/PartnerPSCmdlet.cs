@@ -7,9 +7,9 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Authentication;
     using Exceptions;
     using PartnerCenter.Exceptions;
+    using Profile;
     using Properties;
 
     /// <summary>
@@ -27,12 +27,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             get
             {
-                if (PartnerProfile.Instance.Context == null)
+                if (PartnerSession.Instance.Context == null)
                 {
                     throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
                 }
 
-                return PartnerProfile.Instance.Context;
+                return PartnerSession.Instance.Context;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
                 }
 
-                throw;               
+                throw;
             }
         }
 

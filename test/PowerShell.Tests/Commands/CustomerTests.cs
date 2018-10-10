@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
     using System;
     using System.Collections.Generic;
-    using Authentication;
     using Enumerators;
     using Factories;
     using Moq;
@@ -26,6 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
     using PartnerCenter.Models.Subscriptions;
     using PartnerCenter.Models.Users;
     using PartnerCenter.Models.Utilizations;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -282,9 +282,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             // Customer Configuration Policy
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].ConfigurationPolicies.Get()).
@@ -451,9 +451,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreateResellerPartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreateResellerPartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             // Customer Operations
             partnerOperations.Setup(p => p.Customers[It.IsAny<string>()].Patch(It.IsAny<Customer>())).Returns(

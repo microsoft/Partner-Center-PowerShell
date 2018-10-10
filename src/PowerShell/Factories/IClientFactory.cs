@@ -6,7 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using Authentication;
+    using Profile;
 
     /// <summary>
     /// Represents a factory that provides initialized clients used to interact with online services.
@@ -18,7 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        IPartner CreatePartnerOperations(PartnerContext context);
-
+        IAggregatePartner CreatePartnerOperations(PartnerContext context);
     }
 }

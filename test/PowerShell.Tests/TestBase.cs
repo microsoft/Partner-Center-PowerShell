@@ -11,8 +11,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
     using System.IO;
     using System.Management.Automation;
     using System.Reflection;
-    using Authentication;
     using Factories;
+    using Profile;
 
     /// <summary>
     /// Base class for Microsoft Partner Center PowerShell cmdlets unit tests.
@@ -26,13 +26,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
         {
             Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             PartnerSession.Instance.AuthenticationFactory = new MockAuthenticationFactory();
-            PartnerProfile.Instance.Context = new PartnerContext
+
+            PartnerSession.Instance.Context = new PartnerContext
             {
+                AccountId = "bill@contoso.com",
+                ApplicationId = "427fa6c7-fcf5-473e-8b28-c6d07b842c9e",
                 CountryCode = "US",
                 Environment = EnvironmentName.GlobalCloud,
                 Locale = "en-US",
-                TenantId = "0e47c304-9333-4e49-84de-9cb7868b63bc",
-                Username = "bill@contoso.com"
+                TenantId = "0e47c304-9333-4e49-84de-9cb7868b63bc"
             };
         }
 
@@ -41,7 +43,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
         /// </summary>
         /// <param name="initializeFunc">Function used to initialize the partner operations.</param>
         /// <param name="functions">An array of functions to be invoked.</param>
-        protected Collection<PSObject> RunPowerShellTest(Func<PartnerContext, IPartner> initializeFunc, params string[] functions)
+        protected Collection<PSObject> RunPowerShellTest(Func<PartnerContext, IAggregatePartner> initializeFunc, params string[] functions)
         {
             Collection<PSObject> output = null;
 

@@ -133,6 +133,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disconnects the current session from Partner Center..
+        /// </summary>
+        internal static string DisconnectWhatIf {
+            get {
+                return ResourceManager.GetString("DisconnectWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The domain {0} already exists. Please modify the domain value and try again..
         /// </summary>
         internal static string DomainExistsError {

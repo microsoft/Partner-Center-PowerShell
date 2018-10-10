@@ -9,9 +9,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Globalization;
     using System.Management.Automation;
-    using Authentication;
     using Models.ServiceRequests;
     using PartnerCenter.Models.ServiceRequests;
+    using Profile;
     using Properties;
 
     [Cmdlet(VerbsCommon.Set, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
@@ -55,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         request.NewNote = new ServiceRequestNote
                         {
-                            CreatedByName = PartnerProfile.Instance.Context.Username,
+                            CreatedByName = PartnerSession.Instance.Context.AccountId,
                             CreatedDate = DateTime.UtcNow,
                             Text = NewNote
                         };

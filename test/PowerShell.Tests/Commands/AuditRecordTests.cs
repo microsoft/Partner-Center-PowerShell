@@ -8,12 +8,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
     using System;
     using System.Management.Automation;
-    using Authentication;
     using Enumerators;
     using Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Auditing;
+    using Profile;
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -46,9 +46,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        private static IPartner CreatePartnerOperations(PartnerContext context)
+        private static IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            Mock<IPartner> partnerOperations = new Mock<IPartner>();
+            Mock<IAggregatePartner> partnerOperations = new Mock<IAggregatePartner>();
 
             partnerOperations.Setup(p => p.AuditRecords.Query(It.IsAny<DateTime>(), null, null)).Returns(
                 OperationFactory.Instance.GetResource<SeekBasedResourceCollection<AuditRecord>>("GetAuditRecord"));

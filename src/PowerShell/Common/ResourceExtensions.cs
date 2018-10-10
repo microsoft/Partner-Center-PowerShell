@@ -139,7 +139,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
                 {
                     if (!typeof(ICollection).IsAssignableFrom(prop.PropertyType))
                     {
-                        prop.SetValue(output, input.GetType().GetRuntimeProperty(prop.Name).GetValue(input));
+                        if (prop.PropertyType.IsAssignableFrom(input.GetType().GetRuntimeProperty(prop.Name).PropertyType))
+                        {
+                            prop.SetValue(output, input.GetType().GetRuntimeProperty(prop.Name).GetValue(input));
+                        }
                     }
                 }
             }
