@@ -59,6 +59,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 
-27 characters is maximum domain prefix + 16 maximum characters for the ".onmicrosoft.com" suffix
-
 ## RELATED LINKS
