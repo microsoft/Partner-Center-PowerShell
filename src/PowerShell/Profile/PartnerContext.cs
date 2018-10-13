@@ -52,5 +52,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         /// Gets or sets the Azure AD tenant identifier.
         /// </summary>
         public string TenantId { get; set; }
+
+        /// <summary>
+        /// Gets or sets  the username.
+        /// </summary>
+        public string Username { get; set; }
     }
 }

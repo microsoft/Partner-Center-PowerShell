@@ -9,8 +9,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Microsoft.Store.PartnerCenter.Models;
     using Models.ServiceCosts;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceCosts;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCosts"), OutputType(typeof(PSServiceCostLineItem))]

@@ -62,11 +62,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets the date the agreement was signed.
+        /// </summary>
+        [Parameter(HelpMessage = "The date the agreement was signed.", Mandatory = false)]
+        public DateTime DateAgreed { get; set; }
+
+        /// <summary>
         /// Gets or sets the required template identifier.
         /// </summary>
         [Parameter(HelpMessage = "The identifier for the template.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string TemplateId { get; set; }
+
+        [Parameter(HelpMessage = "The identifier of the user in the partner tenant who is providing confirmation on behalf of the customer.", Mandatory = false)]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+        public string UserId { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
@@ -74,6 +84,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             Agreement agreement;
+            DateTime dateAgreed = DateAgreed == null ? DateTime.UtcNow : DateAgreed;
+            string userId = string.IsNullOrEmpty(UserId) ? Context.AccountId : UserId;
+
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new PSInvalidOperationException(Resources.NewCustomerAgreementInvalidOperationMessage);
+            }
 
             try
             {
@@ -81,7 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     agreement = new Agreement
                     {
-                        DateAgreed = DateTime.UtcNow,
+                        DateAgreed = dateAgreed,
                         PrimaryContact = new Contact
                         {
                             Email = ContactEmail,
@@ -92,7 +110,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         },
                         TemplateId = TemplateId,
                         Type = AgreementType,
-                        UserId = Context.AccountId
+                        UserId = userId
                     };
 
                     agreement = Partner.Customers[CustomerId].Agreements.Create(agreement);

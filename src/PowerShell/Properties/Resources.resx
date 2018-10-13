@@ -165,6 +165,9 @@
   <data name="NewCartWhatIf" xml:space="preserve">
     <value>Creates a new cart for the customer with the identifier of {0}.</value>
   </data>
+  <data name="NewCustomerAgreementInvalidOperationMessage" xml:space="preserve">
+    <value>It appears you are using app only authentication and you did not specify the UserId parameter. Please specify the UserId parameter and try again.</value>
+  </data>
   <data name="NewPartnerCustomerAgreementWhatIf" xml:space="preserve">
     <value>Accepts the specified agreement for the customer.</value>
   </data>
