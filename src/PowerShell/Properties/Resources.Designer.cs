@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
-    using System;
-    
-    
+namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -201,6 +201,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         internal static string NewCartWhatIf {
             get {
                 return ResourceManager.GetString("NewCartWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It appears you are using app only authentication and you did not specify the UserId parameter. Please specify the UserId parameter and try again..
+        /// </summary>
+        internal static string NewCustomerAgreementInvalidOperationMessage {
+            get {
+                return ResourceManager.GetString("NewCustomerAgreementInvalidOperationMessage", resourceCulture);
             }
         }
         

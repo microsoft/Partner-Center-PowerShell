@@ -28,9 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
         /// <param name="azureUtilizationRecord">A utilization record for an Azure subscription resource.</param>
         public PSAzureUtilizationRecord(AzureUtilizationRecord azureUtilizationRecord)
         {
-            azureUtilizationRecord.AssertNotNull(nameof(azureUtilizationRecord));
-
-            this.CopyFrom(azureUtilizationRecord);
+            this.CopyFrom(azureUtilizationRecord, CloneAdditionalOperations);
         }
 
         /// <summary>
@@ -118,5 +116,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
         /// The response is grouped by the time of consumption (when the resource was actually used VS. when was it reported to the billing system).
         /// </remarks>
         public DateTimeOffset UsageStartTime { get; set; }
+
+        /// <summary>
+        /// Addtional operations to be performed when cloning an instance of <see cref="AzureUtilizationRecord" /> to an instance of <see cref="PSAzureUtilizationRecord" />. 
+        /// </summary>
+        /// <param name="utilizationRecord">The utilization record being cloned.</param>
+        private void CloneAdditionalOperations(AzureUtilizationRecord utilizationRecord)
+        {
+            InfoFields = utilizationRecord?.InfoFields;
+
+            this.CopyFrom(utilizationRecord.InstanceData);
+            this.CopyFrom(utilizationRecord.Resource);
+        }
     }
 }

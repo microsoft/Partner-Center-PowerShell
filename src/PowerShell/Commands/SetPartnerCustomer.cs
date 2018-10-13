@@ -105,6 +105,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets the email address of the contact at the customer.
+        /// </summary>
+        [Parameter(HelpMessage = "Email address of the contact at the customer.", Mandatory = false, ParameterSetName = "Customer")]
+        [Parameter(HelpMessage = "Email address of the contact at the customer.", Mandatory = false, ParameterSetName = "CustomerObject")]
+        [ValidatePattern(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", Options = RegexOptions.IgnoreCase)]
+        public string Email { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the customer.
         /// </summary>
         [Parameter(HelpMessage = "Name of the customer.", Mandatory = false, ParameterSetName = "Customer")]
@@ -143,6 +151,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
                     customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
                     customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
+                    customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
 
                     validator = new AddressValidator(Partner);
 

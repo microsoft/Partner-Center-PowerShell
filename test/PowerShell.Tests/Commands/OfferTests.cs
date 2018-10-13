@@ -7,7 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
 {
     using System.Collections.Generic;
-    using Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories;
+    using Factories;
     using Moq;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
