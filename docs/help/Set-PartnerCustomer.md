@@ -17,7 +17,7 @@ Updates a customer's billing profile, including the address associated with the 
 Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
  [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
- -CustomerId <String> [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ -CustomerId <String> [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
@@ -25,7 +25,7 @@ Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <Strin
 Set-PartnerCustomer -InputObject <PSCustomer> [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
  [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
- [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -179,6 +179,21 @@ Parameter Sets: Customer
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Email
+Email address of the contact at the customer.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

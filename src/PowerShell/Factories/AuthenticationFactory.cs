@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using IdentityModel.Clients.ActiveDirectory;
-    using Microsoft.Store.PartnerCenter.Models.Partners;
+    using PartnerCenter.Models.Partners;
     using Profile;
 
     /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                             context.Credentials.UserName,
                             context.Credentials.Password));
 
-                    context.AccountId = context.Credentials.UserName;
+                    context.Username = context.Credentials.UserName;
                 }
                 else if (PartnerSession.Instance.Context == null && context.Credentials == null)
                 {
@@ -61,7 +61,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         PromptBehavior.Always,
                         UserIdentifier.AnyUser);
 
-                    context.AccountId = authResult.UserInfo.DisplayableId;
+                    context.AccountId = authResult.UserInfo.UniqueId;
+                    context.Username = authResult.UserInfo.DisplayableId;
                     context.TenantId = authResult.TenantId;
                 }
                 else if (PartnerSession.Instance.Context == null && context.Credentials.Password != null)
@@ -73,7 +74,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                             context.Credentials.UserName,
                             context.Credentials.Password));
 
-                    context.AccountId = authResult.UserInfo.DisplayableId;
+                    context.AccountId = authResult.UserInfo.UniqueId;
+                    context.Username = authResult.UserInfo.DisplayableId;
                     context.TenantId = authResult.TenantId;
                 }
                 else
@@ -83,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         context.ApplicationId,
                         redirectUri,
                         PromptBehavior.Never,
-                        new UserIdentifier(context.AccountId, UserIdentifierType.RequiredDisplayableId));
+                        new UserIdentifier(context.Username, UserIdentifierType.RequiredDisplayableId));
                 }
 
                 if (PartnerSession.Instance.Context == null)
@@ -106,7 +108,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             {
                 authContext = null;
                 partnerOperations = null;
-                profile = null; 
+                profile = null;
             }
         }
     }

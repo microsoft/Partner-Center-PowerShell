@@ -13,10 +13,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
     using System.Reflection;
     using Models.Carts;
     using Models.Orders;
-    using Models.Utilizations;
     using PartnerCenter.Models.Carts;
     using PartnerCenter.Models.Orders;
-    using PartnerCenter.Models.Utilizations;
 
     /// <summary>
     /// Useful extension for performing conversions.
@@ -41,26 +39,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
             {
                 CloneProperties(value, other);
                 operation.Invoke(other);
-            }
-        }
-
-        /// <summary>
-        /// Copies the values from an instance of <see cref="PSAzureUtilizationRecord" />.
-        /// </summary>
-        /// <param name="azureUtilizationRecord">An instance of the <see cref="PSAzureUtilizationRecord" /> class.</param>
-        /// <param name="other">The base Azure utilization record that should be cloned.</param>
-        public static void CopyFrom(this PSAzureUtilizationRecord azureUtilizationRecord, AzureUtilizationRecord other)
-        {
-            if (azureUtilizationRecord != null && other != null)
-            {
-                CloneProperties(azureUtilizationRecord, other);
-
-                azureUtilizationRecord.AdditionalInfo = other.InstanceData.AdditionalInfo;
-                azureUtilizationRecord.InfoFields = other.InfoFields;
-                azureUtilizationRecord.Tags = other.InstanceData.Tags;
-
-                azureUtilizationRecord.CopyFrom(other.InstanceData);
-                azureUtilizationRecord.CopyFrom(other.Resource);
             }
         }
 

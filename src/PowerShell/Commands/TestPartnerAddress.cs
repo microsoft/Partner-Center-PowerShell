@@ -7,8 +7,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Microsoft.Store.PartnerCenter.PowerShell.Validations;
     using PartnerCenter.Models;
+    using Validations;
 
     /// <summary>
     /// Verifies the specified is valid.
@@ -71,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             Address address;
-            IValidator<Address> validator; 
+            IValidator<Address> validator;
 
             try
             {
