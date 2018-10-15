@@ -66,10 +66,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException($"Error adding user {UserId} to role {RoleId}", ex);
             }
-            finally
-            {
-                user = null;
-            }
         }
 
         /// <summary>
@@ -95,10 +91,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             catch (PSPartnerException ex)
             {
                 throw new PSPartnerException("Error finding user:" + userId, ex);
-            }
-            finally
-            {
-                user = null;
             }
         }
     }

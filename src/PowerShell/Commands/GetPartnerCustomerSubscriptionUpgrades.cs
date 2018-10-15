@@ -40,15 +40,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<Upgrade> upgrades;
 
-            try
-            {
-                upgrades = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.Get();
-                WriteObject(upgrades.Items.Select(c => new PSCustomerSubscriptionUpgrades(c)), true);
-            }
-            finally
-            {
-                upgrades = null;
-            }
+            upgrades = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.Get();
+            WriteObject(upgrades.Items.Select(c => new PSCustomerSubscriptionUpgrades(c)), true);
         }
     }
 }

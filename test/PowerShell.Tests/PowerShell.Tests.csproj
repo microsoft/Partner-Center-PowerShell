@@ -143,7 +143,9 @@
     <None Include="Commands\ValidationTests.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="SessionRecords\AddCustomerUserRoleMember.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

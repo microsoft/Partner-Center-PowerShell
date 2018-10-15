@@ -85,42 +85,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             subscriptionId.AssertNotEmpty(nameof(subscriptionId));
 
-            try
-            {
-                subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].Get();
-                WriteObject(new PSSubscription(subscription));
-            }
-            finally
-            {
-                subscription = null;
-            }
+            subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].Get();
+            WriteObject(new PSSubscription(subscription));
         }
 
         private void GetSubscriptions(string customerId, string mpnId = null, string orderId = null)
         {
             ResourceCollection<Subscription> subscriptions;
 
-            try
+            if (!string.IsNullOrWhiteSpace(mpnId))
             {
-                if (!string.IsNullOrWhiteSpace(mpnId))
-                {
-                    subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).Get();
-                }
-                else if (!string.IsNullOrWhiteSpace(orderId))
-                {
-                    subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).Get();
-                }
-                else
-                {
-                    subscriptions = Partner.Customers[customerId].Subscriptions.Get();
-                }
+                subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).Get();
+            }
+            else if (!string.IsNullOrWhiteSpace(orderId))
+            {
+                subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).Get();
+            }
+            else
+            {
+                subscriptions = Partner.Customers[customerId].Subscriptions.Get();
+            }
 
-                WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
-            }
-            finally
-            {
-                subscriptions = null;
-            }
+            WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
         }
     }
 }

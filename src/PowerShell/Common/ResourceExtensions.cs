@@ -8,13 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
-    using Models.Carts;
-    using Models.Orders;
-    using PartnerCenter.Models.Carts;
-    using PartnerCenter.Models.Orders;
 
     /// <summary>
     /// Useful extension for performing conversions.
@@ -41,66 +35,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
                 operation.Invoke(other);
             }
         }
-
-        #region Orders
-
-        /// <summary>
-        /// Copies the values from an instance of <see cref="PSOrderLineItem" />.
-        /// </summary>
-        /// <param name="orderLineItem">An instance of the <see cref="PSOrderLineItem"/> class.</param>
-        /// <param name="other">The base order line item whose properties should be copied.</param>
-        public static void CopyFrom(this PSOrderLineItem orderLineItem, OrderLineItem other)
-        {
-            if (orderLineItem != null && other != null)
-            {
-                CloneProperties(orderLineItem, other);
-
-                if (other.ProvisioningContext != null)
-                {
-                    foreach (KeyValuePair<string, string> item in other.ProvisioningContext)
-                        orderLineItem.ProvisioningContext.Add(item.Key, item.Value);
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// Converts an instance of <see cref="PSCartLineItem" /> to an instance of <see cref="CartLineItem" />.
-        /// </summary>
-        /// <param name="orderLineItem">An instance the <see cref="PSCartLineItem" /> class that represents purcharse data for an offer.</param>
-        /// <returns>An instance of the <see cref="CartLineItem" /> that represents purchase data for an offer.</returns>
-        public static CartLineItem ToCartLineItem(this PSCartLineItem cartLineItem) => new CartLineItem
-        {
-            BillingCycle = cartLineItem.BillingCycle,
-            CatalogItemId = cartLineItem.CatalogItemId,
-            CurrencyCode = cartLineItem.CurrencyCode,
-            Error = cartLineItem.Error,
-            FriendlyName = cartLineItem.FriendlyName,
-            Id = cartLineItem.Id,
-            OrderGroup = cartLineItem.OrderGroup,
-            Participants = cartLineItem.Participants,
-            ProvisioningContext = cartLineItem.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value),
-            Quantity = cartLineItem.Quantity
-        };
-
-        /// <summary>
-        /// Converts an instance of <see cref="PSOrderLineItem" /> to an instance of <see cref="OrderLineItem" />.
-        /// </summary>
-        /// <param name="orderLineItem">An instance the <see cref="PSOrderLineItem" /> class that represents purcharse data for an offer.</param>
-        /// <returns>An instance of the <see cref="OrderLineItem" /> that represents purchase data for an offer.</returns>
-        public static OrderLineItem ToOrderLineItem(this PSOrderLineItem orderLineItem) => new OrderLineItem
-        {
-            FriendlyName = orderLineItem.FriendlyName,
-            LineItemNumber = orderLineItem.LineItemNumber,
-            OfferId = orderLineItem.OfferId,
-            ParentSubscriptionId = orderLineItem.ParentSubscriptionId,
-            PartnerIdOnRecord = orderLineItem.PartnerIdOnRecord,
-            ProvisioningContext = orderLineItem.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value),
-            Quantity = orderLineItem.Quantity,
-            SubscriptionId = orderLineItem.SubscriptionId
-        };
-
-        #endregion
 
         /// <summary>
         /// Clones the properties from the input to the output.

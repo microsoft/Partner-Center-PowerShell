@@ -108,45 +108,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             IValidator<Address> validator;
             LegalBusinessProfile profile;
 
-            try
+            if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
             {
-                if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
+                profile = Partner.Profiles.LegalBusinessProfile.Get();
+
+                profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
+                profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
+                profile.Address.City = UpdateValue(City, profile.Address.City);
+                profile.Address.Country = UpdateValue(Country, profile.Address.Country);
+                profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
+                profile.Address.Region = UpdateValue(Region, profile.Address.Region);
+                profile.Address.State = UpdateValue(State, profile.Address.State);
+                profile.CompanyApproverAddress = profile.Address;
+                profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
+
+                try
                 {
-                    profile = Partner.Profiles.LegalBusinessProfile.Get();
+                    validator = new AddressValidator(Partner);
 
-                    profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
-                    profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
-                    profile.Address.City = UpdateValue(City, profile.Address.City);
-                    profile.Address.Country = UpdateValue(Country, profile.Address.Country);
-                    profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
-                    profile.Address.Region = UpdateValue(Region, profile.Address.Region);
-                    profile.Address.State = UpdateValue(State, profile.Address.State);
-                    profile.CompanyApproverAddress = profile.Address;
-                    profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
-
-                    try
+                    if (!validator.IsValid(profile.Address))
                     {
-                        validator = new AddressValidator(Partner);
-
-                        if (!validator.IsValid(profile.Address))
-                        {
-                            throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
-                        }
+                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
                     }
-                    catch (PartnerException ex)
-                    {
-                        throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
-                    }
-
-                    profile = Partner.Profiles.LegalBusinessProfile.Update(profile);
-
-                    WriteObject(new PSLegalBusinessProfile(profile));
                 }
-            }
-            finally
-            {
-                profile = null;
-                validator = null;
+                catch (PartnerException ex)
+                {
+                    throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
+                }
+
+                profile = Partner.Profiles.LegalBusinessProfile.Update(profile);
+
+                WriteObject(new PSLegalBusinessProfile(profile));
             }
         }
 

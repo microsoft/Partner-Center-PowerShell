@@ -60,53 +60,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ServiceRequest request;
             string agentLocale;
 
-            try
+            if (ShouldProcess(Resources.NewPartnerServiceRequestWhatIf))
             {
-                if (ShouldProcess(Resources.NewPartnerServiceRequestWhatIf))
+                agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
+
+                if (!IsValidCulture(agentLocale))
                 {
-                    agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
-
-                    if (!IsValidCulture(agentLocale))
-                    {
-                        throw new PSInvalidOperationException(string.Format(CultureInfo.CurrentCulture, "{0} is an invalid culture.", agentLocale));
-                    }
-
-                    request = new ServiceRequest
-                    {
-                        Description = Description,
-                        Severity = Severity,
-                        SupportTopicId = SupportTopicId,
-                        Title = Title
-                    };
-
-                    request = Partner.ServiceRequests.Create(request, agentLocale);
-
-                    WriteObject(new PSServiceRequest(request));
+                    throw new PSInvalidOperationException(string.Format(CultureInfo.CurrentCulture, "{0} is an invalid culture.", agentLocale));
                 }
-            }
-            finally
-            {
-                request = null;
+
+                request = new ServiceRequest
+                {
+                    Description = Description,
+                    Severity = Severity,
+                    SupportTopicId = SupportTopicId,
+                    Title = Title
+                };
+
+                request = Partner.ServiceRequests.Create(request, agentLocale);
+
+                WriteObject(new PSServiceRequest(request));
             }
         }
 
         private static bool IsValidCulture(string locale)
         {
-            CultureInfo[] cultures;
-            CultureInfo culture;
+            CultureInfo culture = CultureInfo.GetCultures(CultureTypes.UserCustomCulture)
+                .FirstOrDefault(x => x.Name.Equals(locale, StringComparison.OrdinalIgnoreCase));
 
-            try
-            {
-                cultures = CultureInfo.GetCultures(CultureTypes.UserCustomCulture);
-                culture = cultures.Where(x => x.Name.Equals(locale, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
-                return culture != null;
-            }
-            finally
-            {
-                culture = null;
-                cultures = null;
-            }
+            return culture != null;
         }
     }
 }

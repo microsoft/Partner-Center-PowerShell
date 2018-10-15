@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="PSCustomerSubscriptionUpgrades" company="Microsoft">
+// <copyright file="PSCustomerSubscriptionUpgrades.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------

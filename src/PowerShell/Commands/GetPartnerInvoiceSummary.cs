@@ -8,9 +8,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
+    using Models.Invoices;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
-    using PartnerCenter.PowerShell.Models.Invoices;
 
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceSummary"), OutputType(typeof(PSInvoiceSummary))]
     public class GetPartnerInvoiceSummary : PartnerPSCmdlet
@@ -20,18 +20,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<InvoiceSummary> summaries;
+            ResourceCollection<InvoiceSummary> summaries = Partner.Invoices.Summaries.Get();
 
-            try
-            {
-                summaries = Partner.Invoices.Summaries.Get();
-
-                WriteObject(summaries.Items.Select(s => new PSInvoiceSummary(s)), true);
-            }
-            finally
-            {
-                summaries = null;
-            }
+            WriteObject(summaries.Items.Select(s => new PSInvoiceSummary(s)), true);
         }
     }
 }

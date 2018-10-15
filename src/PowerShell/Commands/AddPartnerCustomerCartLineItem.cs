@@ -52,28 +52,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             CartLineItem cartLineItem;
             List<CartLineItem> lineItems;
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
-                {
-                    cart = Partner.Customers[CustomerId].Carts[CartId].Get();
-                    lineItems = cart.LineItems.ToList();
+                cart = Partner.Customers[CustomerId].Carts[CartId].Get();
+                lineItems = cart.LineItems.ToList();
 
-                    cartLineItem = new CartLineItem();
-                    cartLineItem.CopyFrom(LineItem);
+                cartLineItem = new CartLineItem();
+                cartLineItem.CopyFrom(LineItem);
 
-                    lineItems.Add(cartLineItem);
+                lineItems.Add(cartLineItem);
 
-                    cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
+                cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
 
-                    WriteObject(new PSCart(cart));
-                }
-            }
-            finally
-            {
-                cart = null;
-                cartLineItem = null;
-                lineItems = null;
+                WriteObject(new PSCart(cart));
             }
         }
     }

@@ -25,16 +25,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<PartnerRelationship> resellers;
 
-            try
-            {
-                resellers = Partner.Relationships.Get(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf);
+            resellers = Partner.Relationships.Get(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf);
 
-                WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);
-            }
-            finally
-            {
-                resellers = null;
-            }
+            WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);
         }
     }
 }

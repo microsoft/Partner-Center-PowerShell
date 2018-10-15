@@ -52,8 +52,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("An error was encountered deleting policy id " + PolicyId, ex);
             }
-            finally
-            { }
         }
     }
 }

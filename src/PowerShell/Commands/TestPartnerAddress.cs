@@ -73,27 +73,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             Address address;
             IValidator<Address> validator;
 
-            try
+            address = new Address
             {
-                address = new Address
-                {
-                    AddressLine1 = AddressLine1,
-                    AddressLine2 = AddressLine2,
-                    City = City,
-                    Country = Country,
-                    PostalCode = PostalCode,
-                    Region = Region,
-                    State = State
-                };
+                AddressLine1 = AddressLine1,
+                AddressLine2 = AddressLine2,
+                City = City,
+                Country = Country,
+                PostalCode = PostalCode,
+                Region = Region,
+                State = State
+            };
 
-                validator = new AddressValidator(Partner);
+            validator = new AddressValidator(Partner);
 
-                WriteObject(validator.IsValid(address));
-            }
-            finally
-            {
-                address = null;
-            }
+            WriteObject(validator.IsValid(address));
         }
     }
 }

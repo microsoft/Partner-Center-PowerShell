@@ -6,10 +6,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Collections;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
     using PartnerCenter.Models.Orders;
     using PartnerCenter.PowerShell.Models.Orders;
 
@@ -34,24 +34,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Order newOrder;
-
-            try
+            Order newOrder = new Order
             {
-                newOrder = new Order
+                LineItems = LineItems.Select(lineItem => new OrderLineItem
                 {
-                    LineItems = LineItems.Select(o => o.ToOrderLineItem()),
-                    ReferenceCustomerId = CustomerId
-                };
+                    FriendlyName = lineItem.FriendlyName,
+                    LineItemNumber = lineItem.LineItemNumber,
+                    OfferId = lineItem.OfferId,
+                    ParentSubscriptionId = lineItem.ParentSubscriptionId,
+                    PartnerIdOnRecord = lineItem.PartnerIdOnRecord,
+                    ProvisioningContext = lineItem.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value),
+                    Quantity = lineItem.Quantity,
+                    SubscriptionId = lineItem.SubscriptionId
+                }),
+                ReferenceCustomerId = CustomerId
+            };
 
-                newOrder = Partner.Customers[CustomerId].Orders.Create(newOrder);
+            newOrder = Partner.Customers[CustomerId].Orders.Create(newOrder);
 
-                WriteObject(new PSOrder(newOrder));
-            }
-            finally
-            {
-                newOrder = null;
-            }
+            WriteObject(new PSOrder(newOrder));
         }
     }
 }

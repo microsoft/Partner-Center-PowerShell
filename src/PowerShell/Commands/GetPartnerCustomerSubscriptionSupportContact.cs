@@ -33,17 +33,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportContact contact;
-
-            try
-            {
-                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Get();
-                WriteObject(new PSSupportContact(contact));
-            }
-            finally
-            {
-                contact = null;
-            }
+            SupportContact contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Get();
+            WriteObject(new PSSupportContact(contact));
         }
     }
 }

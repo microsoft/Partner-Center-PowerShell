@@ -104,10 +104,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
             }
-            finally
-            {
-                product = null;
-            }
         }
 
         /// <summary>
@@ -136,10 +132,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             catch (PartnerException ex)
             {
                 throw new PSPartnerException("Error getting products for catalog: " + targetView, ex);
-            }
-            finally
-            {
-                products = null;
             }
         }
 
@@ -173,10 +165,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             catch (PartnerException ex)
             {
                 throw new PSPartnerException("Error getting products for segment: " + targetSegment, ex);
-            }
-            finally
-            {
-                products = null;
             }
         }
     }

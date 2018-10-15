@@ -40,24 +40,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ResourceCollection<SupportTopic> topics;
             IEnumerable<SupportTopic> results;
 
-            try
+            topics = Partner.ServiceRequests.SupportTopics.Get();
+
+            if (topics.TotalCount > 0)
             {
-                topics = Partner.ServiceRequests.SupportTopics.Get();
+                results = topics.Items;
 
-                if (topics.TotalCount > 0)
-                {
-                    results = topics.Items;
+                if (!string.IsNullOrEmpty(topicId))
+                    results = results.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == topicId);
 
-                    if (!string.IsNullOrEmpty(topicId))
-                        results = results.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == topicId);
-
-                    WriteObject(results.Select(t => new PSSupportTopic(t)), true);
-                }
-            }
-            finally
-            {
-                topics = null;
-                results = null;
+                WriteObject(results.Select(t => new PSSupportTopic(t)), true);
             }
         }
     }

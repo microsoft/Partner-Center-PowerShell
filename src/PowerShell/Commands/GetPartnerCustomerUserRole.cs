@@ -66,15 +66,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                roles = Partner.Customers[customerId].Users[userId].DirectoryRoles.Get().Items;
-                WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
-            }
-            finally
-            {
-                roles = null;
-            }
+            roles = Partner.Customers[customerId].Users[userId].DirectoryRoles.Get().Items;
+            WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
         }
 
         /// <summary>
@@ -90,15 +83,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                roles = Partner.Customers[customerId].DirectoryRoles.Get().Items;
-                WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
-            }
-            finally
-            {
-                roles = null;
-            }
+            roles = Partner.Customers[customerId].DirectoryRoles.Get().Items;
+            WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
         }
     }
 }

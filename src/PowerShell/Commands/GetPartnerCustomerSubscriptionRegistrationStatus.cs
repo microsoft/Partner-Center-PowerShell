@@ -36,18 +36,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SubscriptionRegistrationStatus status;
+            SubscriptionRegistrationStatus status = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].RegistrationStatus.Get();
 
-            try
-            {
-                status = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].RegistrationStatus.Get();
-
-                WriteObject(new PSSubscriptionRegistrationStatus(status));
-            }
-            finally
-            {
-                status = null;
-            }
+            WriteObject(new PSSubscriptionRegistrationStatus(status));
         }
     }
 }

@@ -30,16 +30,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<CustomerLicensesDeploymentInsights> insights;
 
-            try
-            {
-                insights = Partner.Customers[CustomerId].Analytics.Licenses.Deployment.Get();
+            insights = Partner.Customers[CustomerId].Analytics.Licenses.Deployment.Get();
 
-                WriteObject(insights.Items.Select(i => new PSCustomerLicensesDeploymentInsights(i)), true);
-            }
-            finally
-            {
-                insights = null;
-            }
+            WriteObject(insights.Items.Select(i => new PSCustomerLicensesDeploymentInsights(i)), true);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.ChinaActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.ChinaGraphEndpoint,
-                    PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
+                    PartnerCenterEndpoint = EnvironmentConstants.ChinaPartnerCenterEndpoint,
                 },
 
                 [EnvironmentName.USGovernment] = new PartnerEnvironment

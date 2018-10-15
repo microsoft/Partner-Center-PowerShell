@@ -6,11 +6,11 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Collections;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
     using Models.Carts;
     using PartnerCenter.Models.Carts;
     using Properties;
@@ -39,26 +39,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Cart cart;
 
-            try
+            if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewCartWhatIf, CustomerId)))
             {
-                if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewCartWhatIf, CustomerId)))
-                {
-                    return;
-                }
-
-                cart = new Cart
-                {
-                    LineItems = LineItems.Select(o => o.ToCartLineItem()),
-                };
-
-                cart = Partner.Customers[CustomerId].Carts.Create(cart);
-
-                WriteObject(new PSCart(cart));
+                return;
             }
-            finally
+
+            cart = new Cart
             {
-                cart = null;
-            }
+                LineItems = LineItems.Select(lineItem => new CartLineItem
+                {
+                    BillingCycle = lineItem.BillingCycle,
+                    CatalogItemId = lineItem.CatalogItemId,
+                    CurrencyCode = lineItem.CurrencyCode,
+                    Error = lineItem.Error,
+                    FriendlyName = lineItem.FriendlyName,
+                    Id = lineItem.Id,
+                    OrderGroup = lineItem.OrderGroup,
+                    Participants = lineItem.Participants,
+                    ProvisioningContext = lineItem.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value),
+                    Quantity = lineItem.Quantity
+                })
+            };
+
+            cart = Partner.Customers[CustomerId].Carts.Create(cart);
+
+            WriteObject(new PSCart(cart));
         }
     }
 }

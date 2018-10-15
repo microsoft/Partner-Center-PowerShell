@@ -6,14 +6,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Agreements;
-    using PartnerCenter.Exceptions;
-    using PartnerCenter.Models;
-    using PartnerCenter.Models.Agreements;
 
     /// <summary>
     /// Gets a list of agreements the customer in place.
@@ -33,31 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Agreement> agreements;
-
-            try
-            {
-
-                agreements = Partner.Customers[CustomerId].Agreements.Get();
-
-                WriteObject(agreements.Items.Select(a => new PSAgreement(a)), true);
-            }
-            catch (PartnerException ex)
-            {
-                if (ex.ServiceErrorPayload != null)
-                {
-                    if (ex.ServiceErrorPayload.ErrorCode.Equals("600009", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return;
-                    }
-                }
-
-                throw;
-            }
-            finally
-            {
-                agreements = null;
-            }
+            WriteObject(Partner.Customers[CustomerId].Agreements.Get().Items.Select(a => new PSAgreement(a)), true);
         }
     }
 }

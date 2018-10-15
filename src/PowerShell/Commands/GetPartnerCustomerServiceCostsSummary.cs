@@ -33,18 +33,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ServiceCostsSummary summary;
+            ServiceCostsSummary summary = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.Get();
 
-            try
-            {
-                summary = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.Get();
-
-                WriteObject(new PSServiceCostsSummary(summary));
-            }
-            finally
-            {
-                summary = null;
-            }
+            WriteObject(new PSServiceCostsSummary(summary));
         }
     }
 }

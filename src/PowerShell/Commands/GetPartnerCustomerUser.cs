@@ -94,23 +94,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private void GetUserById(string customerId, string userId)
         {
-            CustomerUser user;
 
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
             try
             {
-                user = Partner.Customers[customerId].Users[userId].Get();
-                WriteObject(new PSCustomerUser(user));
+                WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].Get()));
             }
             catch (PSPartnerException ex)
             {
                 throw new PSPartnerException("Error finding user:" + userId, ex);
-            }
-            finally
-            {
-                user = null;
             }
         }
 
@@ -118,7 +112,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets a list of users from Partner Center.
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private List<CustomerUser> GetUsers(string customerId)
@@ -129,26 +123,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
+            users = new List<CustomerUser>();
+
+            seekUsers = Partner.Customers[customerId].Users.Get();
+            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+            while (usersEnumerator.HasValue)
             {
-                users = new List<CustomerUser>();
-
-                seekUsers = Partner.Customers[customerId].Users.Get();
-                usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-                while (usersEnumerator.HasValue)
-                {
-                    users.AddRange(usersEnumerator.Current.Items);
-                    usersEnumerator.Next();
-                }
-
-                return users;
+                users.AddRange(usersEnumerator.Current.Items);
+                usersEnumerator.Next();
             }
-            finally
-            {
-                seekUsers = null;
-                usersEnumerator = null;
-            }
+
+            return users;
         }
 
         /// <summary>
@@ -168,26 +154,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                users = new List<CustomerUser>();
+            users = new List<CustomerUser>();
 
-                seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
-                usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-                while (usersEnumerator.HasValue)
-                {
-                    users.AddRange(usersEnumerator.Current.Items);
-                    usersEnumerator.Next();
-                }
-
-                return users;
-            }
-            finally
+            seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
+            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
+            while (usersEnumerator.HasValue)
             {
-                users = null;
-                seekUsers = null;
-                usersEnumerator = null;
+                users.AddRange(usersEnumerator.Current.Items);
+                usersEnumerator.Next();
             }
+
+            return users;
         }
 
         /// <summary>
@@ -195,7 +172,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
         /// <param name="userPrincipalName">Identifier of the user principal name.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private void GetUserByUpn(string customerId, string userPrincipalName)
@@ -207,7 +184,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<CustomerUser> gUsers = GetUsers(customerId);
             try
             {
-                CustomerUser fUser = gUsers.Where(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).First<CustomerUser>();
+                CustomerUser fUser = gUsers.First(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase));
                 WriteObject(new PSCustomerUser(fUser));
             }
             catch

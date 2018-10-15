@@ -39,31 +39,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ResourceCollection<ServiceIncidents> incidents;
             IEnumerable<ServiceIncidentDetail> results;
 
-            try
-            {
-                incidents = Partner.ServiceIncidents.Get();
+            incidents = Partner.ServiceIncidents.Get();
 
-                if (incidents.TotalCount > 0)
+            if (incidents.TotalCount > 0)
+            {
+                results = incidents.Items.SelectMany(i => i.Incidents);
+
+                if (Status.HasValue)
                 {
-                    results = incidents.Items.SelectMany(i => i.Incidents);
-
-                    if (Status.HasValue)
-                    {
-                        results = results.Where(i => i.Status == Status);
-                    }
-
-                    if (!Resolved)
-                    {
-                        results = results.Where(i => i.Resolved == false);
-                    }
-
-                    WriteObject(results, true);
+                    results = results.Where(i => i.Status == Status);
                 }
-            }
-            finally
-            {
-                incidents = null;
-                results = null;
+
+                if (!Resolved)
+                {
+                    results = results.Where(i => !i.Resolved);
+                }
+
+                WriteObject(results, true);
             }
         }
     }

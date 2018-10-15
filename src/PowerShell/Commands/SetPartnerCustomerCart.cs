@@ -51,37 +51,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             CartLineItem cartLineItem;
             List<CartLineItem> cartLineItems;
 
-            try
+            if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerCartWhatIf, CartId)))
             {
-                if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerCartWhatIf, CartId)))
-                {
-                    return;
-                }
-
-                cart = Partner.Customers[CustomerId].Carts[CartId].Get();
-
-                cartLineItems = new List<CartLineItem>();
-
-                foreach (PSCartLineItem item in LineItems)
-                {
-                    cartLineItem = new CartLineItem();
-                    cartLineItem.CopyFrom(item);
-
-                    cartLineItems.Add(cartLineItem);
-                }
-
-                cart.LineItems = cartLineItems;
-
-                cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
-
-                WriteObject(new PSCart(cart));
+                return;
             }
-            finally
+
+            cart = Partner.Customers[CustomerId].Carts[CartId].Get();
+
+            cartLineItems = new List<CartLineItem>();
+
+            foreach (PSCartLineItem item in LineItems)
             {
-                cart = null;
-                cartLineItem = null;
-                cartLineItems = null;
+                cartLineItem = new CartLineItem();
+                cartLineItem.CopyFrom(item);
+
+                cartLineItems.Add(cartLineItem);
             }
+
+            cart.LineItems = cartLineItems;
+
+            cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
+
+            WriteObject(new PSCart(cart));
+
         }
     }
 }
