@@ -42,17 +42,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<License> licenses;
+            ResourceCollection<License> licenses = Partner.Customers[CustomerId].Users[UserId].Licenses.Get(LicenseGroup?.Select(item => item).ToList());
 
-            try
-            {
-                licenses = Partner.Customers[CustomerId].Users[UserId].Licenses.Get(LicenseGroup?.Select(item => item).ToList());
-                WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
-            }
-            finally
-            {
-                licenses = null;
-            }
+            WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
         }
     }
 }

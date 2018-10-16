@@ -45,35 +45,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ServiceRequest request;
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerServiceRequestWhatIf, ServiceRequestId)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerServiceRequestWhatIf, ServiceRequestId)))
+                request = new ServiceRequest();
+
+                if (!string.IsNullOrEmpty(NewNote))
                 {
-                    request = new ServiceRequest();
-
-                    if (!string.IsNullOrEmpty(NewNote))
+                    request.NewNote = new ServiceRequestNote
                     {
-                        request.NewNote = new ServiceRequestNote
-                        {
-                            CreatedByName = PartnerSession.Instance.Context.AccountId,
-                            CreatedDate = DateTime.UtcNow,
-                            Text = NewNote
-                        };
-                    }
-
-                    if (Status.HasValue)
-                    {
-                        request.Status = Status.Value;
-                    }
-
-                    request = Partner.ServiceRequests[ServiceRequestId].Patch(request);
-
-                    WriteObject(new PSServiceRequest(request));
+                        CreatedByName = PartnerSession.Instance.Context.AccountId,
+                        CreatedDate = DateTime.UtcNow,
+                        Text = NewNote
+                    };
                 }
-            }
-            finally
-            {
-                request = null;
+
+                if (Status.HasValue)
+                {
+                    request.Status = Status.Value;
+                }
+
+                request = Partner.ServiceRequests[ServiceRequestId].Patch(request);
+
+                WriteObject(new PSServiceRequest(request));
             }
         }
     }

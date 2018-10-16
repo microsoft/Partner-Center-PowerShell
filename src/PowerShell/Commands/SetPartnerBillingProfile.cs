@@ -114,50 +114,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             BillingProfile profile;
             IValidator<Address> validator;
 
-            try
+            if (ShouldProcess("Updates the partner's billing profile"))
             {
-                if (ShouldProcess("Updates the partner's billing profile"))
+                profile = Partner.Profiles.BillingProfile.Get();
+
+                profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
+                profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
+                profile.Address.City = UpdateValue(City, profile.Address.City);
+                profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
+                profile.Address.Region = UpdateValue(Region, profile.Address.Region);
+                profile.Address.State = UpdateValue(State, profile.Address.State);
+
+                try
                 {
-                    profile = Partner.Profiles.BillingProfile.Get();
+                    validator = new AddressValidator(Partner);
 
-                    profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
-                    profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
-                    profile.Address.City = UpdateValue(City, profile.Address.City);
-                    profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
-                    profile.Address.Region = UpdateValue(Region, profile.Address.Region);
-                    profile.Address.State = UpdateValue(State, profile.Address.State);
-
-                    try
+                    if (!validator.IsValid(profile.Address))
                     {
-                        validator = new AddressValidator(Partner);
-
-                        if (!validator.IsValid(profile.Address))
-                        {
-                            throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
-                        }
+                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
                     }
-                    catch (PartnerException ex)
-                    {
-                        throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
-                    }
-
-                    profile.PrimaryContact.Email = UpdateValue(EmailAddress, profile.PrimaryContact.Email);
-                    profile.PrimaryContact.FirstName = UpdateValue(FirstName, profile.PrimaryContact.FirstName);
-                    profile.PrimaryContact.LastName = UpdateValue(LastName, profile.PrimaryContact.LastName);
-                    profile.PrimaryContact.PhoneNumber = UpdateValue(PhoneNumber, profile.PrimaryContact.PhoneNumber);
-
-                    profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
-                    profile.TaxId = UpdateValue(TaxId, profile.TaxId);
-
-                    Partner.Profiles.BillingProfile.Update(profile);
-
-                    WriteObject(new PSBillingProfile(profile));
                 }
-            }
-            finally
-            {
-                profile = null;
-                validator = null;
+                catch (PartnerException ex)
+                {
+                    throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
+                }
+
+                profile.PrimaryContact.Email = UpdateValue(EmailAddress, profile.PrimaryContact.Email);
+                profile.PrimaryContact.FirstName = UpdateValue(FirstName, profile.PrimaryContact.FirstName);
+                profile.PrimaryContact.LastName = UpdateValue(LastName, profile.PrimaryContact.LastName);
+                profile.PrimaryContact.PhoneNumber = UpdateValue(PhoneNumber, profile.PrimaryContact.PhoneNumber);
+
+                profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
+                profile.TaxId = UpdateValue(TaxId, profile.TaxId);
+
+                Partner.Profiles.BillingProfile.Update(profile);
+
+                WriteObject(new PSBillingProfile(profile));
             }
         }
 

@@ -50,52 +50,45 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<InvoiceLineItem> items;
             ResourceCollection<InvoiceLineItem> lineItems;
 
-            try
+            lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).Get();
+            enumerator = Partner.Enumerators.InvoiceLineItems.Create(lineItems);
+            items = new List<InvoiceLineItem>();
+
+            while (enumerator.HasValue)
             {
-                lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).Get();
-                enumerator = Partner.Enumerators.InvoiceLineItems.Create(lineItems);
-                items = new List<InvoiceLineItem>();
+                items.AddRange(enumerator.Current.Items);
+                enumerator.Next();
+            }
 
-                while (enumerator.HasValue)
+            if (LineItemType == InvoiceLineItemType.BillingLineItems)
+            {
+                if (BillingProvider == BillingProvider.Azure)
                 {
-                    items.AddRange(enumerator.Current.Items);
-                    enumerator.Next();
+                    WriteObject(items.Select(i => new PSUsageBasedLineItem((UsageBasedLineItem)i)), true);
                 }
-
-                if (LineItemType == InvoiceLineItemType.BillingLineItems)
+                else if (BillingProvider == BillingProvider.AzureDataMarket)
                 {
-                    if (BillingProvider == BillingProvider.Azure)
-                    {
-                        WriteObject(items.Select(i => new PSUsageBasedLineItem((UsageBasedLineItem)i)), true);
-                    }
-                    else if (BillingProvider == BillingProvider.AzureDataMarket)
-                    {
-                        WriteObject(items.Select(i => new PSAzureDataMarketLineItem((AzureDataMarketLineItem)i)), true);
-                    }
-                    else if (BillingProvider == BillingProvider.Office)
-                    {
-                        WriteObject(items.Select(i => new PSLicenseBasedLineItem((LicenseBasedLineItem)i)), true);
-                    }
-                    else if (BillingProvider == BillingProvider.OneTime)
-                    {
-                        WriteObject(items.Select(i => new PSOneTimeInvoiceLineItem((OneTimeInvoiceLineItem)i)), true);
-                    }
+                    WriteObject(items.Select(i => new PSAzureDataMarketLineItem((AzureDataMarketLineItem)i)), true);
                 }
-                else
+                else if (BillingProvider == BillingProvider.Office)
                 {
-                    if (BillingProvider == BillingProvider.Azure)
-                    {
-                        WriteObject(items.Select(i => new PSDailyUsageLineItem((DailyUsageLineItem)i)), true);
-                    }
-                    else if (BillingProvider == BillingProvider.AzureDataMarket)
-                    {
-                        WriteObject(items.Select(i => new PSAzureDataMarketDailyUsageLineItem((AzureDataMarketDailyUsageLineItem)i)), true);
-                    }
+                    WriteObject(items.Select(i => new PSLicenseBasedLineItem((LicenseBasedLineItem)i)), true);
+                }
+                else if (BillingProvider == BillingProvider.OneTime)
+                {
+                    WriteObject(items.Select(i => new PSOneTimeInvoiceLineItem((OneTimeInvoiceLineItem)i)), true);
                 }
             }
-            finally
+            else
             {
-                lineItems = null;
+                if (BillingProvider == BillingProvider.Azure)
+                {
+                    WriteObject(items.Select(i => new PSDailyUsageLineItem((DailyUsageLineItem)i)), true);
+                }
+                else if (BillingProvider == BillingProvider.AzureDataMarket)
+                {
+                    WriteObject(items.Select(i => new PSAzureDataMarketDailyUsageLineItem((AzureDataMarketDailyUsageLineItem)i)), true);
+                }
             }
         }
     }

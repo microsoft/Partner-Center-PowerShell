@@ -136,76 +136,68 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string culture;
             string region;
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
+                if (Partner.Domains.ByDomain(Domain).Exists())
                 {
-                    if (Partner.Domains.ByDomain(Domain).Exists())
-                    {
-                        throw new PSInvalidOperationException(
-                            string.Format(
-                                CultureInfo.CurrentCulture,
-                                Resources.DomainExistsError,
-                                Domain));
-                    }
-
-                    country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
-                    culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
-
-                    if (string.IsNullOrEmpty(BillingAddressRegion))
-                    {
-                        region = null;
-                    }
-                    else
-                    {
-                        region = BillingAddressRegion.Equals("US", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
-                    }
-
-                    customer = new Customer
-                    {
-                        BillingProfile = new CustomerBillingProfile
-                        {
-                            CompanyName = Name,
-                            Culture = culture,
-                            DefaultAddress = new Address
-                            {
-                                AddressLine1 = BillingAddressLine1,
-                                AddressLine2 = BillingAddressLine2,
-                                City = BillingAddressCity,
-                                Country = country,
-                                FirstName = ContactFirstName,
-                                LastName = ContactLastName,
-                                PhoneNumber = ContactPhoneNumber,
-                                PostalCode = BillingAddressPostalCode,
-                                Region = region,
-                                State = BillingAddressState
-                            },
-                            Email = ContactEmail,
-                            FirstName = ContactFirstName,
-                            Language = Language,
-                            LastName = ContactLastName
-                        },
-                        CompanyProfile = new CustomerCompanyProfile
-                        {
-                            CompanyName = Name,
-                            Domain = Domain
-                        }
-                    };
-
-                    validator = new AddressValidator(Partner);
-
-                    if (validator.IsValid(customer.BillingProfile.DefaultAddress))
-                    {
-                        customer = Partner.Customers.Create(customer);
-
-                        WriteObject(customer);
-                    }
+                    throw new PSInvalidOperationException(
+                        string.Format(
+                            CultureInfo.CurrentCulture,
+                            Resources.DomainExistsError,
+                            Domain));
                 }
-            }
-            finally
-            {
-                customer = null;
-                validator = null;
+
+                country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
+                culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
+
+                if (string.IsNullOrEmpty(BillingAddressRegion))
+                {
+                    region = null;
+                }
+                else
+                {
+                    region = BillingAddressRegion.Equals("US", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
+                }
+
+                customer = new Customer
+                {
+                    BillingProfile = new CustomerBillingProfile
+                    {
+                        CompanyName = Name,
+                        Culture = culture,
+                        DefaultAddress = new Address
+                        {
+                            AddressLine1 = BillingAddressLine1,
+                            AddressLine2 = BillingAddressLine2,
+                            City = BillingAddressCity,
+                            Country = country,
+                            FirstName = ContactFirstName,
+                            LastName = ContactLastName,
+                            PhoneNumber = ContactPhoneNumber,
+                            PostalCode = BillingAddressPostalCode,
+                            Region = region,
+                            State = BillingAddressState
+                        },
+                        Email = ContactEmail,
+                        FirstName = ContactFirstName,
+                        Language = Language,
+                        LastName = ContactLastName
+                    },
+                    CompanyProfile = new CustomerCompanyProfile
+                    {
+                        CompanyName = Name,
+                        Domain = Domain
+                    }
+                };
+
+                validator = new AddressValidator(Partner);
+
+                if (validator.IsValid(customer.BillingProfile.DefaultAddress))
+                {
+                    customer = Partner.Customers.Create(customer);
+
+                    WriteObject(customer);
+                }
             }
         }
     }

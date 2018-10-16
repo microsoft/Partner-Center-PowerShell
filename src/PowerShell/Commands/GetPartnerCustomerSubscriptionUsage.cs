@@ -37,15 +37,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<AzureResourceMonthlyUsageRecord> usageRecords;
 
-            try
-            {
-                usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.Resources.Get();
-                WriteObject(usageRecords.Items.Select(r => new PSAzureResourceMonthlyUsageRecord(r)), true);
-            }
-            finally
-            {
-                usageRecords = null;
-            }
+            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.Resources.Get();
+            WriteObject(usageRecords.Items.Select(r => new PSAzureResourceMonthlyUsageRecord(r)), true);
         }
     }
 }

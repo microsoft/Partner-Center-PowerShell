@@ -44,32 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else
             {
-                GetCustomer(CustomerId);
-            }
-        }
-
-        /// <summary>
-        /// Gets the specified customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetCustomer(string customerId)
-        {
-            Customer customer;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            try
-            {
-                customer = Partner.Customers[customerId].Get();
-
-                WriteObject(new PSCustomer(customer));
-            }
-            finally
-            {
-                customer = null;
+                WriteObject(new PSCustomer(Partner.Customers[CustomerId].Get()));
             }
         }
 
@@ -86,25 +61,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<Customer> customers;
             SeekBasedResourceCollection<Customer> seekCustomers;
 
-            try
+            customers = new List<Customer>();
+
+            seekCustomers = Partner.Customers.Get();
+            customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
+
+            while (customersEnumerator.HasValue)
             {
-                customers = new List<Customer>();
-
-                seekCustomers = Partner.Customers.Get();
-                customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
-
-                while (customersEnumerator.HasValue)
-                {
-                    customers.AddRange(customersEnumerator.Current.Items);
-                    customersEnumerator.Next();
-                }
-
-                WriteObject(customers.Select(c => new PSCustomer(c)), true);
+                customers.AddRange(customersEnumerator.Current.Items);
+                customersEnumerator.Next();
             }
-            finally
-            {
-                customers = null;
-            }
+
+            WriteObject(customers.Select(c => new PSCustomer(c)), true);
+
         }
     }
 }

@@ -125,8 +125,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
         {
             InfoFields = utilizationRecord?.InfoFields;
 
-            this.CopyFrom(utilizationRecord.InstanceData);
-            this.CopyFrom(utilizationRecord.Resource);
+            this.CopyFrom(utilizationRecord?.InstanceData);
+            this.CopyFrom(utilizationRecord?.Resource);
         }
     }
 }

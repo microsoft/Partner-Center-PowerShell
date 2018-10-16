@@ -29,16 +29,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             context.AssertNotNull(nameof(context));
 
-            try
-            {
-                authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
+            authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
 
-                return PartnerService.Instance.CreatePartnerOperations(new PowerShellCredentials(authResult));
-            }
-            finally
-            {
-                authResult = null; 
-            }
+            return PartnerService.Instance.CreatePartnerOperations(new PowerShellCredentials(authResult));
         }
     }
 }

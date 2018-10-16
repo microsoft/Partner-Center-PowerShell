@@ -112,11 +112,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error creating user:" + UserPrincipalName, ex);
             }
-            finally
-            {
-                newUser = null;
-                country = null;
-            }
         }
     }
 }

@@ -103,7 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             UserId = (InputObject == null) ? UserId : InputObject.UserId;
 
             // Get the current user information
-            user = GetUserById(CustomerId, UserId);
+            user = Partner.Customers[CustomerId].Users[UserId].Get();
 
             try
             {
@@ -142,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         profile = new PasswordProfile
                         {
                             Password = stringPassword,
-                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent ? true : false
+                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
                         };
                         user.PasswordProfile = profile;
                     }
@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         profile = new PasswordProfile
                         {
-                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent ? true : false
+                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
                         };
                         user.PasswordProfile = profile;
                     }
@@ -162,7 +162,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                             throw new PSInvalidOperationException(Resources.InvalidSetCustomerUserIdentifierException);
                         }
 
-                        CustomerUser result = Partner.Customers[CustomerId].Users[UserId].Patch(user);
+                        user = Partner.Customers[CustomerId].Users[UserId].Patch(user);
+
                         WriteObject(new PSCustomerUser(user), true);
                     }
                 }
@@ -170,36 +171,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             catch (PartnerException ex)
             {
                 throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
-            }
-            finally
-            {
-                user = null;
-            }
-        }
-
-        /// <summary>
-        /// Gets a details for a specified user and customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private CustomerUser GetUserById(string customerId, string userId)
-        {
-            CustomerUser user;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-            userId.AssertNotEmpty(nameof(userId));
-
-            try
-            {
-                user = Partner.Customers[customerId].Users[userId].Get();
-                return user;
-            }
-            finally
-            {
-                user = null;
             }
         }
     }

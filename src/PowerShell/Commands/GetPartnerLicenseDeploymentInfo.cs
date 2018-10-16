@@ -23,18 +23,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IEnumerable<PartnerLicensesDeploymentInsights> insights;
+            IEnumerable<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.Get().Items;
 
-            try
-            {
-                insights = Partner.Analytics.Licenses.Deployment.Get().Items;
-
-                WriteObject(insights.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
-            }
-            finally
-            {
-                insights = null;
-            }
+            WriteObject(insights.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
         }
     }
 }

@@ -74,48 +74,41 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             Subscription subscription;
             string customerId;
 
-            try
+            customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
+
+            if (!ShouldProcess(
+                string.Format(
+                    CultureInfo.CurrentCulture, Resources.SetPartnerCustomerSubscriptionWhatIf, SubscriptionId,
+                    customerId)))
             {
-                customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-
-                if (!ShouldProcess(
-                    string.Format(
-                        CultureInfo.CurrentCulture, Resources.SetPartnerCustomerSubscriptionWhatIf, SubscriptionId,
-                        customerId)))
-                {
-                    return;
-                }
-
-                subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Get();
-
-                if (AutoRenew.HasValue)
-                {
-                    subscription.AutoRenewEnabled = AutoRenew.Value;
-                }
-
-                if (!string.IsNullOrEmpty(FriendlyName))
-                {
-                    subscription.FriendlyName = FriendlyName;
-                }
-
-                if (Quantity.HasValue)
-                {
-                    subscription.Quantity = Quantity.Value;
-                }
-
-                if (Status.HasValue)
-                {
-                    subscription.Status = Status.Value;
-                }
-
-                subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Patch(subscription);
-
-                WriteObject(new PSSubscription(subscription));
+                return;
             }
-            finally
+
+            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Get();
+
+            if (AutoRenew.HasValue)
             {
-                subscription = null;
+                subscription.AutoRenewEnabled = AutoRenew.Value;
             }
+
+            if (!string.IsNullOrEmpty(FriendlyName))
+            {
+                subscription.FriendlyName = FriendlyName;
+            }
+
+            if (Quantity.HasValue)
+            {
+                subscription.Quantity = Quantity.Value;
+            }
+
+            if (Status.HasValue)
+            {
+                subscription.Status = Status.Value;
+            }
+
+            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Patch(subscription);
+
+            WriteObject(new PSSubscription(subscription));
         }
     }
 }

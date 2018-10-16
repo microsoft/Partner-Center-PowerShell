@@ -34,82 +34,74 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             PartnerEnvironment environment;
             OrganizationProfile profile;
 
-            try
+            environment = PartnerEnvironment.PublicEnvironments[context.Environment];
+
+            authContext = new AuthenticationContext(
+                $"{environment.ActiveDirectoryAuthority}{context.TenantId}",
+                TokenCache.DefaultShared);
+
+            if (context.AccountType == AccountType.ServicePrincipal)
             {
-                environment = PartnerEnvironment.PublicEnvironments[context.Environment];
+                authResult = authContext.AcquireToken(
+                    environment.AzureAdGraphEndpoint,
+                    new ClientCredential(
+                        context.Credentials.UserName,
+                        context.Credentials.Password));
 
-                authContext = new AuthenticationContext(
-                    $"{environment.ActiveDirectoryAuthority}{context.TenantId}",
-                    TokenCache.DefaultShared);
-
-                if (context.AccountType == AccountType.ServicePrincipal)
-                {
-                    authResult = authContext.AcquireToken(
-                        environment.AzureAdGraphEndpoint,
-                        new ClientCredential(
-                            context.Credentials.UserName,
-                            context.Credentials.Password));
-
-                    context.Username = context.Credentials.UserName;
-                }
-                else if (PartnerSession.Instance.Context == null && context.Credentials == null)
-                {
-                    authResult = authContext.AcquireToken(
-                        environment.PartnerCenterEndpoint,
-                        context.ApplicationId,
-                        redirectUri,
-                        PromptBehavior.Always,
-                        UserIdentifier.AnyUser);
-
-                    context.AccountId = authResult.UserInfo.UniqueId;
-                    context.Username = authResult.UserInfo.DisplayableId;
-                    context.TenantId = authResult.TenantId;
-                }
-                else if (PartnerSession.Instance.Context == null && context.Credentials.Password != null)
-                {
-                    authResult = authContext.AcquireToken(
-                        environment.PartnerCenterEndpoint,
-                        context.ApplicationId,
-                        new UserCredential(
-                            context.Credentials.UserName,
-                            context.Credentials.Password));
-
-                    context.AccountId = authResult.UserInfo.UniqueId;
-                    context.Username = authResult.UserInfo.DisplayableId;
-                    context.TenantId = authResult.TenantId;
-                }
-                else
-                {
-                    authResult = authContext.AcquireToken(
-                        environment.PartnerCenterEndpoint,
-                        context.ApplicationId,
-                        redirectUri,
-                        PromptBehavior.Never,
-                        new UserIdentifier(context.Username, UserIdentifierType.RequiredDisplayableId));
-                }
-
-                if (PartnerSession.Instance.Context == null)
-                {
-                    PartnerSession.Instance.Context = context;
-
-                    if (context.AccountType == AccountType.User)
-                    {
-                        partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context);
-                        profile = partnerOperations.Profiles.OrganizationProfile.Get();
-
-                        context.CountryCode = profile.DefaultAddress.Country;
-                        context.Locale = profile.Culture;
-                    }
-                }
-
-                return authResult;
+                context.Username = context.Credentials.UserName;
             }
-            finally
+            else if (PartnerSession.Instance.Context == null && context.Credentials == null)
             {
-                authContext = null;
-                partnerOperations = null;
-                profile = null;
+                authResult = authContext.AcquireToken(
+                    environment.PartnerCenterEndpoint,
+                    context.ApplicationId,
+                    redirectUri,
+                    PromptBehavior.Always,
+                    UserIdentifier.AnyUser);
+
+                context.AccountId = authResult.UserInfo.UniqueId;
+                context.Username = authResult.UserInfo.DisplayableId;
+                context.TenantId = authResult.TenantId;
             }
+            else if (PartnerSession.Instance.Context == null && context.Credentials.Password != null)
+            {
+                authResult = authContext.AcquireToken(
+                    environment.PartnerCenterEndpoint,
+                    context.ApplicationId,
+                    new UserCredential(
+                        context.Credentials.UserName,
+                        context.Credentials.Password));
+
+                context.AccountId = authResult.UserInfo.UniqueId;
+                context.Username = authResult.UserInfo.DisplayableId;
+                context.TenantId = authResult.TenantId;
+            }
+            else
+            {
+                authResult = authContext.AcquireToken(
+                    environment.PartnerCenterEndpoint,
+                    context.ApplicationId,
+                    redirectUri,
+                    PromptBehavior.Never,
+                    new UserIdentifier(context.Username, UserIdentifierType.RequiredDisplayableId));
+            }
+
+            if (PartnerSession.Instance.Context == null)
+            {
+                PartnerSession.Instance.Context = context;
+
+                if (context.AccountType == AccountType.User)
+                {
+                    partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context);
+                    profile = partnerOperations.Profiles.OrganizationProfile.Get();
+
+                    context.CountryCode = profile.DefaultAddress.Country;
+                    context.Locale = profile.Culture;
+                }
+            }
+
+            return authResult;
+
         }
     }
 }

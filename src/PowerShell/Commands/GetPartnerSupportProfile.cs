@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using Models.Partners;
-    using PartnerCenter.Models.Partners;
 
     /// <summary>
     /// Gets the partner support profile from Partner Center.
@@ -21,18 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportProfile profile;
-
-            try
-            {
-                profile = Partner.Profiles.SupportProfile.Get();
-
-                WriteObject(new PSSupportProfile(profile));
-            }
-            finally
-            {
-                profile = null;
-            }
+            WriteObject(new PSSupportProfile(Partner.Profiles.SupportProfile.Get()));
         }
     }
 }

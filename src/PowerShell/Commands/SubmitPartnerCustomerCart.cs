@@ -40,17 +40,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             CartCheckoutResult checkoutResult;
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.CheckoutPartnerCustomerCartWhatIf, CartId)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.CheckoutPartnerCustomerCartWhatIf, CartId)))
-                {
-                    checkoutResult = Partner.Customers[CustomerId].Carts[CartId].Checkout();
-                    WriteObject(new PSCartCheckoutResult(checkoutResult));
-                }
-            }
-            finally
-            {
-                checkoutResult = null;
+                checkoutResult = Partner.Customers[CustomerId].Carts[CartId].Checkout();
+                WriteObject(new PSCartCheckoutResult(checkoutResult));
             }
         }
     }

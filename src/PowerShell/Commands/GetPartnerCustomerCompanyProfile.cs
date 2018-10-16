@@ -8,8 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using PartnerCenter.Models.Customers;
-    using PartnerCenter.PowerShell.Models.Customers;
+    using Models.Customers;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerCompanyProfile"), OutputType(typeof(PSCustomerCompanyProfile))]
     public class GetPartnerCustomerCompanyProfile : PartnerPSCmdlet
@@ -26,18 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerCompanyProfile profile;
-
-            try
-            {
-                profile = Partner.Customers[CustomerId].Profiles.Company.Get();
-
-                WriteObject(new PSCustomerCompanyProfile(profile));
-            }
-            finally
-            {
-                profile = null;
-            }
+            WriteObject(new PSCustomerCompanyProfile(Partner.Customers[CustomerId].Profiles.Company.Get()));
         }
     }
 }

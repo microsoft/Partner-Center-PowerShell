@@ -171,10 +171,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
             }
-            finally
-            {
-                customer = null;
-            }
         }
 
         private static string UpdateValue(string input, string output)

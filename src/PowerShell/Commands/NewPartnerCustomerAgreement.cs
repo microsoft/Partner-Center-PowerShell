@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the date the agreement was signed.
         /// </summary>
         [Parameter(HelpMessage = "The date the agreement was signed.", Mandatory = false)]
-        public DateTime DateAgreed { get; set; }
+        public DateTime? DateAgreed { get; set; }
 
         /// <summary>
         /// Gets or sets the required template identifier.
@@ -84,7 +84,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             Agreement agreement;
-            DateTime dateAgreed = DateAgreed == null ? DateTime.UtcNow : DateAgreed;
+            DateTime dateAgreed = DateAgreed ?? DateTime.Now;
             string userId = string.IsNullOrEmpty(UserId) ? Context.AccountId : UserId;
 
 
@@ -93,35 +93,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 throw new PSInvalidOperationException(Resources.NewCustomerAgreementInvalidOperationMessage);
             }
 
-            try
+            if (ShouldProcess(Resources.NewPartnerCustomerAgreementWhatIf))
             {
-                if (ShouldProcess(Resources.NewPartnerCustomerAgreementWhatIf))
+                agreement = new Agreement
                 {
-                    agreement = new Agreement
+                    DateAgreed = dateAgreed,
+                    PrimaryContact = new Contact
                     {
-                        DateAgreed = dateAgreed,
-                        PrimaryContact = new Contact
-                        {
-                            Email = ContactEmail,
-                            FirstName = ContactFirstName,
-                            LastName = ContactLastName,
-                            PhoneNumber = ContactPhoneNumber
+                        Email = ContactEmail,
+                        FirstName = ContactFirstName,
+                        LastName = ContactLastName,
+                        PhoneNumber = ContactPhoneNumber
 
-                        },
-                        TemplateId = TemplateId,
-                        Type = AgreementType,
-                        UserId = userId
-                    };
+                    },
+                    TemplateId = TemplateId,
+                    Type = AgreementType,
+                    UserId = userId
+                };
 
-                    agreement = Partner.Customers[CustomerId].Agreements.Create(agreement);
+                agreement = Partner.Customers[CustomerId].Agreements.Create(agreement);
 
-                    WriteObject(agreement);
-                }
+                WriteObject(agreement);
             }
-            finally
-            {
-                agreement = null;
-            }
+
         }
     }
 }

@@ -104,11 +104,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException(null, ex);
             }
-            finally
-            {
-                item = null;
-                request = null;
-            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="PSSubscriptionProvisioningStatus.cs" company="Microsoft">
+// <copyright file="PSSubscriptionRegistrationStatus.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------

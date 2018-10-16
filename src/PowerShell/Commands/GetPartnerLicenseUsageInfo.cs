@@ -30,16 +30,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             IEnumerable<PartnerLicensesUsageInsights> insights;
 
-            try
-            {
-                insights = Partner.Analytics.Licenses.Usage.Get().Items;
+            insights = Partner.Analytics.Licenses.Usage.Get().Items;
 
-                WriteObject(insights.Select(l => new PSPartnerLicensesUsageInsight(l)), true);
-            }
-            finally
-            {
-                insights = null;
-            }
+            WriteObject(insights.Select(l => new PSPartnerLicensesUsageInsight(l)), true);
         }
     }
 }

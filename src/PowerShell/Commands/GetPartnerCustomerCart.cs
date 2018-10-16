@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Carts;
-    using PartnerCenter.Models.Carts;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerCart"), OutputType(typeof(PSCart))]
     public class GetPartnerCustomerCart : PartnerPSCmdlet
@@ -33,18 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Cart cart;
-
-            try
-            {
-                cart = Partner.Customers[CustomerId].Carts[CartId].Get();
-
-                WriteObject(new PSCart(cart));
-            }
-            finally
-            {
-                cart = null;
-            }
+            WriteObject(new PSCart(Partner.Customers[CustomerId].Carts[CartId].Get()));
         }
     }
 }

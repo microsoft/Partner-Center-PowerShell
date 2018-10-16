@@ -46,34 +46,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             DeviceBatchCreationRequest request;
             string deviceBatch;
 
-            try
+            if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerDeviceBatchWhatIf, BatchId)))
             {
-                if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerDeviceBatchWhatIf, BatchId)))
-                {
-                    return;
-                }
-
-                request = new DeviceBatchCreationRequest
-                {
-                    BatchId = BatchId,
-                    Devices = Devices.Select(d => new Device
-                    {
-                        HardwareHash = d.HardwareHash,
-                        ModelName = d.ModelName,
-                        OemManufacturerName = d.OemManufacturerName,
-                        ProductKey = d.ProductKey,
-                        SerialNumber = d.SerialNumber
-                    })
-                };
-
-                deviceBatch = Partner.Customers[CustomerId].DeviceBatches.Create(new DeviceBatchCreationRequest());
-
-                WriteObject(deviceBatch);
+                return;
             }
-            finally
+
+            request = new DeviceBatchCreationRequest
             {
-                request = null;
-            }
+                BatchId = BatchId,
+                Devices = Devices.Select(d => new Device
+                {
+                    HardwareHash = d.HardwareHash,
+                    ModelName = d.ModelName,
+                    OemManufacturerName = d.OemManufacturerName,
+                    ProductKey = d.ProductKey,
+                    SerialNumber = d.SerialNumber
+                })
+            };
+
+            deviceBatch = Partner.Customers[CustomerId].DeviceBatches.Create(request);
+
+            WriteObject(deviceBatch);
         }
     }
 }

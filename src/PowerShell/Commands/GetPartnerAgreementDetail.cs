@@ -23,18 +23,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<AgreementMetaData> agreements;
+            ResourceCollection<AgreementMetaData> agreements = Partner.AgreementDetails.Get();
 
-            try
-            {
-                agreements = Partner.AgreementDetails.Get();
-
-                WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);
-            }
-            finally
-            {
-                agreements = null;
-            }
+            WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);
         }
     }
 }

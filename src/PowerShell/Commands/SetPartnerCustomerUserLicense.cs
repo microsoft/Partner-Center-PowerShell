@@ -46,39 +46,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             LicenseUpdate update;
             List<LicenseAssignment> licensesToAssign;
 
-            try
+            if (ShouldProcess(string.Format(
+                CultureInfo.CurrentCulture,
+                Resources.SetPartnerCustomerUserLicenseWhatIf,
+                UserId)))
             {
-                if (ShouldProcess(string.Format(
-                    CultureInfo.CurrentCulture,
-                    Resources.SetPartnerCustomerUserLicenseWhatIf,
-                    UserId)))
+                licensesToAssign = new List<LicenseAssignment>();
+
+                foreach (PSLicenseAssignment licenseAssignment in LicenseUpdate.LicensesToAssign)
                 {
-                    licensesToAssign = new List<LicenseAssignment>();
-
-                    foreach (PSLicenseAssignment licenseAssignment in LicenseUpdate.LicensesToAssign)
+                    licensesToAssign.Add(new LicenseAssignment
                     {
-                        licensesToAssign.Add(new LicenseAssignment
-                        {
-                            ExcludedPlans = licenseAssignment.ExcludedPlans,
-                            SkuId = licenseAssignment.SkuId
-                        });
-                    }
-
-                    update = new LicenseUpdate
-                    {
-                        LicensesToAssign = licensesToAssign,
-                        LicensesToRemove = LicenseUpdate.LicensesToRemove
-                    };
-
-                    update = Partner.Customers[CustomerId].Users[UserId].LicenseUpdates.Create(update);
-
-                    WriteObject(new PSLicenseUpdate(update));
+                        ExcludedPlans = licenseAssignment.ExcludedPlans,
+                        SkuId = licenseAssignment.SkuId
+                    });
                 }
-            }
-            finally
-            {
-                licensesToAssign = null;
-                update = null;
+
+                update = new LicenseUpdate
+                {
+                    LicensesToAssign = licensesToAssign,
+                    LicensesToRemove = LicenseUpdate.LicensesToRemove
+                };
+
+                update = Partner.Customers[CustomerId].Users[UserId].LicenseUpdates.Create(update);
+
+                WriteObject(new PSLicenseUpdate(update));
             }
         }
     }

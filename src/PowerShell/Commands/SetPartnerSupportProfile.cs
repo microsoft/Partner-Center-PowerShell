@@ -46,22 +46,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             SupportProfile profile;
 
-            try
-            {
-                profile = Partner.Profiles.SupportProfile.Get();
+            profile = Partner.Profiles.SupportProfile.Get();
 
-                profile.Email = UpdateValue(SupportEmail, profile.Email);
-                profile.Telephone = UpdateValue(SupportPhoneNumber, profile.Telephone);
-                profile.Website = UpdateValue(SupportWebsite, profile.Website);
+            profile.Email = UpdateValue(SupportEmail, profile.Email);
+            profile.Telephone = UpdateValue(SupportPhoneNumber, profile.Telephone);
+            profile.Website = UpdateValue(SupportWebsite, profile.Website);
 
-                profile = Partner.Profiles.SupportProfile.Update(profile);
+            profile = Partner.Profiles.SupportProfile.Update(profile);
 
-                WriteObject(new PSSupportProfile(profile));
-            }
-            finally
-            {
-                profile = null;
-            }
+            WriteObject(new PSSupportProfile(profile));
         }
 
         private static string UpdateValue(string input, string output)
