@@ -58,27 +58,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             SupportContact contact;
 
-            try
+            if (ShouldProcess(string.Format(
+                CultureInfo.CurrentCulture,
+                Resources.SetPartnerCustomerSubscriptionSupportContactWhatIf,
+                SubscriptionId)))
             {
-                if (ShouldProcess(string.Format(
-                    CultureInfo.CurrentCulture,
-                    Resources.SetPartnerCustomerSubscriptionSupportContactWhatIf,
-                    SubscriptionId)))
+                contact = new SupportContact
                 {
-                    contact = new SupportContact
-                    {
-                        Name = Name,
-                        SupportMpnId = SupportMpnId,
-                        SupportTenantId = SupportTenantId
-                    };
+                    Name = Name,
+                    SupportMpnId = SupportMpnId,
+                    SupportTenantId = SupportTenantId
+                };
 
-                    contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Update(contact);
-                    WriteObject(new PSSupportContact(contact));
-                }
-            }
-            finally
-            {
-                contact = null;
+                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Update(contact);
+                WriteObject(new PSSupportContact(contact));
             }
         }
     }

@@ -101,19 +101,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             requestId.AssertNotEmpty(nameof(requestId));
 
-            try
-            {
-                request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).Get();
 
-                if (request != null)
-                {
-                    WriteObject(new PSServiceRequest(request));
-                }
-            }
-            finally
+            request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).Get();
+
+            if (request != null)
             {
-                request = null;
+                WriteObject(new PSServiceRequest(request));
             }
+
         }
 
         /// <summary>
@@ -131,18 +126,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                requests = Partner.Customers.ById(customerId).ServiceRequests.Get();
+            requests = Partner.Customers.ById(customerId).ServiceRequests.Get();
 
-                if (requests.TotalCount > 0)
-                {
-                    HandleOutput(requests, severity, status);
-                }
-            }
-            finally
+            if (requests.TotalCount > 0)
             {
-                requests = null;
+                HandleOutput(requests, severity, status);
             }
         }
 
@@ -159,19 +147,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             requestId.AssertNotEmpty(nameof(requestId));
 
-            try
-            {
-                request = Partner.ServiceRequests.ById(requestId).Get();
+            request = Partner.ServiceRequests.ById(requestId).Get();
 
-                if (request != null)
-                {
-                    WriteObject(new PSServiceRequest(request));
-                }
-            }
-            finally
+            if (request != null)
             {
-                request = null;
+                WriteObject(new PSServiceRequest(request));
             }
+
         }
 
         /// <summary>
@@ -183,18 +165,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<ServiceRequest> requests;
 
-            try
-            {
-                requests = Partner.ServiceRequests.Get();
+            requests = Partner.ServiceRequests.Get();
 
-                if (requests.TotalCount > 0)
-                {
-                    HandleOutput(requests, severity, status);
-                }
-            }
-            finally
+            if (requests.TotalCount > 0)
             {
-                requests = null;
+                HandleOutput(requests, severity, status);
             }
         }
 
@@ -203,39 +178,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             IResourceCollectionEnumerator<ResourceCollection<ServiceRequest>> enumerator;
             List<ServiceRequest> serviceRequests;
 
-            try
-            {
-                enumerator = Partner.Enumerators.ServiceRequests.Create(requests);
-                serviceRequests = new List<ServiceRequest>();
+            enumerator = Partner.Enumerators.ServiceRequests.Create(requests);
+            serviceRequests = new List<ServiceRequest>();
 
-                while (enumerator.HasValue)
-                {
-                    serviceRequests.AddRange(enumerator.Current.Items);
-                    enumerator.Next();
-                }
-
-                if (severity.HasValue && status.HasValue)
-                {
-                    WriteObject(serviceRequests.Where(r => r.Severity == severity && r.Status == status).Select(r => new PSServiceRequest(r)), true);
-                }
-                else if (severity.HasValue)
-                {
-                    WriteObject(serviceRequests.Where(r => r.Severity == severity).Select(r => new PSServiceRequest(r)), true);
-                }
-                else if (status.HasValue)
-                {
-                    WriteObject(serviceRequests.Where(r => r.Status == status).Select(r => new PSServiceRequest(r)), true);
-                }
-                else
-                {
-                    WriteObject(serviceRequests.Select(r => new PSServiceRequest(r)), true);
-                }
-            }
-            finally
+            while (enumerator.HasValue)
             {
-                enumerator = null;
-                serviceRequests = null;
+                serviceRequests.AddRange(enumerator.Current.Items);
+                enumerator.Next();
             }
+
+            if (severity.HasValue && status.HasValue)
+            {
+                WriteObject(serviceRequests.Where(r => r.Severity == severity && r.Status == status).Select(r => new PSServiceRequest(r)), true);
+            }
+            else if (severity.HasValue)
+            {
+                WriteObject(serviceRequests.Where(r => r.Severity == severity).Select(r => new PSServiceRequest(r)), true);
+            }
+            else if (status.HasValue)
+            {
+                WriteObject(serviceRequests.Where(r => r.Status == status).Select(r => new PSServiceRequest(r)), true);
+            }
+            else
+            {
+                WriteObject(serviceRequests.Select(r => new PSServiceRequest(r)), true);
+            }
+
         }
     }
 }

@@ -62,18 +62,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                managedServices = Partner.Customers.ById(CustomerId).ManagedServices.Get();
+            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.Get();
 
-                if (managedServices.TotalCount > 0)
-                {
-                    WriteObject(managedServices.Items.Select(s => new PSManagedService(s)), true);
-                }
-            }
-            finally
+            if (managedServices.TotalCount > 0)
             {
-                managedServices = null;
+                WriteObject(managedServices.Items.Select(s => new PSManagedService(s)), true);
             }
         }
 
@@ -94,18 +87,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             managedServiceId.AssertNotEmpty(nameof(managedServiceId));
 
-            try
-            {
-                managedServices = Partner.Customers.ById(CustomerId).ManagedServices.Get();
+            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.Get();
 
-                if (managedServices.TotalCount > 0)
-                {
-                    WriteObject(managedServices.Items.Where(s => s.Id == managedServiceId).Select(i => new PSManagedService(i)), true);
-                }
-            }
-            finally
+            if (managedServices.TotalCount > 0)
             {
-                managedServices = null;
+                WriteObject(managedServices.Items.Where(s => s.Id == managedServiceId).Select(i => new PSManagedService(i)), true);
             }
         }
     }

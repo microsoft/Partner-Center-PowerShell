@@ -114,10 +114,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
             }
-            finally
-            {
-                productAvailability = null;
-            }
         }
 
         /// <summary>
@@ -142,10 +138,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             catch (PartnerException ex)
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
-            }
-            finally
-            {
-                productAvailability = null;
             }
         }
     }

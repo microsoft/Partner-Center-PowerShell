@@ -37,16 +37,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<ServiceCostLineItem> lineItems;
 
-            try
-            {
-                lineItems = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.Get();
+            lineItems = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.Get();
 
-                WriteObject(lineItems.Items.Select(i => new PSServiceCostLineItem(i)), true);
-            }
-            finally
-            {
-                lineItems = null;
-            }
+            WriteObject(lineItems.Items.Select(i => new PSServiceCostLineItem(i)), true);
         }
     }
 }

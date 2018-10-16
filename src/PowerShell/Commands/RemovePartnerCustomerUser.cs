@@ -72,28 +72,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
         /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private void RemoveUserById(string customerId, string userId)
         {
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
-            bool success = true;
 
             try
             {
                 Partner.Customers.ById(customerId).Users.ById(userId).Delete();
-                WriteObject(success);
+                WriteObject(true);
             }
             catch (PartnerException ex)
             {
                 throw new PSPartnerException("Error deleting user id: " + userId, ex);
-            }
-            finally
-            {
-                customerId = null;
-                userId = null;
             }
         }
 
@@ -132,7 +126,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                return (gUsers.Where(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).First<CustomerUser>()).Id;
+                return gUsers.First(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
             }
             catch
             {
@@ -155,26 +149,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
+            users = new List<CustomerUser>();
+
+            seekUsers = Partner.Customers[customerId].Users.Get();
+            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+            while (usersEnumerator.HasValue)
             {
-                users = new List<CustomerUser>();
-
-                seekUsers = Partner.Customers[customerId].Users.Get();
-                usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-                while (usersEnumerator.HasValue)
-                {
-                    users.AddRange(usersEnumerator.Current.Items);
-                    usersEnumerator.Next();
-                }
-
-                return users;
+                users.AddRange(usersEnumerator.Current.Items);
+                usersEnumerator.Next();
             }
-            finally
-            {
-                seekUsers = null;
-                usersEnumerator = null;
-            }
+
+            return users;
         }
     }
 }

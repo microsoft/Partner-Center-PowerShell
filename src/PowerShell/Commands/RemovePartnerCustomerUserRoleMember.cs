@@ -55,9 +55,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error removing user " + UserId + "from role " + RoleId, ex);
             }
-            finally
-            {
-            }
         }
     }
 }

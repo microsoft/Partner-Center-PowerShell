@@ -75,34 +75,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<PSAzureUtilizationRecord> records;
             ResourceCollection<AzureUtilizationRecord> utilizationRecords;
 
-            try
+            utilizationRecords = Partner.Customers[CustomerId]
+                .Subscriptions[SubscriptionId]
+                .Utilization.Azure.Query(
+                    StartDate,
+                    EndDate ?? DateTimeOffset.Now,
+                    Granularity ?? AzureUtilizationGranularity.Daily,
+                    (!ShowDetails.IsPresent) || ShowDetails.ToBool());
+
+            enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
+
+            records = new List<PSAzureUtilizationRecord>();
+
+            while (enumerator.HasValue)
             {
-                utilizationRecords = Partner.Customers[CustomerId]
-                    .Subscriptions[SubscriptionId]
-                    .Utilization.Azure.Query(
-                        StartDate,
-                        EndDate ?? DateTimeOffset.Now,
-                        Granularity ?? AzureUtilizationGranularity.Daily,
-                        (!ShowDetails.IsPresent) || ShowDetails.ToBool());
-
-                enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
-
-                records = new List<PSAzureUtilizationRecord>();
-
-                while (enumerator.HasValue)
-                {
-                    records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                    enumerator.Next();
-                }
-
-                WriteObject(records, true);
+                records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
+                enumerator.Next();
             }
-            finally
-            {
-                enumerator = null;
-                records = null;
-                utilizationRecords = null;
-            }
+
+            WriteObject(records, true);
         }
     }
 }

@@ -59,10 +59,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filePath = dirInfo.FullName + Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture) + InvoiceId + ".pdf";
             }
 
-            if (File.Exists(filePath))
+            if (File.Exists(filePath) && !Overwrite.IsPresent)
             {
-                if (!Overwrite.IsPresent)
-                    throw new PSInvalidOperationException("The path already exists: " + filePath + ". Specify the -Overwrite switch to overwrite the file");
+                throw new PSInvalidOperationException("The path already exists: " + filePath + ". Specify the -Overwrite switch to overwrite the file");
             }
 
             GetStatement(InvoiceId, filePath);
@@ -73,22 +72,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private void GetStatement(string invoiceId, string filePath)
         {
-            Stream stream;
             FileStream file;
 
-            try
+            using (Stream stream = Partner.Invoices.ById(invoiceId).Documents.Statement.Get())
             {
-                stream = Partner.Invoices.ById(invoiceId).Documents.Statement.Get();
                 file = File.Create(filePath);
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.CopyTo(file);
-                file.Close();
-                stream.Close();
-            }
-            finally
-            {
-                stream = null;
-                file = null;
             }
         }
     }

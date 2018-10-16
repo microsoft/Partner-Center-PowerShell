@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="GetPartnerCustomerEntitlements.cs" company="Microsoft">
+// <copyright file="GetPartnerCustomerEntitlement.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -62,16 +62,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                entitlements = Partner.Customers[customerId].Entitlements.Get().Items.Where(e => e.ReferenceOrder.Id == orderId);
+            entitlements = Partner.Customers[customerId].Entitlements.Get().Items.Where(e => e.ReferenceOrder.Id == orderId);
 
-                WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
-            }
-            finally
-            {
-                entitlements = null;
-            }
+            WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
         }
 
         /// <summary>
@@ -87,16 +80,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                entitlements = Partner.Customers[customerId].Entitlements.Get().Items;
+            entitlements = Partner.Customers[customerId].Entitlements.Get().Items;
 
-                WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
-            }
-            finally
-            {
-                entitlements = null;
-            }
+            WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
         }
     }
 }

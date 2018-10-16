@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
     using Models;
     using PartnerCenter.Models.DevicesDeployment;
     using PartnerCenter.PowerShell.Properties;
@@ -76,14 +75,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!ShouldProcess(Resources.NewPartnerCustomerConfigurationPolicyWhatIf)) return;
-
+            ConfigurationPolicy devicePolicy;
             List<PolicySettingsType> policySettings = new List<PolicySettingsType>();
-            if (OobeUserNotLocalAdmin) policySettings.Add(PolicySettingsType.OobeUserNotLocalAdmin);
-            if (SkipEula) policySettings.Add(PolicySettingsType.SkipEula);
-            if (SkipExpressSettings) policySettings.Add(PolicySettingsType.SkipExpressSettings);
-            if (RemoveOemPreinstalls) policySettings.Add(PolicySettingsType.RemoveOemPreinstalls);
-            if (SkipOemRegistration) policySettings.Add(PolicySettingsType.SkipOemRegistration);
+
+            if (!ShouldProcess(Resources.NewPartnerCustomerConfigurationPolicyWhatIf))
+            {
+                return;
+            }
+
+            if (OobeUserNotLocalAdmin)
+            {
+                policySettings.Add(PolicySettingsType.OobeUserNotLocalAdmin);
+            }
+
+            if (SkipEula)
+            {
+                policySettings.Add(PolicySettingsType.SkipEula);
+            }
+
+            if (SkipExpressSettings)
+            {
+                policySettings.Add(PolicySettingsType.SkipExpressSettings);
+            }
+
+            if (RemoveOemPreinstalls)
+            {
+                policySettings.Add(PolicySettingsType.RemoveOemPreinstalls);
+            }
+
+            if (SkipOemRegistration)
+            {
+                policySettings.Add(PolicySettingsType.SkipOemRegistration);
+            }
 
             ConfigurationPolicy configurationPolicy = new ConfigurationPolicy
             {
@@ -92,18 +115,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 PolicySettings = policySettings
             };
 
-            ConfigurationPolicy devicePolicy;
-            CustomerId.AssertNotEmpty(nameof(CustomerId));
 
-            try
-            {
-                devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies.Create(configurationPolicy);
-                WriteObject(new PSConfigurationPolicy(devicePolicy));
-            }
-            finally
-            {
-                devicePolicy = null;
-            }
+            devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies.Create(configurationPolicy);
+            WriteObject(new PSConfigurationPolicy(devicePolicy));
         }
     }
 }

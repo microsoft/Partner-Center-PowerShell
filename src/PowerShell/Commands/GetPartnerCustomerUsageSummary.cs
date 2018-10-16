@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Usage;
-    using PartnerCenter.Models.Usage;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerUsageSummary"), OutputType(typeof(PSCustomerUsageSummary))]
     public class GetPartnerCustomerUsageSummary : PartnerPSCmdlet
@@ -26,17 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerUsageSummary summary;
-
-            try
-            {
-                summary = Partner.Customers[CustomerId].UsageSummary.Get();
-                WriteObject(new PSCustomerUsageSummary(summary));
-            }
-            finally
-            {
-                summary = null;
-            }
+            WriteObject(new PSCustomerUsageSummary(Partner.Customers[CustomerId].UsageSummary.Get()));
         }
     }
 }

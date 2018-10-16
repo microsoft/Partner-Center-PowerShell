@@ -27,23 +27,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             MpnProfile profile;
 
-            try
+            if (string.IsNullOrEmpty(MpnId))
             {
-                if (string.IsNullOrEmpty(MpnId))
-                {
-                    profile = Partner.Profiles.MpnProfile.Get();
-                }
-                else
-                {
-                    profile = Partner.Profiles.MpnProfile.Get(MpnId);
-                }
+                profile = Partner.Profiles.MpnProfile.Get();
+            }
+            else
+            {
+                profile = Partner.Profiles.MpnProfile.Get(MpnId);
+            }
 
-                WriteObject(new PSMpnProfile(profile));
-            }
-            finally
-            {
-                profile = null;
-            }
+            WriteObject(new PSMpnProfile(profile));
         }
     }
 }

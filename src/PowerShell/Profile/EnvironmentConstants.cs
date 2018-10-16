@@ -52,8 +52,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         public const string USGovernmentGraphEndpoint = "https://graph.windows.net";
 
         /// <summary>
-        /// The Partner Center endpoint
+        /// The Partner Center endpoint address.
         /// </summary>
         public const string PartnerCenterEndpoint = "https://api.partnercenter.microsoft.com";
+
+        /// <summary>
+        /// The Partner Center endpoint for the China cloud.
+        /// </summary>
+        public const string ChinaPartnerCenterEndpoint = "https://partner.partnercenterapi.microsoftonline.cn";
     }
 }

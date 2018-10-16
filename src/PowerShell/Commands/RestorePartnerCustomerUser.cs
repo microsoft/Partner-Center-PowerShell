@@ -73,7 +73,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
         /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private void RestoreUserById(string customerId, string userId)
@@ -95,11 +95,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error restoring user id: " + userId, ex);
             }
-            finally
-            {
-                customerId = null;
-                userId = null;
-            }
         }
 
         /// <summary>
@@ -107,7 +102,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
         /// <param name="userPrincipalName">Identifier of the user principal name.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private void RestoreUserByUpn(string customerId, string userPrincipalName)
@@ -135,7 +130,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                return (gUsers.Where(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).First<CustomerUser>()).Id;
+                return gUsers.First(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
             }
             catch
             {
@@ -147,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets a list of deleted users from Partner Center.
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private List<CustomerUser> GetDeletedUsers(string customerId)
@@ -160,26 +155,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            try
-            {
-                users = new List<CustomerUser>();
+            users = new List<CustomerUser>();
 
-                seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
-                usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-                while (usersEnumerator.HasValue)
-                {
-                    users.AddRange(usersEnumerator.Current.Items);
-                    usersEnumerator.Next();
-                }
-
-                return users;
-            }
-            finally
+            seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
+            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
+            while (usersEnumerator.HasValue)
             {
-                users = null;
-                seekUsers = null;
-                usersEnumerator = null;
+                users.AddRange(usersEnumerator.Current.Items);
+                usersEnumerator.Next();
             }
+
+            return users;
         }
     }
 }

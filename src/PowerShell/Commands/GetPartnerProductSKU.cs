@@ -103,10 +103,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error getting sku id: " + skuId, ex);
             }
-            finally
-            {
-                sku = null;
-            }
         }
 
         /// <summary>
@@ -147,10 +143,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSPartnerException("Error getting skus for product id: " + productId, ex);
             }
-            finally
-            {
-                skus = null;
-            }
+    
         }
     }
 }

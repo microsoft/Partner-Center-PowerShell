@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="PartnerCustomerSubscribedSku.cs" company="Microsoft">
+// <copyright file="GetPartnerCustomerSubscribedSku.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -35,17 +35,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<SubscribedSku> subscribedSkus;
-
-            try
-            {
-                subscribedSkus = Partner.Customers[CustomerId].SubscribedSkus.Get(LicenseGroup?.Select(item => item).ToList());
-                WriteObject(subscribedSkus.Items.Select(s => new PSSubscribedSku(s)), true);
-            }
-            finally
-            {
-                subscribedSkus = null;
-            }
+            ResourceCollection<SubscribedSku> subscribedSkus = Partner.Customers[CustomerId].SubscribedSkus.Get(LicenseGroup?.Select(item => item).ToList());
+            WriteObject(subscribedSkus.Items.Select(s => new PSSubscribedSku(s)), true);
         }
     }
 }

@@ -117,10 +117,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 
                 throw;
             }
-            finally
-            {
-                validationRules = null;
-            }
         }
     }
 }

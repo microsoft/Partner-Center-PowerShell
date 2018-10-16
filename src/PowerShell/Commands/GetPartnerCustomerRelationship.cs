@@ -33,15 +33,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<PartnerRelationship> relationships;
 
-            try
-            {
-                relationships = Partner.Customers[CustomerId].Relationships.Get();
-                WriteObject(relationships.Items.Select(r => new PSPartnerRelationship(r)), true);
-            }
-            finally
-            {
-                relationships = null;
-            }
+            relationships = Partner.Customers[CustomerId].Relationships.Get();
+            WriteObject(relationships.Items.Select(r => new PSPartnerRelationship(r)), true);
         }
     }
 }

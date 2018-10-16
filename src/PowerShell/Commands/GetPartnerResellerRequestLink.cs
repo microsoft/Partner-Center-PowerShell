@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using Models.CustomerRelationshipRequests;
-    using PartnerCenter.Models.RelationshipRequests;
 
     /// <summary>
     /// Get the resller relationship request link.
@@ -21,18 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerRelationshipRequest link;
-
-            try
-            {
-                link = Partner.Customers.RelationshipRequest.Get();
-
-                WriteObject(new PSCustomerRelationshipRequest(link));
-            }
-            finally
-            {
-                link = null;
-            }
+            WriteObject(new PSCustomerRelationshipRequest(Partner.Customers.RelationshipRequest.Get()));
         }
     }
 }
