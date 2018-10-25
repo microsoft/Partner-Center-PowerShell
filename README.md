@@ -1,6 +1,8 @@
 # Microsoft Partner Center PowerShell
 
-![Build status](https://dev.azure.com/partnercenter/powershell/_apis/build/status/PowerShell%20-%20master%20-%20CI)
+![Build status](https://dev.azure.com/partnercenter/powershell/_apis/build/status/partner-center-powershell-CI)
+
+[![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
 This repository contains a set of PowerShell cmdlets for developers and administrators to manage Cloud Solution Provider program resources.
 
