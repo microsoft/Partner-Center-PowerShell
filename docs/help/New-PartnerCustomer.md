@@ -13,11 +13,12 @@ Creates a new customer.
 ## SYNTAX
 
 ```
-New-PartnerCustomer -BillingAddressLine1 <String> [-BillingAddressLine2 <String>]
- [-BillingAddressCity <String>] -BillingAddressCountry <String> [-BillingAddressPostalCode <String>]
- [-BillingAddressRegion <String>] [-BillingAddressState <String>] [-ContactEmail <String>]
- [-ContactFirstName <String>] [-ContactLastName <String>] [-ContactPhoneNumber <String>] [-Culture <String>]
- -Domain <String> -Language <String> -Name <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+New-PartnerCustomer [-AssociatedPartnerId <String>] -BillingAddressLine1 <String>
+ [-BillingAddressLine2 <String>] [-BillingAddressCity <String>] -BillingAddressCountry <String>
+ [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
+ [-ContactEmail <String>] [-ContactFirstName <String>] [-ContactLastName <String>]
+ [-ContactPhoneNumber <String>] [-Culture <String>] -Domain <String> -Language <String> -Name <String>
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,6 +34,21 @@ PS C:\> New-PartnerCustomer -BillingAddressLine1 '1 Microsoft Way' -BillingAddre
 Creates a new customer.
 
 ## PARAMETERS
+
+### -AssociatedPartnerId
+The associated partner identifier. Used if creating a customer for an indirect reseller.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -BillingAddressCity
 The city of the customer's billing address.

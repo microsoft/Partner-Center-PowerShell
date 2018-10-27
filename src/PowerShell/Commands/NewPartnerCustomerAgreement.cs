@@ -74,6 +74,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [ValidateNotNullOrEmpty]
         public string TemplateId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
         [Parameter(HelpMessage = "The identifier of the user in the partner tenant who is providing confirmation on behalf of the customer.", Mandatory = false)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string UserId { get; set; }
@@ -85,7 +88,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Agreement agreement;
             DateTime dateAgreed = DateAgreed ?? DateTime.Now;
-            string userId = string.IsNullOrEmpty(UserId) ? Context.AccountId : UserId;
+            string userId = string.IsNullOrEmpty(UserId) ?
+                Context.Account.Properties[Profile.AzureAccountPropertyType.UserIdentifier] : UserId;
 
 
             if (string.IsNullOrEmpty(userId))

@@ -8,7 +8,7 @@ Locale: en-US
 
 # PartnerCenter Module
 ## Description
-This topic displays help topics for the Partner Center Cmdlets.
+These are the cmdlets in the Partner Center PowerShell module.
 
 ## PartnerCenter Cmdlets
 ### [Add-PartnerCustomerCartLineItem](Add-PartnerCustomerCartLineItem.md)
@@ -184,6 +184,9 @@ Gets a list of service request topics.
 
 ### [Get-PartnerSupportProfile](Get-PartnerSupportProfile.md)
 Gets the partner's support profile.
+
+### [New-PartnerAccessToken](New-PartnerAccessToken.md)
+Generate a new access token that can be used to access Partner Center.
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.

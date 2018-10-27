@@ -6,16 +6,23 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
+    using System.Globalization;
     using System.Management.Automation;
+    using System.Security;
     using System.Text.RegularExpressions;
+    using Common;
     using Factories;
+    using IdentityModel.Clients.ActiveDirectory;
+    using PartnerCenter.Models.Partners;
     using Profile;
     using Properties;
 
     /// <summary>
     /// Cmdlet to log into a Partner Center environment.
     /// </summary>
-    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = "UserCredential"), OutputType(typeof(PartnerContext))]
+    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = "UserCredential")]
+    [OutputType(typeof(PartnerContext))]
     public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
@@ -24,8 +31,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string CommonEndpoint = "common";
 
         /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
+        [Parameter(HelpMessage = "The access token for Partner Center.", Mandatory = true, ParameterSetName = "AccessToken")]
+        [ValidateNotNullOrEmpty]
+        public string AccessToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time when the token for Partner Center expires.
+        /// </summary>
+        [Parameter(HelpMessage = "The date and time when the token for Partner Center expires.", Mandatory = true, ParameterSetName = "AccessToken")]
+        public DateTimeOffset AccessTokenExpiresOn { get; set; }
+
+        /// <summary>
         /// Gets or sets the application identifier used to access Partner Center.
         /// </summary>
+        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "AccessToken")]
         [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "UserCredential")]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
@@ -46,7 +67,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <remarks>
         /// If this parameter is not specified the default Global Cloud envrionment will be used.
         /// </remarks>
-        [Parameter(Mandatory = false, HelpMessage = "Name of the environment containing the account to log into")]
+        [Parameter(Mandatory = false, HelpMessage = "Name of the environment to be used during authentication.")]
         [Alias("EnvironmentName")]
         [ValidateNotNullOrEmpty]
         public EnvironmentName Environment { get; set; }
@@ -60,9 +81,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the Azure AD domain or tenant identifier.
         /// </summary>
+        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = "AccessToken")]
         [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
         [ValidateNotNullOrEmpty]
         public string TenantId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cache used to lookup cached tokens.
+        /// </summary>
+        [Parameter(HelpMessage = "The cache used to lookup cached tokens.", Mandatory = false)]
+        [ValidateNotNull]
+        public TokenCache TokenCache { get; set; }
 
         /// <summary>
         /// Operations that happen before the cmdlet is executed.
@@ -73,6 +102,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 throw new PSInvalidOperationException(Resources.InvalidEnvironmentException);
             }
+
+            PartnerSession.Instance.Context = null;
         }
 
         /// <summary>
@@ -98,16 +129,55 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void ProcessRecord()
         {
+            AzureAccount account = new AzureAccount();
+            IAggregatePartner partnerOperations;
+            OrganizationProfile profile;
+            SecureString password = null;
+
+            if (ParameterSetName.Equals("AccessToken", StringComparison.InvariantCultureIgnoreCase))
+            {
+                account.Properties[AzureAccountPropertyType.AccessToken] = AccessToken;
+                account.Properties[AzureAccountPropertyType.AccessTokenExpiration] = AccessTokenExpiresOn.ToString(CultureInfo.CurrentCulture);
+                account.Type = AccountType.AccessToken;
+            }
+            else if (ParameterSetName.Equals("ServicePrincipal", StringComparison.InvariantCultureIgnoreCase))
+            {
+                account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
+                account.Type = AccountType.ServicePrincipal;
+            }
+            else
+            {
+                account.Type = AccountType.User;
+            }
+
+            if (Credential != null)
+            {
+                account.Id = Credential.UserName;
+                password = Credential.Password;
+            }
+
+            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
+
             PartnerContext context = new PartnerContext
             {
-                AccountType = ServicePrincipal.IsPresent && ServicePrincipal.ToBool() ? AccountType.ServicePrincipal : AccountType.User,
+                Account = account,
                 ApplicationId = ApplicationId,
-                Credentials = Credential,
                 Environment = Environment,
-                TenantId = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId
+                TokenCache = TokenCache ?? TokenCache.DefaultShared
             };
 
-            PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
+            PartnerSession.Instance.AuthenticationFactory.Authenticate(context, password);
+
+            PartnerSession.Instance.Context = context;
+
+            if (context.Account.Type == AccountType.User)
+            {
+                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context);
+                profile = partnerOperations.Profiles.OrganizationProfile.Get();
+
+                context.CountryCode = profile.DefaultAddress.Country;
+                context.Locale = profile.Culture;
+            }
 
             WriteObject(PartnerSession.Instance.Context);
         }

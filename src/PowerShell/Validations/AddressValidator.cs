@@ -56,54 +56,43 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                 {
                     validationRules = partner.CountryValidationRules.ByCountry(resource.Country).Get();
 
-                    if (validationRules.IsCityRequired)
+                    if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
                     {
-                        if (string.IsNullOrEmpty(resource.City))
-                        {
-                            throw new ValidationException(Resources.CityRequiredError);
-                        }
+                        throw new ValidationException(Resources.CityRequiredError);
                     }
 
-                    if (validationRules.IsPostalCodeRequired)
+                    if (validationRules.IsPostalCodeRequired && string.IsNullOrEmpty(resource.PostalCode))
                     {
-                        if (string.IsNullOrEmpty(resource.PostalCode))
-                        {
-                            throw new ValidationException(Resources.PostalCoderequiredError);
-                        }
+                        throw new ValidationException(Resources.PostalCoderequiredError);
                     }
 
-                    if (validationRules.IsStateRequired)
+                    if (validationRules.IsStateRequired && string.IsNullOrEmpty(resource.State))
                     {
-                        if (string.IsNullOrEmpty(resource.State))
-                        {
-                            throw new ValidationException(Resources.StateRequiredError);
-                        }
-                        else
-                        {
-                            if (!validationRules.SupportedStatesList.Contains(resource.State))
-                            {
-                                throw new ValidationException(
-                                    string.Format(
-                                        CultureInfo.CurrentCulture,
-                                        Resources.InvalidStateError,
-                                        resource.State,
-                                        string.Join(",", validationRules.SupportedStatesList)));
-                            }
-                        }
+                        throw new ValidationException(Resources.StateRequiredError);
                     }
-
-                    if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex) && !string.IsNullOrEmpty(resource.PhoneNumber))
+                    else
                     {
-                        if (!Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
+                        if (!validationRules.SupportedStatesList.Contains(resource.State))
                         {
                             throw new ValidationException(
                                 string.Format(
                                     CultureInfo.CurrentCulture,
-                                    Resources.InvalidPhoneFormatError,
-                                    resource.PhoneNumber));
+                                    Resources.InvalidStateError,
+                                    resource.State,
+                                    string.Join(",", validationRules.SupportedStatesList)));
                         }
                     }
 
+                    if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex)
+                        && !string.IsNullOrEmpty(resource.PhoneNumber) &&
+                        !Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
+                    {
+                        throw new ValidationException(
+                            string.Format(
+                                CultureInfo.CurrentCulture,
+                                Resources.InvalidPhoneFormatError,
+                                resource.PhoneNumber));
+                    }
                 }
 
                 return partner.Validations.IsAddressValid(resource);
