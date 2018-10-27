@@ -6,7 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
-    using System.Management.Automation;
+    using IdentityModel.Clients.ActiveDirectory;
 
     /// <summary>
     /// Context information used for the execution of various tasks.
@@ -14,14 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
     public class PartnerContext
     {
         /// <summary>
-        /// Gets or sets the account identifier.
+        /// Gets or sets the account.
         /// </summary>
-        public string AccountId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of account.
-        /// </summary>
-        public AccountType AccountType { get; set; }
+        public AzureAccount Account { get; set; }
 
         /// <summary>
         /// Gets or sets the application identifier.
@@ -34,11 +29,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the credentials.
-        /// </summary>
-        public PSCredential Credentials { get; set; }
-
-        /// <summary>
         /// Gets the environment used for authentication.
         /// </summary>
         public EnvironmentName Environment { get; set; }
@@ -49,13 +39,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         public string Locale { get; set; }
 
         /// <summary>
-        /// Gets or sets the Azure AD tenant identifier.
+        /// Gets or sets the cache used to lookup cached tokens.
         /// </summary>
-        public string TenantId { get; set; }
-
-        /// <summary>
-        /// Gets or sets  the username.
-        /// </summary>
-        public string Username { get; set; }
+        public TokenCache TokenCache { get; set; }
     }
 }

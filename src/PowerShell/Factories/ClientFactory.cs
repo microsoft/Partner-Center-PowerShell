@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using Common;
-    using IdentityModel.Clients.ActiveDirectory;
     using Profile;
 
     /// <summary>
@@ -25,13 +24,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </exception>
         public virtual IAggregatePartner CreatePartnerOperations(PartnerContext context)
         {
-            AuthenticationResult authResult;
-
             context.AssertNotNull(nameof(context));
 
-            authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
-
-            return PartnerService.Instance.CreatePartnerOperations(new PowerShellCredentials(authResult));
+            return PartnerService.Instance.CreatePartnerOperations(
+                new PowerShellCredentials(
+                    PartnerSession.Instance.AuthenticationFactory.Authenticate(context)));
         }
     }
 }

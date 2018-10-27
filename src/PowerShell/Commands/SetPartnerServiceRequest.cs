@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     request.NewNote = new ServiceRequestNote
                     {
-                        CreatedByName = PartnerSession.Instance.Context.AccountId,
+                        CreatedByName = PartnerSession.Instance.Context.Account.Properties[AzureAccountPropertyType.UserIdentifier],
                         CreatedDate = DateTime.UtcNow,
                         Text = NewNote
                     };

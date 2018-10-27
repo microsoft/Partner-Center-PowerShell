@@ -15,13 +15,19 @@ Connect to Partner Center with an authenticated account for use with cmdlet requ
 ### UserCredential (Default)
 ```
 Connect-PartnerCenter -ApplicationId <String> [-Credential <PSCredential>] [-Environment <EnvironmentName>]
- [<CommonParameters>]
+ [-TokenCache <TokenCache>] [<CommonParameters>]
+```
+
+### AccessToken
+```
+Connect-PartnerCenter -AccessToken <String> -AccessTokenExpiresOn <DateTimeOffset> -ApplicationId <String>
+ [-Environment <EnvironmentName>] -TenantId <String> [-TokenCache <TokenCache>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```
 Connect-PartnerCenter -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
- -TenantId <String> [<CommonParameters>]
+ -TenantId <String> [-TokenCache <TokenCache>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -57,12 +63,42 @@ Connects to Partner Center using app only authentication. When prompted for cred
 
 ## PARAMETERS
 
+### -AccessToken
+The access token for Partner Center.
+
+```yaml
+Type: String
+Parameter Sets: AccessToken
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AccessTokenExpiresOn
+The date and time when the token for Partner Center expires.
+
+```yaml
+Type: DateTimeOffset
+Parameter Sets: AccessToken
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ApplicationId
 The application identifier used to access the Partner Center API.
 
 ```yaml
 Type: String
-Parameter Sets: UserCredential
+Parameter Sets: UserCredential, AccessToken
 Aliases:
 
 Required: True
@@ -135,10 +171,25 @@ The Azure AD domain or tenant identifier.
 
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipal
+Parameter Sets: AccessToken, ServicePrincipal
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TokenCache
+The cache used to lookup cached tokens.
+
+```yaml
+Type: TokenCache
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

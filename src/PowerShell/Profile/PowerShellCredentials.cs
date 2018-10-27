@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
     using System;
-    using IdentityModel.Clients.ActiveDirectory;
 
     /// <summary>
     /// Provides the credentials need to access the partner service.
@@ -17,26 +16,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         /// <summary>
         /// The result from a successfully token request.
         /// </summary>
-        private readonly AuthenticationResult authResult;
+        private readonly AuthenticationToken authToken;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerShellCredentials" /> class.
         /// </summary>
-        /// <param name="authResult">The authentication result that contains the access token.</param>
-        public PowerShellCredentials(AuthenticationResult authResult)
+        /// <param name="authToken">The authentication token for Partner Center.</param>
+        public PowerShellCredentials(AuthenticationToken authToken)
         {
-            this.authResult = authResult;
+            this.authToken = authToken;
         }
 
         /// <summary>
         ///  Gets the expiry time in UTC for the token.
         /// </summary>
-        public DateTimeOffset ExpiresAt => authResult.ExpiresOn;
+        public DateTimeOffset ExpiresAt => authToken.ExpiryTime;
 
         /// <summary>
         /// Gets the token needed to authenticate with the partner service.
         /// </summary>
-        public string PartnerServiceToken => authResult.AccessToken;
+        public string PartnerServiceToken => authToken.Token;
 
         /// <summary>
         /// Indicates whether the partner credentials have expired or not.
@@ -44,7 +43,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         /// <returns><c>true</c> if the partner credentials have expired; otherwise <c>false</c>.</returns>
         public bool IsExpired()
         {
-            return DateTimeOffset.UtcNow > authResult.ExpiresOn;
+            return DateTimeOffset.UtcNow > authToken.ExpiryTime;
         }
     }
 }

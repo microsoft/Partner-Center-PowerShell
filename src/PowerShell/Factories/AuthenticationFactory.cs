@@ -7,8 +7,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
+    using System.Globalization;
+    using System.Security;
+    using System.Threading.Tasks;
     using IdentityModel.Clients.ActiveDirectory;
-    using PartnerCenter.Models.Partners;
     using Profile;
 
     /// <summary>
@@ -22,86 +24,139 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         private static readonly Uri redirectUri = new Uri("urn:ietf:wg:oauth:2.0:oob");
 
         /// <summary>
-        /// Acquires the security token from the authority.
+        /// Acquires a security token from the authority.
         /// </summary>
-        /// <param name="context">Contexted to be used when requesting a security token.</param>
-        /// <returns>The result from the authentication request.</returns>
-        public AuthenticationResult Authenticate(PartnerContext context)
+        /// <param name="applicationId">Identifier of the client requesting the token.</param>
+        /// <param name="account">Account information used when requesting the token.</param>
+        /// <param name="password">Password, or secret, used when requesting the token.</param>
+        /// <param name="environmentName">Name of the environment to be used when requesting the token.</param>
+        /// <param name="tokenCache">Token cache used to lookup cached tokens.</param>
+        /// <returns>The access token and related information.</returns>
+        public AuthenticationResult Authenticate(
+            string applicationId,
+            AzureAccount account,
+            SecureString password,
+            EnvironmentName environmentName,
+            TokenCache tokenCache)
         {
             AuthenticationContext authContext;
             AuthenticationResult authResult;
-            IAggregatePartner partnerOperations;
             PartnerEnvironment environment;
-            OrganizationProfile profile;
+
+            environment = PartnerEnvironment.PublicEnvironments[environmentName];
+
+            authContext = new AuthenticationContext(
+                $"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}",
+                tokenCache);
+
+            if (account.Type == AccountType.ServicePrincipal)
+            {
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                    environment.AzureAdGraphEndpoint,
+                    new ClientCredential(
+                        account.Id,
+                        account.Properties[AzureAccountPropertyType.ServicePrincipalSecret]))).Result;
+            }
+            else if (string.IsNullOrEmpty(account.Id) && password == null)
+            {
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                    environment.PartnerCenterEndpoint,
+                    applicationId,
+                    redirectUri,
+                    new PlatformParameters(PromptBehavior.Never),
+                    new UserIdentifier(account.Id, UserIdentifierType.RequiredDisplayableId))).Result;
+            }
+            else if (!string.IsNullOrEmpty(account.Id) && password != null)
+            {
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                    environment.PartnerCenterEndpoint,
+                    applicationId,
+                    new UserPasswordCredential(
+                        account.Id,
+                        password))).Result;
+            }
+            else
+            {
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                    environment.PartnerCenterEndpoint,
+                    applicationId,
+                    redirectUri,
+                    new PlatformParameters(PromptBehavior.Always),
+                    UserIdentifier.AnyUser)).Result;
+            }
+
+            return authResult;
+        }
+
+        /// <summary>
+        /// Acquires the security token from the authority.
+        /// </summary>
+        /// <param name="context">Context to be used when requesting a security token.</param>
+        /// <param name="password">Password used when requesting a security token.</param>
+        /// <returns>The result from the authentication request.</returns>
+        public AuthenticationToken Authenticate(PartnerContext context, SecureString password = null)
+        {
+            AuthenticationContext authContext;
+            AuthenticationResult authResult;
+            PartnerEnvironment environment;
 
             environment = PartnerEnvironment.PublicEnvironments[context.Environment];
 
             authContext = new AuthenticationContext(
-                $"{environment.ActiveDirectoryAuthority}{context.TenantId}",
-                TokenCache.DefaultShared);
+                $"{environment.ActiveDirectoryAuthority}{context.Account.Properties[AzureAccountPropertyType.Tenant]}",
+                context.TokenCache);
 
-            if (context.AccountType == AccountType.ServicePrincipal)
+            if (context.Account.Type == AccountType.AccessToken)
             {
-                authResult = authContext.AcquireToken(
+                return new AuthenticationToken(
+                    context.Account.Properties[AzureAccountPropertyType.AccessToken],
+                    DateTime.Parse(context.Account.Properties[AzureAccountPropertyType.AccessTokenExpiration], CultureInfo.CurrentCulture));
+            }
+            else if (context.Account.Type == AccountType.ServicePrincipal)
+            {
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
                     environment.AzureAdGraphEndpoint,
                     new ClientCredential(
-                        context.Credentials.UserName,
-                        context.Credentials.Password));
-
-                context.Username = context.Credentials.UserName;
+                        context.Account.Id,
+                        context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret]))).Result;
             }
-            else if (PartnerSession.Instance.Context == null && context.Credentials == null)
+            else if (PartnerSession.Instance.Context == null && password == null)
             {
-                authResult = authContext.AcquireToken(
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
                     redirectUri,
-                    PromptBehavior.Always,
-                    UserIdentifier.AnyUser);
+                    new PlatformParameters(PromptBehavior.Always),
+                    UserIdentifier.AnyUser)).Result;
 
-                context.AccountId = authResult.UserInfo.UniqueId;
-                context.Username = authResult.UserInfo.DisplayableId;
-                context.TenantId = authResult.TenantId;
+                context.Account.Id = authResult.UserInfo.DisplayableId;
+                context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
             }
-            else if (PartnerSession.Instance.Context == null && context.Credentials.Password != null)
+            else if (PartnerSession.Instance.Context == null && password != null)
             {
-                authResult = authContext.AcquireToken(
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
-                    new UserCredential(
-                        context.Credentials.UserName,
-                        context.Credentials.Password));
+                    new UserPasswordCredential(
+                        context.Account.Id,
+                        password))).Result;
 
-                context.AccountId = authResult.UserInfo.UniqueId;
-                context.Username = authResult.UserInfo.DisplayableId;
-                context.TenantId = authResult.TenantId;
+                context.Account.Id = authResult.UserInfo.DisplayableId;
+                context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
             }
             else
             {
-                authResult = authContext.AcquireToken(
+                authResult = Task.Run(() => authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
                     redirectUri,
-                    PromptBehavior.Never,
-                    new UserIdentifier(context.Username, UserIdentifierType.RequiredDisplayableId));
+                    new PlatformParameters(PromptBehavior.Never),
+                    new UserIdentifier(context.Account.Id, UserIdentifierType.RequiredDisplayableId))).Result;
             }
 
-            if (PartnerSession.Instance.Context == null)
-            {
-                PartnerSession.Instance.Context = context;
-
-                if (context.AccountType == AccountType.User)
-                {
-                    partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context);
-                    profile = partnerOperations.Profiles.OrganizationProfile.Get();
-
-                    context.CountryCode = profile.DefaultAddress.Country;
-                    context.Locale = profile.Culture;
-                }
-            }
-
-            return authResult;
-
+            return new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
         }
     }
 }

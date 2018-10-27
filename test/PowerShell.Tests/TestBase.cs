@@ -27,14 +27,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
             Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             PartnerSession.Instance.AuthenticationFactory = new MockAuthenticationFactory();
 
+            AzureAccount account = new AzureAccount
+            {
+                Id = "partner@contoso.com",
+                Type = AccountType.User
+            };
+
+            account.Properties[AzureAccountPropertyType.Tenant] = "0e47c304-9333-4e49-84de-9cb7868b63bc";
+            account.Properties[AzureAccountPropertyType.UserIdentifier] = "cc2f43c3-92c6-4263-8a1c-e214f5b666fd";
+
             PartnerSession.Instance.Context = new PartnerContext
             {
-                AccountId = "bill@contoso.com",
+                Account = account,
                 ApplicationId = "427fa6c7-fcf5-473e-8b28-c6d07b842c9e",
                 CountryCode = "US",
                 Environment = EnvironmentName.GlobalCloud,
                 Locale = "en-US",
-                TenantId = "0e47c304-9333-4e49-84de-9cb7868b63bc"
             };
         }
 

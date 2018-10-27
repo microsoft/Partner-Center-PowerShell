@@ -19,11 +19,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
     public sealed class ResourceCollectionEnumerator<T> : IResourceCollectionEnumerator<T> where T : ResourceBaseWithLinks<StandardResourceCollectionLinks>
     {
         /// <summary>
-        /// The current resource collection.
-        /// </summary>
-        private T resourceCollection;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ResourceCollectionEnumerator{T}" /> class.
         /// </summary>
         /// <param name="resourceCollection">The initial resource collection.</param>
@@ -34,18 +29,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         {
             resourceCollection.AssertNotNull(nameof(resourceCollection));
 
-            this.resourceCollection = resourceCollection;
+            Current = resourceCollection;
         }
 
         /// <summary>
         /// Gets the current resource collection.
         /// </summary>
-        public T Current => resourceCollection;
+        public T Current { get; private set; }
 
         /// <summary>
         /// Gets whether the current result collection has a value or not. This indicates if the collection has been fully enumerated or not.
         /// </summary>
-        public bool HasValue => resourceCollection != null; 
+        public bool HasValue => Current != null; 
 
         /// <summary>
         /// Gets whether the current result collection is the first page of results or not.
@@ -65,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// </param>
         public void Next(IRequestContext context = null)
         {
-            resourceCollection = default(T);
+            Current = default(T);
         }
 
         /// <summary>
@@ -76,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// </param>
         public async Task NextAsync(IRequestContext context = null)
         {
-            resourceCollection = default(T);
+            Current = default(T);
 
             await Task.CompletedTask;
         }
@@ -89,7 +84,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// </param>
         public void Previous(IRequestContext context = null)
         {
-            resourceCollection = default(T);
+            Current = default(T);
         }
 
         /// <summary>
@@ -100,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// </param>
         public async Task PreviousAsync(IRequestContext context = null)
         {
-            resourceCollection = default(T);
+            Current = default(T);
 
             await Task.CompletedTask; 
         }

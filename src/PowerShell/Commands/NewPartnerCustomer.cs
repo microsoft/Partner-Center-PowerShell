@@ -21,6 +21,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class NewPartnerCustomer : PartnerPSCmdlet
     {
         /// <summary>
+        /// Gets or sets the associated partner identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The associated partner identifier. Used if creating a customer for an indirect reseller.", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string AssociatedPartnerId { get; set; }
+
+        /// <summary>
         /// Gets or sets the first line of the billing address.
         /// </summary>
         [Parameter(HelpMessage = "The first line of the customer's billing address.", Mandatory = true)]
@@ -91,7 +98,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string ContactLastName { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the phone number of the primary contact at the customer.
         /// </summary>
         [Parameter(HelpMessage = "The phone number of the primary contact at the customer.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
@@ -161,6 +168,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 customer = new Customer
                 {
+                    AssociatedPartnerId = AssociatedPartnerId,
                     BillingProfile = new CustomerBillingProfile
                     {
                         CompanyName = Name,

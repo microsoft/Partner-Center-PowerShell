@@ -12,6 +12,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
     public enum AccountType
     {
         /// <summary>
+        /// Indicates that an access token will be used for authentication.
+        /// </summary>
+        AccessToken,
+
+        /// <summary>
         /// Indiciates that a service principal will be used for authentication.
         /// </summary>
         ServicePrincipal,
