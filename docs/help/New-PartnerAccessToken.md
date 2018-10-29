@@ -1,7 +1,9 @@
 ---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccessToken.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
 online version:
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccessToken.md
 schema: 2.0.0
 ---
 
@@ -34,7 +36,7 @@ The New-PartnerAccessToken command generates a new access token that can be used
 PS C:\> $appId = '<AAD-AppId>'
 PS C:\> $appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
 PS C:\> $credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
-PS C:\> New-PartnerAccessToken -Credential $credential -ServicePrincipal -TenantId 8355b5b3-bdb5-40d3-85ff-dfd1d2002ecd
+PS C:\> New-PartnerAccessToken -Credential $credential -ServicePrincipal -TenantId '<TenantId>'
 ```
 
 Generates a new access token using a service principal for authentication.
@@ -42,7 +44,7 @@ Generates a new access token using a service principal for authentication.
 ### Example 2
 ```powershell
 PS C:\> $credential = Get-Credential
-PS C:\> New-PartnerAccessToken -ApplicationId '<AAD-AppId>' -Credential $credential -TenantId 8355b5b3-bdb5-40d3-85ff-dfd1d2002ecd
+PS C:\> New-PartnerAccessToken -ApplicationId '<AAD-AppId>' -Credential $credential -TenantId '<TenantId>'
 ```
 
 Generate a new access token using user credentials for authentication.

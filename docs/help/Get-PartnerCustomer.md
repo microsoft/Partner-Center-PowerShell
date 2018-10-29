@@ -1,7 +1,9 @@
 ---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomer.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
 online version:
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomer.md
 schema: 2.0.0
 ---
 
@@ -12,8 +14,14 @@ Gets a specific customer or a list of available customers.
 
 ## SYNTAX
 
+### ById (Default)
 ```
 Get-PartnerCustomer [[-CustomerId] <String>] [<CommonParameters>]
+```
+
+### ByDomain
+```
+Get-PartnerCustomer -Domain <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,11 +50,26 @@ The identifier for the customer.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: ById
 Aliases:
 
 Required: False
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Domain
+The domain assigned to the Azure AD tenant of the customer.
+
+```yaml
+Type: String
+Parameter Sets: ByDomain
+Aliases:
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
