@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Globalization;
     using System.Management.Automation;
+    using System.Reflection;
     using System.Security;
     using System.Text.RegularExpressions;
     using Common;
@@ -26,28 +27,53 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
+        /// The name of the access token parameter set.
+        /// </summary>
+        private const string AccessTokenParameterSet = "AccessToken";
+
+        /// <summary>
+        /// THe name of the configuration property.
+        /// </summary>
+        private const string ConfigurationProperty = "Configuration";
+
+        /// <summary>
+        /// The value used to identify the client connect to the partner service.
+        /// </summary>
+        private const string PartnerCenterClient = "Partner Center PowerShell";
+
+        /// <summary>
         /// The common endpoint address.
         /// </summary>
         private const string CommonEndpoint = "common";
 
         /// <summary>
+        /// The name of the service principal parameter set.
+        /// </summary>
+        private const string ServicePrincipalParameterSet = "ServicePrincipal";
+
+        /// <summary>
+        /// The name of the user credential parameter set.
+        /// </summary>
+        private const string UserCredentialParameterSet = "UserCredential";
+
+        /// <summary>
         /// Gets or sets the access token.
         /// </summary>
-        [Parameter(HelpMessage = "The access token for Partner Center.", Mandatory = true, ParameterSetName = "AccessToken")]
+        [Parameter(HelpMessage = "The access token for Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
         [ValidateNotNullOrEmpty]
         public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when the token for Partner Center expires.
         /// </summary>
-        [Parameter(HelpMessage = "The date and time when the token for Partner Center expires.", Mandatory = true, ParameterSetName = "AccessToken")]
+        [Parameter(HelpMessage = "The date and time when the token for Partner Center expires.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
         public DateTimeOffset AccessTokenExpiresOn { get; set; }
 
         /// <summary>
         /// Gets or sets the application identifier used to access Partner Center.
         /// </summary>
-        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "AccessToken")]
-        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "UserCredential")]
+        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = UserCredentialParameterSet)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
@@ -57,8 +83,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <remarks>
         /// If this parameter is not specified then the user will be prompted for credentials.
         /// </remarks>
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
-        [Parameter(HelpMessage = "User credentials to be used for authentication.", Mandatory = false, ParameterSetName = "UserCredential")]
+        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "User credentials to be used for authentication.", Mandatory = false, ParameterSetName = UserCredentialParameterSet)]
         public PSCredential Credential { get; set; }
 
         /// <summary>
@@ -75,14 +101,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating that a service principal will be used to authenticate.
         /// </summary
-        [Parameter(HelpMessage = "A flag indiicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
+        [Parameter(HelpMessage = "A flag indiicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
         /// Gets or sets the Azure AD domain or tenant identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = "AccessToken")]
-        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
+        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [ValidateNotNullOrEmpty]
         public string TenantId { get; set; }
 
@@ -111,7 +137,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public void OnImport()
         {
-            PartnerService.Instance.ApplicationName = "Partner Center PowerShell";
+            PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
+                ConfigurationProperty, 
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            dynamic configuration = prop.GetValue(PartnerService.Instance);
+
+            configuration.PartnerCenterClient = PartnerCenterClient;
 
             if (PartnerSession.Instance.AuthenticationFactory == null)
             {
@@ -134,13 +165,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             OrganizationProfile profile;
             SecureString password = null;
 
-            if (ParameterSetName.Equals("AccessToken", StringComparison.InvariantCultureIgnoreCase))
+            if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Properties[AzureAccountPropertyType.AccessToken] = AccessToken;
                 account.Properties[AzureAccountPropertyType.AccessTokenExpiration] = AccessTokenExpiresOn.ToString(CultureInfo.CurrentCulture);
                 account.Type = AccountType.AccessToken;
             }
-            else if (ParameterSetName.Equals("ServicePrincipal", StringComparison.InvariantCultureIgnoreCase))
+            else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
                 account.Type = AccountType.ServicePrincipal;
