@@ -51,11 +51,11 @@ namespace Microsoft.Store.PartnerCenter.Core.Extensions
         /// </summary>
         static ApplicationPartnerCredentials()
         {
-            PartnerService.Instance.RefreshCredentials += new PartnerService.RefreshCredentialsHandler(ApplicationPartnerCredentials.OnCredentialsRefreshNeededAsync);
+            PartnerService.Instance.RefreshCredentials += new PartnerService.RefreshCredentialsHandler(OnCredentialsRefreshNeededAsync);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.Store.PartnerCenter.Extensions.ApplicationPartnerCredentials" /> class.
+        /// Initializes a new instance of the <see cref="ApplicationPartnerCredentials" /> class.
         /// </summary>
         /// <param name="aadApplicationId">The application Id in Azure Active Directory.</param>
         /// <param name="aadApplicationSecret">The application secret in Azure Active Directory.</param>
@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.Core.Extensions
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Microsoft.Store.PartnerCenter.Extensions.ApplicationPartnerCredentials" /> class.
+        /// Initializes a new instance of the <see cref="ApplicationPartnerCredentials" /> class.
         /// </summary>
         /// <param name="aadApplicationId">The application Id in Azure Active Directory.</param>
         /// <param name="aadApplicationSecret">The application secret in Azure Active Directory.</param>
@@ -76,23 +76,12 @@ namespace Microsoft.Store.PartnerCenter.Core.Extensions
         public ApplicationPartnerCredentials(string aadApplicationId, string aadApplicationSecret, string aadApplicationDomain, string aadAuthorityEndpoint, string graphApiEndpoint)
           : base(aadApplicationId)
         {
-            if (string.IsNullOrWhiteSpace(aadApplicationSecret))
-            {
-                throw new ArgumentException("aadApplicationSecret has to be set");
-            }
+            aadApplicationId.AssertNotEmpty(nameof(aadApplicationId));
+            aadApplicationSecret.AssertNotEmpty(nameof(aadApplicationSecret));
+            aadApplicationDomain.AssertNotEmpty(nameof(aadApplicationDomain));
+            aadAuthorityEndpoint.AssertNotEmpty(nameof(aadAuthorityEndpoint));
+            graphApiEndpoint.AssertNotEmpty(nameof(graphApiEndpoint));
 
-            if (string.IsNullOrWhiteSpace(aadApplicationDomain))
-            {
-                throw new ArgumentException("aadApplicationDomain has to be set");
-            }
-            if (string.IsNullOrWhiteSpace(aadAuthorityEndpoint))
-            {
-                throw new ArgumentException("aadAuthorityEndpoint has to be set");
-            }
-            if (string.IsNullOrWhiteSpace(graphApiEndpoint))
-            {
-                throw new ArgumentException("graphApiEndpoint has to be set");
-            }
 
             applicationSecret = aadApplicationSecret;
             this.aadApplicationDomain = aadApplicationDomain;
@@ -105,7 +94,11 @@ namespace Microsoft.Store.PartnerCenter.Core.Extensions
         /// <returns>A task that is complete when the authentication is complete.</returns>
         public override async Task AuthenticateAsync(IRequestContext requestContext = null)
         {
-            AuthenticationContext authContext = new AuthenticationContext(activeDirectoryAuthority);
+            AuthenticationContext authContext = new AuthenticationContext(
+                new UriBuilder(activeDirectoryAuthority)
+                {
+                    Path = aadApplicationDomain
+                }.Uri.AbsoluteUri);
 
             if (requestContext != null)
             {
