@@ -44,7 +44,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Alias("EnvironmentName")]
         [ValidateNotNullOrEmpty]
         public EnvironmentName Environment { get; set; }
-       
+
+        /// <summary>
+        /// Gets or sets a flag indicating that a service principal will be used to authenticate.
+        /// </summary
+        [Parameter(HelpMessage = "A flag indiicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
+        public SwitchParameter ServicePrincipal { get; set; }
+
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
