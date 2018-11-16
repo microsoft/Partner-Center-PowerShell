@@ -140,6 +140,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
                 ConfigurationProperty, 
                 BindingFlags.Instance | BindingFlags.NonPublic);
+
             dynamic configuration = prop.GetValue(PartnerService.Instance);
 
             configuration.PartnerCenterClient = PartnerCenterClient;

@@ -37,6 +37,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         }
 
         /// <summary>
+        /// Gets or sets a list of items that depend on this one, so they have to be purchased subsequently.
+        /// </summary>
+        public IEnumerable<CartLineItem> AddonItems { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of billing cycle for the selected catalog item.
         /// </summary>
         public BillingCycleType BillingCycle { get; set; }

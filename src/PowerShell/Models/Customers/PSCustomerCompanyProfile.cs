@@ -7,7 +7,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
 {
     using Common;
-    using PartnerCenter.Models.Customers;
+    using Core.Models;
+    using Core.Models.Customers;
 
     /// <summary>
     /// Holds customer company profile information.
@@ -30,6 +31,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         }
 
         /// <summary>
+        /// Gets or sets the address of the company.
+        /// </summary>
+        public Address Address { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the company.
         /// </summary>
         public string CompanyName { get; set; }
@@ -38,6 +44,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         /// Gets or sets the customer's Azure Active Directory domain.
         /// </summary>
         public string Domain { get; set; }
+
+        /// <summary>
+        /// Gets or set the email address of the contact of the company.
+        /// </summary>
+        public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the Azure Active Directory tenant identifier for the customer's tenant.
