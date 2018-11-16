@@ -37,5 +37,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         {
             return initializeFunc(context);
         }
+
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <param name="context">The partner's execution context.</param>
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        public Core.IPartner CreateCorePartnerOperations(PartnerContext context)
+        {
+            return null; 
+        }
     }
 }

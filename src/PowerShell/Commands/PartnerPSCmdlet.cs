@@ -37,15 +37,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Provides access to the available Partner Center operations.
+        /// Gets the available Partner Center operations.
+        /// </summary>
+        internal Core.IPartner CorePartner { get; private set; }
+
+        /// <summary>
+        /// Gets the available Partner Center operations.
         /// </summary>
         internal IPartner Partner { get; private set; }
+ 
 
         /// <summary>
         /// Operations that happen before the cmdlet is executed.
         /// </summary>
         protected override void BeginProcessing()
         {
+            CorePartner = PartnerSession.Instance.ClientFactory.CreateCorePartnerOperations(Context);
             Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(Context);
         }
 

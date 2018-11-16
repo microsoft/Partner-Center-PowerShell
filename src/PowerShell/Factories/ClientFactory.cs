@@ -30,5 +30,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 new PowerShellCredentials(
                     PartnerSession.Instance.AuthenticationFactory.Authenticate(context)));
         }
+
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <param name="context">The partner's execution context.</param>
+        /// <returns>An instance of the <see cref="Core.PartnerOperations" /> class.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// <paramref name="context" /> is null.
+        /// </exception>
+        public virtual Core.IPartner CreateCorePartnerOperations(PartnerContext context)
+        {
+            context.AssertNotNull(nameof(context));
+
+            AuthenticationToken token = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
+
+            return Core.PartnerService.Instance.CreatePartnerOperations(
+                new PowerShellCoreCredentials(
+                    new Core.AuthenticationToken(token.Token, token.ExpiryTime)));
+        }
     }
 }

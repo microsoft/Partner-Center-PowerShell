@@ -87,7 +87,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
 
-
             authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 ApplicationId,
                 account,

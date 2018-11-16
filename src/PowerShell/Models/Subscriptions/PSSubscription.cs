@@ -36,6 +36,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         }
 
         /// <summary>
+        /// Gets or sets the actions.
+        /// </summary>
+        public IEnumerable<string> Actions { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether automatic renew is enabled or not.
         /// </summary>
         public bool AutoRenewEnabled { get; set; }
@@ -84,6 +89,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public string FriendlyName { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the subscription has purchasable add-ons.
+        /// </summary>
+        public bool HasPurchasableAddons { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the subscription is a trial.
+        /// </summary>
+        public bool IsTrial { get; set; }
+
+        /// <summary>
         /// Gets or sets the offer identifier.
         /// </summary>
         public string OfferId { get; set; }
@@ -94,14 +109,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public string OfferName { get; set; }
 
         /// <summary>
-        /// Gets or sets the MPN identifier. This only applies to indirect partner scenarios.
-        /// </summary>
-        public string PartnerId { get; set; }
-
-        /// <summary>
         /// Gets or sets the parent subscription identifier.
         /// </summary>
         public string ParentSubscriptionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MPN identifier. This only applies to indirect partner scenarios.
+        /// </summary>
+        public string PartnerId { get; set; }
 
         /// <summary>
         /// Gets or sets the quantity.
