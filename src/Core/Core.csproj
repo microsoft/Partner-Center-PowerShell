@@ -4,6 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Microsoft.Store.PartnerCenter.Core</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.Core</RootNamespace>
+    <Version>1.5.1811.3</Version>
+    <Company>Microsoft Corporation</Company>
+    <Authors>Microsoft</Authors>
+    <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
+    <PackageIconUrl />
+    <PackageLicenseUrl>https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -32,7 +32,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string AccessTokenParameterSet = "AccessToken";
 
         /// <summary>
-        /// THe name of the configuration property.
+        /// The name of the assembly version property.
+        /// </summary>
+        private const string AssemblyVersionProperty = "AssemblyVersion";
+
+        /// <summary>
+        /// The name of the configuration property.
         /// </summary>
         private const string ConfigurationProperty = "Configuration";
 
@@ -101,7 +106,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating that a service principal will be used to authenticate.
         /// </summary
-        [Parameter(HelpMessage = "A flag indiicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "A flag indicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
@@ -138,12 +143,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public void OnImport()
         {
             PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
-                ConfigurationProperty, 
+                ConfigurationProperty,
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
             dynamic configuration = prop.GetValue(PartnerService.Instance);
 
+            // Override the value for the Partner Center client property.
             configuration.PartnerCenterClient = PartnerCenterClient;
+
+            prop = PartnerService.Instance.GetType().GetProperty(
+                AssemblyVersionProperty,
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+            // Override the value for the assembly version property.
+            prop.SetValue(PartnerService.Instance, typeof(ConnectPartnerCenter).Assembly.GetName().Version.ToString());
 
             if (PartnerSession.Instance.AuthenticationFactory == null)
             {

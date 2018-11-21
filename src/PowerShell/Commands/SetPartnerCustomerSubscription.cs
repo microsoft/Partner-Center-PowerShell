@@ -6,11 +6,14 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Customers;
     using Models.Subscriptions;
+    using PartnerCenter.Models.Offers;
+    using PartnerCenter.Models.Orders;
     using PartnerCenter.Models.Subscriptions;
     using Properties;
 
@@ -29,6 +32,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The customer object used to scope the request.", ParameterSetName = "CustomerObject", Mandatory = true)]
         public PSCustomer InputObject { get; set; }
+
+        /// <summary>
+        /// Gets or sets the billing cycle for the subscription.
+        /// </summary>
+        [Parameter(HelpMessage = "The billing cycle for the subscription.", Mandatory = false)]
+        [ValidateSet(nameof(BillingCycleType.Annual), nameof(BillingCycleType.Monthly))]
+        public BillingCycleType? BillingCycle { get; set; }
 
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -56,6 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
+        [ValidateSet(nameof(SubscriptionStatus.Active), nameof(SubscriptionStatus.Suspended))]
         public SubscriptionStatus? Status { get; set; }
 
         /// <summary>
@@ -89,6 +100,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             if (AutoRenew.HasValue)
             {
                 subscription.AutoRenewEnabled = AutoRenew.Value;
+            }
+
+            if (BillingCycle.HasValue)
+            {
+                Partner.Customers[customerId].Orders[subscription.OrderId].Patch(new Order
+                {
+                    BillingCycle = BillingCycle.Value,
+                    LineItems = new List<OrderLineItem>
+                    {
+                       new OrderLineItem
+                       {
+                           LineItemNumber = 0,
+                           OfferId = subscription.OfferId,
+                           ParentSubscriptionId = subscription.ParentSubscriptionId,
+                           SubscriptionId = subscription.Id,
+                           Quantity = subscription.Quantity
+                       }
+                    },
+                    ReferenceCustomerId = customerId
+                });
+
+                subscription.BillingCycle = BillingCycle.Value;
             }
 
             if (!string.IsNullOrEmpty(FriendlyName))

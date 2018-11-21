@@ -16,16 +16,16 @@ Updates the specified customer subscription.
 
 ### Customer
 ```
-Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] -CustomerId <String> [-FriendlyName <String>]
- [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] [-BillingCycle <BillingCycleType>] -CustomerId <String>
+ [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
 ```
-Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] -InputObject <PSCustomer> [-FriendlyName <String>]
- [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] -InputObject <PSCustomer>
+ [-BillingCycle <BillingCycleType>] [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>]
+ -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -47,6 +47,21 @@ A flag indiciating whether or not the subscription will auto renew.
 
 ```yaml
 Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -BillingCycle
+The billing cycle for the subscription.
+
+```yaml
+Type: BillingCycleType
 Parameter Sets: (All)
 Aliases:
 
