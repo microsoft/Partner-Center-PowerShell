@@ -22,8 +22,8 @@ New-PartnerAccessToken -ApplicationId <String> [-Credential <PSCredential>] [-En
 
 ### ServicePrincipal
 ```
-New-PartnerAccessToken -Credential <PSCredential> [-Environment <EnvironmentName>] -TenantId <String>
- [-TokenCache <TokenCache>] [<CommonParameters>]
+New-PartnerAccessToken -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
+ -TenantId <String> [-TokenCache <TokenCache>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -103,6 +103,21 @@ Aliases: EnvironmentName
 Accepted values: GlobalCloud, ChinaCloud, GermanCloud, USGovernment
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ServicePrincipal
+A flag indicating that a service principal will be used to authenticate.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

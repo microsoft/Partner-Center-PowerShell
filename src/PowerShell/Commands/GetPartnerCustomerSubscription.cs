@@ -10,10 +10,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Common;
+    using Models.Customers;
+    using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
-    using PartnerCenter.PowerShell.Models.Customers;
-    using PartnerCenter.PowerShell.Models.Subscriptions;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscription", DefaultParameterSetName = "Customer"), OutputType(typeof(PSSubscription))]
     public class GetPartnerCustomerSubscription : PartnerPSCmdlet
