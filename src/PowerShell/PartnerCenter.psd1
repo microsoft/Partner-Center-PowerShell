@@ -200,7 +200,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added support for access token authentication. Correct an issue with re-authenticating.'
+            ReleaseNotes = 'Added the ability to change the billing cycle for license based subscriptions. Added the address and email properties to the customer company profile.'
 
             # Prerelease string of this module
             # Prerelease = 'preview'
