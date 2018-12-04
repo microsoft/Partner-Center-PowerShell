@@ -14,7 +14,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Common;
     using PartnerCenter.Enumerators;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
@@ -91,7 +90,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Partner.Customers.ById(customerId).Users.ById(userId).Patch(updatedCustomerUser);
                 WriteObject(true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error restoring user id: " + userId, ex);
             }

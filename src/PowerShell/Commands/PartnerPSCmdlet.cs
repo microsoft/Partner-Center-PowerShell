@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using Exceptions;
-    using PartnerCenter.Exceptions;
     using Profile;
     using Properties;
 
@@ -39,12 +38,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets the available Partner Center operations.
         /// </summary>
-        internal Core.IPartner CorePartner { get; private set; }
+        internal IPartner CorePartner { get; private set; }
 
         /// <summary>
         /// Gets the available Partner Center operations.
         /// </summary>
-        internal IPartner Partner { get; private set; }
+        internal PartnerCenter.IPartner Partner { get; private set; }
  
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 ExecuteCmdlet();
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 if (ex.ServiceErrorPayload != null)
                 {

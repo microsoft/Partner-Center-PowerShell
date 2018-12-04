@@ -115,6 +115,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The authentication token has expired..
+        /// </summary>
+        internal static string AuthenticationTokenExpired {
+            get {
+                return ResourceManager.GetString("AuthenticationTokenExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checks out the cart with the identifier of {0}..
         /// </summary>
         internal static string CheckoutPartnerCustomerCartWhatIf {

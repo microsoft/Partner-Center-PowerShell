@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.PowerShell.Exceptions;
     using PartnerCenter.PowerShell.Properties;
 
@@ -48,7 +47,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].Delete();
                 WriteObject(true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("An error was encountered deleting policy id " + PolicyId, ex);
             }

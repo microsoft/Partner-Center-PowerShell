@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Exceptions
     using System.Management.Automation;
     using System.Reflection;
     using System.Runtime.Serialization;
-    using PartnerCenter.Exceptions;
 
     [Serializable]
     public class PSPartnerException : PSInvalidOperationException
@@ -53,7 +52,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Exceptions
 
         private static string GetApiError(string message, Exception innerException)
         {
-            PartnerException ex = (PartnerException)innerException;
+            PartnerCenter.Exceptions.PartnerException ex = (PartnerCenter.Exceptions.PartnerException)innerException;
             ApiError error = (ApiError)Enum.Parse(typeof(ApiError), ex.ServiceErrorPayload.ErrorCode);
             return string.IsNullOrEmpty(message) ? "ErrorCode : " + ex.ServiceErrorPayload.ErrorCode + " - " + GetEnumDescription(error) : message + " - ErrorCode: " + ex.ServiceErrorPayload.ErrorCode + " - " + GetEnumDescription(error);
         }

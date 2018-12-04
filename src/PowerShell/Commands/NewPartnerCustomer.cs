@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Models.Customers;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.Customers;
     using Profile;
     using Properties;
     using Validations;
@@ -137,7 +136,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Customer customer;
+            PartnerCenter.Models.Customers.Customer customer;
             IValidator<Address> validator;
             string country;
             string culture;
@@ -166,10 +165,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     region = BillingAddressRegion.Equals("US", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
                 }
 
-                customer = new Customer
+                customer = new PartnerCenter.Models.Customers.Customer
                 {
                     AssociatedPartnerId = AssociatedPartnerId,
-                    BillingProfile = new CustomerBillingProfile
+                    BillingProfile = new PartnerCenter.Models.Customers.CustomerBillingProfile
                     {
                         CompanyName = Name,
                         Culture = culture,
@@ -191,7 +190,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         Language = Language,
                         LastName = ContactLastName
                     },
-                    CompanyProfile = new CustomerCompanyProfile
+                    CompanyProfile = new PartnerCenter.Models.Customers.CustomerCompanyProfile
                     {
                         CompanyName = Name,
                         Domain = Domain

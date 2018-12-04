@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     using System.Text.RegularExpressions;
     using Common;
     using Exceptions;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.CountryValidationRules;
     using Properties;
@@ -22,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// <summary>
         /// Provides the ability to interact with Partner Center.
         /// </summary>
-        private readonly IPartner partner;
+        private readonly PartnerCenter.IPartner partner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddressValidator" /> class.
@@ -31,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// <exception cref="ArgumentNullException">
         /// <paramref name="partner"/> is null.
         /// </exception>
-        public AddressValidator(IPartner partner)
+        public AddressValidator(PartnerCenter.IPartner partner)
         {
             partner.AssertNotNull(nameof(partner));
             this.partner = partner;
@@ -97,7 +96,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 
                 return partner.Validations.IsAddressValid(resource);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 if (ex.ServiceErrorPayload != null)
                 {

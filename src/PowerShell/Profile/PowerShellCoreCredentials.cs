@@ -11,18 +11,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
     /// <summary>
     /// Provides the credentials need to access the partner service.
     /// </summary>
-    public class PowerShellCoreCredentials : Core.IPartnerCredentials
+    public class PowerShellCoreCredentials : IPartnerCredentials
     {
         /// <summary>
         /// The result from a successfully token request.
         /// </summary>
-        private readonly Core.AuthenticationToken authToken;
+        private readonly AuthenticationToken authToken;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerShellCoreCredentials" /> class.
         /// </summary>
         /// <param name="authToken">The authentication token for Partner Center.</param>
-        public PowerShellCoreCredentials(Core.AuthenticationToken authToken)
+        public PowerShellCoreCredentials(AuthenticationToken authToken)
         {
             this.authToken = authToken;
         }

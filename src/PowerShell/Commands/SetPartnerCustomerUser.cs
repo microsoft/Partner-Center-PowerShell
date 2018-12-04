@@ -13,7 +13,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Common;
     using Exceptions;
     using Models.CustomerUsers;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Users;
     using Properties;
 
@@ -168,7 +167,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 }
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
             }

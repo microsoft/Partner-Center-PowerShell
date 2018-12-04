@@ -82,14 +82,73 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationToken.cs" />
+    <Compile Include="BasePartnerComponent.cs" />
+    <Compile Include="BasePartnerComponentString.cs" />
     <Compile Include="Commands\DisconnectPartnerCenter.cs" />
     <Compile Include="Commands\GetPartnerCustomerBillingProfile.cs" />
     <Compile Include="Commands\GetPartnerCustomerCompanyProfile.cs" />
     <Compile Include="Commands\NewPartnerAccessToken.cs" />
+    <Compile Include="Customers\CustomerCollectionOperations.cs" />
+    <Compile Include="Customers\CustomerOperations.cs" />
+    <Compile Include="Customers\ICustomerCollection.cs" />
+    <Compile Include="Customers\ICustomerOperations.cs" />
+    <Compile Include="Customers\Profiles\CustomerCompanyProfileOperations.cs" />
+    <Compile Include="Customers\Profiles\CustomerProfileCollectionOperations.cs" />
+    <Compile Include="Customers\Profiles\ICustomerProfileCollection.cs" />
+    <Compile Include="Customers\Profiles\ICustomerReadonlyProfile.cs" />
+    <Compile Include="Exceptions\PartnerErrorCategory.cs" />
+    <Compile Include="Exceptions\PartnerException.cs" />
+    <Compile Include="Extensions\ApplicationPartnerCredentials.cs" />
+    <Compile Include="Extensions\BasePartnerCredentials.cs" />
+    <Compile Include="Extensions\PartnerCredentials.cs" />
+    <Compile Include="Extensions\ResourceExtensions.cs" />
+    <Compile Include="Extensions\SecureStringExtensions.cs" />
+    <Compile Include="Extensions\TokenRefresher.cs" />
+    <Compile Include="Extensions\UriExtensions.cs" />
+    <Compile Include="Extensions\UserPartnerCredentials.cs" />
+    <Compile Include="Extensions\ValidationExtensions.cs" />
     <Compile Include="Factories\AuthenticationFactory.cs" />
     <Compile Include="Factories\IAuthenticationFactory.cs" />
+    <Compile Include="Factories\IPartnerFactory.cs" />
+    <Compile Include="Factories\StandardPartnerFactory.cs" />
+    <Compile Include="GenericOperations\ICountrySelector.cs" />
+    <Compile Include="GenericOperations\IEntireEntityCollectionRetrievalOperations.cs" />
+    <Compile Include="GenericOperations\IEntityCollectionRetrievalOperations.cs" />
+    <Compile Include="GenericOperations\IEntityCreateOperations.cs" />
+    <Compile Include="GenericOperations\IEntityDeleteOperations.cs" />
+    <Compile Include="GenericOperations\IEntityGetOperations.cs" />
+    <Compile Include="GenericOperations\IEntityPatchOperations.cs" />
+    <Compile Include="GenericOperations\IEntityPutOperations.cs" />
+    <Compile Include="GenericOperations\IEntitySelector.cs" />
+    <Compile Include="GenericOperations\IPagedEntityCollectionRetrievalOperations.cs" />
+    <Compile Include="IPartner.cs" />
+    <Compile Include="IPartnerComponent.cs" />
+    <Compile Include="IPartnerCredentials.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\ApiFault.cs" />
+    <Compile Include="Models\Customers\Customer.cs" />
+    <Compile Include="Models\Customers\CustomerBillingProfile.cs" />
+    <Compile Include="Models\Customers\CustomerCompanyProfile.cs" />
+    <Compile Include="Models\Customers\CustomerPartnerRelationship.cs" />
     <Compile Include="Models\Customers\PSCustomerBillingProfile.cs" />
     <Compile Include="Models\Customers\PSCustomerCompanyProfile.cs" />
+    <Compile Include="Models\JsonConverters\EnumJsonConverter.cs" />
+    <Compile Include="Models\JsonConverters\ResourceCollectionConverter.cs" />
+    <Compile Include="Models\Link.cs" />
+    <Compile Include="Models\ResourceAttributes.cs" />
+    <Compile Include="Models\ResourceBase.cs" />
+    <Compile Include="Models\ResourceBaseWithLinks.cs" />
+    <Compile Include="Models\ResourceCollection.cs" />
+    <Compile Include="Models\ResourceCollectionWithLinks.cs" />
+    <Compile Include="Models\SeekBasedResourceCollection.cs" />
+    <Compile Include="Models\StandardResourceCollectionLinks.cs" />
+    <Compile Include="Models\StandardResourceLinks.cs" />
+    <Compile Include="Models\UserCredentials.cs" />
+    <Compile Include="Network\IPartnerServiceClient.cs" />
+    <Compile Include="Network\PartnerServiceClient.cs" />
+    <Compile Include="PartnerOperations.cs" />
+    <Compile Include="PartnerService.cs" />
     <Compile Include="Profile\AccountType.cs" />
     <Compile Include="Commands\AddPartnerCustomerCartLineItem.cs" />
     <Compile Include="Commands\GetPartnerCustomerUserLicense.cs" />
@@ -266,12 +325,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RequestContext\IRquestContext.cs" />
+    <Compile Include="RequestContext\RequestContext.cs" />
+    <Compile Include="RequestContext\RequestContextFactory.cs" />
     <Compile Include="Validations\AddressValidator.cs" />
     <Compile Include="Validations\IValidator.cs" />
     <Compile Include="Validations\ValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Configuration\PartnerCenterSdk.json" />
     <None Include="Microsoft.Store.PartnerCenter.PowerShell.format.ps1xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -296,16 +359,6 @@
     <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Text.Analyzers.2.6.2\analyzers\dotnet\cs\Text.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Text.Analyzers.2.6.2\analyzers\dotnet\cs\Text.CSharp.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core.Models\Core.Models.csproj">
-      <Project>{82cea00b-dd46-402e-899b-a0f21b6e5e73}</Project>
-      <Name>Core.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{2adbc432-0006-491c-b043-96d50ad80f3a}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

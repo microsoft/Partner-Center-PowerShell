@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Exceptions;
     using Models.Partners;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;
     using Validations;
@@ -134,7 +133,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
                     }
                 }
-                catch (PartnerException ex)
+                catch (PartnerCenter.Exceptions.PartnerException ex)
                 {
                     throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
                 }

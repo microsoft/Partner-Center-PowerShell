@@ -7,8 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
 {
     using Common;
-    using Core.Models;
-    using Core.Models.Customers;
+    using Models;
 
     /// <summary>
     /// Holds customer company profile information.

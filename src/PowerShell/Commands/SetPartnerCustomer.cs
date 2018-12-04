@@ -12,9 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Exceptions;
     using Models.Customers;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.Customers;
     using Properties;
     using Validations;
 
@@ -125,7 +123,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Customer customer;
+            PartnerCenter.Models.Customers.Customer customer;
             IValidator<Address> validator;
             string customerId;
 
@@ -167,7 +165,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 }
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
             }

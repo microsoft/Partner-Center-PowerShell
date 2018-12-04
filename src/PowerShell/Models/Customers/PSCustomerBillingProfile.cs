@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
 {
     using Common;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.Customers;
 
     /// <summary>
     /// The customer billing profile information.
@@ -26,7 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         /// Initializes a new instance of the <see cref="PSCustomerBillingProfile" /> class.
         /// </summary>
         /// <param name="profile">The base customer for this instance.</param>
-        public PSCustomerBillingProfile(CustomerBillingProfile profile)
+        public PSCustomerBillingProfile(PartnerCenter.Models.Customers.CustomerBillingProfile profile)
         {
             this.CopyFrom(profile);
         }

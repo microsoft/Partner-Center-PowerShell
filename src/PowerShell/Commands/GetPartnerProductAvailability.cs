@@ -10,7 +10,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using Exceptions;
     using Models.Products;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
     using Profile;
@@ -110,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
                 }
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
             }
@@ -135,7 +134,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     WriteObject(new PSProductAvailability(productAvailability));
                 }
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
             }
