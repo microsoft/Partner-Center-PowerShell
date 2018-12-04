@@ -58,7 +58,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// <param name="context">
         /// An optional request context. If not provided, the context associated with the partner operations will be used.
         /// </param>
-        public void Next(IRequestContext context = null)
+        public void Next(PartnerCenter.RequestContext.IRequestContext context = null)
         {
             Current = default(T);
         }
@@ -69,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// <param name="context">
         /// An optional request context. If not provided, the context associated with the partner operations will be used.
         /// </param>
-        public async Task NextAsync(IRequestContext context = null)
+        public async Task NextAsync(PartnerCenter.RequestContext.IRequestContext context = null)
         {
             Current = default(T);
 
@@ -82,7 +82,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// <param name="context">
         /// An optional request context. If not provided, the context associated with the partner operations will be used.
         /// </param>
-        public void Previous(IRequestContext context = null)
+        public void Previous(PartnerCenter.RequestContext.IRequestContext context = null)
         {
             Current = default(T);
         }
@@ -93,7 +93,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Enumerators
         /// <param name="context">
         /// An optional request context. If not provided, the context associated with the partner operations will be used.
         /// </param>
-        public async Task PreviousAsync(IRequestContext context = null)
+        public async Task PreviousAsync(PartnerCenter.RequestContext.IRequestContext context = null)
         {
             Current = default(T);
 

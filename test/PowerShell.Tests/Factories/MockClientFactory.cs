@@ -43,7 +43,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public Core.IPartner CreateCorePartnerOperations(PartnerContext context)
+        public IPartner CreateCorePartnerOperations(PartnerContext context)
         {
             return null; 
         }

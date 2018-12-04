@@ -307,14 +307,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Core.Models\Core.Models.csproj">
-      <Project>{82cea00b-dd46-402e-899b-a0f21b6e5e73}</Project>
-      <Name>Core.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Core\Core.csproj">
-      <Project>{2adbc432-0006-491c-b043-96d50ad80f3a}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\PowerShell\PowerShell.csproj">
       <Project>{6714ca29-04a6-4d4e-919c-28af294e6ba6}</Project>
       <Name>PowerShell</Name>

@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
     /// <summary>
     /// Provides the credentials need to access the partner service.
     /// </summary>
-    public class PowerShellCredentials : IPartnerCredentials
+    public class PowerShellCredentials : PartnerCenter.IPartnerCredentials
     {
         /// <summary>
         /// The result from a successfully token request.

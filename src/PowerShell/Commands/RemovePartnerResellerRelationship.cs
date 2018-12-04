@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Models.Customers;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.Customers;
     using PartnerCenter.Models.Subscriptions;
     using Properties;
 
@@ -34,7 +33,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Customer customer;
+            PartnerCenter.Models.Customers.Customer customer;
             ResourceCollection<Subscription> subscriptions;
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerResellerRelationshipWhatIf, CustomerId)))
@@ -47,7 +46,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Partner.Customers[CustomerId].Subscriptions[subscription.Id].Patch(subscription);
                 }
 
-                customer = Partner.Customers[CustomerId].Patch(new Customer { RelationshipToPartner = CustomerPartnerRelationship.None });
+                customer = Partner.Customers[CustomerId].Patch(
+                    new PartnerCenter.Models.Customers.Customer
+                    {
+                        RelationshipToPartner = PartnerCenter.Models.Customers.CustomerPartnerRelationship.None
+                    });
 
                 WriteObject(new PSCustomer(customer));
             }

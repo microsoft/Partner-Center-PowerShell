@@ -13,7 +13,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Common;
     using Exceptions;
     using Models.Products;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Products;
     using Profile;
 
@@ -100,7 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 WriteObject(item.Select(i => new PSInventoryItem(i)), true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException(null, ex);
             }

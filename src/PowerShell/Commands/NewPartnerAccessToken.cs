@@ -21,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// The common endpoint used during authentication.
         /// </summary>
-        private const string CommonEndpoint = "common"; 
+        private const string CommonEndpoint = "common";
 
         /// <summary>
         /// Gets or sets the application identifier.

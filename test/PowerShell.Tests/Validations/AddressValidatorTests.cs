@@ -25,9 +25,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
         {
             Address address;
             AddressValidator validator;
-            Mock<IPartner> partnerOperations;
+            Mock<PartnerCenter.IPartner> partnerOperations;
 
-            partnerOperations = new Mock<IPartner>();
+            partnerOperations = new Mock<PartnerCenter.IPartner>();
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("US").Get())
                 .Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-US"));
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(false);
@@ -57,9 +57,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
         {
             Address address;
             AddressValidator validator;
-            Mock<IPartner> partnerOperations;
+            Mock<PartnerCenter.IPartner> partnerOperations;
 
-            partnerOperations = new Mock<IPartner>();
+            partnerOperations = new Mock<PartnerCenter.IPartner>();
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("CN").Get())
                 .Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-CN"));
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
@@ -89,9 +89,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
         {
             Address address;
             AddressValidator validator;
-            Mock<IPartner> partnerOperations;
+            Mock<PartnerCenter.IPartner> partnerOperations;
 
-            partnerOperations = new Mock<IPartner>();
+            partnerOperations = new Mock<PartnerCenter.IPartner>();
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("GB").Get())
                 .Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-GB"));
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
@@ -120,9 +120,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
         {
             Address address;
             AddressValidator validator;
-            Mock<IPartner> partnerOperations;
+            Mock<PartnerCenter.IPartner> partnerOperations;
 
-            partnerOperations = new Mock<IPartner>();
+            partnerOperations = new Mock<PartnerCenter.IPartner>();
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("DE").Get())
                 .Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-DE"));
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);
@@ -151,9 +151,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Validations
         {
             Address address;
             AddressValidator validator;
-            Mock<IPartner> partnerOperations;
+            Mock<PartnerCenter.IPartner> partnerOperations;
 
-            partnerOperations = new Mock<IPartner>();
+            partnerOperations = new Mock<PartnerCenter.IPartner>();
             partnerOperations.Setup(p => p.CountryValidationRules.ByCountry("US").Get())
                 .Returns(OperationFactory.Instance.GetResource<CountryValidationRules>("GetCountryValidationRules-US"));
             partnerOperations.Setup(p => p.Validations.IsAddressValid(It.IsAny<Address>())).Returns(true);

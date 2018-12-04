@@ -24,7 +24,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
-        /// <returns>An instance of the <see cref="Core.PartnerOperations" /> class.</returns>
-        Core.IPartner CreateCorePartnerOperations(PartnerContext context);
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        IPartner CreateCorePartnerOperations(PartnerContext context);
     }
 }

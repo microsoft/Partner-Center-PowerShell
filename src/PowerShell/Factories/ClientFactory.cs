@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             context.AssertNotNull(nameof(context));
 
-            return PartnerService.Instance.CreatePartnerOperations(
+            return PartnerCenter.PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(
                     PartnerSession.Instance.AuthenticationFactory.Authenticate(context)));
         }
@@ -39,15 +39,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <exception cref="System.ArgumentNullException">
         /// <paramref name="context" /> is null.
         /// </exception>
-        public virtual Core.IPartner CreateCorePartnerOperations(PartnerContext context)
+        public virtual PowerShell.IPartner CreateCorePartnerOperations(PartnerContext context)
         {
             context.AssertNotNull(nameof(context));
 
             AuthenticationToken token = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
 
-            return Core.PartnerService.Instance.CreatePartnerOperations(
+            return PowerShell.PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCoreCredentials(
-                    new Core.AuthenticationToken(token.Token, token.ExpiryTime)));
+                    new PowerShell.AuthenticationToken(token.Token, token.ExpiryTime)));
         }
     }
 }

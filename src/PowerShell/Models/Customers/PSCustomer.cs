@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
 {
     using Common;
-    using PartnerCenter.Models.Customers;
 
     /// <summary>
     /// Represents a partner's customer.
@@ -25,6 +24,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         /// </summary>
         /// <param name="customer">The base customer for this instance.</param>
         public PSCustomer(Customer customer)
+        {
+            this.CopyFrom(customer, CloneAdditionalOperations);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSCustomer" /> class.
+        /// </summary>
+        /// <param name="customer">The base customer for this instance.</param>
+        public PSCustomer(PartnerCenter.Models.Customers.Customer customer)
         {
             this.CopyFrom(customer, CloneAdditionalOperations);
         }
@@ -77,6 +85,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
         /// </summary>
         /// <param name="customer">The customer being cloned.</param>
         private void CloneAdditionalOperations(Customer customer)
+        {
+            CustomerId = customer.Id;
+            Domain = customer?.CompanyProfile?.Domain;
+            Name = customer?.CompanyProfile?.CompanyName;
+        }
+
+        /// <summary>
+        /// Addtional operations to be performed when cloning an instance of <see cref="Customer" /> to an instance of <see cref="PSCustomer" />. 
+        /// </summary>
+        /// <param name="customer">The customer being cloned.</param>
+        private void CloneAdditionalOperations(PartnerCenter.Models.Customers.Customer customer)
         {
             CustomerId = customer.Id;
             Domain = customer?.CompanyProfile?.Domain;

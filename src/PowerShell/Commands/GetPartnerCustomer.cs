@@ -46,13 +46,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;
-            List<Customer> customers;
-            SeekBasedResourceCollection<Customer> seekCustomers;
+            IResourceCollectionEnumerator<SeekBasedResourceCollection<PartnerCenter.Models.Customers.Customer>> customersEnumerator;
+            List<PartnerCenter.Models.Customers.Customer> customers;
+            SeekBasedResourceCollection<PartnerCenter.Models.Customers.Customer> seekCustomers;
 
             if (string.IsNullOrEmpty(CustomerId))
             {
-                customers = new List<Customer>();
+                customers = new List<PartnerCenter.Models.Customers.Customer>();
 
                 if (string.IsNullOrEmpty(Domain))
                 {

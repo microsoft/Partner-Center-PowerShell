@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Common;
     using Exceptions;
     using Models.Products;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
     using Profile;
@@ -100,7 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 if (product != null)
                     WriteObject(new PSProduct(product));
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error getting product id: " + productId, ex);
             }
@@ -129,7 +128,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 if (products.TotalCount > 0)
                     WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error getting products for catalog: " + targetView, ex);
             }
@@ -162,7 +161,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 if (products.TotalCount > 0)
                     WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error getting products for segment: " + targetSegment, ex);
             }

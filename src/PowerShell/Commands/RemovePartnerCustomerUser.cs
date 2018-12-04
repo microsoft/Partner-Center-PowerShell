@@ -15,7 +15,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Common;
     using Exceptions;
     using PartnerCenter.Enumerators;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Users;
     using Properties;
@@ -85,7 +84,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Partner.Customers.ById(customerId).Users.ById(userId).Delete();
                 WriteObject(true);
             }
-            catch (PartnerException ex)
+            catch (PartnerCenter.Exceptions.PartnerException ex)
             {
                 throw new PSPartnerException("Error deleting user id: " + userId, ex);
             }

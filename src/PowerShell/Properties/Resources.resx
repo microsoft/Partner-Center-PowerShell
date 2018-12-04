@@ -135,6 +135,9 @@
   <data name="AuditRecordDateError" xml:space="preserve">
     <value>Audit records are only available for the past 90 days. Please update the start date parameter and try again.</value>
   </data>
+  <data name="AuthenticationTokenExpired" xml:space="preserve">
+    <value>The authentication token has expired.</value>
+  </data>
   <data name="CheckoutPartnerCustomerCartWhatIf" xml:space="preserve">
     <value>Checks out the cart with the identifier of {0}.</value>
   </data>
