@@ -14,7 +14,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Common;
     using Factories;
-    using IdentityModel.Clients.ActiveDirectory;
     using PartnerCenter.Models.Partners;
     using Profile;
     using Properties;
@@ -118,13 +117,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string TenantId { get; set; }
 
         /// <summary>
-        /// Gets or sets the cache used to lookup cached tokens.
-        /// </summary>
-        [Parameter(HelpMessage = "The cache used to lookup cached tokens.", Mandatory = false)]
-        [ValidateNotNull]
-        public TokenCache TokenCache { get; set; }
-
-        /// <summary>
         /// Operations that happen before the cmdlet is executed.
         /// </summary>
         protected override void BeginProcessing()
@@ -207,8 +199,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 Account = account,
                 ApplicationId = ApplicationId,
-                Environment = Environment,
-                TokenCache = TokenCache ?? TokenCache.DefaultShared
+                Environment = Environment
             };
 
             PartnerSession.Instance.AuthenticationFactory.Authenticate(context, password);
