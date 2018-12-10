@@ -71,8 +71,8 @@
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -97,6 +97,7 @@
     <Compile Include="Customers\Profiles\CustomerProfileCollectionOperations.cs" />
     <Compile Include="Customers\Profiles\ICustomerProfileCollection.cs" />
     <Compile Include="Customers\Profiles\ICustomerReadonlyProfile.cs" />
+    <Compile Include="Exceptions\AuthenticationException.cs" />
     <Compile Include="Exceptions\PartnerErrorCategory.cs" />
     <Compile Include="Exceptions\PartnerException.cs" />
     <Compile Include="Extensions\ApplicationPartnerCredentials.cs" />
@@ -127,6 +128,10 @@
     <Compile Include="IPartnerCredentials.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\ApiFault.cs" />
+    <Compile Include="Models\Authentication\AuthenticationResponse.cs" />
+    <Compile Include="Models\Authentication\AuthenticationResult.cs" />
+    <Compile Include="Models\Authentication\AuthorizationResult.cs" />
+    <Compile Include="Models\Authentication\AuthorizationStatus.cs" />
     <Compile Include="Models\Customers\Customer.cs" />
     <Compile Include="Models\Customers\CustomerBillingProfile.cs" />
     <Compile Include="Models\Customers\CustomerCompanyProfile.cs" />
@@ -149,6 +154,22 @@
     <Compile Include="Network\PartnerServiceClient.cs" />
     <Compile Include="PartnerOperations.cs" />
     <Compile Include="PartnerService.cs" />
+    <Compile Include="Platform\CustomWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Platform\CustomWebBrowser.CustomWebBrowserEvent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Platform\NativeWrapper.cs" />
+    <Compile Include="Platform\NavigateErrorStatus.cs" />
+    <Compile Include="Platform\NavigateErrorStatusCode.cs" />
+    <Compile Include="Platform\WebBrowserNavigateErrorEventArgs.cs" />
+    <Compile Include="Platform\WindowsFormsWebAuthenticationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Platform\WindowsFormsWebAuthenticationDialogBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Profile\AccountType.cs" />
     <Compile Include="Commands\AddPartnerCustomerCartLineItem.cs" />
     <Compile Include="Commands\GetPartnerCustomerUserLicense.cs" />

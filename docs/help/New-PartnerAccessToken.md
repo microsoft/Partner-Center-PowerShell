@@ -16,14 +16,15 @@ Generate a new access token that can be used to access Partner Center.
 
 ### UserCredential (Default)
 ```
-New-PartnerAccessToken -ApplicationId <String> [-Credential <PSCredential>] [-Environment <EnvironmentName>]
- [-TokenCache <TokenCache>] [<CommonParameters>]
+New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] [-RefreshToken <String>] -Resource <String> [-TenantId <String>]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```
-New-PartnerAccessToken -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
- -TenantId <String> [-TokenCache <TokenCache>] [<CommonParameters>]
+New-PartnerAccessToken [-Consent] -Credential <PSCredential> [-Environment <EnvironmentName>]
+ [-RefreshToken <String>] -Resource <String> [-ServicePrincipal] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -60,6 +61,21 @@ Parameter Sets: UserCredential
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Consent
+A flag that indicates that the intention is to perform the partner consent process.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -109,6 +125,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -RefreshToken
+The refresh token to use in the refresh flow.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Resource
+The identifier of the target resource that is the recipient of the requested token.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ServicePrincipal
 A flag indicating that a service principal will be used to authenticate.
 
@@ -129,21 +175,6 @@ The Azure AD domain or tenant identifier.
 
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipal
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -TokenCache
-The token cache to be used when requesting an access token.
-
-```yaml
-Type: TokenCache
 Parameter Sets: (All)
 Aliases:
 

@@ -64,6 +64,7 @@ The billing cycle for the subscription.
 Type: BillingCycleType
 Parameter Sets: (All)
 Aliases:
+Accepted values: Annual, Monthly
 
 Required: False
 Position: Named
@@ -139,7 +140,7 @@ The status of the subscription.
 Type: SubscriptionStatus
 Parameter Sets: (All)
 Aliases:
-Accepted values: None, Active, Suspended, Deleted
+Accepted values: Active, Suspended
 
 Required: False
 Position: Named

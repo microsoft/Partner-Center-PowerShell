@@ -6,8 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
 {
-    using IdentityModel.Clients.ActiveDirectory;
-
     /// <summary>
     /// Context information used for the execution of various tasks.
     /// </summary>
@@ -37,10 +35,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Profile
         /// Gets or sets the locale.
         /// </summary>
         public string Locale { get; set; }
-
-        /// <summary>
-        /// Gets or sets the cache used to lookup cached tokens.
-        /// </summary>
-        public TokenCache TokenCache { get; set; }
     }
 }

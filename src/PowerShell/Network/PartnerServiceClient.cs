@@ -16,6 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using Exceptions;
     using Extensions;
     using Models;
+    using Models.Authentication;
     using Models.JsonConverters;
     using Newtonsoft.Json;
     using RequestContext;
@@ -106,6 +107,96 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// Gets or sets the address of the resource being accessed.
         /// </summary>
         public Uri Endpoint { get; private set; }
+
+        /// <summary>
+        /// Acquires an access token from the authority.
+        /// </summary>
+        /// <param name="authority"Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        public async Task<AuthenticationResult> AcquireTokenAsync(string authority, string resource, string clientId, string clientSecret, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Dictionary<string, string> content;
+            HttpResponseMessage response = null;
+            AuthenticationResponse authResponse;
+
+            try
+            {
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri(authority)))
+                {
+                    content = new Dictionary<string, string>
+                    {
+                        ["client_id"] = clientId,
+                        ["client_secret"] = clientSecret,
+                        ["grant_type"] = "client_credentials",
+                        ["resource"] = resource
+                    };
+
+                    request.Content = new FormUrlEncodedContent(content);
+
+                    response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                    authResponse = await HandleAuthenticationResponseAsync(response).ConfigureAwait(false);
+
+                    return new AuthenticationResult(authResponse);
+                }
+            }
+            finally
+            {
+                response?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Acquires an access token from the authority.
+        /// </summary>
+        /// <param name="authority"Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="redirectUri">Address to return to upon receiving a response from the authority.</param>
+        /// <param name="code">The authorization code received from service authorization endpoint.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        public async Task<AuthenticationResult> AcquireTokenByAuthorizationCodeAsync(string authority, string resource, Uri redirectUri, string code, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Dictionary<string, string> content;
+            HttpResponseMessage response = null;
+            AuthenticationResponse authResponse;
+
+            try
+            {
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri(authority)))
+                {
+                    content = new Dictionary<string, string>
+                    {
+                        ["client_id"] = clientId,
+                        ["code"] = code,
+                        ["grant_type"] = "authorization_code",
+                        ["redirect_uri"] = redirectUri.OriginalString,
+                        ["resource"] = resource
+                    };
+
+                    if (!string.IsNullOrEmpty(clientSecret))
+                    {
+                        content.Add("client_secret", clientSecret);
+                    }
+
+                    request.Content = new FormUrlEncodedContent(content);
+
+                    response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                    authResponse = await HandleAuthenticationResponseAsync(response).ConfigureAwait(false);
+
+                    return new AuthenticationResult(authResponse);
+                }
+            }
+            finally
+            {
+                response?.Dispose();
+            }
+        }
 
         /// <summary>
         /// Executes a HTTP DELETE request against the partner service.
@@ -409,21 +500,52 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             }
         }
 
-        private JsonSerializerSettings GetDeserializationSettings(JsonConverter converter = null)
+        /// <summary>
+        /// Refreshes the access token using a refresh token.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="refreshToken">The refresh token to be used to obtain a new access token.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        public async Task<AuthenticationResult> RefreshAccessTokenAsync(string authority, string resource, string refreshToken, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return new JsonSerializerSettings
+            Dictionary<string, string> content;
+            HttpResponseMessage response = null;
+            AuthenticationResponse authResponse;
+
+            try
             {
-                Converters = new List<JsonConverter>
+                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, new Uri(authority)))
                 {
+                    content = new Dictionary<string, string>
                     {
-                        converter ?? new EnumJsonConverter()
+                        ["client_id"] = clientId,
+                        ["grant_type"] = "refresh_token",
+                        ["refresh_token"] = refreshToken,
+                        ["resource"] = resource
+                    };
+
+                    if (!string.IsNullOrEmpty(clientSecret))
+                    {
+                        content.Add("client_secret", clientSecret);
                     }
-                },
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                NullValueHandling = NullValueHandling.Ignore,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-            };
+
+                    request.Content = new FormUrlEncodedContent(content);
+
+                    response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+
+                    authResponse = await HandleAuthenticationResponseAsync(response).ConfigureAwait(false);
+
+                    return new AuthenticationResult(authResponse);
+                }
+            }
+            finally
+            {
+                response?.Dispose();
+            }
         }
 
         /// <summary>
@@ -471,6 +593,39 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             request.Headers.Authorization = new AuthenticationHeaderValue(
                 AuthorizationScheme,
                 rootPartnerOperations.Credentials.PartnerServiceToken);
+        }
+
+        private JsonSerializerSettings GetDeserializationSettings(JsonConverter converter = null)
+        {
+            return new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter>
+                {
+                    {
+                        converter ?? new EnumJsonConverter()
+                    }
+                },
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                NullValueHandling = NullValueHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+            };
+        }
+
+        private async Task<AuthenticationResponse> HandleAuthenticationResponseAsync(HttpResponseMessage response)
+        {
+            AuthenticationResponse entity;
+            string content;
+
+            content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            entity = JsonConvert.DeserializeObject<AuthenticationResponse>(content, GetDeserializationSettings(null));
+
+            if (response.IsSuccessStatusCode)
+            {
+                return entity;
+            }
+
+            throw new AuthenticationException(entity.Error, entity.ErrorDescription);
         }
     }
 }

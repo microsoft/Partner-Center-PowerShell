@@ -12,6 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Threading;
     using System.Threading.Tasks;
     using Models;
+    using Models.Authentication;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -19,6 +20,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     /// </summary>
     public interface IPartnerServiceClient
     {
+        /// <summary>
+        /// Acquires an access token from the authority.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        Task<AuthenticationResult> AcquireTokenAsync(string authority, string resource, string clientId, string clientSecret, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Acquires an access token from the authority.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="redirectUri">Address to return to upon receiving a response from the authority.</param>
+        /// <param name="code">The authorization code received from service authorization endpoint.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        Task<AuthenticationResult> AcquireTokenByAuthorizationCodeAsync(string authority, string resource, Uri redirectUri, string code, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <summary>
         /// Executes a HTTP DELETE request against the partner service.
         /// </summary>
@@ -113,5 +138,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <returns>The response from the HTTP PUT request.</returns>
         Task<TResource> PutAsync<TRequest, TResource>(IPartner rootPartnerOperations, Uri relativeUri, TRequest content, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <summary>
+        /// Refreshes the access token using a refresh token.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token.></param>
+        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
+        /// <param name="refreshToken">The refresh token to be used to obtain a new access token.</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
+        Task<AuthenticationResult> RefreshAccessTokenAsync(string authority, string resource, string refreshToken, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
