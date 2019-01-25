@@ -73,9 +73,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the identifier of the target resource that is the recipient of the requested token.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier of the target resource that is the recipient of the requested token.", Mandatory = true)]
+        [Parameter(HelpMessage = "The identifier of the target resource that is the recipient of the requested token.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public string Resource { get; set; }
+        public string Resource { get; set; } = "https://api.partnercenter.microsoft.com"
 
         /// <summary>
         /// Gets or sets a flag indicating that a service principal will be used to authenticate.
