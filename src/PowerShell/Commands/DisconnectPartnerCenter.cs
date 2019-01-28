@@ -7,7 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Profile;
+    using Authentication;
     using Properties;
 
     [Cmdlet(VerbsCommunications.Disconnect, "PartnerCenter", SupportsShouldProcess = true)]

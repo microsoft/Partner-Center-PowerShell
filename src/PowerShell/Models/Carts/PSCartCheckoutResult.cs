@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
 {
     using System.Collections.Generic;
     using Common;
-    using PartnerCenter.Carts;
+    using PartnerCenter.Models.Carts;
     using PartnerCenter.Models.Orders;
 
     /// <summary>

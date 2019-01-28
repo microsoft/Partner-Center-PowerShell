@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         /// <summary>
         /// Gets or sets the settings for a policy.
         /// </summary>
-        public IEnumerable<PolicySettingsType> PolicySettings { get; set; }
+        public IEnumerable<PolicySettingsTypes> PolicySettings { get; set; }
 
         /// <summary>
         /// Addtional operations to be performed when cloning an instance of <see cref="ConfigurationPolicy" /> to an instance of <see cref="PSConfigurationPolicy" />. 

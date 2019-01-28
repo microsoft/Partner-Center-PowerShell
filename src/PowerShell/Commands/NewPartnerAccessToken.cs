@@ -8,13 +8,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
     using System.Management.Automation;
+    using System.Net.Http;
     using System.Text.RegularExpressions;
+#if !NETSTANDARD
     using System.Web;
-    using Common;
-    using Models.Authentication;
+#endif
+    using Authentication;
+    using Extensions;
     using Network;
-    using Platform;
-    using Profile;
+    using PartnerCenter.Models.Authentication;
+#if !NETSTANDARD
+    using Platforms;
+#endif
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken", DefaultParameterSetName = "UserCredential")]
     [OutputType(typeof(AuthenticationResult))]
@@ -36,6 +41,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private readonly Uri redirectUri = new Uri(redirectUriValue);
 
         /// <summary>
+        /// The client used to perform HTTP operations.
+        /// </summary>
+        private readonly static HttpClient httpClient = new HttpClient();
+
+        /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
         [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "UserCredential")]
@@ -52,7 +62,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the credentials.
         /// </summary>
         [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
-        [Parameter(HelpMessage = "User credentials to be used for authentication.", Mandatory = false, ParameterSetName = "UserCredential")]
         public PSCredential Credential { get; set; }
 
         /// <summary>
@@ -78,12 +87,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string Resource { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating that a service principal will be used to authenticate.
-        /// </summary
-        [Parameter(HelpMessage = "A flag indicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
-        public SwitchParameter ServicePrincipal { get; set; }
-
-        /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
         [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = false)]
@@ -97,11 +100,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             AuthenticationResult authResult;
             AzureAccount account = new AzureAccount();
+#if NETSTANDARD
+            DeviceCodeResult deviceCodeResult;
+#else
+            AuthorizationResult authorizationResult;
+#endif
             IPartnerServiceClient client;
             PartnerEnvironment environment;
-            AuthorizationResult authorizationResult;
-            string authority;
-            string clientId; 
+            Uri authority;
+            string clientId;
 
             if (ParameterSetName.Equals("ServicePrincipal", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -116,10 +123,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
             environment = PartnerEnvironment.PublicEnvironments[Environment];
 
-            client = new PartnerServiceClient(new Uri(environment.PartnerCenterEndpoint));
-            authority = $"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/token";
+            client = new PartnerServiceClient(httpClient);
+            authority = new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}");
 
             clientId = account.Type == AccountType.ServicePrincipal ? Credential.UserName : ApplicationId;
+
 
             if (!string.IsNullOrEmpty(RefreshToken))
             {
@@ -130,7 +138,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
             }
-            else if (account.Type == AccountType.ServicePrincipal && !Consent.IsPresent || Consent.ToBool() == false)
+            else if (account.Type == AccountType.ServicePrincipal && Consent.IsPresent && !Consent.ToBool())
             {
                 authResult = client.AcquireTokenAsync(
                     authority,
@@ -138,6 +146,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     clientId,
                     Credential.Password.ConvertToString()).GetAwaiter().GetResult();
             }
+#if NETSTANDARD
+            else
+            {
+                deviceCodeResult = client.AcquireDeviceCodeAsync(
+                    authority,
+                    Resource,
+                    clientId,
+                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
+
+                WriteWarning(deviceCodeResult.Message);
+
+                authResult = client.AcquireTokenByDeviceCodeAsync(
+                    authority,
+                    deviceCodeResult,
+                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
+            }
+#else
             else
             {
                 using (WindowsFormsWebAuthenticationDialog dialog = new WindowsFormsWebAuthenticationDialog(null))
@@ -155,6 +180,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
             }
+#endif
 
             WriteObject(authResult);
         }

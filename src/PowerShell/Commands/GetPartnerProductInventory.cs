@@ -10,11 +10,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Authentication;
     using Common;
     using Exceptions;
     using Models.Products;
     using PartnerCenter.Models.Products;
-    using Profile;
 
     /// <summary>
     /// Get a product, or a list products, from Partner Center.

@@ -14,20 +14,15 @@ Gets a list or a single customer subscription.
 
 ## SYNTAX
 
-### Customer (Default)
+### ByCustomer (Default)
 ```
-Get-PartnerCustomerSubscription [<CommonParameters>]
+Get-PartnerCustomerSubscription -CustomerId <String> [-OrderId <String>] [-MpnId <String>]
+ [-SubscriptionId <String>] [<CommonParameters>]
 ```
 
 ### ByCustomerObject
 ```
 Get-PartnerCustomerSubscription -InputObject <PSCustomer> [-OrderId <String>] [-MpnId <String>]
- [-SubscriptionId <String>] [<CommonParameters>]
-```
-
-### ByCustomer
-```
-Get-PartnerCustomerSubscription -CustomerId <String> [-OrderId <String>] [-MpnId <String>]
  [-SubscriptionId <String>] [<CommonParameters>]
 ```
 
@@ -97,7 +92,7 @@ The Microsoft Parnter Network identifier that identifies the partner.
 
 ```yaml
 Type: String
-Parameter Sets: ByCustomerObject, ByCustomer
+Parameter Sets: ByCustomer, ByCustomerObject
 Aliases:
 
 Required: False
@@ -124,7 +119,7 @@ The identifier corresponding to the order.
 
 ```yaml
 Type: String
-Parameter Sets: ByCustomerObject, ByCustomer
+Parameter Sets: ByCustomer, ByCustomerObject
 Aliases:
 
 Required: False
@@ -151,7 +146,7 @@ The subscription identifier used to scope the request.
 
 ```yaml
 Type: String
-Parameter Sets: ByCustomerObject, ByCustomer
+Parameter Sets: ByCustomer, ByCustomerObject
 Aliases:
 
 Required: False

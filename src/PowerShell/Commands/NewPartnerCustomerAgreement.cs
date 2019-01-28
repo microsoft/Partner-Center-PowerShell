@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Models.Agreements;
     using PartnerCenter.Models.Agreements;
     using Properties;
@@ -88,9 +89,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Agreement agreement;
             DateTime dateAgreed = DateAgreed ?? DateTime.Now;
-            string userId = string.IsNullOrEmpty(UserId) ?
-                Context.Account.Properties[Profile.AzureAccountPropertyType.UserIdentifier] : UserId;
+            string userId = UserId;
 
+            if (Context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier) && string.IsNullOrEmpty(UserId))
+            {
+                userId = Context.Account.Properties[AzureAccountPropertyType.UserIdentifier];
+            }
 
             if (string.IsNullOrEmpty(userId))
             {

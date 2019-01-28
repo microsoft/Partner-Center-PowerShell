@@ -134,7 +134,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Offers
         /// <summary>
         /// Addtional operations to be performed when cloning an instance of <see cref="Offer" /> to an instance of <see cref="PSOffer" />. 
         /// </summary>
-        /// <param name="offer">The invoice being cloned.</param>
+        /// <param name="offer">The offer being cloned.</param>
         private void CloneAdditionalOperations(Offer offer) => OfferId = offer.Id;
     }
 }

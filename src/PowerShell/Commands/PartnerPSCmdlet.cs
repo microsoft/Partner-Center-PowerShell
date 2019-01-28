@@ -7,8 +7,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Authentication;
     using Exceptions;
-    using Profile;
     using Properties;
 
     /// <summary>
@@ -38,21 +38,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets the available Partner Center operations.
         /// </summary>
-        internal IPartner CorePartner { get; private set; }
-
-        /// <summary>
-        /// Gets the available Partner Center operations.
-        /// </summary>
-        internal PartnerCenter.IPartner Partner { get; private set; }
- 
+        internal IPartner Partner { get; private set; }
 
         /// <summary>
         /// Operations that happen before the cmdlet is executed.
         /// </summary>
         protected override void BeginProcessing()
         {
-            CorePartner = PartnerSession.Instance.ClientFactory.CreateCorePartnerOperations(Context);
-            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(Context);
+            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(Context, d => WriteDebug(d));
         }
 
         /// <summary>

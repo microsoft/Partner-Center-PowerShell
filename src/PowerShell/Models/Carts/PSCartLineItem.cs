@@ -10,7 +10,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
     using System.Collections.Generic;
     using Common;
     using PartnerCenter.Models.Carts;
-    using PartnerCenter.Models.Carts.Enums;
     using PartnerCenter.Models.Products;
 
     /// <summary>

@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
     /// The subscription resource represents the life cycle of a subscription and includes
     /// properties that define the states throughout the subscription life cycle.
     /// </summary>
-    public sealed class PSSubscription : Contract
+    public sealed class PSSubscription
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PSSubscription" /> class.
@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         /// <summary>
         /// Gets the type of contract.
         /// </summary>
-        public override ContractType ContractType => ContractType.Subscription;
+        public ContractType ContractType => ContractType.Subscription;
 
         /// <summary>
         /// Gets or sets the creation date.
@@ -107,6 +107,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         /// Gets or sets the offer name.
         /// </summary>
         public string OfferName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the  order identifier.
+        /// </summary>
+        public string OrderId { get; set; }
 
         /// <summary>
         /// Gets or sets the parent subscription identifier.

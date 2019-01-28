@@ -1,400 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Text.Analyzers.2.6.2\build\Text.Analyzers.props" Condition="Exists('..\..\packages\Text.Analyzers.2.6.2\build\Text.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\build\Microsoft.NetFramework.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\build\Microsoft.NetCore.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\build\Microsoft.NetCore.Analyzers.props')" />
-  <Import Project="..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\build\Microsoft.CodeQuality.Analyzers.props" Condition="Exists('..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\build\Microsoft.CodeQuality.Analyzers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6714CA29-04A6-4D4E-919C-28AF294E6BA6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell</RootNamespace>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell</RootNamespace>
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft Corporation</Company>
+    <Product>Microsoft Partner Center PowerShell</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Copyright>Copyright ©  2019</Copyright>
+    <PackageLicenseUrl>https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=4.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.4.4.1\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Rest.ClientRuntime.2.3.18\lib\net452\Microsoft.Rest.ClientRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Store.PartnerCenter, Version=1.10.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Store.PartnerCenter.1.10.0\lib\Net45\Microsoft.Store.PartnerCenter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Store.PartnerCenter.Extensions, Version=1.10.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Store.PartnerCenter.1.10.0\lib\Net45\Microsoft.Store.PartnerCenter.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Store.PartnerCenter.Models, Version=1.10.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Store.PartnerCenter.1.10.0\lib\Net45\Microsoft.Store.PartnerCenter.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IdentityModel" />
-    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
+    <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
+    <None Include="**\*.cs;**\*.xml;**\*.axml" Exclude="obj\**\*.*;bin\**\*.*" />
+    <Compile Remove="Platforms\**\*.*" />
+    <ProjectReference Include="..\PartnerCenter\PartnerCenter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="System.Management.Automation.dll" Version="10.0.10586.0" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AuthenticationToken.cs" />
-    <Compile Include="BasePartnerComponent.cs" />
-    <Compile Include="BasePartnerComponentString.cs" />
-    <Compile Include="Commands\DisconnectPartnerCenter.cs" />
-    <Compile Include="Commands\GetPartnerCustomerBillingProfile.cs" />
-    <Compile Include="Commands\GetPartnerCustomerCompanyProfile.cs" />
-    <Compile Include="Commands\NewPartnerAccessToken.cs" />
-    <Compile Include="Customers\CustomerCollectionOperations.cs" />
-    <Compile Include="Customers\CustomerOperations.cs" />
-    <Compile Include="Customers\ICustomerCollection.cs" />
-    <Compile Include="Customers\ICustomerOperations.cs" />
-    <Compile Include="Customers\Profiles\CustomerCompanyProfileOperations.cs" />
-    <Compile Include="Customers\Profiles\CustomerProfileCollectionOperations.cs" />
-    <Compile Include="Customers\Profiles\ICustomerProfileCollection.cs" />
-    <Compile Include="Customers\Profiles\ICustomerReadonlyProfile.cs" />
-    <Compile Include="Exceptions\AuthenticationException.cs" />
-    <Compile Include="Exceptions\PartnerErrorCategory.cs" />
-    <Compile Include="Exceptions\PartnerException.cs" />
-    <Compile Include="Extensions\ApplicationPartnerCredentials.cs" />
-    <Compile Include="Extensions\BasePartnerCredentials.cs" />
-    <Compile Include="Extensions\PartnerCredentials.cs" />
-    <Compile Include="Extensions\ResourceExtensions.cs" />
-    <Compile Include="Extensions\SecureStringExtensions.cs" />
-    <Compile Include="Extensions\TokenRefresher.cs" />
-    <Compile Include="Extensions\UriExtensions.cs" />
-    <Compile Include="Extensions\UserPartnerCredentials.cs" />
-    <Compile Include="Extensions\ValidationExtensions.cs" />
-    <Compile Include="Factories\AuthenticationFactory.cs" />
-    <Compile Include="Factories\IAuthenticationFactory.cs" />
-    <Compile Include="Factories\IPartnerFactory.cs" />
-    <Compile Include="Factories\StandardPartnerFactory.cs" />
-    <Compile Include="GenericOperations\ICountrySelector.cs" />
-    <Compile Include="GenericOperations\IEntireEntityCollectionRetrievalOperations.cs" />
-    <Compile Include="GenericOperations\IEntityCollectionRetrievalOperations.cs" />
-    <Compile Include="GenericOperations\IEntityCreateOperations.cs" />
-    <Compile Include="GenericOperations\IEntityDeleteOperations.cs" />
-    <Compile Include="GenericOperations\IEntityGetOperations.cs" />
-    <Compile Include="GenericOperations\IEntityPatchOperations.cs" />
-    <Compile Include="GenericOperations\IEntityPutOperations.cs" />
-    <Compile Include="GenericOperations\IEntitySelector.cs" />
-    <Compile Include="GenericOperations\IPagedEntityCollectionRetrievalOperations.cs" />
-    <Compile Include="IPartner.cs" />
-    <Compile Include="IPartnerComponent.cs" />
-    <Compile Include="IPartnerCredentials.cs" />
-    <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\ApiFault.cs" />
-    <Compile Include="Models\Authentication\AuthenticationResponse.cs" />
-    <Compile Include="Models\Authentication\AuthenticationResult.cs" />
-    <Compile Include="Models\Authentication\AuthorizationResult.cs" />
-    <Compile Include="Models\Authentication\AuthorizationStatus.cs" />
-    <Compile Include="Models\Customers\Customer.cs" />
-    <Compile Include="Models\Customers\CustomerBillingProfile.cs" />
-    <Compile Include="Models\Customers\CustomerCompanyProfile.cs" />
-    <Compile Include="Models\Customers\CustomerPartnerRelationship.cs" />
-    <Compile Include="Models\Customers\PSCustomerBillingProfile.cs" />
-    <Compile Include="Models\Customers\PSCustomerCompanyProfile.cs" />
-    <Compile Include="Models\JsonConverters\EnumJsonConverter.cs" />
-    <Compile Include="Models\JsonConverters\ResourceCollectionConverter.cs" />
-    <Compile Include="Models\Link.cs" />
-    <Compile Include="Models\ResourceAttributes.cs" />
-    <Compile Include="Models\ResourceBase.cs" />
-    <Compile Include="Models\ResourceBaseWithLinks.cs" />
-    <Compile Include="Models\ResourceCollection.cs" />
-    <Compile Include="Models\ResourceCollectionWithLinks.cs" />
-    <Compile Include="Models\SeekBasedResourceCollection.cs" />
-    <Compile Include="Models\StandardResourceCollectionLinks.cs" />
-    <Compile Include="Models\StandardResourceLinks.cs" />
-    <Compile Include="Models\UserCredentials.cs" />
-    <Compile Include="Network\IPartnerServiceClient.cs" />
-    <Compile Include="Network\PartnerServiceClient.cs" />
-    <Compile Include="PartnerOperations.cs" />
-    <Compile Include="PartnerService.cs" />
-    <Compile Include="Platform\CustomWebBrowser.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Platform\CustomWebBrowser.CustomWebBrowserEvent.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Platform\NativeWrapper.cs" />
-    <Compile Include="Platform\NavigateErrorStatus.cs" />
-    <Compile Include="Platform\NavigateErrorStatusCode.cs" />
-    <Compile Include="Platform\WebBrowserNavigateErrorEventArgs.cs" />
-    <Compile Include="Platform\WindowsFormsWebAuthenticationDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Platform\WindowsFormsWebAuthenticationDialogBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Profile\AccountType.cs" />
-    <Compile Include="Commands\AddPartnerCustomerCartLineItem.cs" />
-    <Compile Include="Commands\GetPartnerCustomerUserLicense.cs" />
-    <Compile Include="Commands\NewPartnerCustomerDeviceBatch.cs" />
-    <Compile Include="Commands\SetPartnerCustomerUserLicense.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionUsage.cs" />
-    <Compile Include="Commands\GetPartnerCustomerRelationship.cs" />
-    <Compile Include="Commands\GetPartnerCustomerServiceCostsSummary.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionSupportContact.cs" />
-    <Compile Include="Commands\GetPartnerCustomerUsageSummary.cs" />
-    <Compile Include="Commands\GetPartnerInvoiceLineItem.cs" />
-    <Compile Include="Commands\GetPartnerMpnProfile.cs" />
-    <Compile Include="Commands\NewPartnerServiceRequest.cs" />
-    <Compile Include="Commands\GetPartnerCustomerServiceCosts.cs" />
-    <Compile Include="Commands\RemovePartnerCustomerConfigurationPolicy.cs" />
-    <Compile Include="Commands\RemovePartnerResellerRelationship.cs" />
-    <Compile Include="Commands\SetPartnerCustomerCart.cs" />
-    <Compile Include="Commands\SetPartnerCustomerSubscriptionSupportContact.cs" />
-    <Compile Include="Commands\SetPartnerServiceRequest.cs" />
-    <Compile Include="Commands\SubmitPartnerCustomerCart.cs" />
-    <Compile Include="Commands\GetPartnerCustomerConfigurationPolicy.cs" />
-    <Compile Include="Commands\SetPartnerCustomerConfigurationPolicy.cs" />
-    <Compile Include="Commands\NewPartnerCustomerConfigurationPolicy.cs" />
-    <Compile Include="Commands\GetPartnerCustomerTrialConversion.cs" />
-    <Compile Include="Commands\GetPartnerAgreementDetail.cs" />
-    <Compile Include="Commands\GetPartnerCustomerAgreement.cs" />
-    <Compile Include="Commands\NewPartnerCustomerAgreement.cs" />
-    <Compile Include="Commands\GetPartnerIndirectReseller.cs" />
-    <Compile Include="Commands\GetPartnerResellerRequestLink.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionUpgrades.cs" />
-    <Compile Include="Commands\RemovePartnerCustomerUserRoleMember.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscribedSku.cs" />
-    <Compile Include="Commands\AddPartnerCustomerUserRoleMember.cs" />
-    <Compile Include="Commands\NewPartnerCustomerUser.cs" />
-    <Compile Include="Commands\RemovePartnerSandboxCustomer.cs" />
-    <Compile Include="Commands\RestorePartnerCustomerUser.cs" />
-    <Compile Include="Commands\RemovePartnerCustomerUser.cs" />
-    <Compile Include="Commands\GetPartnerCustomerUser.cs" />
-    <Compile Include="Commands\GetPartnerCustomerUserRole.cs" />
-    <Compile Include="Commands\GetPartnerCustomerCart.cs" />
-    <Compile Include="Commands\GetPartnerCustomerManagedService.cs" />
-    <Compile Include="Commands\GetPartnerAzureRateCard.cs" />
-    <Compile Include="Commands\GetPartnerCustomerLicenseDeploymentInfo.cs" />
-    <Compile Include="Commands\GetPartnerCustomerOrder.cs" />
-    <Compile Include="Commands\GetPartnerCustomerDeviceBatch.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionProvisioningStatus.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionRegistrationStatus.cs" />
-    <Compile Include="Commands\GetPartnerInvoiceStatement.cs" />
-    <Compile Include="Commands\GetPartnerCustomerDevice.cs" />
-    <Compile Include="Commands\GetPartnerLicenseDeploymentInfo.cs" />
-    <Compile Include="Commands\GetPartnerProductInventory.cs" />
-    <Compile Include="Commands\GetPartnerOfferAddon.cs" />
-    <Compile Include="Commands\GetPartnerServiceRequestTopic.cs" />
-    <Compile Include="Commands\GetPartnerServiceRequest.cs" />
-    <Compile Include="Commands\GetPartnerProductAvailability.cs" />
-    <Compile Include="Commands\GetPartnerServiceIncident.cs" />
-    <Compile Include="Commands\GetPartnerProductSku.cs" />
-    <Compile Include="Commands\GetPartnerProduct.cs" />
-    <Compile Include="Commands\GetPartnerSupportProfile.cs" />
-    <Compile Include="Commands\GetPartnerLegalProfile.cs" />
-    <Compile Include="Commands\GetPartnerOrganizationProfile.cs" />
-    <Compile Include="Commands\GetPartnerAuditRecord.cs" />
-    <Compile Include="Commands\GetPartnerBillingProfile.cs" />
-    <Compile Include="Commands\GetPartnerLicenseUsageInfo.cs" />
-    <Compile Include="Commands\GetPartnerCountryValidation.cs" />
-    <Compile Include="Commands\GetPartnerCustomerEntitlement.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscription.cs" />
-    <Compile Include="Commands\GetPartnerCustomerSubscriptionUtilization.cs" />
-    <Compile Include="Commands\GetPartnerInvoice.cs" />
-    <Compile Include="Commands\GetPartnerInvoiceSummary.cs" />
-    <Compile Include="Commands\NewPartnerCustomerCart.cs" />
-    <Compile Include="Commands\NewPartnerCustomerSubscriptionRegistration.cs" />
-    <Compile Include="Commands\SetPartnerCustomerUser.cs" />
-    <Compile Include="Commands\SetPartnerLegalProfile.cs" />
-    <Compile Include="Commands\SetPartnerOrganizationProfile.cs" />
-    <Compile Include="Commands\SetPartnerSupportProfile.cs" />
-    <Compile Include="Commands\TestPartnerAddress.cs" />
-    <Compile Include="Commands\TestPartnerDomainAvailability.cs" />
-    <Compile Include="Commands\GetPartnerOffer.cs" />
-    <Compile Include="Commands\NewPartnerCustomer.cs" />
-    <Compile Include="Commands\NewPartnerCustomerOrder.cs" />
-    <Compile Include="Commands\SetPartnerBillingProfile.cs" />
-    <Compile Include="Commands\SetPartnerCustomer.cs" />
-    <Compile Include="Commands\SetPartnerCustomerSubscription.cs" />
-    <Compile Include="Common\ResourceExtensions.cs" />
-    <Compile Include="Common\PSPartnerException.cs" />
-    <Compile Include="Common\SecureStringExtensions.cs" />
-    <Compile Include="Exceptions\PartnerPSException.cs" />
-    <Compile Include="Factories\ClientFactory.cs" />
-    <Compile Include="Factories\IClientFactory.cs" />
-    <Compile Include="Commands\ConnectPartnerCenter.cs" />
-    <Compile Include="Commands\GetPartnerCustomer.cs" />
-    <Compile Include="Commands\PartnerPSCmdlet.cs" />
-    <Compile Include="Profile\AzureAccount.cs" />
-    <Compile Include="Profile\AzureAccountPropertyType.cs" />
-    <Compile Include="Profile\EnvironmentConstants.cs" />
-    <Compile Include="Profile\EnvironmentName.cs" />
-    <Compile Include="Common\AssertExtensions.cs" />
-    <Compile Include="Models\Agreements\PSAgreementMetaData.cs" />
-    <Compile Include="Models\Agreements\PSAgreement.cs" />
-    <Compile Include="Models\Analytics\PSCustomerLicensesDeploymentInsights.cs" />
-    <Compile Include="Models\Analytics\PSCustomerLicensesInsightsBase.cs" />
-    <Compile Include="Models\Carts\PSCart.cs" />
-    <Compile Include="Models\Carts\PSCartCheckoutResult.cs" />
-    <Compile Include="Models\Carts\PSCartLineItem.cs" />
-    <Compile Include="Models\CountryValidationRules\PSCountryValidationRules.cs" />
-    <Compile Include="Models\Analytics\PSPartnerLicensesDeploymentInsight.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Models\Auditing\PSAuditRecord.cs" />
-    <Compile Include="Models\Analytics\PSPartnerLicensesUsageInsight.cs" />
-    <Compile Include="Models\CustomerSubscriptionUpgrades\PSCustomerSubscriptionUpgrades.cs" />
-    <Compile Include="Models\CustomerRelationshipRequests\PSCustomerRelationshipRequest.cs" />
-    <Compile Include="Models\Customers\PSCustomer.cs" />
-    <Compile Include="Models\CustomerTrialConversion\PSCustomerTrialConversion.cs" />
-    <Compile Include="Models\DevicesDeployment\PSDeviceBatch.cs" />
-    <Compile Include="Models\Entitlements\PSEntitlement.cs" />
-    <Compile Include="Models\Invoices\PSAzureDataMarketDailyUsageLineItem.cs" />
-    <Compile Include="Models\Invoices\PSAzureDataMarketLineItem.cs" />
-    <Compile Include="Models\Invoices\PSBaseAzureDataMarketLineItem.cs" />
-    <Compile Include="Models\Invoices\PSBaseUsageBasedLineItem.cs" />
-    <Compile Include="Models\Invoices\PSDailyUsageLineItem.cs" />
-    <Compile Include="Models\Invoices\PSInvoice.cs" />
-    <Compile Include="Models\Invoices\PSInvoiceLineItem.cs" />
-    <Compile Include="Models\Invoices\PSInvoiceSummary.cs" />
-    <Compile Include="Models\Invoices\PSLicenseBasedLineItem.cs" />
-    <Compile Include="Models\Invoices\PSOneTimeInvoiceLineItem.cs" />
-    <Compile Include="Models\Invoices\PSUsageBasedLineItem.cs" />
-    <Compile Include="Models\DevicesDeployment\PSDevice.cs" />
-    <Compile Include="Models\Analytics\PSLicensesInsightsBase.cs" />
-    <Compile Include="Models\Licenses\PSLicense.cs" />
-    <Compile Include="Models\Licenses\PSLicenseAssignment.cs" />
-    <Compile Include="Models\Licenses\PSLicenseUpdate.cs" />
-    <Compile Include="Models\Licenses\PSSubscribedSku.cs" />
-    <Compile Include="Models\ManagedServices\PSManagedService.cs" />
-    <Compile Include="Models\Offers\PSOffer.cs" />
-    <Compile Include="Models\Orders\PSOrder.cs" />
-    <Compile Include="Models\Orders\PSOrderLineItem.cs" />
-    <Compile Include="Models\Partners\PSMpnProfile.cs" />
-    <Compile Include="Models\Partners\PSSupportProfile.cs" />
-    <Compile Include="Models\Partners\PSLegalBusinessProfile.cs" />
-    <Compile Include="Models\Partners\PSOrganizationProfile.cs" />
-    <Compile Include="Models\Partners\PSBillingProfile.cs" />
-    <Compile Include="Models\Products\PSInventoryItem.cs" />
-    <Compile Include="Models\Products\PSProductAvailability.cs" />
-    <Compile Include="Models\Products\PSSku.cs" />
-    <Compile Include="Models\Products\PSProduct.cs" />
-    <Compile Include="Models\ConfigurationPolicies\PSConfigurationPolicy.cs" />
-    <Compile Include="Models\RateCards\PSAzureRateCard.cs" />
-    <Compile Include="Models\Relationships\PSPartnerRelationship.cs" />
-    <Compile Include="Models\ServiceCosts\PSServiceCostsSummary.cs" />
-    <Compile Include="Models\ServiceCosts\PSServiceCostLineItem.cs" />
-    <Compile Include="Models\ServiceRequests\PSSupportTopic.cs" />
-    <Compile Include="Models\ServiceRequests\PSServiceRequest.cs" />
-    <Compile Include="Models\Roles\PSDirectoryRole.cs" />
-    <Compile Include="Models\Subscriptions\PSSubscription.cs" />
-    <Compile Include="Models\Subscriptions\PSSubscriptionProvisioningStatus.cs" />
-    <Compile Include="Models\Subscriptions\PSSubscriptionRegistrationStatus.cs" />
-    <Compile Include="Models\CustomerUsers\PSCustomerUser.cs" />
-    <Compile Include="Models\Subscriptions\PSSupportContact.cs" />
-    <Compile Include="Models\Usage\PSAzureResourceMonthlyUsageRecord.cs" />
-    <Compile Include="Models\Usage\PSCustomerUsageSummary.cs" />
-    <Compile Include="Models\Usage\PSSpendingBudget.cs" />
-    <Compile Include="Models\Usage\PSUsageRecordBase.cs" />
-    <Compile Include="Models\Usage\PSUsageSummaryBase.cs" />
-    <Compile Include="Models\Utilizations\PSAzureUtilizationRecord.cs" />
-    <Compile Include="Profile\PartnerContext.cs" />
-    <Compile Include="Profile\PartnerEnvironment.cs" />
-    <Compile Include="Profile\PartnerSession.cs" />
-    <Compile Include="Profile\PowerShellCoreCredentials.cs" />
-    <Compile Include="Profile\PowerShellCredentials.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RequestContext\IRquestContext.cs" />
-    <Compile Include="RequestContext\RequestContext.cs" />
-    <Compile Include="RequestContext\RequestContextFactory.cs" />
-    <Compile Include="Validations\AddressValidator.cs" />
-    <Compile Include="Validations\IValidator.cs" />
-    <Compile Include="Validations\ValidationException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <EmbeddedResource Include="Configuration\PartnerCenterSdk.json" />
-    <None Include="Microsoft.Store.PartnerCenter.PowerShell.format.ps1xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="PartnerCenter.psd1">
+    <Reference Include="System.Web" />
+    <Compile Include="Platforms\net461\**\*.cs" />
+    <Compile Update="Platforms\net461\CustomWebBrowser.CustomWebBrowserEvent.cs" SubType="Component" />
+    <Compile Update="Platforms\net461\CustomWebBrowser.cs" SubType="Component" />
+    <Compile Update="Platforms\net461\WinFormWebAuthenticationDialog.cs" SubType="Form" />
+    <Compile Update="Platforms\net461\WindowsFormsWebAuthenticationDialogBase.cs" SubType="Form" />
+    <Compile Update="Platforms\net461\SilentWindowsFormsAuthenticationDialog.cs" SubType="Form" />
+    <None Update="PartnerCenter.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
+    <None Update="PartnerCenter.NetCore.psd1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Analyzer Include="..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.CodeQuality.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.CodeQuality.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.NetCore.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Text.Analyzers.2.6.2\analyzers\dotnet\cs\Text.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Text.Analyzers.2.6.2\analyzers\dotnet\cs\Text.CSharp.Analyzers.dll" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="4.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\build\Microsoft.CodeQuality.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeQuality.Analyzers.2.6.2\build\Microsoft.CodeQuality.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\build\Microsoft.NetCore.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NetCore.Analyzers.2.6.2\build\Microsoft.NetCore.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\build\Microsoft.NetFramework.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.NetFramework.Analyzers.2.6.2\build\Microsoft.NetFramework.Analyzers.props'))" />
-    <Error Condition="!Exists('..\..\packages\Text.Analyzers.2.6.2\build\Text.Analyzers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Text.Analyzers.2.6.2\build\Text.Analyzers.props'))" />
-  </Target>
-  <Target Name="AfterBuild">
-    <ItemGroup>
-      <NewtonsoftJson Include="$(ProjectDir)..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll" />
-    </ItemGroup>
-    <Copy SourceFiles="@(NewtonsoftJson)" DestinationFiles="$(OutputPath)\Newtonsoft.Json.11.dll" />
-  </Target>
+
+  <ItemGroup>
+    <None Update="Microsoft.Store.PartnerCenter.PowerShell.format.ps1xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
 </Project>

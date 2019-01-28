@@ -6,8 +6,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using System;
+    using Authentication;
     using Common;
-    using Profile;
 
     /// <summary>
     /// Factory that provides initialized clients used to interact with online services.
@@ -18,36 +19,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <param name="context">The partner's execution context.</param>
+        /// <param name="debugAction">The action to write debug statements.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// <paramref name="context" /> is null.
+        /// or 
+        /// <paramref name="debugAction" /> is null.
         /// </exception>
-        public virtual IAggregatePartner CreatePartnerOperations(PartnerContext context)
+        public virtual IPartner CreatePartnerOperations(PartnerContext context, Action<string> debugAction)
         {
             context.AssertNotNull(nameof(context));
+            debugAction.AssertNotNull(nameof(debugAction));
 
-            return PartnerCenter.PartnerService.Instance.CreatePartnerOperations(
+            return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(
-                    PartnerSession.Instance.AuthenticationFactory.Authenticate(context)));
-        }
-
-        /// <summary>
-        /// Creates a new instance of the object used to interface with Partner Center.
-        /// </summary>
-        /// <param name="context">The partner's execution context.</param>
-        /// <returns>An instance of the <see cref="Core.PartnerOperations" /> class.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// <paramref name="context" /> is null.
-        /// </exception>
-        public virtual PowerShell.IPartner CreateCorePartnerOperations(PartnerContext context)
-        {
-            context.AssertNotNull(nameof(context));
-
-            AuthenticationToken token = PartnerSession.Instance.AuthenticationFactory.Authenticate(context);
-
-            return PowerShell.PartnerService.Instance.CreatePartnerOperations(
-                new PowerShellCoreCredentials(
-                    new PowerShell.AuthenticationToken(token.Token, token.ExpiryTime)));
+                    PartnerSession.Instance.AuthenticationFactory.Authenticate(context, debugAction)));
         }
     }
 }

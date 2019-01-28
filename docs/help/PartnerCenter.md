@@ -65,6 +65,9 @@ Gets a list of device batches for the specified customer identifier.
 ### [Get-PartnerCustomerEntitlement](Get-PartnerCustomerEntitlement.md)
 Gets a collection of entitlements.
 
+### [Get-PartnerCustomerIndirectReseller](Get-PartnerCustomerIndirectReseller.md)
+Gets all of the indirect resellers associated with the specified customer. This command will only function for indirect providers.
+
 ### [Get-PartnerCustomerLicenseDeploymentInfo](Get-PartnerCustomerLicenseDeploymentInfo.md)
 Gets aggregated data on deployment for a specified customer.
 
@@ -73,9 +76,6 @@ Gets the managed services for a customer.
 
 ### [Get-PartnerCustomerOrder](Get-PartnerCustomerOrder.md)
 Gets either a specific order or a list of order for the specified customer.
-
-### [Get-PartnerCustomerRelationship](Get-PartnerCustomerRelationship.md)
-Gets all the partner relationships associated to the customer based on the logged in partner.
 
 ### [Get-PartnerCustomerServiceCosts](Get-PartnerCustomerServiceCosts.md)
 Gets a customer's service cost line items for the specified billing period.
@@ -154,6 +154,9 @@ Gets a specific offer or a list of available offers from Partner Center.
 
 ### [Get-PartnerOfferAddon](Get-PartnerOfferAddon.md)
 Gets the add-ons for an offer by identifier.
+
+### [Get-PartnerOfferCategory](Get-PartnerOfferCategory.md)
+Gets a list of offer categories.
 
 ### [Get-PartnerOrganizationProfile](Get-PartnerOrganizationProfile.md)
 Gets the partner organization profile from Partner Center.

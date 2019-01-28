@@ -8,10 +8,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using System.Globalization;
-    using System.Security;
-    using System.Threading.Tasks;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
+    using Authentication;
     using IdentityModel.Clients.ActiveDirectory;
-    using Profile;
 
     /// <summary>
     /// Factory used to perform authentication operations.
@@ -19,20 +20,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     public class AuthenticationFactory : IAuthenticationFactory
     {
         /// <summary>
-        /// The redirect URI used when performing app + user authentication.
+        /// The value for the redirect URI.
         /// </summary>
-        private static readonly Uri redirectUri = new Uri("urn:ietf:wg:oauth:2.0:oob");
+        private const string redirectUriValue = "urn:ietf:wg:oauth:2.0:oob";
 
         /// <summary>
         /// Acquires the security token from the authority.
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
-        /// <param name="password">Password used when requesting a security token.</param>
+        /// <param name="debugAction">The action to write debug statements.</param>
+        /// <param name="promptAction">The action to prompt the user for input.</param>
         /// <returns>The result from the authentication request.</returns>
-        public AuthenticationToken Authenticate(PartnerContext context, SecureString password = null)
+        public AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction, Action<string> promptAction = null)
         {
             AuthenticationContext authContext;
             AuthenticationResult authResult;
+            Claim claim;
+            DateTimeOffset expiration;
+            JwtSecurityToken token;
+            JwtSecurityTokenHandler tokenHandler;
             PartnerEnvironment environment;
 
             environment = PartnerEnvironment.PublicEnvironments[context.Environment];
@@ -42,39 +48,62 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             if (context.Account.Type == AccountType.AccessToken)
             {
+                debugAction("Attempting to authenticate using an access token.");
+
+                tokenHandler = new JwtSecurityTokenHandler();
+                token = tokenHandler.ReadJwtToken(context.Account.Properties[AzureAccountPropertyType.AccessToken]);
+
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("oid", StringComparison.InvariantCultureIgnoreCase));
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = claim?.Value;
+
+                debugAction($"The object identifier {claim?.Value} was found in the claims associated with the token.");
+
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("tid", StringComparison.InvariantCultureIgnoreCase));
+                context.Account.Properties[AzureAccountPropertyType.Tenant] = claim?.Value;
+
+                debugAction($"The tenant identifier {claim?.Value} was found in the claims associated with the token.");
+
+                claim = token.Claims.Single(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
+                expiration = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(claim.Value, CultureInfo.InvariantCulture));
+
+                debugAction($"The specified access token expires on {expiration.ToString(CultureInfo.CurrentCulture)}.");
+
                 return new AuthenticationToken(
                     context.Account.Properties[AzureAccountPropertyType.AccessToken],
-                    DateTime.Parse(context.Account.Properties[AzureAccountPropertyType.AccessTokenExpiration], CultureInfo.CurrentCulture));
+                    expiration);
             }
             else if (context.Account.Type == AccountType.ServicePrincipal)
             {
-                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                debugAction("Attempting to authenticate using a service principal. Please note not all operations support this type of authentication.");
+
+                authResult = authContext.AcquireTokenAsync(
                     environment.AzureAdGraphEndpoint,
                     new ClientCredential(
                         context.Account.Id,
-                        context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret]))).Result;
+                        context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret])).ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            else if (PartnerSession.Instance.Context == null && password == null)
+            else if (PartnerSession.Instance.Context == null)
             {
-                authResult = Task.Run(() => authContext.AcquireTokenAsync(
-                    environment.PartnerCenterEndpoint,
-                    context.ApplicationId,
-                    redirectUri,
-                    new PlatformParameters(PromptBehavior.Always),
-                    UserIdentifier.AnyUser)).Result;
+#if NETSTANDARD
+                debugAction("Attempting to authenticate using the device code flow."); 
 
-                context.Account.Id = authResult.UserInfo.DisplayableId;
-                context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
-                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
-            }
-            else if (PartnerSession.Instance.Context == null && password != null)
-            {
-                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                DeviceCodeResult deviceCodeResult = authContext.AcquireDeviceCodeAsync(
+                    environment.PartnerCenterEndpoint,
+                    context.ApplicationId).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                promptAction(deviceCodeResult.Message);
+
+                authResult = authContext.AcquireTokenByDeviceCodeAsync(deviceCodeResult).ConfigureAwait(false).GetAwaiter().GetResult();
+#else
+                debugAction("Attempting to authenticate by prompting for credentials.");
+
+                authResult = authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
-                    new UserPasswordCredential(
-                        context.Account.Id,
-                        password))).Result;
+                    new Uri(redirectUriValue),
+                    new PlatformParameters(PromptBehavior.Always),
+                    UserIdentifier.AnyUser).ConfigureAwait(false).GetAwaiter().GetResult();
+#endif
 
                 context.Account.Id = authResult.UserInfo.DisplayableId;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
@@ -82,12 +111,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
             else
             {
-                authResult = Task.Run(() => authContext.AcquireTokenAsync(
+                authResult = authContext.AcquireTokenSilentAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
-                    redirectUri,
-                    new PlatformParameters(PromptBehavior.Never),
-                    new UserIdentifier(context.Account.Id, UserIdentifierType.RequiredDisplayableId))).Result;
+                    new UserIdentifier(context.Account.Id, UserIdentifierType.RequiredDisplayableId)).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                context.Account.Id = authResult.UserInfo.DisplayableId;
+                context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
             }
 
             return new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);

@@ -12,6 +12,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PartnerCountryValidation"), OutputType(typeof(PSCountryValidationRules))]
     public class GetPartnerCountryValidation : PartnerPSCmdlet
     {
+        /// <summary>
+        /// Gets or sets the country code in ISO2 format.
+        /// </summary>
         [Parameter(Mandatory = true, HelpMessage = "The country code in ISO2 format.")]
         public string CountryCode { get; set; }
 
