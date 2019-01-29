@@ -15,13 +15,13 @@ Generate a new access token that can be used to access Partner Center.
 ## SYNTAX
 
 ### UserCredential (Default)
-```
+```powershell
 New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <EnvironmentName>]
  [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 New-PartnerAccessToken [-Consent] -Credential <PSCredential> [-Environment <EnvironmentName>]
  [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
 ```

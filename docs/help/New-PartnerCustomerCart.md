@@ -14,7 +14,7 @@ Creates an order for a customer.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomerCart -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```

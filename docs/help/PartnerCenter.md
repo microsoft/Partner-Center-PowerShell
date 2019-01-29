@@ -1,4 +1,6 @@
 ---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/PartnerCenter.md
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/PartnerCenter.md
 Module Name: PartnerCenter
 Module Guid: 70cb9a9e-1491-403a-8a2f-63e1afe7dfee
 Download Help Link: none
@@ -6,7 +8,8 @@ Help Version: 1.0
 Locale: en-US
 ---
 
-# PartnerCenter Module
+# Microsoft Partner Center PowerShell Module
+
 ## Description
 These are the cmdlets in the Partner Center PowerShell module.
 

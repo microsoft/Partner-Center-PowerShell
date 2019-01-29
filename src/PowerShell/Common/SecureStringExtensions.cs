@@ -25,6 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Common
             secureString.AssertNotNull(nameof(secureString));
 
             IntPtr stringPtr = IntPtr.Zero;
+
             try
             {
                 stringPtr = Marshal.SecureStringToBSTR(secureString);

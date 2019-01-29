@@ -207,7 +207,7 @@
   <data name="RemovePartnerResellerRelationshipWhatIf" xml:space="preserve">
     <value>Removes the relationship between the customer with the identifier of {0} and the partner. This operation will suspend all active subscriptions.</value>
   </data>
-  <data name="RemovePartnerSandboxCustomer" xml:space="preserve">
+  <data name="RemovePartnerSandboxCustomerWhatIf" xml:space="preserve">
     <value>Deletes the customer with the identifier of {0} from the integration sandbox.</value>
   </data>
   <data name="RestorePartnerCustomerUserWhatIf" xml:space="preserve">

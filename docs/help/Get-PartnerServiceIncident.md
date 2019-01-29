@@ -14,7 +14,7 @@ Gets a list of service incidents.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerServiceIncident [-Status <ServiceIncidentStatus>] [-Resolved] [<CommonParameters>]
 ```
 

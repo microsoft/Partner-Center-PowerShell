@@ -14,7 +14,7 @@ Creates a new customer.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomer [-AssociatedPartnerId <String>] -BillingAddressLine1 <String>
  [-BillingAddressLine2 <String>] [-BillingAddressCity <String>] -BillingAddressCountry <String>
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]

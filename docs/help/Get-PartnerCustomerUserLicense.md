@@ -14,7 +14,7 @@ Gets a list of licenses assigned to a user within a customer account.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerUserLicense -CustomerId <String> [-LicenseGroup <LicenseGroupId[]>] -UserId <String>
  [<CommonParameters>]
 ```

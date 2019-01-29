@@ -333,9 +333,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Deletes the customer with the identifier of {0} from the integration sandbox..
         /// </summary>
-        internal static string RemovePartnerSandboxCustomer {
+        internal static string RemovePartnerSandboxCustomerWhatIf {
             get {
-                return ResourceManager.GetString("RemovePartnerSandboxCustomer", resourceCulture);
+                return ResourceManager.GetString("RemovePartnerSandboxCustomerWhatIf", resourceCulture);
             }
         }
         

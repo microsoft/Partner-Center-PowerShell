@@ -14,7 +14,7 @@ Gets the line items for the specified invoice.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> -InvoiceId <String>
  -LineItemType <InvoiceLineItemType> [<CommonParameters>]
 ```
