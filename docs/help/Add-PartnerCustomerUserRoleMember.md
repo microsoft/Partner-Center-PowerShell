@@ -14,7 +14,7 @@ Adds a customer user to a specified role.
 
 ## SYNTAX
 
-```
+```powershell
 Add-PartnerCustomerUserRoleMember -CustomerId <String> [-UserId <String>] [-RoleId <String>]
  [<CommonParameters>]
 ```

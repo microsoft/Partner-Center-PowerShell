@@ -14,7 +14,7 @@ Gets the partner legal business profile from Partner Center.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerLegalProfile [<CommonParameters>]
 ```
 

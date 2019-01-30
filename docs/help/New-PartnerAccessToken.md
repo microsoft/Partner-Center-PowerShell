@@ -15,16 +15,15 @@ Generate a new access token that can be used to access Partner Center.
 ## SYNTAX
 
 ### UserCredential (Default)
-```
-New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Credential <PSCredential>]
- [-Environment <EnvironmentName>] [-RefreshToken <String>] -Resource <String> [-TenantId <String>]
- [<CommonParameters>]
+```powershell
+New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <EnvironmentName>]
+ [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 New-PartnerAccessToken [-Consent] -Credential <PSCredential> [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Resource <String> [-ServicePrincipal] [-TenantId <String>] [<CommonParameters>]
+ [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -87,18 +86,6 @@ Credentials that represents the service principal.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: UserCredential
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: PSCredential
 Parameter Sets: ServicePrincipal
 Aliases:
 
@@ -146,21 +133,6 @@ The identifier of the target resource that is the recipient of the requested tok
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ServicePrincipal
-A flag indicating that a service principal will be used to authenticate.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: ServicePrincipal
 Aliases:
 
 Required: True

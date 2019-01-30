@@ -1,9 +1,0 @@
-﻿{
-  "Email": "email@sample.com",
-  "Telephone": "4255555555",
-  "Website": "www.microsoft.com",
-  "ProfileType": "support_profile",
-  "Attributes": {
-    "ObjectType": "PartnerSupportProfile"
-  }
-}

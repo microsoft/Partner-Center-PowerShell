@@ -14,7 +14,7 @@ Creates a new device batch for the specified customer.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomerDeviceBatch -BatchId <String> -CustomerId <String> -Devices <PSDevice[]> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```

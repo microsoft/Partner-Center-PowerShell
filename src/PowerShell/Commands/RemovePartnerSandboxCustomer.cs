@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerCustomerUserWhatIf, CustomerId)))
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerSandboxCustomerWhatIf, CustomerId)))
             {
                 Partner.Customers[CustomerId].Delete();
                 WriteObject(true);

@@ -10,24 +10,23 @@ schema: 2.0.0
 # Connect-PartnerCenter
 
 ## SYNOPSIS
-Connect to Partner Center with an authenticated account for use with cmdlet requests.
+Connects to Partner Center with an authenticated account for use with cmdlet requests.
 
 ## SYNTAX
 
 ### UserCredential (Default)
-```
-Connect-PartnerCenter -ApplicationId <String> [-Credential <PSCredential>] [-Environment <EnvironmentName>]
- [<CommonParameters>]
+```powershell
+Connect-PartnerCenter -ApplicationId <String> [-Environment <EnvironmentName>] [<CommonParameters>]
 ```
 
 ### AccessToken
-```
-Connect-PartnerCenter -AccessToken <String> -AccessTokenExpiresOn <DateTimeOffset> -ApplicationId <String>
- [-Environment <EnvironmentName>] -TenantId <String> [<CommonParameters>]
+```powershell
+Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Environment <EnvironmentName>]
+ -TenantId <String> [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 Connect-PartnerCenter -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
  -TenantId <String> [<CommonParameters>]
 ```
@@ -80,21 +79,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -AccessTokenExpiresOn
-The date and time when the token for Partner Center expires.
-
-```yaml
-Type: DateTimeOffset
-Parameter Sets: AccessToken
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ApplicationId
 The application identifier used to access the Partner Center API.
 
@@ -112,18 +96,6 @@ Accept wildcard characters: False
 
 ### -Credential
 User credentials to be used when connecting to Partner Center.
-
-```yaml
-Type: PSCredential
-Parameter Sets: UserCredential
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ```yaml
 Type: PSCredential

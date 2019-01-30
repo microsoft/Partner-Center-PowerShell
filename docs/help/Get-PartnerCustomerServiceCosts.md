@@ -14,7 +14,7 @@ Gets a customer's service cost line items for the specified billing period.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerServiceCosts -BillingPeriod <ServiceCostsBillingPeriod> -CustomerId <String>
  [<CommonParameters>]
 ```
@@ -40,7 +40,7 @@ An indicator that represents the billing period.
 Type: ServiceCostsBillingPeriod
 Parameter Sets: (All)
 Aliases:
-Accepted values: Current, MostRecent
+Accepted values: MostRecent
 
 Required: True
 Position: Named

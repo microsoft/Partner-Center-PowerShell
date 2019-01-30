@@ -14,8 +14,8 @@ Gets the agreement metadata for the Microsoft Cloud Agreement.
 
 ## SYNTAX
 
-```
-Get-PartnerAgreementDetail [<CommonParameters>]
+```powershell
+Get-PartnerAgreementDetail
 ```
 
 ## DESCRIPTION
@@ -31,9 +31,6 @@ PS C:\> Get-PartnerAgreementDetail
 Gets the agreement metadata for the Microsoft Cloud Agreement.
 
 ## PARAMETERS
-
-### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

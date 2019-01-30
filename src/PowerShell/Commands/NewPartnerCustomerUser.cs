@@ -10,11 +10,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Security;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Common;
     using Exceptions;
     using Models.CustomerUsers;
     using PartnerCenter.Models.Users;
-    using Profile;
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerUser", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]

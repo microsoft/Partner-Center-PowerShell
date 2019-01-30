@@ -76,7 +76,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             ConfigurationPolicy devicePolicy;
-            List<PolicySettingsType> policySettings = new List<PolicySettingsType>();
+            List<PolicySettingsTypes> policySettings = new List<PolicySettingsTypes>();
 
             if (!ShouldProcess(Resources.NewPartnerCustomerConfigurationPolicyWhatIf))
             {
@@ -85,27 +85,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (OobeUserNotLocalAdmin)
             {
-                policySettings.Add(PolicySettingsType.OobeUserNotLocalAdmin);
+                policySettings.Add(PolicySettingsTypes.OobeUserNotLocalAdmin);
             }
 
             if (SkipEula)
             {
-                policySettings.Add(PolicySettingsType.SkipEula);
+                policySettings.Add(PolicySettingsTypes.SkipEula);
             }
 
             if (SkipExpressSettings)
             {
-                policySettings.Add(PolicySettingsType.SkipExpressSettings);
+                policySettings.Add(PolicySettingsTypes.SkipExpressSettings);
             }
 
             if (RemoveOemPreinstalls)
             {
-                policySettings.Add(PolicySettingsType.RemoveOemPreinstalls);
+                policySettings.Add(PolicySettingsTypes.RemoveOemPreinstalls);
             }
 
             if (SkipOemRegistration)
             {
-                policySettings.Add(PolicySettingsType.SkipOemRegistration);
+                policySettings.Add(PolicySettingsTypes.SkipOemRegistration);
             }
 
             ConfigurationPolicy configurationPolicy = new ConfigurationPolicy

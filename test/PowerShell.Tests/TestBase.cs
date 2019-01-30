@@ -12,18 +12,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
     using System.Management.Automation;
     using System.Reflection;
     using Factories;
-    using Profile;
+    using PowerShell.Authentication;
+    using TestFramework;
+    using TestFramework.Network;
 
     /// <summary>
-    /// Base class for Microsoft Partner Center PowerShell cmdlets unit tests.
+    /// Test base for all Partner Center PowerShell commands.
     /// </summary>
     public abstract class TestBase
     {
         /// <summary>
+        /// Delegating handler used to intercept partner service client operations.
+        /// </summary>
+        private readonly static HttpMockHandler httpMockHandler = new HttpMockHandler(HttpMockHandlerMode.Playback);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TestBase" /> class.
         /// </summary>
-        protected TestBase()
+        static TestBase()
         {
+            IPartnerCredentials credentials = new TestPartnerCredentials();
+            PartnerSession.Instance.ClientFactory = new MockClientFactory(httpMockHandler, credentials);
+
             Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             PartnerSession.Instance.AuthenticationFactory = new MockAuthenticationFactory();
 
@@ -47,35 +57,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
         }
 
         /// <summary>
-        /// Run the specified test scripts.
+        /// Run the specified test script.
         /// </summary>
-        /// <param name="initializeFunc">Function used to initialize the partner operations.</param>
-        /// <param name="functions">An array of functions to be invoked.</param>
-        protected Collection<PSObject> RunPowerShellTest(Func<PartnerContext, IAggregatePartner> initializeFunc, params string[] functions)
+        protected Collection<PSObject> RunPowerShellTest(string script)
         {
-            Collection<PSObject> output = null;
+            Collection<PSObject> output;
 
-            PartnerSession.Instance.ClientFactory = new MockClientFactory(initializeFunc);
+            if (string.IsNullOrEmpty(script))
+            {
+                throw new ArgumentException(nameof(script));
+            }
 
-            using (PowerShell powershell = PowerShell.Create(RunspaceMode.NewRunspace))
+            using (PowerShell powershell = PowerShell.Create())
             {
                 powershell.AddScript("$Error.clear()");
                 powershell.AddScript($"Write-Debug \"Current directory: {AppDomain.CurrentDomain.BaseDirectory}\"");
                 powershell.AddScript($"Write-Debug \"Current executing assembly: {Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}\"");
                 powershell.AddScript($"cd \"{AppDomain.CurrentDomain.BaseDirectory}\"");
 
-                powershell.AddScript($"Import-Module \"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PartnerCenter.psd1")}\"");
+                powershell.AddScript($"Import-Module \"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PartnerCenter.NetCore.psd1")}\"");
                 powershell.AddScript($"Import-Module \"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Commands\\Common.ps1")}\"");
                 powershell.AddScript($"Import-Module \"{Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Commands\\{GetType().Name}.ps1")}\"");
 
                 powershell.AddScript("$VerbosePreference='Continue'");
                 powershell.AddScript("$DebugPreference='Continue'");
                 powershell.AddScript("$ErrorActionPreference='Stop'");
-
-                foreach (string function in functions)
-                {
-                    powershell.AddScript(function);
-                }
+                powershell.AddScript(script);
 
                 try
                 {

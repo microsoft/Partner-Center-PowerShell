@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
-{
-
-
+namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -232,6 +232,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creates a new line item associated with the specified cart..
+        /// </summary>
+        internal static string NewPartnerCustomerCartLineItemWhatIf {
+            get {
+                return ResourceManager.GetString("NewPartnerCustomerCartLineItemWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creates a new customer configuration policy..
         /// </summary>
         internal static string NewPartnerCustomerConfigurationPolicyWhatIf {
@@ -324,9 +333,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         /// <summary>
         ///   Looks up a localized string similar to Deletes the customer with the identifier of {0} from the integration sandbox..
         /// </summary>
-        internal static string RemovePartnerSandboxCustomer {
+        internal static string RemovePartnerSandboxCustomerWhatIf {
             get {
-                return ResourceManager.GetString("RemovePartnerSandboxCustomer", resourceCulture);
+                return ResourceManager.GetString("RemovePartnerSandboxCustomerWhatIf", resourceCulture);
             }
         }
         

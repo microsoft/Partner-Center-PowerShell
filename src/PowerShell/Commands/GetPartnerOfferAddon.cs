@@ -8,10 +8,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
+    using Authentication;
     using Models.Offers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
-    using Profile;
 
     [Cmdlet(VerbsCommon.Get, "PartnerOfferAddon"), OutputType(typeof(PSOffer))]
     public class GetPartnerOfferAddon : PartnerPSCmdlet

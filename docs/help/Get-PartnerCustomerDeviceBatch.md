@@ -14,7 +14,7 @@ Gets a list of device batches for the specified customer identifier.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerDeviceBatch [-CustomerId] <String> [<CommonParameters>]
 ```
 

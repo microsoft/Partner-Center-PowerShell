@@ -7,10 +7,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
 {
     using System;
-    using System.Security;
-    using IdentityModel.Clients.ActiveDirectory;
+    using Authentication;
     using PowerShell.Factories;
-    using Profile;
 
     /// <summary>
     /// Factory that mocks authenticaton operations.
@@ -21,9 +19,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
-        /// <param name="password">Password used when requesting a security token.</param>
+        /// <param name="debugAction">The action to write debug statements.</param>
+        /// <param name="promptAction">The action to prompt the user for input.</param>
         /// <returns>The result from the authentication request.</returns>
-        public AuthenticationToken Authenticate(PartnerContext context, SecureString password = null)
+        public AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction, Action<string> promptAction = null)
         {
             return new AuthenticationToken("STUB_TOKEN", DateTime.UtcNow.AddHours(1));
         }

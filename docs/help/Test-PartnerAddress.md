@@ -14,7 +14,7 @@ Tests whether or not the specified address is valid.
 
 ## SYNTAX
 
-```
+```powershell
 Test-PartnerAddress -AddressLine1 <String> [-AddressLine2 <String>] [-City <String>] [-Country <String>]
  -PostalCode <String> [-Region <String>] [-State <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

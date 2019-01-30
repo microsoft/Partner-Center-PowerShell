@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Carts;
-    using PartnerCenter.Carts;
+    using PartnerCenter.Models.Carts;
     using Properties;
 
     /// <summary>

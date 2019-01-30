@@ -1,0 +1,62 @@
+[
+  {
+    "EncodedReqeustAddress": "L3YxL29mZmVyY2F0ZWdvcmllcz9jb3VudHJ5PVVT",
+    "RequestBody": null,
+    "RequestHeaders": {
+      "Accept": [
+        "application/json"
+      ],
+      "MS-PartnerCenter-Client": [
+        "Partner Center PowerShell"
+      ],
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "X-Locale": [
+        "en-US"
+      ],
+      "MS-RequestId": [
+        "b32574ec-fae7-4ea2-915a-0e1ab46e92ca"
+      ],
+      "MS-SdkVersion": [
+        "1.5.1901.1"
+      ],
+      "User-Agent": [
+        "FxVersion/4.8.3710.0",
+        "OSName/Windows",
+        "OSVersion/10.0.18312.0",
+        "Microsoft.Store.PartnerCenter.Network.PartnerServiceClient/1.0.0.0"
+      ]
+    },
+    "RequestMethod": "GET",
+    "RequestUri": "https://api.partnercenter.microsoft.com:443/v1/offercategories?country=US",
+    "ResponseBody": "{\r\n  \"totalCount\": 4,\r\n  \"items\": [\r\n    {\r\n      \"id\": \"Enterprise_Key\",\r\n      \"name\": \"Enterprise\",\r\n      \"rank\": 20,\r\n      \"locale\": \"en-US\",\r\n      \"country\": \"US\",\r\n      \"attributes\": {\r\n        \"objectType\": \"OfferCategory\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"SmallBusiness_Key\",\r\n      \"name\": \"Small business\",\r\n      \"rank\": 30,\r\n      \"locale\": \"en-US\",\r\n      \"country\": \"US\",\r\n      \"attributes\": {\r\n        \"objectType\": \"OfferCategory\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"Nonprofit_Key\",\r\n      \"name\": \"Nonprofit\",\r\n      \"rank\": 60,\r\n      \"locale\": \"en-US\",\r\n      \"country\": \"US\",\r\n      \"attributes\": {\r\n        \"objectType\": \"OfferCategory\"\r\n      }\r\n    },\r\n    {\r\n      \"id\": \"Trial_Key\",\r\n      \"name\": \"Trial\",\r\n      \"rank\": 70,\r\n      \"locale\": \"en-US\",\r\n      \"country\": \"US\",\r\n      \"attributes\": {\r\n        \"objectType\": \"OfferCategory\"\r\n      }\r\n    }\r\n  ],\r\n  \"attributes\": {\r\n    \"objectType\": \"Collection\"\r\n  }\r\n}",
+    "ResponseHeaders": {
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "MS-RequestId": [
+        "b32574ec-fae7-4ea2-915a-0e1ab46e92ca"
+      ],
+      "MS-CV": [
+        "UGInjBojP0y0mAqo.0"
+      ],
+      "MS-ServerId": [
+        "0000112E"
+      ],
+      "Request-Context": [
+        "appId=cid-v1:03ce8ca8-8373-4021-8f25-d5dd45c7b12f"
+      ],
+      "Date": [
+        "Fri, 11 Jan 2019 23:18:26 GMT"
+      ],
+      "Content-Length": [
+        "585"
+      ],
+      "Content-Type": [
+        "application/json; charset=utf-8"
+      ]
+    },
+    "StatusCode": "OK"
+  }
+]

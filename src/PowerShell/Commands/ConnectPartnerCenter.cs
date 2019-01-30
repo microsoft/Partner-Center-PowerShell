@@ -7,15 +7,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Globalization;
     using System.Management.Automation;
-    using System.Reflection;
-    using System.Security;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Common;
     using Factories;
     using PartnerCenter.Models.Partners;
-    using Profile;
     using Properties;
 
     /// <summary>
@@ -29,21 +26,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// The name of the access token parameter set.
         /// </summary>
         private const string AccessTokenParameterSet = "AccessToken";
-
-        /// <summary>
-        /// The name of the assembly version property.
-        /// </summary>
-        private const string AssemblyVersionProperty = "AssemblyVersion";
-
-        /// <summary>
-        /// The name of the configuration property.
-        /// </summary>
-        private const string ConfigurationProperty = "Configuration";
-
-        /// <summary>
-        /// The value used to identify the client connect to the partner service.
-        /// </summary>
-        private const string PartnerCenterClient = "Partner Center PowerShell";
 
         /// <summary>
         /// The common endpoint address.
@@ -68,12 +50,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time when the token for Partner Center expires.
-        /// </summary>
-        [Parameter(HelpMessage = "The date and time when the token for Partner Center expires.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
-        public DateTimeOffset AccessTokenExpiresOn { get; set; }
-
-        /// <summary>
         /// Gets or sets the application identifier used to access Partner Center.
         /// </summary>
         [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
@@ -88,7 +64,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// If this parameter is not specified then the user will be prompted for credentials.
         /// </remarks>
         [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "User credentials to be used for authentication.", Mandatory = false, ParameterSetName = UserCredentialParameterSet)]
         public PSCredential Credential { get; set; }
 
         /// <summary>
@@ -134,22 +109,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public void OnImport()
         {
-            PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
-                ConfigurationProperty,
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-            dynamic configuration = prop.GetValue(PartnerService.Instance);
-
-            // Override the value for the Partner Center client property.
-            configuration.PartnerCenterClient = PartnerCenterClient;
-
-            prop = PartnerService.Instance.GetType().GetProperty(
-                AssemblyVersionProperty,
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-            // Override the value for the assembly version property.
-            prop.SetValue(PartnerService.Instance, typeof(ConnectPartnerCenter).Assembly.GetName().Version.ToString());
-
             if (PartnerSession.Instance.AuthenticationFactory == null)
             {
                 PartnerSession.Instance.AuthenticationFactory = new AuthenticationFactory();
@@ -167,30 +126,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         protected override void ProcessRecord()
         {
             AzureAccount account = new AzureAccount();
-            IAggregatePartner partnerOperations;
+            IPartner partnerOperations;
             OrganizationProfile profile;
-            SecureString password = null;
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Properties[AzureAccountPropertyType.AccessToken] = AccessToken;
-                account.Properties[AzureAccountPropertyType.AccessTokenExpiration] = AccessTokenExpiresOn.ToString(CultureInfo.CurrentCulture);
                 account.Type = AccountType.AccessToken;
             }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
+                account.Id = Credential.UserName;
                 account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
                 account.Type = AccountType.ServicePrincipal;
             }
             else
             {
                 account.Type = AccountType.User;
-            }
-
-            if (Credential != null)
-            {
-                account.Id = Credential.UserName;
-                password = Credential.Password;
             }
 
             account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
@@ -202,13 +154,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Environment = Environment
             };
 
-            PartnerSession.Instance.AuthenticationFactory.Authenticate(context, password);
+            PartnerSession.Instance.AuthenticationFactory.Authenticate(context, d => WriteDebug(d), p => WriteWarning(p));
 
             PartnerSession.Instance.Context = context;
 
             if (context.Account.Type == AccountType.User)
             {
-                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context);
+                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context, d => WriteDebug(d));
                 profile = partnerOperations.Profiles.OrganizationProfile.Get();
 
                 context.CountryCode = profile.DefaultAddress.Country;

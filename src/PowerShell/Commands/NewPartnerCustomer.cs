@@ -10,9 +10,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
-    using Profile;
     using Properties;
     using Validations;
 
