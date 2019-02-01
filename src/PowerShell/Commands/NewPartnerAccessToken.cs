@@ -36,11 +36,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string redirectUriValue = "urn:ietf:wg:oauth:2.0:oob";
 
         /// <summary>
-        /// The redirect URI used when requesting an access token.
-        /// </summary>
-        private readonly Uri redirectUri = new Uri(redirectUriValue);
-
-        /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
         private readonly static HttpClient httpClient = new HttpClient();
@@ -48,7 +43,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = "UserCredential")]
+        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = false, ParameterSetName = "ServicePrincipal")]
+        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = true, ParameterSetName = "UserCredential")]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
@@ -84,7 +80,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The identifier of the target resource that is the recipient of the requested token.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public string Resource { get; set; } = "https://api.partnercenter.microsoft.com"
+        public string Resource { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant identifier.
@@ -109,15 +105,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PartnerEnvironment environment;
             Uri authority;
             string clientId;
+            string resource;
 
             if (ParameterSetName.Equals("ServicePrincipal", StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
                 account.Type = AccountType.ServicePrincipal;
+                clientId = string.IsNullOrEmpty(ApplicationId) ? Credential.UserName : ApplicationId;
             }
             else
             {
                 account.Type = AccountType.User;
+                clientId = ApplicationId;
             }
 
             account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
@@ -126,23 +125,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             client = new PartnerServiceClient(httpClient);
             authority = new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}");
 
-            clientId = account.Type == AccountType.ServicePrincipal ? Credential.UserName : ApplicationId;
-
+            resource = string.IsNullOrEmpty(Resource) ? environment.PartnerCenterEndpoint : Resource;
 
             if (!string.IsNullOrEmpty(RefreshToken))
             {
                 authResult = client.RefreshAccessTokenAsync(
                     authority,
-                    Resource,
+                    resource,
                     RefreshToken,
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
             }
-            else if (account.Type == AccountType.ServicePrincipal && Consent.IsPresent && !Consent.ToBool())
+            else if (account.Type == AccountType.ServicePrincipal && !Consent.ToBool())
             {
                 authResult = client.AcquireTokenAsync(
                     authority,
-                    Resource,
+                    resource,
                     clientId,
                     Credential.Password.ConvertToString()).GetAwaiter().GetResult();
             }
@@ -151,7 +149,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 deviceCodeResult = client.AcquireDeviceCodeAsync(
                     authority,
-                    Resource,
+                    resource,
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
 
@@ -169,13 +167,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     authorizationResult = dialog.AuthenticateAAD(
                         new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/authorize?resource={HttpUtility.UrlEncode(Resource)}&client_id={clientId}&response_type=code&haschrome=1&redirect_uri={HttpUtility.UrlEncode(redirectUriValue)}&response_mode=form_post&prompt=login"),
-                        redirectUri);
+                        new Uri(redirectUriValue));
                 }
 
                 authResult = client.AcquireTokenByAuthorizationCodeAsync(
                     authority,
-                    Resource,
-                    redirectUri,
+                    resource,
+                    new Uri(redirectUriValue),
                     authorizationResult.Code,
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();

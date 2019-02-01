@@ -14,7 +14,7 @@ Gets a list of trial conversions available for the specified subscription.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerCustomerTrialConversion -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 

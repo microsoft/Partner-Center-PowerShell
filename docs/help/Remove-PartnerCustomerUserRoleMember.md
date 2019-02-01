@@ -14,7 +14,7 @@ Removes a customer user from a specified role.
 
 ## SYNTAX
 
-```powershell
+```
 Remove-PartnerCustomerUserRoleMember -CustomerId <String> [-UserId <String>] [-RoleId <String>]
  [<CommonParameters>]
 ```

@@ -1,6 +1,4 @@
 ---
-content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/PartnerCenter.md
-original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/PartnerCenter.md
 Module Name: PartnerCenter
 Module Guid: 70cb9a9e-1491-403a-8a2f-63e1afe7dfee
 Download Help Link: none
@@ -8,8 +6,7 @@ Help Version: 1.0
 Locale: en-US
 ---
 
-# Microsoft Partner Center PowerShell Module
-
+# PartnerCenter Module
 ## Description
 These are the cmdlets in the Partner Center PowerShell module.
 
@@ -21,7 +18,7 @@ Adds a new line item to the specified cart.
 Adds a customer user to a specified role.
 
 ### [Connect-PartnerCenter](Connect-PartnerCenter.md)
-Connect to Partner Center with an authenticated account for use with cmdlet requests.
+Connects to Partner Center with an authenticated account for use with cmdlet requests.
 
 ### [Disconnect-PartnerCenter](Disconnect-PartnerCenter.md)
 Disconnects the current session from Partner Center.
@@ -67,9 +64,6 @@ Gets a list of device batches for the specified customer identifier.
 
 ### [Get-PartnerCustomerEntitlement](Get-PartnerCustomerEntitlement.md)
 Gets a collection of entitlements.
-
-### [Get-PartnerCustomerIndirectReseller](Get-PartnerCustomerIndirectReseller.md)
-Gets all of the indirect resellers associated with the specified customer. This command will only function for indirect providers.
 
 ### [Get-PartnerCustomerLicenseDeploymentInfo](Get-PartnerCustomerLicenseDeploymentInfo.md)
 Gets aggregated data on deployment for a specified customer.
