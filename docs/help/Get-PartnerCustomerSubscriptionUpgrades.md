@@ -14,7 +14,7 @@ Gets the available upgrade offers for the specified subscription.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerCustomerSubscriptionUpgrades -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 

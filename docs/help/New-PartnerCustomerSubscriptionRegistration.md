@@ -14,7 +14,7 @@ Registers the specified subscription.
 
 ## SYNTAX
 
-```powershell
+```
 New-PartnerCustomerSubscriptionRegistration -CustomerId <String> -SubscriptionId <String> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```

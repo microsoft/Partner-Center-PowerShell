@@ -15,15 +15,16 @@ Generate a new access token that can be used to access Partner Center.
 ## SYNTAX
 
 ### UserCredential (Default)
-```powershell
+```
 New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
+ [-RefreshToken <String>] [-Resource <String>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```powershell
-New-PartnerAccessToken [-Consent] -Credential <PSCredential> [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Resource <String> [-TenantId <String>] [<CommonParameters>]
+```
+New-PartnerAccessToken [-ApplicationId <String>] [-Consent] -Credential <PSCredential>
+ [-Environment <EnvironmentName>] [-RefreshToken <String>] [-Resource <String>] [-TenantId <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,7 +53,7 @@ Generate a new access token using user credentials for authentication.
 ## PARAMETERS
 
 ### -ApplicationId
-The application identifier used to access Partner Center.
+The identifier for the Azure AD application.
 
 ```yaml
 Type: String
@@ -60,6 +61,18 @@ Parameter Sets: UserCredential
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -135,7 +148,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

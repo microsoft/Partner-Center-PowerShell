@@ -14,7 +14,7 @@ Gets the utilization of a customer's Azure subscription.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerCustomerSubscriptionUtilization -CustomerId <String> [-EndDate <DateTimeOffset>]
  [-Granularity <AzureUtilizationGranularity>] [-ShowDetails] -StartDate <DateTimeOffset>
  -SubscriptionId <String> [<CommonParameters>]

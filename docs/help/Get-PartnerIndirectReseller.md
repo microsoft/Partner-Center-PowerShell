@@ -14,8 +14,8 @@ Gets a list of indirect resellers.
 
 ## SYNTAX
 
-```powershell
-Get-PartnerIndirectReseller [<CommonParameters>]
+```
+Get-PartnerIndirectReseller [-CustomerId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,6 +31,21 @@ PS C:\> Get-PartnerIndirectReseller
 Gets a list of indirect resellers.
 
 ## PARAMETERS
+
+### -CustomerId
+The identifier for the customer.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).

@@ -14,7 +14,7 @@ Removes the specified customer.
 
 ## SYNTAX
 
-```powershell
+```
 Remove-PartnerSandboxCustomer [-CustomerId] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 

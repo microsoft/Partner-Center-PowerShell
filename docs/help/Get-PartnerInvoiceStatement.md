@@ -14,7 +14,7 @@ Gets an invoice statement using the invoice identifier.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerInvoiceStatement -InvoiceId <String> [-OutputPath <String>] [-Overwrite] [<CommonParameters>]
 ```
 
