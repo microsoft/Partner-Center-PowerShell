@@ -29,13 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
-        public override void ExecuteCmdlet() { GetSupportTopics(SupportTopicId); }
-
-        /// <summary>
-        /// Gets the specified support topic.
-        /// </summary>
-        /// <param name="topicId">Identifier for the customer.</param>
-        private void GetSupportTopics(string topicId)
+        public override void ExecuteCmdlet()
         {
             ResourceCollection<SupportTopic> topics;
             IEnumerable<SupportTopic> results;
@@ -46,8 +40,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 results = topics.Items;
 
-                if (!string.IsNullOrEmpty(topicId))
-                    results = results.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == topicId);
+                if (!string.IsNullOrEmpty(SupportTopicId))
+                {
+                    results = results.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == SupportTopicId);
+                }
 
                 WriteObject(results.Select(t => new PSSupportTopic(t)), true);
             }

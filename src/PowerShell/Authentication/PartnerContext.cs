@@ -22,6 +22,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         public string ApplicationId { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of authentication used to establish the session.
+        /// </summary>
+        public AuthenticationTypes AuthenticationType { get; set; }
+
+        /// <summary>
         /// Gets or sets the ISO2 country code.
         /// </summary>
         public string CountryCode { get; set; }

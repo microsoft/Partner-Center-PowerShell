@@ -69,6 +69,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public DateTime? DateAgreed { get; set; }
 
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
+        /// <summary>
         /// Gets or sets the required template identifier.
         /// </summary>
         [Parameter(HelpMessage = "The identifier for the template.", Mandatory = true)]
@@ -91,9 +96,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             DateTime dateAgreed = DateAgreed ?? DateTime.Now;
             string userId = UserId;
 
-            if (Context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier) && string.IsNullOrEmpty(UserId))
+            if (PartnerSession.Instance.Context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier) && string.IsNullOrEmpty(UserId))
             {
-                userId = Context.Account.Properties[AzureAccountPropertyType.UserIdentifier];
+                userId = PartnerSession.Instance.Context.Account.Properties[AzureAccountPropertyType.UserIdentifier];
             }
 
             if (string.IsNullOrEmpty(userId))

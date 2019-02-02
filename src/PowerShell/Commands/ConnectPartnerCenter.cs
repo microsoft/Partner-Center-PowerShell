@@ -13,12 +13,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Common;
     using Factories;
     using PartnerCenter.Models.Partners;
-    using Properties;
 
     /// <summary>
     /// Cmdlet to log into a Partner Center environment.
     /// </summary>
-    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = "UserCredential")]
+    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter",  DefaultParameterSetName = UserParameterSet)]
     [OutputType(typeof(PartnerContext))]
     public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
     {
@@ -28,19 +27,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string AccessTokenParameterSet = "AccessToken";
 
         /// <summary>
-        /// The common endpoint address.
-        /// </summary>
-        private const string CommonEndpoint = "common";
-
-        /// <summary>
         /// The name of the service principal parameter set.
         /// </summary>
         private const string ServicePrincipalParameterSet = "ServicePrincipal";
 
         /// <summary>
-        /// The name of the user credential parameter set.
+        /// The name of the user parameter set.
         /// </summary>
-        private const string UserCredentialParameterSet = "UserCredential";
+        private const string UserParameterSet = "User";
 
         /// <summary>
         /// Gets or sets the access token.
@@ -50,62 +44,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// Gets or sets the application identifier used to access Partner Center.
+        /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "The application identifier used to access Partner Center.", Mandatory = true, ParameterSetName = UserCredentialParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = true, ParameterSetName = UserParameterSet)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the optional user credentials to used during the authentication request.
+        /// Gets or sets the service principal credential.
         /// </summary>
-        /// <remarks>
-        /// If this parameter is not specified then the user will be prompted for credentials.
-        /// </remarks>
         [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [ValidateNotNull]
         public PSCredential Credential { get; set; }
 
         /// <summary>
-        /// Gets or sets the optional envrionment name used during the authentication request.
+        /// Gets or sets the environment used for authentication.
         /// </summary>
-        /// <remarks>
-        /// If this parameter is not specified the default Global Cloud envrionment will be used.
-        /// </remarks>
-        [Parameter(Mandatory = false, HelpMessage = "Name of the environment to be used during authentication.")]
-        [Alias("EnvironmentName")]
+        [Parameter(HelpMessage = "The environment use for authentication.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public EnvironmentName Environment { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating that a service principal will be used to authenticate.
-        /// </summary
-        [Parameter(HelpMessage = "A flag indicating that a service principal will be used to authenticate.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        public SwitchParameter ServicePrincipal { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Azure AD domain or tenant identifier.
+        /// Gets or sets the tenant identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string TenantId { get; set; }
 
         /// <summary>
-        /// Operations that happen before the cmdlet is executed.
-        /// </summary>
-        protected override void BeginProcessing()
-        {
-            if (!PartnerEnvironment.PublicEnvironments.ContainsKey(Environment))
-            {
-                throw new PSInvalidOperationException(Resources.InvalidEnvironmentException);
-            }
-
-            PartnerSession.Instance.Context = null;
-        }
-
-        /// <summary>
-        /// Operations that are performed when the module is imported.
+        /// Performs the required operations when the module is imported.
         /// </summary>
         public void OnImport()
         {
@@ -121,7 +91,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Performs the execution of the command.
+        /// Performs the operations associated with the command.
         /// </summary>
         protected override void ProcessRecord()
         {
@@ -131,12 +101,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
+                account.Id = ApplicationId;
                 account.Properties[AzureAccountPropertyType.AccessToken] = AccessToken;
                 account.Type = AccountType.AccessToken;
             }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.Id = Credential.UserName;
+                account.Id = string.IsNullOrEmpty(ApplicationId) ? Credential.UserName : ApplicationId;
                 account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
                 account.Type = AccountType.ServicePrincipal;
             }
@@ -145,26 +116,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.Type = AccountType.User;
             }
 
-            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
+            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? "common" : TenantId;
 
-            PartnerContext context = new PartnerContext
+            PartnerSession.Instance.Context = new PartnerContext
             {
                 Account = account,
                 ApplicationId = ApplicationId,
                 Environment = Environment
             };
 
-            PartnerSession.Instance.AuthenticationFactory.Authenticate(context, d => WriteDebug(d), p => WriteWarning(p));
+            PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                PartnerSession.Instance.Context,
+                d => WriteDebug(d),
+                w => WriteWarning(w));
 
-            PartnerSession.Instance.Context = context;
 
-            if (context.Account.Type == AccountType.User)
+            // TODO -- This should be done for both Access Token and User
+            if (PartnerSession.Instance.Context.Account.Type == AccountType.User)
             {
-                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(context, d => WriteDebug(d));
+                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
                 profile = partnerOperations.Profiles.OrganizationProfile.Get();
 
-                context.CountryCode = profile.DefaultAddress.Country;
-                context.Locale = profile.Culture;
+                PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
+                PartnerSession.Instance.Context.Locale = profile.Culture;
             }
 
             WriteObject(PartnerSession.Instance.Context);

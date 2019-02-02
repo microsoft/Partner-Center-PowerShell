@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
 {
     using System;
-    using PowerShell.Authentication;
     using PowerShell.Factories;
     using TestFramework;
     using TestFramework.Network;
@@ -46,10 +45,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
-        /// <param name="context">The partner's execution context.</param>
         /// <param name="debugAction">The action to write debug statements.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations(PartnerContext context, Action<string> debugAction)
+        public IPartner CreatePartnerOperations(Action<string> debugAction)
         {
             if (partnerOperations == null)
             {

@@ -48,25 +48,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             if (context.Account.Type == AccountType.AccessToken)
             {
-                debugAction("Attempting to authenticate using an access token.");
-
                 tokenHandler = new JwtSecurityTokenHandler();
                 token = tokenHandler.ReadJwtToken(context.Account.Properties[AzureAccountPropertyType.AccessToken]);
 
                 claim = token.Claims.SingleOrDefault(c => c.Type.Equals("oid", StringComparison.InvariantCultureIgnoreCase));
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = claim?.Value;
 
-                debugAction($"The object identifier {claim?.Value} was found in the claims associated with the token.");
-
                 claim = token.Claims.SingleOrDefault(c => c.Type.Equals("tid", StringComparison.InvariantCultureIgnoreCase));
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = claim?.Value;
 
-                debugAction($"The tenant identifier {claim?.Value} was found in the claims associated with the token.");
-
-                claim = token.Claims.Single(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
                 expiration = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(claim.Value, CultureInfo.InvariantCulture));
 
-                debugAction($"The specified access token expires on {expiration.ToString(CultureInfo.CurrentCulture)}.");
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("unique_name", StringComparison.InvariantCultureIgnoreCase));
+
+                context.AuthenticationType = claim == null ? Authentication.AuthenticationTypes.AppOnly : Authentication.AuthenticationTypes.AppPlusUser;
 
                 return new AuthenticationToken(
                     context.Account.Properties[AzureAccountPropertyType.AccessToken],
@@ -74,19 +70,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
             else if (context.Account.Type == AccountType.ServicePrincipal)
             {
-                debugAction("Attempting to authenticate using a service principal. Please note not all operations support this type of authentication.");
-
                 authResult = authContext.AcquireTokenAsync(
                     environment.AzureAdGraphEndpoint,
                     new ClientCredential(
                         context.Account.Id,
                         context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret])).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                context.AuthenticationType = Authentication.AuthenticationTypes.AppOnly;
             }
-            else if (PartnerSession.Instance.Context == null)
+            else if (!context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier))
             {
 #if NETSTANDARD
-                debugAction("Attempting to authenticate using the device code flow."); 
-
                 DeviceCodeResult deviceCodeResult = authContext.AcquireDeviceCodeAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId).ConfigureAwait(false).GetAwaiter().GetResult();
@@ -95,8 +89,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 authResult = authContext.AcquireTokenByDeviceCodeAsync(deviceCodeResult).ConfigureAwait(false).GetAwaiter().GetResult();
 #else
-                debugAction("Attempting to authenticate by prompting for credentials.");
-
                 authResult = authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
@@ -108,6 +100,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 context.Account.Id = authResult.UserInfo.DisplayableId;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
+                context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
             }
             else
             {
@@ -119,6 +112,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 context.Account.Id = authResult.UserInfo.DisplayableId;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
+                context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
             }
 
             return new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);

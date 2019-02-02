@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Models.Partners;
     using PartnerCenter.Models.Partners;
 
@@ -18,6 +19,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "PartnerSupportProfile", SupportsShouldProcess = true), OutputType(typeof(PSSupportProfile))]
     public class SetPartnerSupportProfile : PartnerPSCmdlet
     {
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
         /// <summary>
         /// Gets or sets the email address of the support contact.
         /// </summary>

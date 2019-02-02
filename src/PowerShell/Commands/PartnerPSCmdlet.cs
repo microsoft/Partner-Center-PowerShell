@@ -6,46 +6,38 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Globalization;
     using System.Management.Automation;
     using Authentication;
     using Exceptions;
     using Properties;
 
     /// <summary>
-    /// Represents base class for all Partner Center cmdlets.
+    /// Represents base class for the Partner Center cmdlets.
     /// </summary>
     public abstract class PartnerPSCmdlet : PSCmdlet
     {
-        /// <summary>
-        /// Gets the parnter's execution context.
-        /// </summary>
-        /// <exception cref="PSInvalidOperationException">
-        /// Connect-PartnerCenter has not been successfully executed.
-        /// </exception>
-        internal static PartnerContext Context
-        {
-            get
-            {
-                if (PartnerSession.Instance.Context == null)
-                {
-                    throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
-                }
-
-                return PartnerSession.Instance.Context;
-            }
-        }
-
         /// <summary>
         /// Gets the available Partner Center operations.
         /// </summary>
         internal IPartner Partner { get; private set; }
 
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public virtual AuthenticationTypes SupportedAuthentication => AuthenticationTypes.Both;
+
+        /// <summary>
         /// Operations that happen before the cmdlet is executed.
         /// </summary>
         protected override void BeginProcessing()
         {
-            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(Context, d => WriteDebug(d));
+            if (PartnerSession.Instance.Context == null)
+            {
+                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
+            }
+
+            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
         }
 
         /// <summary>
@@ -55,18 +47,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             base.ProcessRecord();
 
-            try
+            if (SupportedAuthentication.HasFlag(PartnerSession.Instance.Context.AuthenticationType))
             {
-                ExecuteCmdlet();
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                if (ex.ServiceErrorPayload != null)
+                try
                 {
-                    throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
+                    ExecuteCmdlet();
                 }
+                catch (PartnerCenter.Exceptions.PartnerException ex)
+                {
+                    if (ex.ServiceErrorPayload != null)
+                    {
+                        throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
+                    }
 
-                throw;
+                    throw;
+                }
+            }
+            else
+            {
+                throw new PSPartnerException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticationTypeNotSupportedException,
+                        PartnerSession.Instance.Context.AuthenticationType.ToString(),
+                        SupportedAuthentication.ToString()));
             }
         }
 

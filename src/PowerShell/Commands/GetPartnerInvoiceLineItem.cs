@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Authentication;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
@@ -40,6 +41,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "The type of invoice line items.", Mandatory = true)]
         [ValidateSet(nameof(InvoiceLineItemType.BillingLineItems), nameof(InvoiceLineItemType.UsageLineItems))]
         public InvoiceLineItemType LineItemType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

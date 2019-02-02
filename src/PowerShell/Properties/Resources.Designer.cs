@@ -124,6 +124,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have authenticated using {0} authentication. This type of authentication is not supported by this command, only {1} authentication is supported. Please establish a new connection using an alternative means of authentication..
+        /// </summary>
+        internal static string AuthenticationTypeNotSupportedException {
+            get {
+                return ResourceManager.GetString("AuthenticationTypeNotSupportedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checks out the cart with the identifier of {0}..
         /// </summary>
         internal static string CheckoutPartnerCustomerCartWhatIf {

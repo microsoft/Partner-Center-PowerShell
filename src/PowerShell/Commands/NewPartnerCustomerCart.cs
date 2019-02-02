@@ -31,7 +31,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "A list of cart line items.", Mandatory = true)]
         [ValidateNotNull]
         public PSCartLineItem[] LineItems { get; set; }
-
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>

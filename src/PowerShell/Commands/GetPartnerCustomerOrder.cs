@@ -22,6 +22,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class GetPartnerCustomerOrder : PartnerPSCmdlet
     {
         /// <summary>
+        /// Gets or sets the optional cilling cycle identifier.
+        /// </summary>
+        [Parameter(ParameterSetName = "ByBillingCycle", Mandatory = true, HelpMessage = "Indicates the type of billing cycle.")]
+        [ValidateSet(nameof(BillingCycleType.Annual), nameof(BillingCycleType.Monthly), nameof(BillingCycleType.None), nameof(BillingCycleType.OneTime), nameof(BillingCycleType.Unknown))]
+        public BillingCycleType? BillingCycle { get; set; }
+
+        /// <summary>
         /// Gets or sets the required customer identifier.
         /// </summary>
         [Parameter(ParameterSetName = "ByCustomerId", Mandatory = true, HelpMessage = "The identifier for the customer.")]
@@ -39,13 +46,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </remarks>
         [Parameter(ParameterSetName = "ByOrderId", Mandatory = true, HelpMessage = "The identifier for the order.")]
         public string OrderId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the optional cilling cycle identifier.
-        /// </summary>
-        [Parameter(ParameterSetName = "ByBillingCycle", Mandatory = true, HelpMessage = "Indicates the type of billing cycle.")]
-        [ValidateSet(nameof(BillingCycleType.Annual), nameof(BillingCycleType.Monthly), nameof(BillingCycleType.None), nameof(BillingCycleType.OneTime), nameof(BillingCycleType.Unknown))]
-        public BillingCycleType? BillingCycle { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

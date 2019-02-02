@@ -25,7 +25,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [ValidateNotNullOrEmpty]
         public string CountryCode { get; set; }
 
-
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>

@@ -6,10 +6,11 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Authentication;
     using Models.Analytics;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.Analytics;
 
     /// <summary>
@@ -19,13 +20,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class GetPartnerLicenseDeploymentInfo : PartnerPSCmdlet
     {
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
+        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IEnumerable<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.Get().Items;
-
-            WriteObject(insights.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
+            ResourceCollection<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.Get();
+            WriteObject(insights.Items.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
         }
     }
 }

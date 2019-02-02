@@ -138,6 +138,9 @@
   <data name="AuthenticationTokenExpired" xml:space="preserve">
     <value>The authentication token has expired.</value>
   </data>
+  <data name="AuthenticationTypeNotSupportedException" xml:space="preserve">
+    <value>You have authenticated using {0} authentication. This type of authentication is not supported by this command, only {1} authentication is supported. Please establish a new connection using an alternative means of authentication.</value>
+  </data>
   <data name="CheckoutPartnerCustomerCartWhatIf" xml:space="preserve">
     <value>Checks out the cart with the identifier of {0}.</value>
   </data>
