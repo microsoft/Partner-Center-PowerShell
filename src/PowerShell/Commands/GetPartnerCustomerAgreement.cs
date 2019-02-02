@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Models.Agreements;
 
     /// <summary>
@@ -17,6 +18,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerAgreement"), OutputType(typeof(PSAgreement))]
     public class GetPartnerCustomerAgreement : PartnerPSCmdlet
     {
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
         /// <summary>
         /// Gets or sets the required customer identifier.
         /// </summary>

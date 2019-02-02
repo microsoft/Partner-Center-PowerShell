@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Authentication;
     using Enumerators;
     using Models.Invoices;
     using PartnerCenter.Models;
@@ -26,6 +27,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "The identifier for the invoice.", Mandatory = false)]
         [ValidateNotNull]
         public string InvoiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

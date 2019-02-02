@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Authentication;
     using Exceptions;
     using Models.Partners;
     using PartnerCenter.Models;
@@ -97,6 +98,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "The state portion of the address.")]
         [ValidateNotNullOrEmpty]
         public string State { get; set; }
+
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Gets or sets the tax identifier used for billing purposes.

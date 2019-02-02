@@ -69,6 +69,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public SwitchParameter ForceChangePassword { get; set; }
 
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
+        /// <summary>
         /// Gets or sets the customer user region.
         /// </summary>
         [Parameter(HelpMessage = "The location where the customer user will use software and services. Service availability varies by region.", Mandatory = false)]

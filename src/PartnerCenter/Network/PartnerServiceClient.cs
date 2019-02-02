@@ -952,7 +952,7 @@ namespace Microsoft.Store.PartnerCenter.Network
 
             if (response.IsSuccessStatusCode)
             {
-                if (response.Content == null || string.IsNullOrEmpty(content))
+                if (string.IsNullOrEmpty(content))
                 {
                     content = string.Empty;
                 }
@@ -960,8 +960,17 @@ namespace Microsoft.Store.PartnerCenter.Network
                 return JsonConvert.DeserializeObject<TResource>(content, GetSerializationSettings(converter));
             }
 
-            ApiFault fault = JsonConvert.DeserializeObject<ApiFault>(content, GetSerializationSettings(converter));
             PartnerErrorCategory errorCategory = GetErrorCategory(response.StatusCode);
+
+            if (string.IsNullOrEmpty(content))
+            {
+                throw new PartnerException(
+                    response.ReasonPhrase,
+                    rootPartnerOperations.RequestContext,
+                    errorCategory);
+            }
+
+            ApiFault fault = JsonConvert.DeserializeObject<ApiFault>(content, GetSerializationSettings(converter));
 
             throw new PartnerException(
                 fault,

@@ -39,6 +39,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public ServiceRequestStatus? Status { get; set; }
 
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
+        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
