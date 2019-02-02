@@ -57,8 +57,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 claim = token.Claims.SingleOrDefault(c => c.Type.Equals("tid", StringComparison.InvariantCultureIgnoreCase));
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = claim?.Value;
 
-                claim = token.Claims.Single(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
                 expiration = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(claim.Value, CultureInfo.InvariantCulture));
+
+                claim = token.Claims.SingleOrDefault(c => c.Type.Equals("unique_name", StringComparison.InvariantCultureIgnoreCase));
+
+                context.AuthenticationType = claim == null ? Authentication.AuthenticationTypes.AppOnly : Authentication.AuthenticationTypes.AppPlusUser;
 
                 return new AuthenticationToken(
                     context.Account.Properties[AzureAccountPropertyType.AccessToken],
@@ -72,13 +76,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         context.Account.Id,
                         context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret])).ConfigureAwait(false).GetAwaiter().GetResult();
 
-
-/* Unmerged change from project 'PowerShell (netstandard2.0)'
-Before:
-                context.AuthenticationType = AuthenticationType.AppOnly;
-After:
-                context.AuthenticationType = AuthenticationTypes.AppOnly;
-*/
                 context.AuthenticationType = Authentication.AuthenticationTypes.AppOnly;
             }
             else if (!context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier))
@@ -103,13 +100,6 @@ After:
                 context.Account.Id = authResult.UserInfo.DisplayableId;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
-
-/* Unmerged change from project 'PowerShell (netstandard2.0)'
-Before:
-                context.AuthenticationType = AuthenticationType.AppPlusUser;
-After:
-                context.AuthenticationType = AuthenticationTypes.AppPlusUser;
-*/
                 context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
             }
             else
@@ -122,13 +112,6 @@ After:
                 context.Account.Id = authResult.UserInfo.DisplayableId;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
-
-/* Unmerged change from project 'PowerShell (netstandard2.0)'
-Before:
-                context.AuthenticationType = AuthenticationType.AppPlusUser;
-After:
-                context.AuthenticationType = AuthenticationTypes.AppPlusUser;
-*/
                 context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
             }
 
