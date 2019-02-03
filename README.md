@@ -51,7 +51,7 @@ Connect-PartnerCenter -Credential $credential -ServicePrincipal -TenantId '<Tena
 
 #### User Credentials
 
-The following examples demonstrate how to connect using user credentials. Using this approach will leverage the app + user authentication flow. If you have not already configured an Azure AD application for use with this command then, see the steps documented in the [Native App](#Native-App) section below.
+The following examples demonstrate how to connect using user credentials. Using this approach will leverage app + user authentication. If you have not already configured an Azure AD application for use with this command then, see the steps documented in the [Native App](#Native-App) section below.
 
 ```powershell
 # Interactive login - a dialog box will appear for you to provide your Partner Center credentials
