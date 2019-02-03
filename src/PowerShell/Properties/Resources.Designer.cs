@@ -115,6 +115,51 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticating using an access token. The following configurations were extracted from the token: Expiration &apos;{0}&apos;, TenantId &apos;{1}&apos;, UniqueName {2}, UserId &apos;{3}&apos;..
+        /// </summary>
+        internal static string AuthenticateAccessTokenTrace {
+            get {
+                return ResourceManager.GetString("AuthenticateAccessTokenTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticating using an authorization code and the following configurations: ClientId &apos;{0}&apos;, Endpoint &apos;{1}&apos;, RedirectUri &apos;{2}&apos; Resource &apos;{3}&apos;..
+        /// </summary>
+        internal static string AuthenticateAuthorizationCodeTrace {
+            get {
+                return ResourceManager.GetString("AuthenticateAuthorizationCodeTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticating using a device code and the following configurations: ClientId &apos;{0}&apos;, Resource &apos;{1}&apos;..
+        /// </summary>
+        internal static string AuthenticateDeviceCodeTrace {
+            get {
+                return ResourceManager.GetString("AuthenticateDeviceCodeTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticating using a service principal and the following configurations: ClientId &apos;{0}&apos;, Endpoint &apos;{1}&apos;, Resource &apos;{2}&apos; TenantId &apos;{3}&apos;..
+        /// </summary>
+        internal static string AuthenticateServicePrincipalTrace {
+            get {
+                return ResourceManager.GetString("AuthenticateServicePrincipalTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticating without asking for user credentials and using the following configurations: ClientId &apos;{0}&apos;, Endpoint &apos;{1}&apos;, Resource &apos;{2}&apos;, UserId &apos;{3}&apos;..
+        /// </summary>
+        internal static string AuthenticateSilentTrace {
+            get {
+                return ResourceManager.GetString("AuthenticateSilentTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The authentication token has expired..
         /// </summary>
         internal static string AuthenticationTokenExpired {
@@ -147,6 +192,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
         internal static string CityRequiredError {
             get {
                 return ResourceManager.GetString("CityRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect-PartnerCenter begin processing with ParameterSet &apos;{0}&apos;..
+        /// </summary>
+        internal static string ConnectPartnerCenterBeginProcess {
+            get {
+                return ResourceManager.GetString("ConnectPartnerCenterBeginProcess", resourceCulture);
             }
         }
         

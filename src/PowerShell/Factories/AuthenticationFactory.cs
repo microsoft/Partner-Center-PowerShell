@@ -13,17 +13,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Security.Claims;
     using Authentication;
     using IdentityModel.Clients.ActiveDirectory;
+    using Properties;
 
     /// <summary>
     /// Factory used to perform authentication operations.
     /// </summary>
     public class AuthenticationFactory : IAuthenticationFactory
     {
-        /// <summary>
-        /// The value for the redirect URI.
-        /// </summary>
-        private const string redirectUriValue = "urn:ietf:wg:oauth:2.0:oob";
-
         /// <summary>
         /// Acquires the security token from the authority.
         /// </summary>
@@ -64,12 +60,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 context.AuthenticationType = claim == null ? Authentication.AuthenticationTypes.AppOnly : Authentication.AuthenticationTypes.AppPlusUser;
 
+                debugAction(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticateAccessTokenTrace,
+                        expiration.ToString(CultureInfo.CurrentCulture),
+                        context.Account.Properties[AzureAccountPropertyType.Tenant],
+                        context.Account.Properties[AzureAccountPropertyType.UserIdentifier],
+                        claim?.Value));
+
                 return new AuthenticationToken(
                     context.Account.Properties[AzureAccountPropertyType.AccessToken],
                     expiration);
             }
             else if (context.Account.Type == AccountType.ServicePrincipal)
             {
+                debugAction(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticateServicePrincipalTrace,
+                        environment.ActiveDirectoryAuthority,
+                        context.Account.Id,
+                        environment.AzureAdGraphEndpoint,
+                        context.Account.Properties[AzureAccountPropertyType.Tenant]));
+
                 authResult = authContext.AcquireTokenAsync(
                     environment.AzureAdGraphEndpoint,
                     new ClientCredential(
@@ -81,6 +95,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             else if (!context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier))
             {
 #if NETSTANDARD
+                debugAction(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticateDeviceCodeTrace,
+                        context.ApplicationId,
+                        environment.PartnerCenterEndpoint));
+
                 DeviceCodeResult deviceCodeResult = authContext.AcquireDeviceCodeAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId).ConfigureAwait(false).GetAwaiter().GetResult();
@@ -89,10 +110,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 authResult = authContext.AcquireTokenByDeviceCodeAsync(deviceCodeResult).ConfigureAwait(false).GetAwaiter().GetResult();
 #else
+                debugAction(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticateAuthorizationCodeTrace,
+                        context.ApplicationId,
+                        environment.ActiveDirectoryAuthority,
+                        AuthenticationConstants.RedirectUriValue,
+                        environment.PartnerCenterEndpoint));
+
                 authResult = authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
-                    new Uri(redirectUriValue),
+                    new Uri(AuthenticationConstants.RedirectUriValue),
                     new PlatformParameters(PromptBehavior.Always),
                     UserIdentifier.AnyUser).ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
@@ -104,6 +134,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
             else
             {
+                debugAction(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.AuthenticateSilentTrace,
+                        context.ApplicationId,
+                        environment.ActiveDirectoryAuthority,
+                        environment.PartnerCenterEndpoint,
+                        context.Account.Id));
+
                 authResult = authContext.AcquireTokenSilentAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,

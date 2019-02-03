@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -77,13 +76,12 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
                 {
                     key = matcher.GetMatchingKey(request);
 
-                    if (!records[key].Any())
+                    if(records[key] == null)
                     {
                         throw new ResponseNotFoundException($"Unable to locate a reponse for {key}");
                     }
 
-                    // TODO - We should not be dequeuing the record. It will cause issues with test that make the same call twice
-                    response = records[matcher.GetMatchingKey(request)].Dequeue().GetResponse();
+                    response = records[matcher.GetMatchingKey(request)].GetResponse();
                     response.RequestMessage = request;
 
                     return response;
