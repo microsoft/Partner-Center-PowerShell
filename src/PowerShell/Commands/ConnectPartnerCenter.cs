@@ -7,17 +7,19 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
+    using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Authentication;
     using Common;
     using Factories;
     using PartnerCenter.Models.Partners;
+    using Properties;
 
     /// <summary>
     /// Cmdlet to log into a Partner Center environment.
     /// </summary>
-    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter",  DefaultParameterSetName = UserParameterSet)]
+    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet)]
     [OutputType(typeof(PartnerContext))]
     public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
     {
@@ -99,6 +101,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             IPartner partnerOperations;
             OrganizationProfile profile;
 
+            WriteDebug(string.Format(CultureInfo.CurrentCulture, Resources.ConnectPartnerCenterBeginProcess, ParameterSetName));
+
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Id = ApplicationId;
@@ -130,9 +134,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 d => WriteDebug(d),
                 w => WriteWarning(w));
 
-
-            // TODO -- This should be done for both Access Token and User
-            if (PartnerSession.Instance.Context.Account.Type == AccountType.User)
+            if (PartnerSession.Instance.Context.AuthenticationType == AuthenticationTypes.AppPlusUser)
             {
                 partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
                 profile = partnerOperations.Profiles.OrganizationProfile.Get();

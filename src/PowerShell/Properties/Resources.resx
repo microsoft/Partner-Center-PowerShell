@@ -135,6 +135,21 @@
   <data name="AuditRecordDateError" xml:space="preserve">
     <value>Audit records are only available for the past 90 days. Please update the start date parameter and try again.</value>
   </data>
+  <data name="AuthenticateAccessTokenTrace" xml:space="preserve">
+    <value>Authenticating using an access token. The following configurations were extracted from the token: Expiration '{0}', TenantId '{1}', UniqueName {2}, UserId '{3}'.</value>
+  </data>
+  <data name="AuthenticateAuthorizationCodeTrace" xml:space="preserve">
+    <value>Authenticating using an authorization code and the following configurations: ClientId '{0}', Endpoint '{1}', RedirectUri '{2}' Resource '{3}'.</value>
+  </data>
+  <data name="AuthenticateDeviceCodeTrace" xml:space="preserve">
+    <value>Authenticating using a device code and the following configurations: ClientId '{0}', Resource '{1}'.</value>
+  </data>
+  <data name="AuthenticateServicePrincipalTrace" xml:space="preserve">
+    <value>Authenticating using a service principal and the following configurations: ClientId '{0}', Endpoint '{1}', Resource '{2}' TenantId '{3}'.</value>
+  </data>
+  <data name="AuthenticateSilentTrace" xml:space="preserve">
+    <value>Authenticating without asking for user credentials and using the following configurations: ClientId '{0}', Endpoint '{1}', Resource '{2}', UserId '{3}'.</value>
+  </data>
   <data name="AuthenticationTokenExpired" xml:space="preserve">
     <value>The authentication token has expired.</value>
   </data>
@@ -146,6 +161,9 @@
   </data>
   <data name="CityRequiredError" xml:space="preserve">
     <value>City is a required feild. Please update the input and try again.</value>
+  </data>
+  <data name="ConnectPartnerCenterBeginProcess" xml:space="preserve">
+    <value>Connect-PartnerCenter begin processing with ParameterSet '{0}'.</value>
   </data>
   <data name="DisconnectWhatIf" xml:space="preserve">
     <value>Disconnects the current session from Partner Center.</value>

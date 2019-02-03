@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="HttpContentType.cs" company="Microsoft">
+// <copyright file="HttpResponseRecords.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -7,17 +7,13 @@
 namespace Microsoft.Store.PartnerCenter.TestFramework.Network
 {
     using System.Collections.Generic;
-    using System.Linq;
 
-    /// <summary>
-    /// 
-    /// </summary>
     public sealed class HttpResponseRecords
     {
         /// <summary>
         /// A collection of HTTP operations.
         /// </summary>
-        private readonly Dictionary<string, Queue<HttpResponseRecord>> sessionRecords;
+        private readonly Dictionary<string, HttpResponseRecord> sessionRecords;
 
         /// <summary>
         /// Provides the ability to map a request with it's corresponding response.
@@ -31,10 +27,10 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
         public HttpResponseRecords(IHttpRecordMatcher matcher)
         {
             this.matcher = matcher;
-            sessionRecords = new Dictionary<string, Queue<HttpResponseRecord>>();
+            sessionRecords = new Dictionary<string, HttpResponseRecord>();
         }
 
-        public Queue<HttpResponseRecord> this[string key]
+        public HttpResponseRecord this[string key]
         {
             get => sessionRecords[key];
             set => sessionRecords[key] = value;
@@ -43,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
         /// <summary>
         /// Gets the number of records contained in the collecion.
         /// </summary>
-        public int Count => sessionRecords.Values.Select(q => q.Count).Sum();
+        public int Count => sessionRecords.Count;
 
         /// <summary>
         /// Gets all available records.
@@ -51,12 +47,9 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
         /// <returns>All of the available records.</returns>
         public IEnumerable<HttpResponseRecord> GetAllEntities()
         {
-            foreach (Queue<HttpResponseRecord> queues in sessionRecords.Values)
+            foreach (HttpResponseRecord record in sessionRecords.Values)
             {
-                while (queues.Count > 0)
-                {
-                    yield return queues.Dequeue();
-                }
+                yield return record;
             }
         }
 
@@ -66,14 +59,7 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
         /// <param name="record">The instance of the <see cref="HttpResponseRecord" /> class to be added.</param>
         public void Enqueue(HttpResponseRecord record)
         {
-            string recordKey = matcher.GetMatchingKey(record);
-
-            if (!sessionRecords.ContainsKey(recordKey))
-            {
-                sessionRecords[recordKey] = new Queue<HttpResponseRecord>();
-            }
-
-            sessionRecords[recordKey].Enqueue(record);
+            sessionRecords[matcher.GetMatchingKey(record)] = record;
         }
     }
 }
