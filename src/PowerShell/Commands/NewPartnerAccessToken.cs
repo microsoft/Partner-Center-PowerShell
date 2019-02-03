@@ -26,16 +26,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class NewPartnerAccessToken : PSCmdlet
     {
         /// <summary>
-        /// The common endpoint used during authentication.
-        /// </summary>
-        private const string CommonEndpoint = "common";
-
-        /// <summary>
-        /// The value for the redirect URI.
-        /// </summary>
-        private const string redirectUriValue = "urn:ietf:wg:oauth:2.0:oob";
-
-        /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
         private readonly static HttpClient httpClient = new HttpClient();
@@ -119,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 clientId = ApplicationId;
             }
 
-            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? CommonEndpoint : TenantId;
+            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? AuthenticationConstants.CommonEndpoint : TenantId;
             environment = PartnerEnvironment.PublicEnvironments[Environment];
 
             client = new PartnerServiceClient(httpClient);
@@ -166,14 +156,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 using (WindowsFormsWebAuthenticationDialog dialog = new WindowsFormsWebAuthenticationDialog(null))
                 {
                     authorizationResult = dialog.AuthenticateAAD(
-                        new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/authorize?resource={HttpUtility.UrlEncode(Resource)}&client_id={clientId}&response_type=code&haschrome=1&redirect_uri={HttpUtility.UrlEncode(redirectUriValue)}&response_mode=form_post&prompt=login"),
-                        new Uri(redirectUriValue));
+                        new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/authorize?resource={HttpUtility.UrlEncode(Resource)}&client_id={clientId}&response_type=code&haschrome=1&redirect_uri={HttpUtility.UrlEncode(AuthenticationConstants.RedirectUriValue)}&response_mode=form_post&prompt=login"),
+                        new Uri(AuthenticationConstants.RedirectUriValue));
                 }
 
                 authResult = client.AcquireTokenByAuthorizationCodeAsync(
                     authority,
                     resource,
-                    new Uri(redirectUriValue),
+                    new Uri(AuthenticationConstants.RedirectUriValue),
                     authorizationResult.Code,
                     clientId,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();

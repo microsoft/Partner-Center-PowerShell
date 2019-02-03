@@ -120,7 +120,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.Type = AccountType.User;
             }
 
-            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? "common" : TenantId;
+            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? AuthenticationConstants.CommonEndpoint : TenantId;
 
             PartnerSession.Instance.Context = new PartnerContext
             {

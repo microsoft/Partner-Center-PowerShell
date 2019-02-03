@@ -21,11 +21,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     public class AuthenticationFactory : IAuthenticationFactory
     {
         /// <summary>
-        /// The value for the redirect URI.
-        /// </summary>
-        private const string redirectUriValue = "urn:ietf:wg:oauth:2.0:oob";
-
-        /// <summary>
         /// Acquires the security token from the authority.
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
@@ -121,13 +116,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         Resources.AuthenticateAuthorizationCodeTrace,
                         context.ApplicationId,
                         environment.ActiveDirectoryAuthority,
-                        redirectUriValue,
+                        AuthenticationConstants.RedirectUriValue,
                         environment.PartnerCenterEndpoint));
 
                 authResult = authContext.AcquireTokenAsync(
                     environment.PartnerCenterEndpoint,
                     context.ApplicationId,
-                    new Uri(redirectUriValue),
+                    new Uri(AuthenticationConstants.RedirectUriValue),
                     new PlatformParameters(PromptBehavior.Always),
                     UserIdentifier.AnyUser).ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
