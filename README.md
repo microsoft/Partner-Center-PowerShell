@@ -11,7 +11,11 @@ This repository contains a set of PowerShell commands for administrators and dev
 Run the following command in an elevated PowerShell session to install the Partner Center module:
 
 ```powershell
+# Install the Partner Center PowerShell module
 Install-Module -Name PartnerCenter
+
+# Install the Partner Center PowerShell module for PowerShell Core
+Install-Module -Name PartnerCenter.NetCore
 ```
 
 If you have an earlier version of the Partner Center PowerShell modules installed from the PowerShell Gallery and would like to update to the latest version, run the following commands from an elevated PowerShell session.
@@ -21,6 +25,9 @@ If you have an earlier version of the Partner Center PowerShell modules installe
 ```powershell
 # Install the latest version of the Partner Center PowerShell module
 Update-Module -Name PartnerCenter
+
+# Install the latest version of the Partner Center PowerShell module for PowerShell Core
+Update-Module -Name PartnerCenter.NetCore
 ```
 
 ## Usage
@@ -31,7 +38,7 @@ To connect to Partner Center, use the [`Connect-PartnerCenter`](docs/help/Connec
 
 #### Service Principal
 
-The following example demonstrates how to connect using a service principal. Using this approach will leverage the app only authentication flow. It is important to note that not all Partner Center operations support this type of authentication. If you have not already created an Azure AD application then please follow the steps documented in the [Web App](#Web-App) section below.
+The following example demonstrates how to connect using a service principal. It is important to note that not all Partner Center operations support this type of authentication. If you have not already created an Azure AD application, then follow the steps documented in the [Web App](#Web-App) section below.
 
 ```powershell
 # Service principal login
@@ -39,20 +46,16 @@ $appId = '<Web-AAD-AppId-for-PartnerCenter>'
 $appSecret = '<Web-AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
 
-Connect-PartnerCenter -Credential $credential -ServicePrincipal -TenantId '<TenantId>
+Connect-PartnerCenter -Credential $credential -ServicePrincipal -TenantId '<TenantId>'
 ```
 
 #### User Credentials
 
-The following examples demonstrate how to connect using user credentials. Using this approach will leverage the app + user authentication flow. If you have not already configured an Azure AD application for use with this command then please see the steps documented in the [Native App](#Native-App) section below.
+The following examples demonstrate how to connect using user credentials. Using this approach will leverage the app + user authentication flow. If you have not already configured an Azure AD application for use with this command then, see the steps documented in the [Native App](#Native-App) section below.
 
 ```powershell
 # Interactive login - a dialog box will appear for you to provide your Partner Center credentials
 Connect-PartnerCenter -ApplicationId '<Native-AAD-AppId-for-PartnerCenter>'
-
-# Non-interactive login
-$PSCredential = Get-Credential
-Connect-PartnerCenter -ApplicationId '<Native-AAD-AppId-for-PartnerCenter>' -Credential $PSCredential
 ```
 
 #### Access Token
@@ -62,11 +65,11 @@ The following example demonstrates how to connect using an access token. It is i
 ```powershell
 $appId = '<AAD-AppId-for-PartnerCenter>'
 $appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
-$PSCredential = New-Object System.Management.Automation.PSCredential $appId $appSecret
+$PSCredential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
 
 $token = New-PartnerAccessToken -Credential $PSCredential -ServicePrincipal -TenantId '<TenantId>'
 
-Connect-PartnerCenter -AccessToken $token.AccessToken -AccessTokenExpiresOn $token.ExpiresOn -ApplicationId '<AAD-AppId-for-PartnerCenter>' -TenantId '<TenantId>'
+Connect-PartnerCenter -AccessToken $token.AccessToken -ApplicationId '<AAD-AppId-for-PartnerCenter>' -TenantId '<TenantId>'
 ```
 
 #### Sovereign Cloud
@@ -112,7 +115,7 @@ Get-Help -Name Get-PartnerCustomer -Full
 1. Sign in to the [Partner Center](https://partner.microsoft.com/cloud-solution-provider/csp-partner) using credentials that have *Admin Agent* and *Global Admin* privileges
 2. Click on _Dashboard_  at the top of the page, then click on the cog icon in the upper right, and then click the _Partner settings_.
 3. Add a new native application if one does not exist already.
-4. Sign in to the [Azure management portal](https://portal.azure.com) using the same credentials from step 1.
+4. Sign in to the [classic portal](https://portal.azure.com) using the same credentials from step 1.
 5. Click on the _Azure Active Directory_ icon in the toolbar.
 6. Click _App registrations_ -> Select _All apps_ from the drop down -> Click on the application created in step 3.
 7. Click _Settings_ and then click _Redirect URIs_
