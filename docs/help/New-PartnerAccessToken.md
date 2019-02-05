@@ -37,7 +37,7 @@ The New-PartnerAccessToken command generates a new access token that can be used
 PS C:\> $appId = '<AAD-AppId>'
 PS C:\> $appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
 PS C:\> $credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
-PS C:\> New-PartnerAccessToken -Credential $credential -ServicePrincipal -TenantId '<TenantId>'
+PS C:\> New-PartnerAccessToken -Credential $credential -TenantId '<TenantId>'
 ```
 
 Generates a new access token using a service principal for authentication.

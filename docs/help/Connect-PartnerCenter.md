@@ -58,7 +58,7 @@ Connect to Partner Center using the specified application identifier during auth
 
 ```powershell
 PS C:\> $credential = Get-Credential
-PS C:\> Connect-PartnerCenter -Credential $credential -ServicePrincipal -TenantId '<AppId>'
+PS C:\> Connect-PartnerCenter -Credential $credential -TenantId '<AppId>'
 ```
 
 Connects to Partner Center using app only authentication. When prompted for credential specify the application identifier for the username and the application secret for the password.
