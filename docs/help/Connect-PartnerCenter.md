@@ -14,20 +14,21 @@ Connects to Partner Center with an authenticated account for use with cmdlet req
 
 ## SYNTAX
 
-### UserCredential (Default)
+### User (Default)
 ```
-Connect-PartnerCenter -ApplicationId <String> [-Environment <EnvironmentName>] [<CommonParameters>]
+Connect-PartnerCenter -ApplicationId <String> [-Environment <EnvironmentName>] [-TenantId <String>]
+ [<CommonParameters>]
 ```
 
 ### AccessToken
 ```
-Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Environment <EnvironmentName>]
- -TenantId <String> [<CommonParameters>]
+Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```
-Connect-PartnerCenter -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
+Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-Environment <EnvironmentName>]
  -TenantId <String> [<CommonParameters>]
 ```
 
@@ -84,7 +85,7 @@ The application identifier used to access the Partner Center API.
 
 ```yaml
 Type: String
-Parameter Sets: UserCredential, AccessToken
+Parameter Sets: User, AccessToken
 Aliases:
 
 Required: True
@@ -94,8 +95,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+```yaml
+Type: String
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Credential
 User credentials to be used when connecting to Partner Center.
+
+```yaml
+Type: PSCredential
+Parameter Sets: AccessToken
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ```yaml
 Type: PSCredential
@@ -115,25 +140,10 @@ Name of the environment containing the account to log into
 ```yaml
 Type: EnvironmentName
 Parameter Sets: (All)
-Aliases: EnvironmentName
+Aliases:
 Accepted values: GlobalCloud, ChinaCloud, GermanCloud, USGovernment
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ServicePrincipal
-A flag indiicating that a service principal will be used to authenticate.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: ServicePrincipal
-Aliases:
-
-Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -145,7 +155,19 @@ The Azure AD domain or tenant identifier.
 
 ```yaml
 Type: String
-Parameter Sets: AccessToken, ServicePrincipal
+Parameter Sets: User, AccessToken
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ServicePrincipal
 Aliases:
 
 Required: True
