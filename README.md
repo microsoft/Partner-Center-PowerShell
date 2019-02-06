@@ -46,7 +46,7 @@ $appId = '<Web-AAD-AppId-for-PartnerCenter>'
 $appSecret = '<Web-AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
 
-Connect-PartnerCenter -Credential $credential -ServicePrincipal -TenantId '<TenantId>'
+Connect-PartnerCenter -Credential $credential -TenantId '<TenantId>'
 ```
 
 #### User Credentials
@@ -67,7 +67,7 @@ $appId = '<AAD-AppId-for-PartnerCenter>'
 $appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
 $PSCredential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
 
-$token = New-PartnerAccessToken -Credential $PSCredential -ServicePrincipal -TenantId '<TenantId>'
+$token = New-PartnerAccessToken -Credential $PSCredential -TenantId '<TenantId>'
 
 Connect-PartnerCenter -AccessToken $token.AccessToken -ApplicationId '<AAD-AppId-for-PartnerCenter>' -TenantId '<TenantId>'
 ```

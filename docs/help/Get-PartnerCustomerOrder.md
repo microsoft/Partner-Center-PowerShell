@@ -14,6 +14,11 @@ Gets either a specific order or a list of order for the specified customer.
 
 ## SYNTAX
 
+### ByBillingCycle
+```
+Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [<CommonParameters>]
+```
+
 ### ByCustomerId
 ```
 Get-PartnerCustomerOrder -CustomerId <String> [<CommonParameters>]
@@ -22,11 +27,6 @@ Get-PartnerCustomerOrder -CustomerId <String> [<CommonParameters>]
 ### ByOrderId
 ```
 Get-PartnerCustomerOrder -CustomerId <String> -OrderId <String> [<CommonParameters>]
-```
-
-### ByBillingCycle
-```
-Get-PartnerCustomerOrder -CustomerId <String> -BillingCycle <BillingCycleType> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
