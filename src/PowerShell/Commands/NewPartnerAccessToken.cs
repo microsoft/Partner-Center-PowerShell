@@ -21,10 +21,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Platforms;
 #endif
 
-    [Cmdlet(VerbsCommon.New, "PartnerAccessToken", DefaultParameterSetName = "UserCredential")]
+    [Cmdlet(VerbsCommon.New, "PartnerAccessToken", DefaultParameterSetName = UserParameterSet)]
     [OutputType(typeof(AuthenticationResult))]
     public class NewPartnerAccessToken : PSCmdlet
     {
+        /// <summary>
+        /// The name of the service principal parameter set.
+        /// </summary>
+        private const string ServicePrincipalParameterSet = "ServicePrincipal";
+
+        /// <summary>
+        /// The name of the user parameter set.
+        /// </summary>
+        private const string UserParameterSet = "User";
+
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
@@ -33,8 +43,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = false, ParameterSetName = "ServicePrincipal")]
-        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = true, ParameterSetName = "UserCredential")]
+        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The identifier for the Azure AD application.", Mandatory = true, ParameterSetName = UserParameterSet)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
@@ -47,7 +57,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the credentials.
         /// </summary>
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = "ServicePrincipal")]
+        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         public PSCredential Credential { get; set; }
 
         /// <summary>
@@ -75,7 +85,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The Azure AD domain or tenant identifier.", Mandatory = false)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string TenantId { get; set; }
 

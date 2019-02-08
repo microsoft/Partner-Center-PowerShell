@@ -186,7 +186,7 @@ Gets a list of service request topics.
 Gets the partner's support profile.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
-Generate a new access token that can be used to access Partner Center.
+Acquires an access token from the authority.
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
