@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccessToken.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://go.microsoft.com/fwlink/?linkid=2071443
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccessToken.md
 schema: 2.0.0
 ---
@@ -10,11 +10,11 @@ schema: 2.0.0
 # New-PartnerAccessToken
 
 ## SYNOPSIS
-Generate a new access token that can be used to access Partner Center.
+Acquires an access token from the authority.
 
 ## SYNTAX
 
-### UserCredential (Default)
+### User (Default)
 ```
 New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <EnvironmentName>]
  [-RefreshToken <String>] [-Resource <String>] [-TenantId <String>] [<CommonParameters>]
@@ -23,12 +23,12 @@ New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <Environ
 ### ServicePrincipal
 ```
 New-PartnerAccessToken [-ApplicationId <String>] [-Consent] -Credential <PSCredential>
- [-Environment <EnvironmentName>] [-RefreshToken <String>] [-Resource <String>] [-TenantId <String>]
+ [-Environment <EnvironmentName>] [-RefreshToken <String>] [-Resource <String>] -TenantId <String>
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The New-PartnerAccessToken command generates a new access token that can be used to access Partner Center.
+The New-PartnerAccessToken can be used to request new access tokens.
 
 ## EXAMPLES
 
@@ -36,7 +36,7 @@ The New-PartnerAccessToken command generates a new access token that can be used
 ```powershell
 PS C:\> $appId = '<AAD-AppId>'
 PS C:\> $appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
-PS C:\> $credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
+PS C:\> $credential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
 PS C:\> New-PartnerAccessToken -Credential $credential -TenantId '<TenantId>'
 ```
 
@@ -57,7 +57,7 @@ The identifier for the Azure AD application.
 
 ```yaml
 Type: String
-Parameter Sets: UserCredential
+Parameter Sets: User
 Aliases:
 
 Required: True
@@ -156,14 +156,26 @@ Accept wildcard characters: False
 ```
 
 ### -TenantId
-The Azure AD domain or tenant identifier.
+The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: User
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -179,7 +191,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationResult
+### Microsoft.Store.PartnerCenter.Models.Authentication.AuthenticationResult
 
 ## NOTES
 
