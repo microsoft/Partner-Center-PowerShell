@@ -53,11 +53,7 @@
     #RequiredModules = @()
 
     # Assemblies that must be loaded prior to importing this module
-    RequiredAssemblies = '.\Microsoft.Store.PartnerCenter.PowerShell.dll', 
-                   '.\Microsoft.IdentityModel.Clients.ActiveDirectory.dll',
-                   '.\Microsoft.Store.PartnerCenter.dll',
-                   '.\Newtonsoft.Json.dll',
-                   '.\Microsoft.Rest.ClientRuntime.dll'
+    RequiredAssemblies = '.\Microsoft.Store.PartnerCenter.PowerShell.dll'
 
     # Script files (.ps1) that are run in the caller's environment prior to importing this module.
     # ScriptsToProcess = @()
