@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Connect-PartnerCenter.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://go.microsoft.com/fwlink/?linkid=2071364
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Connect-PartnerCenter.md
 schema: 2.0.0
 ---
@@ -15,19 +15,19 @@ Connects to Partner Center with an authenticated account for use with cmdlet req
 ## SYNTAX
 
 ### User (Default)
-```
+```powershell
 Connect-PartnerCenter -ApplicationId <String> [-Environment <EnvironmentName>] [-TenantId <String>]
  [<CommonParameters>]
 ```
 
 ### AccessToken
-```
+```powershell
 Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>]
  [-Environment <EnvironmentName>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-Environment <EnvironmentName>]
  -TenantId <String> [<CommonParameters>]
 ```
@@ -38,30 +38,26 @@ The Connect-PartnerCenter cmdlet connects to Partner Center with an authenticate
 ## EXAMPLES
 
 ### Example 1
-
 ```powershell
 PS C:\> Connect-PartnerCenter -ApplicationId '<AppId>'
 ```
 
-Connect to Partner Center using the specified application identifier during authentication.
+Connects to Partner Center using the specified application identifier during authentication.
 
 ### Example 2
-
 ```powershell
 PS C:\> $credential = Get-Credential
-PS C:\> Connect-PartnerCenter -ApplicationId '<AppId>' -Credential $credential
+PS C:\> Connect-PartnerCenter -ApplicationId '<AppId>' -Credential $credential -TenantId '<TenantId>'
 ```
 
-Connect to Partner Center using the specified application identifier during authentication.
+Connects to Partner Center using app only authentication. Not all commands support this type of authentication.
 
 ### Example 3
-
 ```powershell
-PS C:\> $credential = Get-Credential
-PS C:\> Connect-PartnerCenter -Credential $credential -TenantId '<AppId>'
+PS C:\> Connect-PartnerCenter -AccessToken '<AccessToken>' -ApplicationId '<AppId>' -TenantId '<TenantId>'
 ```
 
-Connects to Partner Center using app only authentication. When prompted for credential specify the application identifier for the username and the application secret for the password.
+Connects to Partner Center using an access token.
 
 ## PARAMETERS
 
@@ -81,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -ApplicationId
-The application identifier used to access the Partner Center API.
+The identifier of the Azure AD application.
 
 ```yaml
 Type: String
@@ -108,7 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
-User credentials to be used when connecting to Partner Center.
+Credentials that represents the service principal.
 
 ```yaml
 Type: PSCredential
@@ -135,7 +131,7 @@ Accept wildcard characters: False
 ```
 
 ### -Environment
-Name of the environment containing the account to log into
+The environment use for authentication.
 
 ```yaml
 Type: EnvironmentName
@@ -151,7 +147,7 @@ Accept wildcard characters: False
 ```
 
 ### -TenantId
-The Azure AD domain or tenant identifier.
+The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
@@ -186,7 +182,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Profile.PartnerContext
+### Microsoft.Store.PartnerCenter.PowerShell.Authentication.PartnerContext
 
 ## NOTES
 
