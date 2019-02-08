@@ -28,6 +28,10 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
 
     <RepositoryType>git</RepositoryType>
+
+    <Version>1.5.1902.3</Version>
+
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
