@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ManagedServices
         public string GroupName { get; set; }
 
         /// <summary>
-        /// Gets or sets the Links
+        /// Gets the available links.
         /// </summary>
         public Dictionary<string, Uri> Links { get; }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ManagedServices
         public string Name { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="ManagedService" /> to an instance of <see cref="PSManagedService" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="ManagedService" /> to an instance of <see cref="PSManagedService" />. 
         /// </summary>
         /// <param name="managedService">The managed service being cloned.</param>
         private void CloneAdditionalOperations(ManagedService managedService)

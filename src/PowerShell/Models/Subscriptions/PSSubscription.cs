@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         /// <summary>
         /// Gets the type of contract.
         /// </summary>
-        public ContractType ContractType => ContractType.Subscription;
+        public ContractType ContractType { get; } = ContractType.Subscription;
 
         /// <summary>
         /// Gets or sets the creation date.
@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public string UnitType { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Subscription "/> to an instance of <see cref="PSSubscription" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Subscription "/> to an instance of <see cref="PSSubscription" />. 
         /// </summary>
         /// <param name="subscription">The subscription being cloned.</param>
         private void CloneAdditionalOperations(Subscription subscription)

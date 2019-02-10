@@ -55,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Offers
         public int Rank { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="OfferCategory" /> to an instance of <see cref="PSOfferCategory" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="OfferCategory" /> to an instance of <see cref="PSOfferCategory" />. 
         /// </summary>
         /// <param name="offerCategory">The offer category being cloned.</param>
         private void CloneAdditionalOperations(OfferCategory offerCategory) => OfferCategoryId = offerCategory.Id;

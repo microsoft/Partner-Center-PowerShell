@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         public IEnumerable<CartLineItem> LineItems { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Cart" /> to an instance of <see cref="PSCart" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Cart" /> to an instance of <see cref="PSCart" />. 
         /// </summary>
         /// <param name="cart">The cart being cloned.</param>
         private void CloneAdditionalOperations(Cart cart)

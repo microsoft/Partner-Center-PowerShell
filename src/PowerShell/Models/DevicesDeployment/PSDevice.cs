@@ -80,7 +80,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         public DateTime UploadedDate { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Device"/> to an instance of <see cref="PSDevice" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Device"/> to an instance of <see cref="PSDevice" />. 
         /// </summary>
         /// <param name="device">The device being cloned.</param>
         private void CloneAdditionalOperations(Device device) => DeviceId = device.Id;

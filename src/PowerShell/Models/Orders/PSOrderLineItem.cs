@@ -78,7 +78,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         public string SubscriptionId { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="OrderLineItem" /> to an instance of <see cref="PSOrderLineItem" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="OrderLineItem" /> to an instance of <see cref="PSOrderLineItem" />. 
         /// </summary>
         /// <param name="lineItem">An instance of the <see cref="OrderLineItem" /> class that will serve as base for this instance.</param>
         private void CloneAdditionalOperations(OrderLineItem lineItem)

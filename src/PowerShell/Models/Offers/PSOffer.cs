@@ -132,7 +132,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Offers
         public string UnitType { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Offer" /> to an instance of <see cref="PSOffer" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Offer" /> to an instance of <see cref="PSOffer" />. 
         /// </summary>
         /// <param name="offer">The offer being cloned.</param>
         private void CloneAdditionalOperations(Offer offer) => OfferId = offer.Id;

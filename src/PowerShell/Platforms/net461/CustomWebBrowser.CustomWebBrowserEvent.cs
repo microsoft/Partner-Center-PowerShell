@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 {
+    using System;
     using System.Runtime.InteropServices;
 
     internal partial class CustomWebBrowser
@@ -22,14 +23,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 this.parent = parent;
             }
 
-            public void NavigateError(object pDisp, ref object url, ref object frame, ref object statusCode, ref bool cancel)
+            public void NavigateError(object pDisp, ref object URL, ref object frame, ref object statusCode, ref bool cancel)
             {
-                string uriString = (url == null) ? "" : ((string)url);
+                string uriString = (URL == null) ? "" : ((string)URL);
                 string frameString = (frame == null) ? "" : ((string)frame);
                 int statusCodeInt = (statusCode == null) ? 0 : ((int)statusCode);
 
-                WebBrowserNavigateErrorEventArgs e = new WebBrowserNavigateErrorEventArgs(uriString, frameString, statusCodeInt, pDisp);
-                this.parent.OnNavigateError(e);
+                WebBrowserNavigateErrorEventArgs e = new WebBrowserNavigateErrorEventArgs(new Uri(uriString), frameString, statusCodeInt, pDisp);
+                parent.OnNavigateError(e);
                 cancel = e.Cancel;
             }
 
@@ -39,27 +40,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             // This is COM events handler, defined in COM interface, however this model works as Events in .NET
             // Multiple handlers are possible, so empty method just called and do nothing.
 
-            public void BeforeNavigate2(object pDisp, ref object urlObject, ref object flags, ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
+            public void BeforeNavigate2(object pDisp, ref object URL, ref object flags, ref object targetFrameName, ref object postData, ref object headers, ref bool cancel)
             {
-                /*
-                 * 
-                 * // Navigating event from public class could be called for internal object.
-                 * //       Current implementation of System.Windows.Forms.WebBrowser doesn't allow you to track who issues this event this control or IFrame,
-                 * //       internal IFrame will have different pDisp, so we need filter events from internal IFrames by analyzing this field:
-                 * //       
-                 * //       if ( this.webBrowser.ActiveXInstance != e.WebBrowserActiveXInstance )
-                 * //       {
-                 * //           // this event came from internal frame, ignore this.
-                 * //           return;
-                 * //       }
-                 * //      
-                 * //       See WindowsFormsWebAuthenticationDialogBase.WebBrowserNavigateErrorHandler( object sender, WebBrowserNavigateErrorEventArgs e )
-                 * //       Thus, before making any decision it will be safe to check if Navigating event comes from right object.
-                 * //       This not a P0 bug, as it final URL with auth code could came only in main frame, however it could give issue with more complicated logic.
-                 */
+                // Ignore event
             }
 
-            public void ClientToHostWindow(ref long cX, ref long cY)
+            public void ClientToHostWindow(ref long cx, ref long cy)
             {
                 // Ignore event
             }
@@ -69,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 // Ignore event
             }
 
-            public void DocumentComplete(object pDisp, ref object urlObject)
+            public void DocumentComplete(object pDisp, ref object URL)
             {
                 // Ignore event
             }
@@ -89,13 +75,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 // Ignore event
             }
 
-            public void NavigateComplete2(object pDisp, ref object urlObject)
+            public void NavigateComplete2(object pDisp, ref object URL)
             {
                 // Ignore event
             }
 
 
-            public void NewWindow2(ref object ppDisp, ref bool cancel)
+            public void NewWindow2(ref object pDisp, ref bool cancel)
             {
                 // Ignore event
             }

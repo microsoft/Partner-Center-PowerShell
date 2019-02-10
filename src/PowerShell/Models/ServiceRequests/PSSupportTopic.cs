@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceRequests
         }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="SupportTopic "/> to an instance of <see cref="PSSupportTopic" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="SupportTopic "/> to an instance of <see cref="PSSupportTopic" />. 
         /// </summary>
         /// <param name="topic">The product being cloned.</param>
         private void CloneAdditionalOperations(SupportTopic topic)

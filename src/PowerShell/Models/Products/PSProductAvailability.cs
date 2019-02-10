@@ -75,7 +75,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
         public string SkuId { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Availability"/> to an instance of <see cref="PSProductAvailability" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Availability"/> to an instance of <see cref="PSProductAvailability" />. 
         /// </summary>
         /// <param name="productAvailability">The product availablity being cloned.</param>
         private void CloneAdditionalOperations(Availability productAvailability)

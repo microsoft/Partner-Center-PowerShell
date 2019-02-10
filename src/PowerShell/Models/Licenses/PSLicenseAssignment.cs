@@ -45,7 +45,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public string SkuId { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="LicenseAssignment"/> to an instance of <see cref="PSLicenseAssignment" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="LicenseAssignment"/> to an instance of <see cref="PSLicenseAssignment" />. 
         /// </summary>
         /// <param name="licenseAssignment">The license agreement being cloned.</param>
         private void CloneAdditionalOperations(LicenseAssignment licenseAssignment)

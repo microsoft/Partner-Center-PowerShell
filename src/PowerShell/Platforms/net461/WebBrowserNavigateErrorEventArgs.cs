@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 {
+    using System;
     using System.ComponentModel;
 
     /// <summary>
@@ -16,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
     {
         // Fields
         private readonly string targetFrameName;
-        private readonly string url;
+        private readonly Uri url;
         private readonly int statusCode;
         private readonly object webBrowserActiveXInstance;
 
@@ -27,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         /// <param name="targetFrameName">Name of the target frame that had the failure</param>
         /// <param name="statusCode">Error status code</param>
         /// <param name="webBrowserActiveXInstance">return object</param>
-        public WebBrowserNavigateErrorEventArgs(string url, string targetFrameName, int statusCode, object webBrowserActiveXInstance)
+        public WebBrowserNavigateErrorEventArgs(Uri url, string targetFrameName, int statusCode, object webBrowserActiveXInstance)
         {
             this.url = url;
             this.targetFrameName = targetFrameName;
@@ -36,47 +37,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         }
 
         /// <summary>
-        /// Name of the target frame that had the failure
-        /// </summary>
-        public string TargetFrameName
-        {
-            get
-            {
-                return this.targetFrameName;
-            }
-        }
-
-        /// <summary>
-        /// url as a string, as in case of error it could be invalid url
-        /// </summary>
-        public string Url
-        {
-            get
-            {
-                return this.url;
-            }
-        }
-
-        /// <summary>
         /// ADAL.Native has code for interpretation of this code to string we don't do it here, as we need to come consideration should we do it or not.
         /// </summary>
-        public int StatusCode
-        {
-            get
-            {
-                return this.statusCode;
-            }
-        }
+        public int StatusCode => statusCode;
 
         /// <summary>
         /// return object
         /// </summary>
-        public object WebBrowserActiveXInstance
-        {
-            get
-            {
-                return this.webBrowserActiveXInstance;
-            }
-        }
+        public object WebBrowserActiveXInstance => webBrowserActiveXInstance;
     }
 }

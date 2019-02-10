@@ -122,7 +122,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceRequests
         public string CountryCode { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="ServiceRequest "/> to an instance of <see cref="PSServiceRequest" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="ServiceRequest "/> to an instance of <see cref="PSServiceRequest" />. 
         /// </summary>
         /// <param name="request">The service request being cloned.</param>
         private void CloneAdditionalOperations(ServiceRequest request)
