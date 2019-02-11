@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
@@ -37,27 +38,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             Cart cart;
+            CartLineItem lineItem;
+            List<CartLineItem> lineItems;
 
             if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewCartWhatIf, CustomerId)))
             {
                 return;
             }
 
+            lineItems = new List<CartLineItem>();
+
+            foreach (PSCartLineItem item in LineItems)
+            {
+                lineItem = new CartLineItem
+                {
+                    BillingCycle = item.BillingCycle,
+                    CatalogItemId = item.CatalogItemId,
+                    CurrencyCode = item.CurrencyCode,
+                    Error = item.Error,
+                    FriendlyName = item.FriendlyName,
+                    Id = item.Id,
+                    OrderGroup = item.OrderGroup,
+                    Participants = item.Participants,
+                    Quantity = item.Quantity
+                };
+
+                foreach (KeyValuePair<string, string> kvp in item.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value))
+                {
+                    lineItem.ProvisioningContext.Add(kvp.Key, kvp.Value);
+                }
+
+                lineItems.Add(lineItem);
+            }
+
             cart = new Cart
             {
-                LineItems = LineItems.Select(lineItem => new CartLineItem
-                {
-                    BillingCycle = lineItem.BillingCycle,
-                    CatalogItemId = lineItem.CatalogItemId,
-                    CurrencyCode = lineItem.CurrencyCode,
-                    Error = lineItem.Error,
-                    FriendlyName = lineItem.FriendlyName,
-                    Id = lineItem.Id,
-                    OrderGroup = lineItem.OrderGroup,
-                    Participants = lineItem.Participants,
-                    ProvisioningContext = lineItem.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value),
-                    Quantity = lineItem.Quantity
-                })
+                LineItems = lineItems
             };
 
             cart = Partner.Customers[CustomerId].Carts.Create(cart);

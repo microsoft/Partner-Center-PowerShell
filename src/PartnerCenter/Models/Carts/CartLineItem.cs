@@ -15,6 +15,14 @@ namespace Microsoft.Store.PartnerCenter.Models.Carts
     public sealed class CartLineItem
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CartLineItem" />
+        /// </summary>
+        public CartLineItem()
+        {
+            ProvisioningContext = new Dictionary<string, string>();
+        }
+
+        /// <summary>
         /// Gets or sets a list of items that depend on this one, so they have to be purchased subsequently.
         /// </summary>
         public IEnumerable<CartLineItem> AddonItems { get; set; }
@@ -58,11 +66,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Carts
         /// Gets or sets a collection of participants on this purchase.
         /// </summary>
         public IEnumerable<KeyValuePair<ParticipantType, string>> Participants { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets a context that will be used for provisioning of the catalog item.
+        /// Gets a context that will be used for provisioning of the catalog item.
         /// </summary>
-        public Dictionary<string, string> ProvisioningContext { get; set; }
+        public Dictionary<string, string> ProvisioningContext { get; }
 
         /// <summary>
         /// Gets or sets the product quantity.

@@ -53,7 +53,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         /// <summary>
         /// Gets or sets the provisioning context for the offer.
         /// </summary>
-        [JsonProperty]
         public Dictionary<string, string> ProvisioningContext { get; set; }
     }
 }
