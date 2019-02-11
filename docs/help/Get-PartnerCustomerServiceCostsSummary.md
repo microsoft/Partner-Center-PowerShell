@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerServiceCostsSummary.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://go.microsoft.com/fwlink/?linkid=2072712
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerServiceCostsSummary.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets a customer's service costs for the specified billing period.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerServiceCostsSummary -BillingPeriod <ServiceCostsBillingPeriod> -CustomerId <String>
  [<CommonParameters>]
 ```
@@ -40,7 +40,7 @@ An indicator that represents the billing period.
 Type: ServiceCostsBillingPeriod
 Parameter Sets: (All)
 Aliases:
-Accepted values: Current, MostRecent
+Accepted values: MostRecent
 
 Required: True
 Position: Named

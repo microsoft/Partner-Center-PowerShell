@@ -108,7 +108,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string clientId;
             string resource;
 
-            if (ParameterSetName.Equals("ServicePrincipal", StringComparison.InvariantCultureIgnoreCase))
+            if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
                 account.Type = AccountType.ServicePrincipal;
