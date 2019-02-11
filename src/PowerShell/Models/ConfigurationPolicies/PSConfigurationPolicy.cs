@@ -69,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         public IEnumerable<PolicySettingsTypes> PolicySettings { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="ConfigurationPolicy" /> to an instance of <see cref="PSConfigurationPolicy" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="ConfigurationPolicy" /> to an instance of <see cref="PSConfigurationPolicy" />. 
         /// </summary>
         /// <param name="customer">The customer being cloned.</param>
         private void CloneAdditionalOperations(ConfigurationPolicy configurationPolicy)

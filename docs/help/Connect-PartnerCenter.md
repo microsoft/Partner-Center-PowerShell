@@ -136,7 +136,7 @@ The environment use for authentication.
 ```yaml
 Type: EnvironmentName
 Parameter Sets: (All)
-Aliases:
+Aliases: EnvironmentName
 Accepted values: GlobalCloud, ChinaCloud, GermanCloud, USGovernment
 
 Required: False

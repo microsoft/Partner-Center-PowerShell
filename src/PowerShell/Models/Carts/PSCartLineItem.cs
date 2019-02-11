@@ -91,7 +91,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="CartLineItem" /> to an instance of <see cref="PSCartLineItem" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="CartLineItem" /> to an instance of <see cref="PSCartLineItem" />. 
         /// </summary>
         /// <param name="lineItem">An instance of the <see cref="CartLineItem" /> class that will serve as base for this instance.</param>
         private void CloneAdditionalOperations(CartLineItem lineItem)

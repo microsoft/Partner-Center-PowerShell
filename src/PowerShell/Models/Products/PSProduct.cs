@@ -55,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
         public string Title { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Product"/> to an instance of <see cref="PSProduct" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Product"/> to an instance of <see cref="PSProduct" />. 
         /// </summary>
         /// <param name="product">The product being cloned.</param>
         private void CloneAdditionalOperations(Product product)

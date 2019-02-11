@@ -94,7 +94,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
         public string Title { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Sku"/> to an instance of <see cref="PSSku" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Sku"/> to an instance of <see cref="PSSku" />. 
         /// </summary>
         /// <param name="sku">The SKU being cloned.</param>
         private void CloneAdditionalOperations(Sku sku)

@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <Reference Include="System.Web" />
   </ItemGroup>
 

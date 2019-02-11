@@ -58,7 +58,5 @@ namespace Microsoft.Store.PartnerCenter.Models.DevicesDeployment
         /// Gets or sets the UTC date the device was uploaded.
         /// </summary>
         public DateTime UploadedDate { get; set; }
-
-
     }
 }

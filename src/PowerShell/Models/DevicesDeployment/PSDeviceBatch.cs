@@ -63,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         public Link DevicesLink { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="DeviceBatch"/> to an instance of <see cref="PSDeviceBatch" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="DeviceBatch"/> to an instance of <see cref="PSDeviceBatch" />. 
         /// </summary>
         /// <param name="deviceBatch">The device batch being cloned.</param>
         private void CloneAdditionalOperations(DeviceBatch deviceBatch) => BatchId = deviceBatch.Id;

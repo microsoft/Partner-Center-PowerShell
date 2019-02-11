@@ -103,7 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public decimal TotalCharges { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Invoice" /> to an instance of <see cref="PSInvoice" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Invoice" /> to an instance of <see cref="PSInvoice" />. 
         /// </summary>
         /// <param name="invoice">The invoice being cloned.</param>
         private void CloneAdditionalOperations(Invoice invoice)

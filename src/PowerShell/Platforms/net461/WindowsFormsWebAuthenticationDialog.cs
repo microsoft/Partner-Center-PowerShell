@@ -89,10 +89,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         /// <summary>
         /// 
         /// </summary>
-        protected override void OnNavigationCanceled(int inputStatusCode)
+        protected override void OnNavigationCanceled(int statusCode)
         {
-            statusCode = inputStatusCode;
-            DialogResult = (inputStatusCode == 0) ? DialogResult.Cancel : DialogResult.Abort;
+            this.statusCode = statusCode;
+            DialogResult = (statusCode == 0) ? DialogResult.Cancel : DialogResult.Abort;
         }
 
         private void SetBrowserZoom()

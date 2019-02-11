@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Utilizations
         /// <summary>
         /// Gets or sets the key-value pairs of instance-level details.
         /// </summary>
-        public IDictionary<string, string> InfoFields { get; set; }
+        public IDictionary<string, string> InfoFields { get; private set; }
 
         /// <summary>
         /// Gets or sets the instance details.

@@ -82,7 +82,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
         public string UsageLocation { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="User" /> to an instance of <see cref="PSCustomerUser" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="User" /> to an instance of <see cref="PSCustomerUser" />. 
         /// </summary>
         /// <param name="customerUser">The customer user being cloned.</param>
         private void CloneAdditionalOperations(CustomerUser customerUser) => UserId = customerUser.Id;

@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             public int GetExternal(out object ppDispatch)
             {
-                ppDispatch = this.host.ObjectForScripting;
+                ppDispatch = host.ObjectForScripting;
                 return S_OK;
             }
 
@@ -88,7 +88,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                     info.dwFlags |= DOCHOSTUIFLAG_DPI_AWARE;
                 }
 
-                if (this.host.ScrollBarsEnabled)
+                if (host.ScrollBarsEnabled)
                 {
                     info.dwFlags |= DOCHOSTUIFLAG_FLAT_SCROLLBAR;
                 }
@@ -135,7 +135,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 return NotImplemented;
             }
 
-            public int ShowContextMenu(int dwID, NativeWrapper.Point pt, object pcmdtReserved, object pdispReserved)
+            public int ShowContextMenu(int dwID, long pt, object pcmdtReserved, object pdispReserved)
             {
                 switch (dwID)
                 {
@@ -172,9 +172,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 return S_FALSE;
             }
 
-            public int TranslateUrl(int dwTranslate, string strUrlIn, out string pstrUrlOut)
+            public int TranslateUrl(int dwTranslate, string strURLIn, out string pstrURLOut)
             {
-                pstrUrlOut = null;
+                pstrURLOut = null;
                 return S_FALSE;
             }
 
@@ -209,21 +209,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         {
             base.CreateSink();
 
-            object activeXInstance = this.ActiveXInstance;
+            object activeXInstance = ActiveXInstance;
             if (activeXInstance != null)
             {
-                this.webBrowserEvent = new CustomWebBrowserEvent(this);
-                this.webBrowserEventCookie = new AxHost.ConnectionPointCookie(activeXInstance, this.webBrowserEvent,
+                webBrowserEvent = new CustomWebBrowserEvent(this);
+                webBrowserEventCookie = new AxHost.ConnectionPointCookie(activeXInstance, webBrowserEvent,
                     typeof(NativeWrapper.IDWebBrowserEvents2));
             }
         }
 
         protected override void DetachSink()
         {
-            if (this.webBrowserEventCookie != null)
+            if (webBrowserEventCookie != null)
             {
-                this.webBrowserEventCookie.Disconnect();
-                this.webBrowserEventCookie = null;
+                webBrowserEventCookie.Disconnect();
+                webBrowserEventCookie = null;
             }
 
             base.DetachSink();
@@ -231,10 +231,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
         protected virtual void OnNavigateError(WebBrowserNavigateErrorEventArgs e)
         {
-            if (NavigateError != null)
-            {
-                this.NavigateError(this, e);
-            }
+            NavigateError?.Invoke(this, e);
         }
 
 

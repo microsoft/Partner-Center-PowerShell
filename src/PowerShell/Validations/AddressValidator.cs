@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     using Common;
     using Exceptions;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.CountryValidationRules;
+    using PartnerCenter.Models.ValidationRules;
     using Properties;
 
     public sealed class AddressValidator : IValidator<Address>
@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// <exception cref="ArgumentNullException">
         /// <paramref name="partner"/> is null.
         /// </exception>
-        public AddressValidator(PartnerCenter.IPartner partner)
+        public AddressValidator(IPartner partner)
         {
             partner.AssertNotNull(nameof(partner));
             this.partner = partner;

@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             if (sessionCount == 0)
             {
-                NativeMethods.SetQueryNetSessionCount(NativeMethods.SessionOp.SESSION_INCREMENT);
+                _ = NativeMethods.SetQueryNetSessionCount(NativeMethods.SessionOp.SESSION_INCREMENT);
             }
 
             if (ownerWindow == null)
@@ -438,7 +438,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                     deviceDpiX = NativeWrapper.NativeMethods.GetDeviceCaps(dC, LOGPIXELSX);
                     deviceDpiY = NativeWrapper.NativeMethods.GetDeviceCaps(dC, LOGPIXELSY);
 
-                    NativeWrapper.NativeMethods.ReleaseDC(IntPtr.Zero, dC);
+                    _ = NativeWrapper.NativeMethods.ReleaseDC(IntPtr.Zero, dC);
                 }
                 else
                 {

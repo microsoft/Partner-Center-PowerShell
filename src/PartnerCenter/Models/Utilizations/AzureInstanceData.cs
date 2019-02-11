@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Utilizations
         /// <summary>
         /// Gets or sets additional data for an Azure resource.
         /// </summary>
-        public IDictionary<string, string> AdditionalInfo { get; set; }
+        public IDictionary<string, string> AdditionalInfo { get; private set; }
 
         /// <summary>
         /// Gets or sets the region in which the service was run.
@@ -39,6 +39,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Utilizations
         /// <summary>
         /// Gets or sets the resource tags specified by the user.
         /// </summary>
-        public IDictionary<string, string> Tags { get; set; }
+        public IDictionary<string, string> Tags { get; private set; }
     }
 }

@@ -99,7 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public int WarningUnits { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="SubscribedSku"/> to an instance of <see cref="PSSubscribedSku" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="SubscribedSku"/> to an instance of <see cref="PSSubscribedSku" />. 
         /// </summary>
         /// <param name="sku">The sku being cloned.</param>
         private void CloneAdditionalOperations(SubscribedSku sku)

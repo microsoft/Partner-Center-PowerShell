@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.ServiceIncidents;
+    using PartnerCenter.Models.Incidents;
 
     /// <summary>
     /// Gets a list of service incidents from Partner Center.

@@ -19,8 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the billing period.
         /// </summary>
         [Parameter(HelpMessage = "An indicator that represents the billing period.", Mandatory = true)]
-        // TODO -- Remove the Current option because it is not supported by the API
-        [ValidateSet(nameof(ServiceCostsBillingPeriod.Current), nameof(ServiceCostsBillingPeriod.MostRecent))]
+        [ValidateSet(nameof(ServiceCostsBillingPeriod.MostRecent))]
         public ServiceCostsBillingPeriod BillingPeriod { get; set; }
 
         /// <summary>

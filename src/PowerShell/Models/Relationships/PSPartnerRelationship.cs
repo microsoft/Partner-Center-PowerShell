@@ -64,7 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Relationships
         public string State { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="PartnerRelationship" /> to an instance of <see cref="PSPartnerRelationship" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="PartnerRelationship" /> to an instance of <see cref="PSPartnerRelationship" />. 
         /// </summary>
         /// <param name="relationship">The relationship being cloned.</param>
         private void CloneAdditionalOperations(PartnerRelationship relationship)

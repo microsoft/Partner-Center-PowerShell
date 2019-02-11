@@ -72,7 +72,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         public string Status { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="Order"/> to an instance of <see cref="PSOrder" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="Order"/> to an instance of <see cref="PSOrder" />. 
         /// </summary>
         /// <param name="order">The order being cloned.</param>
         private void CloneAdditionalOperations(Order order)

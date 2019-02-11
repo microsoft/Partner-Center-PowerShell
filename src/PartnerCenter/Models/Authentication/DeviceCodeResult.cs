@@ -58,6 +58,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Authentication
         /// <summary>
         /// Verification URL where the user must navigate to authenticate using the device code and credentials.
         /// </summary>
-        public string VerificationUrl { get; internal set; }
+        public Uri VerificationUrl { get; internal set; }
     }
 }

@@ -45,7 +45,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         public new string ResourceName { get; set; }
 
         /// <summary>
-        /// Addtional operations to be performed when cloning an instance of <see cref="CustomerUsageSummary" /> to an instance of <see cref="PSCustomerUsageSummary" />. 
+        /// Additional operations to be performed when cloning an instance of <see cref="CustomerUsageSummary" /> to an instance of <see cref="PSCustomerUsageSummary" />. 
         /// </summary>
         /// <param name="customerUsageSummary">The cart being cloned.</param>
         private void CloneAdditionalOperations(CustomerUsageSummary summary)

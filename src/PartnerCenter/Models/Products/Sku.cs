@@ -71,6 +71,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         /// <summary>
         /// Gets or sets the dynamic attributes.
         /// </summary>
-        public Dictionary<string, object> DynamicAttributes { get; set; }
+        public IDictionary<string, object> DynamicAttributes { get; private set; }
     }
 }

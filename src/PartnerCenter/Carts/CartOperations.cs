@@ -21,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// <summary>
         /// Content used when checking out a cart.
         /// </summary>
-        private const string Success = "success"; 
+        private const string Success = "success";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CartOperations" /> class.

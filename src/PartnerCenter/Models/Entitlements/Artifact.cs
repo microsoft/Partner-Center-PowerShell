@@ -24,6 +24,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Entitlements
         /// <summary>
         /// Gets or sets the dynamic attributes.
         /// </summary>
-        public Dictionary<string, object> DynamicAttributes { get; set; }
+        public Dictionary<string, object> DynamicAttributes { get; private set; }
     }
 }

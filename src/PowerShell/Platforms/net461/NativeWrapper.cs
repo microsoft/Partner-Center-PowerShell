@@ -12,44 +12,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
     internal class NativeWrapper
     {
-        [StructLayout(LayoutKind.Sequential)]
-        public class Point
-        {
-            public int x;
-            public int y;
-
-            public Point()
-            {
-            }
-
-            public Point(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public class OleCmd
-        {
-            [MarshalAs(UnmanagedType.U4)]
-            public int cmdID;
-            [MarshalAs(UnmanagedType.U4)]
-            public int cmdf;
-        }
-
         [ComImport, ComVisible(true), Guid("B722BCCB-4E68-101B-A2BC-00AA00404770"),
          InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         public interface IOleCommandTarget
         {
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
-            int QueryStatus(ref Guid pguidCmdGroup, int cCmds, [In, Out] OleCmd prgCmds, [In, Out] IntPtr pCmdText);
-
-            [return: MarshalAs(UnmanagedType.I4)]
-            [PreserveSig]
-            int Exec(IntPtr guid, int nCmdID, int nCmdexecopt,
-                     [In, MarshalAs(UnmanagedType.LPArray)] object[] pvaIn, IntPtr pvaOut);
+            int Exec(IntPtr guid, int nCmdID, int nCmdexecopt, [In, MarshalAs(UnmanagedType.LPArray)] object[] pvaIn, IntPtr pvaOut);
         }
 
         [StructLayout(LayoutKind.Sequential), ComVisible(true)]
@@ -157,13 +126,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             void EnableModeless(int fEnable);
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public sealed class TagOleMenuGroupWidths
-        {
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-            public int[] widths = new int[6];
-        }
-
         [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000116-0000-0000-C000-000000000046")]
         public interface IOleInPlaceFrame
         {
@@ -186,9 +148,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                                 [In, MarshalAs(UnmanagedType.LPWStr)] string pszObjName);
 
             [PreserveSig]
-            int InsertMenus([In] IntPtr hmenuShared, [In, Out] TagOleMenuGroupWidths lpMenuWidths);
-
-            [PreserveSig]
             int SetMenu([In] IntPtr hmenuShared, [In] IntPtr holemenu, [In] IntPtr hwndActiveObject);
 
             [PreserveSig]
@@ -209,11 +168,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         {
             [PreserveSig]
             int OleDragEnter([In, MarshalAs(UnmanagedType.Interface)] object pDataObj,
-                             [In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In] Point pt,
+                             [In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In, MarshalAs(UnmanagedType.U8)]long pt,
                              [In, Out] ref int pdwEffect);
 
             [PreserveSig]
-            int OleDragOver([In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In] Point pt,
+            int OleDragOver([In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In, MarshalAs(UnmanagedType.U8)]long pt,
                             [In, Out] ref int pdwEffect);
 
             [PreserveSig]
@@ -221,7 +180,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             [PreserveSig]
             int OleDrop([In, MarshalAs(UnmanagedType.Interface)] object pDataObj,
-                        [In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In] Point pt, [In, Out] ref int pdwEffect);
+                        [In, MarshalAs(UnmanagedType.U4)] int grfKeyState, [In, MarshalAs(UnmanagedType.U8)]long pt, [In, Out] ref int pdwEffect);
         }
 
         [ComImport, ComVisible(true), InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
@@ -230,7 +189,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         {
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
-            int ShowContextMenu([In, MarshalAs(UnmanagedType.U4)] int dwID, [In] Point pt,
+            int ShowContextMenu([In, MarshalAs(UnmanagedType.U4)] int dwID, [In, MarshalAs(UnmanagedType.U8)]long pt,
                                 [In, MarshalAs(UnmanagedType.Interface)] object pcmdtReserved,
                                 [In, MarshalAs(UnmanagedType.Interface)] object pdispReserved);
 

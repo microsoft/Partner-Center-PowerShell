@@ -9,12 +9,12 @@ namespace Microsoft.Store.PartnerCenter
     using Agreements;
     using Analytics;
     using Auditing;
-    using CountryValidationRules;
     using Customers;
     using Domains;
     using Enumerators;
     using Extensions;
     using GenericOperations;
+    using Incidents;
     using Invoices;
     using Network;
     using Offers;
@@ -23,9 +23,9 @@ namespace Microsoft.Store.PartnerCenter
     using RateCards;
     using Relationships;
     using RequestContext;
-    using ServiceIncidents;
     using ServiceRequests;
     using Usage;
+    using ValidationRules;
     using Validations;
 
     /// <summary>
