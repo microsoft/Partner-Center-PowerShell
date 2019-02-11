@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.CountryValidationRules
+namespace Microsoft.Store.PartnerCenter.ValidationRules
 {
     using GenericOperations;
 

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Models.ServiceIncidents
+namespace Microsoft.Store.PartnerCenter.Models.Incidents
 {
     using System.Collections.Generic;
 

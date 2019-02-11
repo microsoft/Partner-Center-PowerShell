@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.ServiceIncidents
+namespace Microsoft.Store.PartnerCenter.Incidents
 {
     using System.Threading;
     using System.Threading.Tasks;
     using GenericOperations;
     using Models;
     using Models.Query;
-    using Models.ServiceIncidents;
+    using Models.Incidents;
 
     /// <summary>
     /// Defines the operations available on service incidents.

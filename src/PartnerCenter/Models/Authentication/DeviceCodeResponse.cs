@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DeviceCodeResult.cs" company="Microsoft">
+// <copyright file="DeviceCodeResponse.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Authentication
         /// Verification URL where the user must navigate to authenticate using the device code and credentials.
         /// </summary>
         [DataMember(IsRequired = false, Name = "verification_url")]
-        public string VerificationUrl { get; internal set; }
+        public Uri VerificationUrl { get; internal set; }
 
         /// <summary>
         /// Get an instance of the <see cref="DeviceCodeResult" /> class based on this instnace of <see cref="DeviceCodeResponse" />.

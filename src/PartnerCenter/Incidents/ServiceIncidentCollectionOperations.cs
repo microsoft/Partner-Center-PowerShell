@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.ServiceIncidents
+namespace Microsoft.Store.PartnerCenter.Incidents
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceIncidents
     using Models;
     using Models.JsonConverters;
     using Models.Query;
-    using Models.ServiceIncidents;
+    using Models.Incidents;
 
     /// <summary>
     /// Service incident collection operations implementation class.

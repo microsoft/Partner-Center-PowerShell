@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Models.CountryValidationRules
+namespace Microsoft.Store.PartnerCenter.Models.ValidationRules
 {
     using System.Collections.Generic;
 

@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.CountryValidationRules
+namespace Microsoft.Store.PartnerCenter.ValidationRules
 {
     using GenericOperations;
-    using Models.CountryValidationRules;
+    using Models.ValidationRules;
 
     /// <summary>
     /// Represents the behavior of a specific country validation rules.

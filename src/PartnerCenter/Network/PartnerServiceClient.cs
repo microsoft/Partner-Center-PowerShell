@@ -19,6 +19,7 @@ namespace Microsoft.Store.PartnerCenter.Network
     using Models;
     using Models.Authentication;
     using Models.JsonConverters;
+    using Models.Resolvers;
     using Newtonsoft.Json;
     using RequestContext;
     using Rest;
@@ -905,6 +906,7 @@ namespace Microsoft.Store.PartnerCenter.Network
                         converter ?? new EnumJsonConverter()
                     }
                 },
+                ContractResolver = new PrivateContractResolver(),
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 NullValueHandling = NullValueHandling.Ignore,

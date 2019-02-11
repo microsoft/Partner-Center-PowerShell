@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CountryValidationRules
+namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ValidationRules
 {
     using System.Collections.Generic;
     using Common;
-    using PartnerCenter.Models.CountryValidationRules;
+    using PartnerCenter.Models.ValidationRules;
 
     /// <summary>Holds validation information for a single country.</summary>
     public sealed class PSCountryValidationRules

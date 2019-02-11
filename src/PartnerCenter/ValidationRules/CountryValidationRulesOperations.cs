@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.CountryValidationRules
+namespace Microsoft.Store.PartnerCenter.ValidationRules
 {
     using System;
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
-    using Models.CountryValidationRules;
+    using Models.ValidationRules;
 
     /// <summary>
     /// The country validation rules operations implementation.
