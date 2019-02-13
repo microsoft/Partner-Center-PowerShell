@@ -16,20 +16,20 @@ Connects to Partner Center with an authenticated account for use with cmdlet req
 
 ### User (Default)
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> [-Environment <EnvironmentName>] [-TenantId <String>]
- [<CommonParameters>]
+Connect-PartnerCenter -ApplicationId <String> [-EnforceMFA] [-Environment <EnvironmentName>]
+ [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### AccessToken
 ```powershell
-Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>]
+Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>] [-EnforceMFA]
  [-Environment <EnvironmentName>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
-Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-Environment <EnvironmentName>]
- -TenantId <String> [<CommonParameters>]
+Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-EnforceMFA]
+ [-Environment <EnvironmentName>] -TenantId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -124,6 +124,21 @@ Parameter Sets: ServicePrincipal
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EnforceMFA
+A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
