@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1902.3</Version>
+    <Version>1.5.1902.4</Version>
   </PropertyGroup>
 
   <ItemGroup>

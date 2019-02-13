@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.5.1902.3</Version>
+    <Version>1.5.1902.4</Version>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
