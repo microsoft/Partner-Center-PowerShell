@@ -111,6 +111,18 @@ namespace Microsoft.Store.PartnerCenter
         /// access all the Partner Center APIs.
         /// </summary>
         /// <param name="credentials">The partner credentials. Use the <see cref="IPartnerCredentials" /> class to obtain these.</param>
+        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <returns>A configured partner operations object.</returns>
+        public IPartner CreatePartnerOperations(IPartnerCredentials credentials, HttpClient httpClient)
+        {
+            return Factory.Build(credentials, httpClient);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="IPartner" /> instance and configures it using the provided partner credentials. The partner instance can be used to
+        /// access all the Partner Center APIs.
+        /// </summary>
+        /// <param name="credentials">The partner credentials. Use the <see cref="IPartnerCredentials" /> class to obtain these.</param>
         /// <param name="handlers">List of handlers from top to bottom (outer handler is the first in the list).</param>
         /// <returns>A configured partner operations object.</returns>
         public IPartner CreatePartnerOperations(IPartnerCredentials credentials, params DelegatingHandler[] handlers)

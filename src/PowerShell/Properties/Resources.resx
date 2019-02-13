@@ -156,6 +156,35 @@
   <data name="AuthenticationTypeNotSupportedException" xml:space="preserve">
     <value>You have authenticated using {0} authentication. This type of authentication is not supported by this command, only {1} authentication is supported. Please establish a new connection using an alternative means of authentication.</value>
   </data>
+  <data name="BreakingChangesAttributesChangeDescriptionMessage" xml:space="preserve">
+    <value>Change description : {0}</value>
+  </data>
+  <data name="BreakingChangesAttributesDeclarationMessage" xml:space="preserve">
+    <value>- {0}
+</value>
+  </data>
+  <data name="BreakingChangesAttributesDeclarationMessageWithCmdletName" xml:space="preserve">
+    <value>- Cmdlet : '{0}'
+ - {1}</value>
+  </data>
+  <data name="BreakingChangesAttributesFooterMessage" xml:space="preserve">
+    <value>NOTE : Go to {0} for steps to suppress this breaking change warning, and other information on breaking changes with the Partner Center PowerShell module.</value>
+  </data>
+  <data name="BreakingChangesAttributesHeaderMessage" xml:space="preserve">
+    <value>Breaking changes in the cmdlet '{0}' :</value>
+  </data>
+  <data name="BreakingChangesAttributesInEffectByDateMessage" xml:space="preserve">
+    <value>Note : This change will take effect on '{0}'</value>
+  </data>
+  <data name="BreakingChangesAttributesInEffectByVersion" xml:space="preserve">
+    <value>Note: The change is expected to take effect from the version '{0}'
+</value>
+  </data>
+  <data name="BreakingChangesAttributesUsageChangeMessageConsole" xml:space="preserve">
+    <value>Cmdlet invocation changes :
+	Old Way : {0}
+	New Way : {1}</value>
+  </data>
   <data name="CheckoutPartnerCustomerCartWhatIf" xml:space="preserve">
     <value>Checks out the cart with the identifier of {0}.</value>
   </data>

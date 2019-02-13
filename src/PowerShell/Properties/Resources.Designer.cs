@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
-{
-
-
+namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -174,6 +174,83 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         internal static string AuthenticationTypeNotSupportedException {
             get {
                 return ResourceManager.GetString("AuthenticationTypeNotSupportedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change description : {0}.
+        /// </summary>
+        internal static string BreakingChangesAttributesChangeDescriptionMessage {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesChangeDescriptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - {0}
+        ///.
+        /// </summary>
+        internal static string BreakingChangesAttributesDeclarationMessage {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesDeclarationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Cmdlet : &apos;{0}&apos;
+        /// - {1}.
+        /// </summary>
+        internal static string BreakingChangesAttributesDeclarationMessageWithCmdletName {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesDeclarationMessageWithCmdletName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NOTE : Go to {0} for steps to suppress this breaking change warning, and other information on breaking changes with the Partner Center PowerShell module..
+        /// </summary>
+        internal static string BreakingChangesAttributesFooterMessage {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesFooterMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Breaking changes in the cmdlet &apos;{0}&apos; :.
+        /// </summary>
+        internal static string BreakingChangesAttributesHeaderMessage {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesHeaderMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note : This change will take effect on &apos;{0}&apos;.
+        /// </summary>
+        internal static string BreakingChangesAttributesInEffectByDateMessage {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesInEffectByDateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note: The change is expected to take effect from the version &apos;{0}&apos;
+        ///.
+        /// </summary>
+        internal static string BreakingChangesAttributesInEffectByVersion {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesInEffectByVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cmdlet invocation changes :
+        ///	Old Way : {0}
+        ///	New Way : {1}.
+        /// </summary>
+        internal static string BreakingChangesAttributesUsageChangeMessageConsole {
+            get {
+                return ResourceManager.GetString("BreakingChangesAttributesUsageChangeMessageConsole", resourceCulture);
             }
         }
         
