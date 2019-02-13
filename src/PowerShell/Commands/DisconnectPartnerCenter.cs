@@ -21,6 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             if (ShouldProcess(Resources.DisconnectWhatIf))
             {
                 PartnerSession.Instance.Context = null;
+                PartnerService.Instance.EnforceMfa = false;
             }
         }
     }

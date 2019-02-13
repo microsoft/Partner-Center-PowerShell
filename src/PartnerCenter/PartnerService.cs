@@ -73,6 +73,15 @@ namespace Microsoft.Store.PartnerCenter
         internal dynamic Configuration { get; private set; }
 
         /// <summary>
+        /// Gets or sets a flag indicating whether or not multi-factor authentication should be enforced.
+        /// </summary>
+        /// <remarks>
+        /// This flag is only configurable while the requirement for multi-factor authentication is not required.
+        /// Once the Partner Center API requires multi-factor authentication this flag will be removed.
+        /// </remarks>
+        public bool EnforceMfa { get; set; }
+
+        /// <summary>
         /// Gets the partner factory used to create partner objects.
         /// </summary>
         internal IPartnerFactory Factory { get; set; }

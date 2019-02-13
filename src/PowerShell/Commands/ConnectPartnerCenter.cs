@@ -63,6 +63,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public PSCredential Credential { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag indicating whether or not multi-factor authentication is enforced.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.", Mandatory = false)]
+        public SwitchParameter EnforceMFA { get; set; }
+
+        /// <summary>
         /// Gets or sets the environment used for authentication.
         /// </summary>
         [Parameter(HelpMessage = "The environment use for authentication.", Mandatory = false)]
@@ -105,6 +111,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             OrganizationProfile profile;
 
             WriteDebug(string.Format(CultureInfo.CurrentCulture, Resources.ConnectPartnerCenterBeginProcess, ParameterSetName));
+
+            PartnerService.Instance.EnforceMfa = (EnforceMFA.IsPresent && EnforceMFA.ToBool()) ? true : false;
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {

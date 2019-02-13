@@ -8,6 +8,7 @@ namespace Microsoft.Store.PartnerCenter.Network
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -48,6 +49,11 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// The name of the correlation identifier header.
         /// </summary>
         private const string CorrelationIdHeaderName = "MS-CorrelationId";
+
+        /// <summary>
+        /// The name of the enforce MFA header.
+        /// </summary>
+        private const string EnforceMfaHeader = "MS-Enforce-MFA";
 
         /// <summary>
         /// The name of the locale header.
@@ -824,6 +830,11 @@ namespace Microsoft.Store.PartnerCenter.Network
             if (!string.IsNullOrEmpty(PartnerService.Instance.ApplicationName))
             {
                 request.Headers.Add(ApplicationNameHeader, PartnerService.Instance.ApplicationName);
+            }
+
+            if (PartnerService.Instance.EnforceMfa)
+            {
+                request.Headers.Add(EnforceMfaHeader, true.ToString(CultureInfo.InvariantCulture));
             }
 
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaType));
