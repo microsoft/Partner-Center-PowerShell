@@ -631,6 +631,8 @@ namespace Microsoft.Store.PartnerCenter.Network
                     AddRequestHeaders(request);
 
                     request.Content = new StringContent(JsonConvert.SerializeObject(content, GetSerializationSettings()));
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaType);
+
                     response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
                     return await HandleResponseAsync<TResource>(response).ConfigureAwait(false);
