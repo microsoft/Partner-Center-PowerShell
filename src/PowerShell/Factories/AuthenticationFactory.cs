@@ -8,7 +8,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using System.Globalization;
-    using System.IdentityModel.Tokens.Jwt;
+#if !NETSTANDARD
+    using Tokens = System.IdentityModel.Tokens;
+#else 
+    using Tokens = System.IdentityModel.Tokens.Jwt;
+#endif
     using System.Linq;
     using System.Security.Claims;
     using Authentication;
@@ -33,8 +37,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             AuthenticationResult authResult;
             Claim claim;
             DateTimeOffset expiration;
-            JwtSecurityToken token;
-            JwtSecurityTokenHandler tokenHandler;
+            Tokens.JwtSecurityToken token;
+            Tokens.JwtSecurityTokenHandler tokenHandler;
             PartnerEnvironment environment;
 
             environment = PartnerEnvironment.PublicEnvironments[context.Environment];
@@ -44,8 +48,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             if (context.Account.Type == AccountType.AccessToken)
             {
-                tokenHandler = new JwtSecurityTokenHandler();
+                tokenHandler = new Tokens.JwtSecurityTokenHandler();
+
+#if !NETSTANDARD
+                token = tokenHandler.ReadToken(context.Account.Properties[AzureAccountPropertyType.AccessToken]) as Tokens.JwtSecurityToken;
+#else
                 token = tokenHandler.ReadJwtToken(context.Account.Properties[AzureAccountPropertyType.AccessToken]);
+#endif
 
                 claim = token.Claims.SingleOrDefault(c => c.Type.Equals("oid", StringComparison.InvariantCultureIgnoreCase));
                 context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = claim?.Value;
