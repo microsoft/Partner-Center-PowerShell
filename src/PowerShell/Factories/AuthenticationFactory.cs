@@ -25,6 +25,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     public class AuthenticationFactory : IAuthenticationFactory
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationFactory" /> class.
+        /// </summary>
+        public AuthenticationFactory()
+        {
+            LoggerCallbackHandler.UseDefaultLogging = false;
+        }
+
+        /// <summary>
         /// Acquires the security token from the authority.
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
