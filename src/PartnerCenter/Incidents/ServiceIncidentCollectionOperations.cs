@@ -11,9 +11,9 @@ namespace Microsoft.Store.PartnerCenter.Incidents
     using System.Threading;
     using System.Threading.Tasks;
     using Models;
+    using Models.Incidents;
     using Models.JsonConverters;
     using Models.Query;
-    using Models.Incidents;
 
     /// <summary>
     /// Service incident collection operations implementation class.

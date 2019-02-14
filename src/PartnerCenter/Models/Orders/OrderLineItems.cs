@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.Models.Orders
 {
     using System.Collections.Generic;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// An order line item associates order information to a specific offer of a product.

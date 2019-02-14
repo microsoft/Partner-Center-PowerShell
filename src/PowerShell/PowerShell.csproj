@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1902.3</Version>
+    <Version>1.5.1902.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,9 +28,10 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="4.0.4.403061554" />
     <PackageReference Include="System.Management.Automation.dll" Version="10.0.10586.0" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Compile Include="Platforms\net461\**\*.cs" />
     <Compile Update="Platforms\net461\CustomWebBrowser.CustomWebBrowserEvent.cs" SubType="Component" />
     <Compile Update="Platforms\net461\CustomWebBrowser.cs" SubType="Component" />
@@ -43,6 +44,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
     <None Update="PartnerCenter.NetCore.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -55,8 +57,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="4.5.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
