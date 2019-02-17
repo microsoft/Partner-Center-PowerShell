@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerOrder.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerOrder
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerOrder.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Create a new order for the specified services on behalf of the customer.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```

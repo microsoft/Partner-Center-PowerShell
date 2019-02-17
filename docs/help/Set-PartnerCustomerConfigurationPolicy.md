@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerConfigurationPolicy.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerCustomerConfigurationPolicy
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerConfigurationPolicy.md
 schema: 2.0.0
 ---
@@ -15,7 +15,7 @@ Updates an existing configuration policy with the specified options.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerCustomerConfigurationPolicy [-CustomerId] <String> -PolicyId <String> [-Name <String>]
  [-Description <String>] [-RemoveOemPreinstalls <Boolean>] [-OobeUserNotLocalAdmin <Boolean>]
  [-SkipExpressSettings <Boolean>] [-SkipEula <Boolean>] [-SkipOemRegistration <Boolean>] [-WhatIf] [-Confirm]

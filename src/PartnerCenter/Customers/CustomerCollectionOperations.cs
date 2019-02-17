@@ -75,7 +75,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// <summary>
         /// Creates a new customer.
         /// </summary>
-        /// <param name="newCustomer">The new customer information.</param>
+        /// <param name="newEntity">The new customer information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer information that was just created.</returns>
         public Customer Create(Customer newEntity, CancellationToken cancellationToken = default(CancellationToken))
@@ -86,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// <summary>
         /// Creates a new customer.
         /// </summary>
-        /// <param name="newCustomer">The new customer information.</param>
+        /// <param name="newEntity">The new customer information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer information that was just created.</returns>
         public async Task<Customer> CreateAsync(Customer newEntity, CancellationToken cancellationToken = default(CancellationToken))

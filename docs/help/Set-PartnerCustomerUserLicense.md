@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerUserLicense.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerCustomerUserLicense
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerUserLicense.md
 schema: 2.0.0
 ---
@@ -10,11 +10,11 @@ schema: 2.0.0
 # Set-PartnerCustomerUserLicense
 
 ## SYNOPSIS
-Adds or removes licenses for a Microsoft online service to the list of assigned licenses for a user. 
+Adds or removes licenses for a Microsoft online service to the list of assigned licenses for a user.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerCustomerUserLicense -CustomerId <String> -LicenseUpdate <PSLicenseUpdate> -UserId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```

@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerShell", "src\PowerShel
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5C9806B5-F5AE-4D2B-A612-1995BEBDBD84}"
 	ProjectSection(SolutionItems) = preProject
+		ChangeLog.md = ChangeLog.md
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		CONTRIBUTING.md = CONTRIBUTING.md
 		LICENSE = LICENSE
@@ -19,11 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{68F07DE0-044F-43AF-8057-EB9840DA9A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartnerCenter.TestFramework", "src\PartnerCenter.TestFramework\PartnerCenter.TestFramework.csproj", "{EE69209F-06B2-4836-B8DF-123BBAC2523D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartnerCenter.TestFramework", "src\PartnerCenter.TestFramework\PartnerCenter.TestFramework.csproj", "{EE69209F-06B2-4836-B8DF-123BBAC2523D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartnerCenter.Tests", "test\PartnerCenter.Tests\PartnerCenter.Tests.csproj", "{10BD6A73-9CA8-419D-BE1F-75C03B7BFAB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartnerCenter.Tests", "test\PartnerCenter.Tests\PartnerCenter.Tests.csproj", "{10BD6A73-9CA8-419D-BE1F-75C03B7BFAB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.Tests", "test\PowerShell.Tests\PowerShell.Tests.csproj", "{E6AE0C07-3E0F-4012-943C-B635A4908472}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerShell.Tests", "test\PowerShell.Tests\PowerShell.Tests.csproj", "{E6AE0C07-3E0F-4012-943C-B635A4908472}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerBillingProfile.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerBillingProfile
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerBillingProfile.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Updates the partner's billing profile.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerBillingProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>]
  [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>] [-PhoneNumber <String>]
  [-PostalCode <String>] [-PurchaseOrderNumber <String>] [-Region <String>] [-State <String>] [-TaxId <String>]

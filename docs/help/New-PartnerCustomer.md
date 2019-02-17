@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomer.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomer
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomer.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Creates a new customer.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomer [-AssociatedPartnerId <String>] -BillingAddressLine1 <String>
  [-BillingAddressLine2 <String>] [-BillingAddressCity <String>] -BillingAddressCountry <String>
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]

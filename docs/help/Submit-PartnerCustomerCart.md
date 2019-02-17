@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Submit-PartnerCustomerCart.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Submit-PartnerCustomerCart
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Submit-PartnerCustomerCart.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Checks out the specified cart.
 
 ## SYNTAX
 
-```
+```powershell
 Submit-PartnerCustomerCart -CartId <String> -CustomerId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 

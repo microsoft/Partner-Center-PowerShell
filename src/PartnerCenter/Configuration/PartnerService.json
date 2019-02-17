@@ -36,6 +36,15 @@
     "GetCustomerAgreements": {
       "Path": "customers/{0}/agreements"
     },
+    "GetCustomerApplicationConsents": {
+      "Path": "customers/{0}/applicationconsents"
+    },
+    "CreateCustomerApplicationConsent": {
+      "Path": "customers/{0}/applicationconsents"
+    },
+    "DeleteCustomerApplicationConsent": {
+      "Path": "customers/{0}/applicationconsents/{1}"
+    },
     "GetOffer": {
       "Path": "offers/{0}",
       "Parameters": {

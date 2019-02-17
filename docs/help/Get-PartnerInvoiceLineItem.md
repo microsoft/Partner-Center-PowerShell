@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceLineItem.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerInvoiceLineItem
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceLineItem.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets the line items for the specified invoice.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> -InvoiceId <String>
  -LineItemType <InvoiceLineItemType> [<CommonParameters>]
 ```

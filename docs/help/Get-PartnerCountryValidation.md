@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCountryValidation.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCountryValidation
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCountryValidation.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets the rules for validating an address for a specific country.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCountryValidation -CountryCode <String> [<CommonParameters>]
 ```
 
