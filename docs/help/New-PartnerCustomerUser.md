@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerUser.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerUser
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerUser.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Creates a new user in the specified customer Azure Active Directory tenant.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomerUser -CustomerId <String> [-FirstName <String>] [-LastName <String>] -DisplayName <String>
  -UserPrincipalName <String> -Password <SecureString> [-ForceChangePassword] [-UsageLocation <String>]
  [-WhatIf] [-Confirm] [<CommonParameters>]

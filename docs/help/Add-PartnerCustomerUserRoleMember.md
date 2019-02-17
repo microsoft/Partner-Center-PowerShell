@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Add-PartnerCustomerUserRoleMember.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Add-PartnerCustomerUserRoleMember
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Add-PartnerCustomerUserRoleMember.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Adds a customer user to a specified role.
 
 ## SYNTAX
 
-```
+```powershell
 Add-PartnerCustomerUserRoleMember -CustomerId <String> [-UserId <String>] [-RoleId <String>]
  [<CommonParameters>]
 ```

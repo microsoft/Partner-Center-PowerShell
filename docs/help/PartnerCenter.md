@@ -194,6 +194,9 @@ Creates a new customer.
 ### [New-PartnerCustomerAgreement](New-PartnerCustomerAgreement.md)
 Confirms the customer acceptance of the Microsoft Cloud agreement.
 
+### [New-PartnerCustomerApplicationConsent](New-PartnerCustomerApplicationConsent.md)
+Creates a new application consent for the specified customer.
+
 ### [New-PartnerCustomerCart](New-PartnerCustomerCart.md)
 Creates an order for a customer.
 
@@ -277,4 +280,3 @@ Tests whether or not the specified address is valid.
 
 ### [Test-PartnerDomainAvailability](Test-PartnerDomainAvailability.md)
 Tests if the specified domain name is available for creating a new tenant.
-

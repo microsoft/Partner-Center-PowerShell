@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerOfferCategory.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerOfferCategory
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerOfferCategory.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets a list of offer categories.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerOfferCategory -CountryCode <String> [<CommonParameters>]
 ```
 

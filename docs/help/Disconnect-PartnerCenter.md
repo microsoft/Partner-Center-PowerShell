@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Disconnect-PartnerCenter.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Disconnect-PartnerCenter
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Disconnect-PartnerCenter.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Disconnects the current session from Partner Center.
 
 ## SYNTAX
 
-```
+```powershell
 Disconnect-PartnerCenter [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 

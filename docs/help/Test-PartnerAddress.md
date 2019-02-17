@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Test-PartnerAddress.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Test-PartnerAddress
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Test-PartnerAddress.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Tests whether or not the specified address is valid.
 
 ## SYNTAX
 
-```
+```powershell
 Test-PartnerAddress -AddressLine1 <String> [-AddressLine2 <String>] [-City <String>] [-Country <String>]
  -PostalCode <String> [-Region <String>] [-State <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

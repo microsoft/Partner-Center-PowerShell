@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerLegalProfile.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerLegalProfile
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerLegalProfile.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Updates the partner's legal profile.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerLegalProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>] [-Country <String>]
  [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>] [-PhoneNumber <String>]
  [-PostalCode <String>] [-Region <String>] [-State <String>] [-WhatIf] [-Confirm] [<CommonParameters>]

@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerAgreement.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerAgreement
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerAgreement.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Confirms the customer acceptance of the Microsoft Cloud agreement.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerCustomerAgreement -AgreementType <AgreementType> -ContactEmail <String> -ContactFirstName <String>
  -ContactLastName <String> [-ContactPhoneNumber <String>] -CustomerId <String> [-DateAgreed <DateTime>]
  -TemplateId <String> [-UserId <String>] [<CommonParameters>]

@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionUtilization.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerSubscriptionUtilization
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionUtilization.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets the utilization of a customer's Azure subscription.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerSubscriptionUtilization -CustomerId <String> [-EndDate <DateTimeOffset>]
  [-Granularity <AzureUtilizationGranularity>] [-ShowDetails] -StartDate <DateTimeOffset>
  -SubscriptionId <String> [<CommonParameters>]

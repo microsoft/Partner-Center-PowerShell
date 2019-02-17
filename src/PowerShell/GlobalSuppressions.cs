@@ -1,8 +1,8 @@
-﻿
-// This file is used by Code Analysis to maintain SuppressMessage 
-// attributes that are applied to this project.
-// Project-level suppressions either have no target or are given 
-// a specific target and scoped to a namespace, type, member, etc.
+﻿// -----------------------------------------------------------------------
+// <copyright file="GlobalSuppressions.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Build", "CA1812:NativeWrapper.DOCHOSTUIINFO is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static members, make it static (Shared in Visual Basic).", Justification = "Required for the native operations.", Scope = "type", Target = "~T:Microsoft.Store.PartnerCenter.PowerShell.Platforms.NativeWrapper.DOCHOSTUIINFO")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerOrder.LineItems")]
@@ -11,6 +11,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.GetPartnerCustomerSubscribedSku.LicenseGroup")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.GetPartnerCustomerUserLicense.LicenseGroup")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerDeviceBatch.Devices")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerApplicationConsent.ApplicationGrants")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerOrderLineItem.ProvisioningContext")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerCartLineItem.ProvisioningContext")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.GetPartnerProductInventory.Variables")]

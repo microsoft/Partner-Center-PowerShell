@@ -8,6 +8,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
 {
     using Agreements;
     using Analytics;
+    using ApplicationConsents;
     using Carts;
     using CustomerDirectoryRoles;
     using Customers.Products;
@@ -42,6 +43,11 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// Gets the analytics collection behavior for the customer.
         /// </summary>
         ICustomerAnalyticsCollection Analytics { get; }
+
+        /// <summary>
+        /// Gets the application consent collection behavior for the customer.
+        /// </summary>
+        IApplicationConsentCollection ApplicationConsents { get; }
 
         /// <summary>
         /// Gets the devices batch upload status behavior of the customer.

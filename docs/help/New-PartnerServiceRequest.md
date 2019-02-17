@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerServiceRequest.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerServiceRequest
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerServiceRequest.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Creates a service request at the partner level.
 
 ## SYNTAX
 
-```
+```powershell
 New-PartnerServiceRequest [-AgentLocale <String>] -Description <String> -Severity <ServiceRequestSeverity>
  -SupportTopicId <String> -Title <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

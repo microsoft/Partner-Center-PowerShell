@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerProductInventory.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductInventory
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerProductInventory.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Checks the inventory for the specified product.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerProductInventory [-CountryCode <String>] -ProductId <String> [-SkuId <String>]
  [-Variables <Hashtable>] [<CommonParameters>]
 ```

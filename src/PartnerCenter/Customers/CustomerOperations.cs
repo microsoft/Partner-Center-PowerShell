@@ -12,6 +12,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
     using System.Threading.Tasks;
     using Agreements;
     using Analytics;
+    using ApplicationConsents;
     using Carts;
     using CustomerDirectoryRoles;
     using Customers.Products;
@@ -46,6 +47,11 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// Provides access to the customer analytics collection operations.
         /// </summary>
         private readonly Lazy<ICustomerAnalyticsCollection> analytics;
+
+        /// <summary>
+        /// Provides access to the application consent collection operations.
+        /// </summary>
+        private readonly Lazy<IApplicationConsentCollection> applicationConsents;
 
         /// <summary>
         /// Provides access to the batch status collection operations.
@@ -169,6 +175,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
 
             agreements = new Lazy<ICustomerAgreementCollection>(() => new CustomerAgreementCollectionOperations(rootPartnerOperations, customerId));
             analytics = new Lazy<ICustomerAnalyticsCollection>(() => new CustomerAnalyticsCollectionOperations(rootPartnerOperations, customerId));
+            applicationConsents = new Lazy<IApplicationConsentCollection>(() => new ApplicationConsentCollectionOperations(rootPartnerOperations, customerId));
             batchUploadStatus = new Lazy<IBatchJobStatusCollection>(() => new BatchJobStatusCollectionOperations(rootPartnerOperations, customerId));
             carts = new Lazy<ICartCollection>(() => new CartCollectionOperations(rootPartnerOperations, customerId));
             configurationPolicies = new Lazy<IConfigurationPolicyCollection>(() => new ConfigurationPolicyCollectionOperations(rootPartnerOperations, customerId));
@@ -202,6 +209,11 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// Gets the analytics collection behavior for the customer.
         /// </summary>
         public ICustomerAnalyticsCollection Analytics => analytics.Value;
+
+        /// <summary>
+        /// Gets the application consent collection behavior for the customer.
+        /// </summary>
+        public IApplicationConsentCollection ApplicationConsents => applicationConsents.Value;
 
         /// <summary>
         /// Gets the devices batch upload status behavior of the customer.

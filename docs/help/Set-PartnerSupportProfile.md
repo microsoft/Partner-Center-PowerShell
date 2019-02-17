@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerSupportProfile.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerSupportProfile
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerSupportProfile.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Updates the partner's support profile.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerSupportProfile [-SupportEmail <String>] [-SupportPhoneNumber <String>] [-SupportWebsite <String>]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

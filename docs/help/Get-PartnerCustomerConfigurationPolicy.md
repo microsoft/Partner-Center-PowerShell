@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerConfigurationPolicy.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerConfigurationPolicy
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerConfigurationPolicy.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Gets a list of all of a customer's policies.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerConfigurationPolicy [-CustomerId] <String> [-PolicyId <String>] [<CommonParameters>]
 ```
 

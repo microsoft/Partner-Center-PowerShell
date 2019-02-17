@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Remove-PartnerResellerRelationship.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Remove-PartnerResellerRelationship
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Remove-PartnerResellerRelationship.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Removes the reseller relationship between the specified customer and the partner
 
 ## SYNTAX
 
-```
+```powershell
 Remove-PartnerResellerRelationship -CustomerId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 

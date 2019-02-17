@@ -2,7 +2,7 @@
 content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerCart.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerCustomerCart
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Set-PartnerCustomerCart.md
 schema: 2.0.0
 ---
@@ -14,7 +14,7 @@ Updates an order for a customer in a cart.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerCustomerCart -CartId <String> -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
