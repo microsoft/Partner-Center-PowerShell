@@ -920,6 +920,7 @@ namespace Microsoft.Store.PartnerCenter.Network
                     }
                 },
                 ContractResolver = new PrivateContractResolver(),
+                CheckAdditionalContent = true,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 NullValueHandling = NullValueHandling.Ignore,
