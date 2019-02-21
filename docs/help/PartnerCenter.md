@@ -86,6 +86,9 @@ Gets a list of licenses available to users of the specified customer.
 ### [Get-PartnerCustomerSubscription](Get-PartnerCustomerSubscription.md)
 Gets a list or a single customer subscription.
 
+### [Get-PartnerCustomerSubscriptionAddOn](Get-PartnerCustomerSubscriptionAddOn.md)
+Gets the purchased add-ons for the specified subscription.
+
 ### [Get-PartnerCustomerSubscriptionProvisioningStatus](Get-PartnerCustomerSubscriptionProvisioningStatus.md)
 Gets the provisioning status for the specified subscription.
 
@@ -258,7 +261,7 @@ Update a subscription's support contact to one of the partner's value added rese
 Updates the specified customer user account.
 
 ### [Set-PartnerCustomerUserLicense](Set-PartnerCustomerUserLicense.md)
-Adds or removes licenses for a Microsoft online service to the list of assigned licenses for a user. 
+Adds or removes licenses for a Microsoft online service to the list of assigned licenses for a user.
 
 ### [Set-PartnerLegalProfile](Set-PartnerLegalProfile.md)
 Updates the partner's legal profile.
@@ -280,3 +283,4 @@ Tests whether or not the specified address is valid.
 
 ### [Test-PartnerDomainAvailability](Test-PartnerDomainAvailability.md)
 Tests if the specified domain name is available for creating a new tenant.
+

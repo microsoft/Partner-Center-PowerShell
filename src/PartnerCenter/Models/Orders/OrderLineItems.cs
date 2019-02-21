@@ -14,6 +14,14 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
     public sealed class OrderLineItem : ResourceBaseWithLinks<OrderLineItemLinks>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="OrderLineItem" /> class.
+        /// </summary>
+        public OrderLineItem()
+        {
+            ProvisioningContext = new Dictionary<string, string>();
+        }
+
+        /// <summary>
         /// Gets or sets the line item number.
         /// </summary>
         public int LineItemNumber { get; set; }
@@ -52,6 +60,6 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         /// <summary>
         /// Gets or sets the provisioning context for the offer.
         /// </summary>
-        public Dictionary<string, string> ProvisioningContext { get; set; }
+        public Dictionary<string, string> ProvisioningContext { get; private set; }
     }
 }

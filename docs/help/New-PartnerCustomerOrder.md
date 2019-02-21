@@ -14,9 +14,16 @@ Create a new order for the specified services on behalf of the customer.
 
 ## SYNTAX
 
-```powershell
+### Subscription (Default)
+```
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
+```
+
+### AddOn
+```
+New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> -OrderId <String> [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,10 +40,29 @@ PS C:\> $lineItem.LineItemNumber = 0
 PS C:\> $lineItem.OfferId = '031C9E47-4802-4248-838E-778FB1D2CC05'
 PS C:\> $lineItem.Quantity = 1
 PS C:\>
-PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItem
+PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems @($lineItem)
 ```
 
-Create a new order for the specified services on behalf of the customer.
+Creates a new order for the specified services on behalf of the customer.
+
+### Example 2
+
+```powershell
+PS C:\> $s = Get-PartnerCustomer -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -SubscriptionId '10704f2f-3fc6-4e42-8acf-08df4f81c93c'
+PS C:\> $addOn = Get-PartnerOfferAddon -OfferId $s.OfferId | Where-Object {$_.Name -eq 'Microsoft MyAnalytics'}
+PS C:\>
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Orders.PSOrderLineItem
+PS C:\>
+PS C:\> $lineItem.LineItemNumber = 0
+PS C:\> $lineItem.OfferId = $addOn.OfferId
+PS C:\> $lineItem.Quantity = 1
+PS C:\> $lineItem.FriendlyName = $addOn.Name
+PS C:\> $lineItem.ParentSubscriptionId = $s.SubscriptionId
+PS C:\>
+PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems @($lineItem) -OrderId $s.OrderId
+```
+
+Creates an order to purchase an add-on for the specific subscription on behalf of the customer. This example shows how to purchase the Microsoft MyAnalytics add-on for the specified subscription. In this case the specified subscription is an Office 365 E3 subscription.
 
 ## PARAMETERS
 
@@ -62,6 +88,21 @@ Each order line item refers to one offer's purchase data.
 ```yaml
 Type: PSOrderLineItem[]
 Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OrderId
+The order identifier used when purchasing an add-on.
+
+```yaml
+Type: String
+Parameter Sets: AddOn
 Aliases:
 
 Required: True
