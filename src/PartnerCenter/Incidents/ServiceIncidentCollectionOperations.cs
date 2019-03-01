@@ -34,17 +34,7 @@ namespace Microsoft.Store.PartnerCenter.Incidents
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The service incidents.</returns>
-        public ResourceCollection<ServiceIncidents> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all service incidents.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The service incidents.</returns>
-        public async Task<ResourceCollection<ServiceIncidents>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ServiceIncidents>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<ServiceIncidents>>(
                 new Uri(
@@ -66,24 +56,7 @@ namespace Microsoft.Store.PartnerCenter.Incidents
         /// </param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The list of service incidents that match the query.</returns>
-        public ResourceCollection<ServiceIncidents> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(query, cancellationToken));
-        }
-
-        /// <summary>
-        /// Queries service incidents.
-        /// </summary>
-        /// <param name="query">A query to retrieve service incidents based on the active status.
-        /// The <see cref="QueryFactory" /> can be used to build queries.
-        /// Service incident queries support simple queries. You can filter service incidents using their active status.
-        /// <see cref="ServiceIncidentSearchField" /> lists
-        /// the supported search fields. You can use the <see cref="FieldFilterOperation" /> enumeration to specify filtering operations.
-        /// Supported filtering operations are: equals.
-        /// </param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The list of service incidents that match the query.</returns>
-        public async Task<ResourceCollection<ServiceIncidents>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ServiceIncidents>> QueryAsync(IQuery query, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
 

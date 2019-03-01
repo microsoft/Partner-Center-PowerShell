@@ -69,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     request.Status = Status.Value;
                 }
 
-                request = Partner.ServiceRequests[ServiceRequestId].Patch(request);
+                request = Partner.ServiceRequests[ServiceRequestId].PatchAsync(request).GetAwaiter().GetResult();
 
                 WriteObject(new PSServiceRequest(request));
             }

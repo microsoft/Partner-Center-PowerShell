@@ -51,7 +51,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<License> licenses = Partner.Customers[CustomerId].Users[UserId].Licenses.Get(LicenseGroup?.Select(item => item).ToList());
+            ResourceCollection<License> licenses = Partner.Customers[CustomerId]
+                .Users[UserId].Licenses.GetAsync(LicenseGroup?.Select(item => item).ToList()).GetAwaiter().GetResult();
 
             WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
         }

@@ -35,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Conversion> conversions = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Conversions.Get();
+            ResourceCollection<Conversion> conversions = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Conversions.GetAsync().GetAwaiter().GetResult();
             WriteObject(conversions.Items.Select(c => new PSCustomerTrialConversion(c)), true);
         }
     }

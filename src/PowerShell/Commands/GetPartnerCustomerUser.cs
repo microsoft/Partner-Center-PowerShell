@@ -106,7 +106,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].Get()));
+                WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult()));
             }
             catch (PSPartnerException ex)
             {
@@ -131,13 +131,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             users = new List<CustomerUser>();
 
-            seekUsers = Partner.Customers[customerId].Users.Get();
+            seekUsers = Partner.Customers[customerId].Users.GetAsync().GetAwaiter().GetResult();
             usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
 
             while (usersEnumerator.HasValue)
             {
                 users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.Next();
+                usersEnumerator.NextAsync().GetAwaiter().GetResult();
             }
 
             return users;
@@ -162,12 +162,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             users = new List<CustomerUser>();
 
-            seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
+            seekUsers = Partner.Customers[customerId].Users.QueryAsync(simpleQueryWithFilter).GetAwaiter().GetResult();
             usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
             while (usersEnumerator.HasValue)
             {
                 users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.Next();
+                usersEnumerator.NextAsync().GetAwaiter().GetResult();
             }
 
             return users;

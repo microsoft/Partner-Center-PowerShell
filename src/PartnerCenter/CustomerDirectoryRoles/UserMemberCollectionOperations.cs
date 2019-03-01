@@ -58,24 +58,17 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// <param name="newEntity">The user to add.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer directory role user member.</returns>
-        public UserMember Create(UserMember newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Adds customer user to a directory role.
-        /// </summary>
-        /// <param name="newEntity">The user to add.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer directory role user member.</returns>
-        public async Task<UserMember> CreateAsync(UserMember newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<UserMember> CreateAsync(UserMember newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
             return await Partner.ServiceClient.PostAsync<UserMember, UserMember>(
                 new Uri(
-                    $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.AddUserToCustomerDirectoryRole.Path}",
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.AddUserToCustomerDirectoryRole.Path}",
+                        Context.Item1, 
+                        Context.Item2),
                     UriKind.Relative),
                 newEntity,
                 cancellationToken).ConfigureAwait(false);
@@ -86,21 +79,15 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The directory role user memberships.</returns>
-        public SeekBasedResourceCollection<UserMember> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all the user members of a customer directory role.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The directory role user memberships.</returns>
-        public async Task<SeekBasedResourceCollection<UserMember>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SeekBasedResourceCollection<UserMember>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SeekBasedResourceCollection<UserMember>>(
-                new Uri
-                    ($"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoleUserMembers.Path}",
+                new Uri(
+                    string.Format(
+                        CultureInfo.InvariantCulture, 
+                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoleUserMembers.Path}", 
+                        Context.Item1, 
+                        Context.Item2),
                     UriKind.Relative),
                 new ResourceCollectionConverter<UserMember>(),
                 cancellationToken).ConfigureAwait(false);
@@ -112,18 +99,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// <param name="query">A query to apply onto user member collection.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The directory role user members.</returns>
-        public SeekBasedResourceCollection<UserMember> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(query, cancellationToken));
-        }
-
-        /// <summary>
-        /// Queries the user members of a customer directory role.
-        /// </summary>
-        /// <param name="query">A query to apply onto user member collection.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The directory role user members.</returns>
-        public async Task<SeekBasedResourceCollection<UserMember>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SeekBasedResourceCollection<UserMember>> QueryAsync(IQuery query, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> headers = null;
             IDictionary<string, string> parameters;
@@ -172,7 +148,10 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
 
             return await Partner.ServiceClient.GetAsync<SeekBasedResourceCollection<UserMember>>(
                 new Uri(
-                    $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoleUserMembers.Path}",
+                    string.Format(CultureInfo.InvariantCulture, 
+                    $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoleUserMembers.Path}", 
+                    Context.Item1, 
+                    Context.Item2),
                     UriKind.Relative),
                 headers,
                 parameters,

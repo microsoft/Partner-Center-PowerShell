@@ -56,17 +56,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A collection of service requests.</returns>
-        public ResourceCollection<ServiceRequest> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the service requests associated to the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A collection of service requests.</returns>
-        public async Task<ResourceCollection<ServiceRequest>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ServiceRequest>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<ServiceRequest>>(
                 new Uri(
@@ -89,22 +79,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// to build queries.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The requested service requests.</returns>
-        public ResourceCollection<ServiceRequest> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(query, cancellationToken));
-        }
-
-        /// <summary>
-        /// Queries service requests.
-        /// - Count queries are not supported by this operation.
-        /// - You can set the page size or filter or do both at the same time.
-        /// - Sort is not supported. Default sorting is on status field.
-        /// </summary>
-        /// <param name="query">A query to apply onto service requests. Check <see cref="QueryFactory" /> to see how
-        /// to build queries.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The requested service requests.</returns>
-        public async Task<ResourceCollection<ServiceRequest>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ServiceRequest>> QueryAsync(IQuery query, CancellationToken cancellationToken = default)
         {
             query.AssertNotNull(nameof(query));
 

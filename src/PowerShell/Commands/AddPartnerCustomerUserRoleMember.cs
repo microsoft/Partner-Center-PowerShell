@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Id = user.Id
                 };
 
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.Create(newMember);
+                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
                 WriteObject(true);
             }
             catch (PSPartnerException ex)
@@ -91,7 +91,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                user = Partner.Customers[customerId].Users[userId].Get();
+                user = Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult();
                 return user;
             }
             catch (PSPartnerException ex)

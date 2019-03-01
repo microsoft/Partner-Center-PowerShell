@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The device code result which includes the device code, expiration, and user code.</returns>
-        Task<DeviceCodeResult> AcquireDeviceCodeAsync(Uri authority, string resource, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DeviceCodeResult> AcquireDeviceCodeAsync(Uri authority, string resource, string clientId, string clientSecret = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Acquires an access token from the authority.
@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
-        Task<AuthenticationResult> AcquireTokenAsync(Uri authority, string resource, string clientId, string clientSecret, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AuthenticationResult> AcquireTokenAsync(Uri authority, string resource, string clientId, string clientSecret, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Acquires an access token from the authority.
@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
-        Task<AuthenticationResult> AcquireTokenByAuthorizationCodeAsync(Uri authority, string resource, Uri redirectUri, string code, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AuthenticationResult> AcquireTokenByAuthorizationCodeAsync(Uri authority, string resource, Uri redirectUri, string code, string clientId, string clientSecret = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Acquires security token from the authority using an device code previously received.
@@ -63,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
-        Task<AuthenticationResult> AcquireTokenByDeviceCodeAsync(Uri authority, DeviceCodeResult deviceCodeResult, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AuthenticationResult> AcquireTokenByDeviceCodeAsync(Uri authority, DeviceCodeResult deviceCodeResult, string clientSecret = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP DELETE request against the partner service.
@@ -71,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="relativeUri">Relative address of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task DeleteAsync(Uri relativeUri, CancellationToken cancellationToken = default(CancellationToken));
+        Task DeleteAsync(Uri relativeUri, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -80,7 +80,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="relativeUri">Relative address of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP get request.</returns>
-        Task<TResource> GetAsync<TResource>(Uri relativeUri, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Uri relativeUri, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -90,7 +90,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="parameters">Query string parameters that will be added to the address.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP GET request.</returns>
-        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> parameters, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> parameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -101,7 +101,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="converter">A JSON converter used to deserialize the response.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP GET request.</returns>
-        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> parameters = null, JsonConverter converter = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> parameters = null, JsonConverter converter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -113,7 +113,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="converter">A JSON converter used to deserialize the response.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP GET request.</returns>
-        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> headers = null, IDictionary<string, string> parameters = null, JsonConverter converter = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Uri relativeUri, IDictionary<string, string> headers = null, IDictionary<string, string> parameters = null, JsonConverter converter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -123,7 +123,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="converter">A JSON converter used to deserialize the response.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP GET request.</returns>
-        Task<TResource> GetAsync<TResource>(Uri relativeUri, JsonConverter converter = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Uri relativeUri, JsonConverter converter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP GET request against the partner service.
@@ -133,7 +133,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="converter">A JSON converter used to deserialize the response.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP GET request.</returns>
-        Task<TResource> GetAsync<TResource>(Link link, JsonConverter converter = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> GetAsync<TResource>(Link link, JsonConverter converter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a file content request against the partner service.
@@ -142,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="mediaType">The media type to be accepted.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The file content stream.</returns>
-        Task<Stream> GetFileContentAsync(Uri relativeUri, string mediaType, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Stream> GetFileContentAsync(Uri relativeUri, string mediaType, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a HTTP HEAD request against the partner service.
@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="relativeUri">Relative address of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns></returns>
-        Task<TResource> HeadAsync<TResource>(Uri relativeUri, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> HeadAsync<TResource>(Uri relativeUri, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a PATCH request against the partner service.
@@ -161,7 +161,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="content">The content for the body of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP PATCH request.</returns>
-        Task<TResource> PatchAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> PatchAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a POST request against the partner service.
@@ -172,7 +172,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="content">The content for the body of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP POST request.</returns>
-        Task<TResource> PostAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> PostAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a POST request against the partner service.
@@ -184,7 +184,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="parameters">Query string parameters that will be added to the address.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP POST request.</returns>
-        Task<TResource> PostAsync<TRequest, TResource>(Uri relativeUri, TRequest content, IDictionary<string, string> parameters = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> PostAsync<TRequest, TResource>(Uri relativeUri, TRequest content, IDictionary<string, string> parameters = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a PUT request against the partner service.
@@ -195,7 +195,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="content">The content for the body of the request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP PUT request.</returns>
-        Task<TResource> PutAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> PutAsync<TRequest, TResource>(Uri relativeUri, TRequest content, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Executes a PUT request against the partner service.
@@ -207,7 +207,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="parameters">Query string parameters that will be added to the address.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The response from the HTTP PUT request.</returns>
-        Task<TResource> PutAsync<TRequest, TResource>(Uri relativeUri, TRequest content, IDictionary<string, string> parameters = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResource> PutAsync<TRequest, TResource>(Uri relativeUri, TRequest content, IDictionary<string, string> parameters = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Refreshes the access token using a refresh token.
@@ -219,6 +219,6 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of <see cref="AuthenticationResult"/> that represents the access token.</returns>
-        Task<AuthenticationResult> RefreshAccessTokenAsync(Uri authority, string resource, string refreshToken, string clientId, string clientSecret = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AuthenticationResult> RefreshAccessTokenAsync(Uri authority, string resource, string refreshToken, string clientId, string clientSecret = null, CancellationToken cancellationToken = default);
     }
 }

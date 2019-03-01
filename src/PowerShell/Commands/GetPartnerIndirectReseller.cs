@@ -35,11 +35,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (string.IsNullOrEmpty(CustomerId))
             {
-                resellers = Partner.Relationships.Get(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf);
+                resellers = Partner.Relationships.GetAsync(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf).GetAwaiter().GetResult();
             }
             else
             {
-                resellers = Partner.Customers[CustomerId].Relationships.Get();
+                resellers = Partner.Customers[CustomerId].Relationships.GetAsync().GetAwaiter().GetResult();
             }
 
             WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);

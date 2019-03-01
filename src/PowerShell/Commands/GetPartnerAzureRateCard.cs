@@ -43,11 +43,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (SharedServices.IsPresent && SharedServices.ToBool())
             {
-                rateCard = Partner.RateCards.Azure.GetShared(Currency, Region);
+                rateCard = Partner.RateCards.Azure.GetSharedAsync(Currency, Region).GetAwaiter().GetResult();
             }
             else
             {
-                rateCard = Partner.RateCards.Azure.Get(Currency, Region);
+                rateCard = Partner.RateCards.Azure.GetAsync(Currency, Region).GetAwaiter().GetResult();
             }
 
             WriteObject(new PSAzureRateCard(rateCard));

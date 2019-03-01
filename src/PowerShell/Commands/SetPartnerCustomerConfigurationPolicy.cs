@@ -126,7 +126,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             configurationPolicy.PolicySettings = policySettings;
 
-            ConfigurationPolicy devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].Patch(configurationPolicy);
+            ConfigurationPolicy devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].PatchAsync(configurationPolicy).GetAwaiter().GetResult();
             WriteObject(new PSConfigurationPolicy(devicePolicy));
         }
 
@@ -145,7 +145,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             policyId.AssertNotEmpty(nameof(policyId));
 
-            return Partner.Customers[customerId].ConfigurationPolicies[policyId].Get();
+            return Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().GetAwaiter().GetResult();
         }
     }
 }

@@ -41,17 +41,7 @@ namespace Microsoft.Store.PartnerCenter.Customers.Products
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The availability information.</returns>
-        public Availability Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the availability information.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The availability information.</returns>
-        public async Task<Availability> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Availability> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Availability>(
                 new Uri(

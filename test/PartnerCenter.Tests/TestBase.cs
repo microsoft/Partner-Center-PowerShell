@@ -6,9 +6,11 @@
 
 namespace Microsoft.Store.PartnerCenter.Tests
 {
+    using System;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using TestFramework;
     using TestFramework.Network;
-    using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Test base for all partner service tests.
@@ -21,20 +23,23 @@ namespace Microsoft.Store.PartnerCenter.Tests
         private readonly static HttpMockHandler httpMockHandler = new HttpMockHandler(HttpMockHandlerMode.Playback);
 
         /// <summary>
-        /// Gets the operations available to a partner.
+        /// Use the partner operations to perform the test.
         /// </summary>
-        public IPartner PartnerOperations { get; private set; }
-
-        /// <summary>
-        /// Performs the test initialization operations.
-        /// </summary>
-        [TestInitialize]
-        public void SetupTest()
+        /// <param name="test">Encapsulates a test to execute.</param>
+        /// <param name="identity">Identity of the test being executed.</param>
+        /// <returns>
+        /// An instance of the <see cref="Task" /> class that represents the asynchronous operation.
+        /// </returns>
+        public async Task UsePartnerFor(Func<IPartner, Task> test, [CallerMemberName] string identity = null)
         {
-            PartnerOperations = TestPartnerService.CreatePartnerOperations(
-                new TestPartnerCredentials(),
-                httpMockHandler);
-        }
+            IPartnerCredentials credentials = new TestPartnerCredentials();
 
+            await test(TestPartnerService.CreatePartnerOperations(credentials, httpMockHandler));
+
+            if (httpMockHandler.Mode == HttpMockHandlerMode.Record)
+            {
+                httpMockHandler.Flush(identity);
+            }
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ResourceCollection<Offer> offers;
             string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
-            offers = Partner.Offers.ByCountry(countryCode).ById(OfferId).AddOns.Get();
+            offers = Partner.Offers.ByCountry(countryCode).ById(OfferId).AddOns.GetAsync().GetAwaiter().GetResult();
 
             WriteObject(offers.Items.Select(o => new PSOffer(o)), true);
         }

@@ -36,17 +36,7 @@ namespace Microsoft.Store.PartnerCenter.Customers.ServiceCosts
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The service cost line items.</returns>
-        public ResourceCollection<ServiceCostLineItem> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets a customer's service cost line items.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The service cost line items.</returns>
-        public async Task<ResourceCollection<ServiceCostLineItem>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ServiceCostLineItem>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<ServiceCostLineItem>>(
                 new Uri(

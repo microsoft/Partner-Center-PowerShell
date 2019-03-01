@@ -138,7 +138,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
                     }
 
-                    customer = Partner.Customers[customerId].Get();
+                    customer = Partner.Customers[customerId].GetAsync().GetAwaiter().GetResult();
 
                     customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
                     customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
@@ -155,7 +155,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     if (validator.IsValid(customer.BillingProfile.DefaultAddress))
                     {
-                        Partner.Customers[customerId].Profiles.Billing.Update(customer.BillingProfile);
+                        Partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile).GetAwaiter().GetResult();
 
                         WriteObject(new PSCustomer(customer));
                     }

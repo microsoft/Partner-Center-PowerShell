@@ -32,17 +32,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Collection of support topics.</returns>
-        public ResourceCollection<SupportTopic> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets a collection of available support topics to create service request.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Collection of support topics.</returns>
-        public async Task<ResourceCollection<SupportTopic>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<SupportTopic>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<SupportTopic>>(
                 new Uri(

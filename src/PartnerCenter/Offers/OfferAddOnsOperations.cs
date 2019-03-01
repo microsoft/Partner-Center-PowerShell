@@ -35,29 +35,7 @@ namespace Microsoft.Store.PartnerCenter.Offers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The offer add-ons.</returns>
-        public ResourceCollection<Offer> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves a subset of offers  for the provided country.
-        /// </summary>
-        /// <param name="offset">The starting index.</param>
-        /// <param name="size">The maximum number of offers to return.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The requested segment of the offers for the provided country.</returns>
-        public ResourceCollection<Offer> Get(int offset, int size, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(offset, size, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the add-ons for the given offer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The offer add-ons.</returns>
-        public async Task<ResourceCollection<Offer>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Offer>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters;
 
@@ -87,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.Offers
         /// <param name="size">The maximum number of offers to return.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The requested segment of the offers for the provided country.</returns>
-        public async Task<ResourceCollection<Offer>> GetAsync(int offset, int size, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Offer>> GetAsync(int offset, int size, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters;
 

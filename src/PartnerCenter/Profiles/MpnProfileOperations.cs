@@ -33,30 +33,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="mpnId">The MPN identifier.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The partner's MPN profile.</returns>
-        public MpnProfile Get(string mpnId, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            mpnId.AssertNotEmpty(nameof(mpnId));
-
-            return PartnerService.SynchronousExecute(() => GetAsync(mpnId, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the MPN profile for the authenticated partner.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The MPN profile for the authenticated partner.</returns>
-        public MpnProfile Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves a partner's MPN profile by identifier.
-        /// </summary>
-        /// <param name="mpnId">The MPN identifier.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The partner's MPN profile.</returns>
-        public async Task<MpnProfile> GetAsync(string mpnId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<MpnProfile> GetAsync(string mpnId, CancellationToken cancellationToken = default)
         {
             mpnId.AssertNotEmpty(nameof(mpnId));
 
@@ -81,7 +58,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The MPN profile for the authenticated partner.</returns>
-        public async Task<MpnProfile> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<MpnProfile> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<MpnProfile>(
                 new Uri(

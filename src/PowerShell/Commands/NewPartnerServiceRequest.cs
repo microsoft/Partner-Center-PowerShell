@@ -77,7 +77,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Title = Title
                 };
 
-                request = Partner.ServiceRequests.Create(request, agentLocale);
+                request = Partner.ServiceRequests.CreateAsync(request, agentLocale).GetAwaiter().GetResult();
 
                 WriteObject(new PSServiceRequest(request));
             }

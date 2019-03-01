@@ -25,14 +25,6 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// <param name="query">A query to apply onto user member collection.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The directory role user members.</returns>
-        SeekBasedResourceCollection<UserMember> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Queries the user members of a customer directory role.
-        /// </summary>
-        /// <param name="query">A query to apply onto user member collection.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The directory role user members.</returns>
-        Task<SeekBasedResourceCollection<UserMember>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken));
+        Task<SeekBasedResourceCollection<UserMember>> QueryAsync(IQuery query, CancellationToken cancellationToken = default);
     }
 }

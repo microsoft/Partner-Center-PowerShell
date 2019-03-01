@@ -37,17 +37,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The invoice statement.</returns>
-        public Stream Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the invoice statement. This operation is currently only supported for user based credentials.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The invoice statement.</returns>
-        public async Task<Stream> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Stream> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetFileContentAsync(
                 new Uri(

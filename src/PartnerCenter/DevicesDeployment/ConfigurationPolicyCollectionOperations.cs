@@ -54,18 +54,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="newEntity">The new configuration policy information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The policy information that was just created.</returns>
-        public ConfigurationPolicy Create(ConfigurationPolicy newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates a new configuration policy.
-        /// </summary>
-        /// <param name="newEntity">The new configuration policy information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The policy information that was just created.</returns>
-        public async Task<ConfigurationPolicy> CreateAsync(ConfigurationPolicy newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ConfigurationPolicy> CreateAsync(ConfigurationPolicy newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -85,17 +74,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A collection of configuration policies.</returns>
-        public ResourceCollection<ConfigurationPolicy> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets a collection of configuration policies associated to the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A collection of configuration policies.</returns>
-        public async Task<ResourceCollection<ConfigurationPolicy>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<ConfigurationPolicy>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<ConfigurationPolicy>>(
                 new Uri(

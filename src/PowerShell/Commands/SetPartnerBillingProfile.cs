@@ -121,7 +121,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess("Updates the partner's billing profile"))
             {
-                profile = Partner.Profiles.BillingProfile.Get();
+                profile = Partner.Profiles.BillingProfile.GetAsync().GetAwaiter().GetResult();
 
                 profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
                 profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
@@ -152,7 +152,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
                 profile.TaxId = UpdateValue(TaxId, profile.TaxId);
 
-                Partner.Profiles.BillingProfile.Update(profile);
+                Partner.Profiles.BillingProfile.UpdateAsync(profile).GetAwaiter().GetResult();
 
                 WriteObject(new PSBillingProfile(profile));
             }

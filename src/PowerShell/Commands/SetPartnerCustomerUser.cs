@@ -102,7 +102,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             UserId = (InputObject == null) ? UserId : InputObject.UserId;
 
             // Get the current user information
-            user = Partner.Customers[CustomerId].Users[UserId].Get();
+            user = Partner.Customers[CustomerId].Users[UserId].GetAsync().GetAwaiter().GetResult();
 
             try
             {
@@ -161,7 +161,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                             throw new PSInvalidOperationException(Resources.InvalidSetCustomerUserIdentifierException);
                         }
 
-                        user = Partner.Customers[CustomerId].Users[UserId].Patch(user);
+                        user = Partner.Customers[CustomerId].Users[UserId].PatchAsync(user).GetAwaiter().GetResult();
 
                         WriteObject(new PSCustomerUser(user), true);
                     }

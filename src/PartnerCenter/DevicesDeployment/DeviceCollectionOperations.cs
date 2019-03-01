@@ -57,18 +57,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="newDevices">The new devices to be created.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The location which indicates the URL of the API to query for status of the create request.</returns>
-        public string Create(IEnumerable<Device> newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Adds devices to existing devices batch.
-        /// </summary>
-        /// <param name="newDevices">The new devices to be created.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The location which indicates the URL of the API to query for status of the create request.</returns>
-        public async Task<string> CreateAsync(IEnumerable<Device> newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> CreateAsync(IEnumerable<Device> newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -89,17 +78,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A collection of devices.</returns>
-        public ResourceCollection<Device> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the devices associated to the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A collection of devices.</returns>
-        public async Task<ResourceCollection<Device>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Device>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Device>>(
                 new Uri(

@@ -32,7 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCart(Partner.Customers[CustomerId].Carts[CartId].Get()));
+            WriteObject(new PSCart(Partner.Customers[CustomerId].Carts[CartId].GetAsync().GetAwaiter().GetResult()));
         }
     }
 }

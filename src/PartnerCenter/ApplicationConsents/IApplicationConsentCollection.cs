@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.ApplicationConsents
 {
     using GenericOperations;
-    using Models;
     using Models.ApplicationConsents;
 
     public interface IApplicationConsentCollection : IPartnerComponent<string>, IEntityCreateOperations<ApplicationConsent, ApplicationConsent>

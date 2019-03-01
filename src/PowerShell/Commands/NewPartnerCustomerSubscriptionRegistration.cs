@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 SubscriptionId,
                 CustomerId)))
             {
-                WriteObject(Partner.Customers[CustomerId].Subscriptions[SubscriptionId].Registration.Register());
+                WriteObject(Partner.Customers[CustomerId].Subscriptions[SubscriptionId].Registration.RegisterAsync().GetAwaiter().GetResult());
             }
         }
     }

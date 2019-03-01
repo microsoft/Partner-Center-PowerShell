@@ -144,7 +144,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
             {
-                if (Partner.Domains.ByDomain(Domain).Exists())
+                if (Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult())
                 {
                     throw new PSInvalidOperationException(
                         string.Format(
@@ -201,7 +201,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (validator.IsValid(customer.BillingProfile.DefaultAddress))
                 {
-                    customer = Partner.Customers.Create(customer);
+                    customer = Partner.Customers.CreateAsync(customer).GetAwaiter().GetResult();
 
                     WriteObject(customer);
                 }

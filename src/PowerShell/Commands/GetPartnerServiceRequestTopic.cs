@@ -34,7 +34,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ResourceCollection<SupportTopic> topics;
             IEnumerable<SupportTopic> results;
 
-            topics = Partner.ServiceRequests.SupportTopics.Get();
+            topics = Partner.ServiceRequests.SupportTopics.GetAsync().GetAwaiter().GetResult();
 
             if (topics.TotalCount > 0)
             {

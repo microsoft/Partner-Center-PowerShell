@@ -148,7 +148,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             if (PartnerSession.Instance.Context.AuthenticationType == AuthenticationTypes.AppPlusUser)
             {
                 partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
-                profile = partnerOperations.Profiles.OrganizationProfile.Get();
+                profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
 
                 PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
                 PartnerSession.Instance.Context.Locale = profile.Culture;

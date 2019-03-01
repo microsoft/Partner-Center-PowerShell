@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.Extensions
 {
-    using System;
     using System.Threading.Tasks;
     using RequestContext;
 
@@ -14,26 +13,9 @@ namespace Microsoft.Store.PartnerCenter.Extensions
     /// Use this class to generate Partner Center API credentials. User plus application based authentication and application only authentication
     /// are supported.
     /// </summary>
-    public class PartnerCredentials
+    public static class PartnerCredentials
     {
         /// <summary>
-        /// Provides a singleton instance of the <see cref="PartnerCredentials" /> class.
-        /// </summary>
-        private static readonly Lazy<PartnerCredentials> instance = new Lazy<PartnerCredentials>(() => new PartnerCredentials());
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PartnerCredentials" /> class.
-        /// </summary>
-        private PartnerCredentials()
-        {
-        }
-
-        /// <summary>
-        /// Gets an instance of the partner credentials.
-        /// </summary>
-        public static PartnerCredentials Instance => instance.Value;
-
-        /// <summary>
         /// Generates partner credentials using Azure Active Directory application credentials with the provided AAD overrides.
         /// </summary>
         /// <param name="clientId">The client id of the application in Azure Active Directory. This application should be an Azure web application.</param>
@@ -43,28 +25,7 @@ namespace Microsoft.Store.PartnerCenter.Extensions
         /// <param name="graphEndpoint">The Azure AD Graph endpoint.</param>
         /// <param name="requestContext">An optional request context.</param>
         /// <returns>The partner service credentials.</returns>
-        public IPartnerCredentials GenerateByApplicationCredentials(string clientId, string applicationSecret, string aadApplicationDomain, string aadAuthorityEndpoint = null, string graphEndpoint = null, IRequestContext requestContext = null)
-        {
-            return PartnerService.SynchronousExecute(() => GenerateByApplicationCredentialsAsync(
-                clientId,
-                applicationSecret,
-                aadApplicationDomain,
-                aadAuthorityEndpoint,
-                graphEndpoint,
-                requestContext));
-        }
-
-        /// <summary>
-        /// Generates partner credentials using Azure Active Directory application credentials with the provided AAD overrides.
-        /// </summary>
-        /// <param name="clientId">The client id of the application in Azure Active Directory. This application should be an Azure web application.</param>
-        /// <param name="applicationSecret">The application secret with Azure Active Directory.</param>
-        /// <param name="aadApplicationDomain">The application domain in Azure Active Directory.</param>
-        /// <param name="aadAuthorityEndpoint">The Active Directory authority endpoint.</param>
-        /// <param name="graphEndpoint">The Azure AD Graph endpoint.</param>
-        /// <param name="requestContext">An optional request context.</param>
-        /// <returns>The partner service credentials.</returns>
-        public async Task<IPartnerCredentials> GenerateByApplicationCredentialsAsync(string clientId, string applicationSecret, string aadApplicationDomain, string aadAuthorityEndpoint = null, string graphEndpoint = null, IRequestContext requestContext = null)
+        public static async Task<IPartnerCredentials> GenerateByApplicationCredentialsAsync(string clientId, string applicationSecret, string aadApplicationDomain, string aadAuthorityEndpoint = null, string graphEndpoint = null, IRequestContext requestContext = null)
         {
             clientId.AssertNotEmpty(nameof(clientId));
             applicationSecret.AssertNotEmpty(nameof(applicationSecret));
@@ -92,26 +53,7 @@ namespace Microsoft.Store.PartnerCenter.Extensions
         /// an up to date Azure Active Directory token.</param>
         /// <param name="requestContext">An optional request context.</param>
         /// <returns>The partner service credentials.</returns>
-        public IPartnerCredentials GenerateByUserCredentials(string clientId, AuthenticationToken authenticationToken, TokenRefresher aadTokenRefresher = null, IRequestContext requestContext = null)
-        {
-            return PartnerService.SynchronousExecute(() => GenerateByUserCredentialsAsync(
-                clientId,
-                authenticationToken,
-                aadTokenRefresher,
-                requestContext));
-        }
-
-        /// <summary>
-        /// Generates partner credentials using a user plus application Azure Active Directory token.
-        /// </summary>
-        /// <param name="clientId">The client id of the application in Azure Active Directory. This application should be an Azure native application.</param>
-        /// <param name="authenticationToken">The Azure Active Directory token.</param>
-        /// <param name="aadTokenRefresher">An optional delegate which will be called when the Azure Active Directory token
-        /// expires and can no longer be used to generate the partner credentials. This delegate should return
-        /// an up to date Azure Active Directory token.</param>
-        /// <param name="requestContext">An optional request context.</param>
-        /// <returns>The partner service credentials.</returns>
-        public async Task<IPartnerCredentials> GenerateByUserCredentialsAsync(string clientId, AuthenticationToken authenticationToken, TokenRefresher aadTokenRefresher = null, IRequestContext requestContext = null)
+        public static async Task<IPartnerCredentials> GenerateByUserCredentialsAsync(string clientId, AuthenticationToken authenticationToken, TokenRefresher aadTokenRefresher = null, IRequestContext requestContext = null)
         {
             UserPartnerCredentials partnerCredentials = new UserPartnerCredentials(clientId, authenticationToken, aadTokenRefresher);
 

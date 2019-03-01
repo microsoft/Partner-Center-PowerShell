@@ -36,17 +36,7 @@ namespace Microsoft.Store.PartnerCenter.Qualification
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer qualification.</returns>
-        public CustomerQualification Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the customer qualification.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer qualification.</returns>
-        public async Task<CustomerQualification> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerQualification> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<CustomerQualification>(
                 new Uri(
@@ -64,18 +54,7 @@ namespace Microsoft.Store.PartnerCenter.Qualification
         /// <param name="entity">The new qualification value.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated customer qualification.</returns>
-        public CustomerQualification Update(CustomerQualification entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the customer qualification.
-        /// </summary>
-        /// <param name="entity">The new qualification value.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated customer qualification.</returns>
-        public async Task<CustomerQualification> UpdateAsync(CustomerQualification entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerQualification> UpdateAsync(CustomerQualification entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<CustomerQualification, CustomerQualification>(
                 new Uri(
@@ -93,20 +72,8 @@ namespace Microsoft.Store.PartnerCenter.Qualification
         /// </summary>
         /// <param name="customerQualification">Customer qualification to be updated.</param>
         /// <param name="governmentCommunityCloudValidationCode">Validation code necessary to complete only Government Community Cloud customer creation. List validation codes with GetValidationCodes in ValidationOperations.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated customer qualification.</returns>
-        public CustomerQualification Update(CustomerQualification customerQualification, ValidationCode governmentCommunityCloudValidationCode, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(customerQualification, governmentCommunityCloudValidationCode, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the customer qualification.  Use for GovernmentCommunityCloud with validation code after successful registration through Microsoft.
-        /// </summary>
-        /// <param name="customerQualification">Customer qualification to be updated.</param>
-        /// <param name="governmentCommunityCloudValidationCode">Validation code necessary to complete only Government Community Cloud customer creation. List validation codes with GetValidationCodes in ValidationOperations.</param>
-        /// <returns>The updated customer qualification.</returns>
-        public async Task<CustomerQualification> UpdateAsync(CustomerQualification customerQualification, ValidationCode governmentCommunityCloudValidationCode, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerQualification> UpdateAsync(CustomerQualification customerQualification, ValidationCode governmentCommunityCloudValidationCode, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {

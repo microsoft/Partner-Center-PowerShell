@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                     resource.Country.Equals("MX", StringComparison.InvariantCultureIgnoreCase) ||
                     resource.Country.Equals("US", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    validationRules = partner.CountryValidationRules.ByCountry(resource.Country).Get();
+                    validationRules = partner.CountryValidationRules.ByCountry(resource.Country).GetAsync().GetAwaiter().GetResult();
 
                     if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
                     {
@@ -94,7 +94,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                     }
                 }
 
-                return partner.Validations.IsAddressValid(resource);
+                return partner.Validations.IsAddressValidAsync(resource).GetAwaiter().GetResult();
             }
             catch (PartnerCenter.Exceptions.PartnerException ex)
             {

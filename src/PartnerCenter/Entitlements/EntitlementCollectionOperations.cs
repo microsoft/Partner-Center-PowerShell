@@ -45,16 +45,7 @@ namespace Microsoft.Store.PartnerCenter.Entitlements
         /// Gets entitlement collection.
         /// </summary>
         /// <returns>The entitlement collection with the given entitlement type.</returns>
-        public ResourceCollection<Entitlement> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets entitlement collection.
-        /// </summary>
-        /// <returns>The entitlement collection with the given entitlement type.</returns>
-        public async Task<ResourceCollection<Entitlement>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Entitlement>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Entitlement>>(
               new Uri(

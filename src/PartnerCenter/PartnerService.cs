@@ -138,25 +138,5 @@ namespace Microsoft.Store.PartnerCenter
         {
             return Factory.Build(credentials, handlers);
         }
-
-        /// <summary>
-        /// Executes an asynchronous method synchronously in a way that prevents deadlocks in UI applications.
-        /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
-        /// <param name="operation">The asynchronous operation to execute.</param>
-        /// <returns>The operation's return value.</returns>
-        internal static T SynchronousExecute<T>(Func<Task<T>> operation)
-        {
-            return Task.Run(async () => await operation().ConfigureAwait(false)).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Executes an asynchronous method synchronously in a way that prevents deadlocks in UI applications.
-        /// </summary>
-        /// <param name="operation">The asynchronous operation to execute.</param>
-        internal static void SynchronousExecute(Func<Task> operation)
-        {
-            Task.Run(async () => await operation().ConfigureAwait(false)).GetAwaiter().GetResult();
-        }
     }
 }

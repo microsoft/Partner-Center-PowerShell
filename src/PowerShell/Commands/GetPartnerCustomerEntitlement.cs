@@ -68,7 +68,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            entitlements = Partner.Customers[customerId].Entitlements.Get().Items.Where(e => e.ReferenceOrder.Id == orderId);
+            entitlements = Partner.Customers[customerId].Entitlements.GetAsync().GetAwaiter().GetResult().Items.Where(e => e.ReferenceOrder.Id == orderId);
 
             WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
         }
@@ -86,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            entitlements = Partner.Customers[customerId].Entitlements.Get().Items;
+            entitlements = Partner.Customers[customerId].Entitlements.GetAsync().GetAwaiter().GetResult().Items;
 
             WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
         }

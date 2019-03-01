@@ -56,7 +56,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            cart = Partner.Customers[CustomerId].Carts[CartId].Get();
+            cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().GetAwaiter().GetResult();
 
             cartLineItems = new List<CartLineItem>();
 
@@ -70,7 +70,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             cart.LineItems = cartLineItems;
 
-            cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
+            cart = Partner.Customers[CustomerId].Carts[CartId].PutAsync(cart).GetAwaiter().GetResult();
 
             WriteObject(new PSCart(cart));
 

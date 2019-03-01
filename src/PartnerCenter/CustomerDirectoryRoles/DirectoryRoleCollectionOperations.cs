@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
 {
     using System;
+    using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -52,21 +53,14 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>All the customer directory roles.</returns>
-        public ResourceCollection<DirectoryRole> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all customer directory roles.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>All the customer directory roles.</returns>
-        public async Task<ResourceCollection<DirectoryRole>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<DirectoryRole>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<DirectoryRole>>(
-                new Uri
-                    ($"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoles.Path}",
+                new Uri(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetCustomerDirectoryRoles.Path}",
+                        Context),
                     UriKind.Relative),
                 new ResourceCollectionConverter<DirectoryRole>(),
                 cancellationToken).ConfigureAwait(false);

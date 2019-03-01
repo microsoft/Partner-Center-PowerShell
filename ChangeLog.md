@@ -22,10 +22,11 @@
 
 ## Upcoming Release
 
-### Version 1.5.1902.5
+* Corrected issue #90
+    - This issue was causing user directory role commands were not functioning as expected.
 
-* Added the Export-PartnerExportPartnerReconciliation command
-    - This command can be used to export the reconciliation file that match the specified parameters.
+## Version 1.5.1902.5
+
 * Added the New-PartnerCustomerApplicationConsent command 
     - This command can be used to create a new application consent for the specified customer.
 * Update to version 10.0.3 of Newtonsoft.Json

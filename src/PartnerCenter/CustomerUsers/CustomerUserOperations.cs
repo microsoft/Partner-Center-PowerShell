@@ -69,16 +69,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// Deletes the user.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Delete(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => DeleteAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Deletes the user.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             await Partner.ServiceClient.DeleteAsync(
                 new Uri(
@@ -96,17 +87,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer user.</returns>
-        public CustomerUser Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the customer user.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer user.</returns>
-        public async Task<CustomerUser> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerUser> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<CustomerUser>(
                 new Uri(
@@ -125,18 +106,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// <param name="entity">Customer user entity.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated user.</returns>
-        public CustomerUser Patch(CustomerUser entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the customer user.
-        /// </summary>
-        /// <param name="entity">Customer user entity.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated user.</returns>
-        public async Task<CustomerUser> PatchAsync(CustomerUser entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerUser> PatchAsync(CustomerUser entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

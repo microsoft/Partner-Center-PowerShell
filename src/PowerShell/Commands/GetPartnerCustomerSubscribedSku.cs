@@ -41,7 +41,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<SubscribedSku> subscribedSkus = Partner.Customers[CustomerId].SubscribedSkus.Get(LicenseGroup?.Select(item => item).ToList());
+            ResourceCollection<SubscribedSku> subscribedSkus = Partner.Customers[CustomerId].SubscribedSkus.GetAsync(LicenseGroup?.Select(item => item).ToList()).GetAwaiter().GetResult();
             WriteObject(subscribedSkus.Items.Select(s => new PSSubscribedSku(s)), true);
         }
     }

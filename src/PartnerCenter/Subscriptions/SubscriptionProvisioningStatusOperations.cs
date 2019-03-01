@@ -37,17 +37,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscription provisioning status details.</returns>
-        public SubscriptionProvisioningStatus Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the subscription provisioning status details.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscription provisioning status details.</returns>
-        public async Task<SubscriptionProvisioningStatus> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SubscriptionProvisioningStatus> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SubscriptionProvisioningStatus>(
                 new Uri(

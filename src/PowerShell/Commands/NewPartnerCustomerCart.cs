@@ -76,7 +76,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 LineItems = lineItems
             };
 
-            cart = Partner.Customers[CustomerId].Carts.Create(cart);
+            cart = Partner.Customers[CustomerId].Carts.CreateAsync(cart).GetAwaiter().GetResult();
 
             WriteObject(new PSCart(cart));
         }

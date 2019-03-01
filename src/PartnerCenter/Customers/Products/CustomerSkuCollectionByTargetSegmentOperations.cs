@@ -41,16 +41,7 @@ namespace Microsoft.Store.PartnerCenter.Customers.Products
         /// Gets all the SKUs for the provided product and target segment.
         /// </summary>
         /// <returns>The SKUs for the provided product and target segment.</returns>
-        public ResourceCollection<Sku> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all the SKUs for the provided product and target segment.
-        /// </summary>
-        /// <returns>The SKUs for the provided product and target segment.</returns>
-        public async Task<ResourceCollection<Sku>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Sku>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {

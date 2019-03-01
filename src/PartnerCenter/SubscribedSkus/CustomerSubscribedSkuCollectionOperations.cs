@@ -38,18 +38,7 @@ namespace Microsoft.Store.PartnerCenter.SubscribedSkus
         /// <param name="licenseGroupIds">A collection of license group identifiers.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>All the customer subscribed products.</returns>
-        public ResourceCollection<SubscribedSku> Get(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(licenseGroupIds, cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all the customer subscribed products.
-        /// </summary>
-        /// <param name="licenseGroupIds">A collection of license group identifiers.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>All the customer subscribed products.</returns>
-        public async Task<ResourceCollection<SubscribedSku>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<SubscribedSku>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
 

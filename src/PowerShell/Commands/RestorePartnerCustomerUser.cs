@@ -93,7 +93,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                Partner.Customers.ById(customerId).Users.ById(userId).Patch(updatedCustomerUser);
+                Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
                 WriteObject(true);
             }
             catch (PartnerCenter.Exceptions.PartnerException ex)
@@ -113,7 +113,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private void RestoreUserByUpn(string customerId, string userPrincipalName)
         {
             customerId.AssertNotEmpty(nameof(customerId));
-            customerId.AssertNotEmpty(nameof(userPrincipalName));
+            userPrincipalName.AssertNotEmpty(nameof(userPrincipalName));
 
             RestoreUserById(customerId, GetUserIdByUpn(customerId, userPrincipalName));
         }
@@ -162,12 +162,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             users = new List<CustomerUser>();
 
-            seekUsers = Partner.Customers[customerId].Users.Query(simpleQueryWithFilter);
+            seekUsers = Partner.Customers[customerId].Users.QueryAsync(simpleQueryWithFilter).GetAwaiter().GetResult();
             usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
             while (usersEnumerator.HasValue)
             {
                 users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.Next();
+                usersEnumerator.NextAsync().GetAwaiter().GetResult();
             }
 
             return users;

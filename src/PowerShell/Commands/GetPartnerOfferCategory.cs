@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<OfferCategory> offerCategories = Partner.OfferCategories.ByCountry(CountryCode).Get();
+            ResourceCollection<OfferCategory> offerCategories = Partner.OfferCategories.ByCountry(CountryCode).GetAsync().GetAwaiter().GetResult();
 
             WriteObject(offerCategories.Items.Select(c => new PSOfferCategory(c)));
         }

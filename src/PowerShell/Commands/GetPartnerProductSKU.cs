@@ -91,7 +91,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                sku = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Get();
+                sku = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).GetAsync().GetAwaiter().GetResult();
 
                 if (sku != null)
                 {
@@ -126,11 +126,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 if (string.IsNullOrEmpty(segment))
                 {
-                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.Get();
+                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.GetAsync().GetAwaiter().GetResult();
                 }
                 else
                 {
-                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ByTargetSegment(segment).Get();
+                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
                 }
 
                 if (skus.TotalCount > 0)

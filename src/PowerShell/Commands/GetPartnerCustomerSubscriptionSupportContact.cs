@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportContact contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Get();
+            SupportContact contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.GetAsync().GetAwaiter().GetResult();
             WriteObject(new PSSupportContact(contact));
         }
     }

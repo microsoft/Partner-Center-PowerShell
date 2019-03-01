@@ -25,11 +25,14 @@ namespace Microsoft.Store.PartnerCenter.Tests
         [TestMethod]
         public async Task GetAgreementDetails()
         {
-            ResourceCollection<AgreementMetaData> details = await PartnerOperations.AgreementDetails.GetAsync().ConfigureAwait(false);
+            await UsePartnerFor(async partnerOperations =>
+            {
+                ResourceCollection<AgreementMetaData> details = await partnerOperations.AgreementDetails.GetAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(details);
-            Assert.IsNotNull(details.Items);
-            Assert.IsTrue(details.Items.Any());
+                Assert.IsNotNull(details);
+                Assert.IsNotNull(details.Items);
+                Assert.IsTrue(details.Items.Any());
+            }).ConfigureAwait(false);
         }
     }
 }

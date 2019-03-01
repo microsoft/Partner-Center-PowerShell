@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IEnumerable<DeviceBatch> deviceBatch = Partner.Customers[CustomerId].DeviceBatches.Get().Items;
+            IEnumerable<DeviceBatch> deviceBatch = Partner.Customers[CustomerId].DeviceBatches.GetAsync().GetAwaiter().GetResult().Items;
             WriteObject(deviceBatch.Select(db => new PSDeviceBatch(db)), true);
         }
     }

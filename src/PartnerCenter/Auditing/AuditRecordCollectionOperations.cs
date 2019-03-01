@@ -41,34 +41,11 @@ namespace Microsoft.Store.PartnerCenter.Auditing
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The audit records that match the given query.</returns>
-        public SeekBasedResourceCollection<AuditRecord> Query(
-            DateTime startDate,
-            DateTime? endDate = null,
-            IQuery query = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(
-                startDate,
-                endDate,
-                query));
-        }
-
-        /// <summary>
-        /// Queries audit records associated to the partner.
-        /// The following queries are supported:
-        /// - Specify the number of audit record to return.
-        /// - Filter the result with a customer name.
-        /// </summary>
-        /// <param name="startDate">The start date of the audit record logs.</param>
-        /// <param name="endDate">The end date of the audit record logs.</param>
-        /// <param name="query">The query.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The audit records that match the given query.</returns>
         public async Task<SeekBasedResourceCollection<AuditRecord>> QueryAsync(
             DateTime startDate,
             DateTime? endDate = null,
             IQuery query = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
 
             if (query != null && query.Type != QueryType.Indexed && query.Type != QueryType.Simple)

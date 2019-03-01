@@ -20,13 +20,7 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
         /// Deletes an entity.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        void Delete(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Deletes an entity.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task DeleteAsync(CancellationToken cancellationToken = default);
     }
 }

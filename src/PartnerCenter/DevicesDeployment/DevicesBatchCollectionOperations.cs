@@ -54,18 +54,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="newEntity">The new devices batch.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The location to track the status of the create.</returns>
-        public string Create(DeviceBatchCreationRequest newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates a new devices batch along with the devices.
-        /// </summary>
-        /// <param name="newEntity">The new devices batch.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The location to track the status of the create.</returns>
-        public async Task<string> CreateAsync(DeviceBatchCreationRequest newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> CreateAsync(DeviceBatchCreationRequest newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -85,17 +74,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A collection of devices batches.</returns>
-        public ResourceCollection<DeviceBatch> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets devices batches associated to the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A collection of devices batches.</returns>
-        public async Task<ResourceCollection<DeviceBatch>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<DeviceBatch>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<DeviceBatch>>(
                 new Uri(

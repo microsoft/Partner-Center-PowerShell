@@ -22,14 +22,6 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
         /// <param name="entity">The entity information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated entity.</returns>
-        V Update(T entity, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Updates an entity.
-        /// </summary>
-        /// <param name="entity">The entity information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated entity.</returns>
-        Task<V> UpdateAsync(T entity, CancellationToken cancellationToken = default(CancellationToken));
+        Task<V> UpdateAsync(T entity, CancellationToken cancellationToken = default);
     }
 }

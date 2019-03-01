@@ -33,17 +33,7 @@ namespace Microsoft.Store.PartnerCenter.Offers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>All offer categories for the provided country.</returns>
-        public ResourceCollection<OfferCategory> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all offer categories available to the partner for the provided country.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>All offer categories for the provided country.</returns>
-        public async Task<ResourceCollection<OfferCategory>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<OfferCategory>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters;
 

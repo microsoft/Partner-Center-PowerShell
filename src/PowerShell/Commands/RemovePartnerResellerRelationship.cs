@@ -44,19 +44,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerResellerRelationshipWhatIf, CustomerId)))
             {
-                subscriptions = Partner.Customers[CustomerId].Subscriptions.Get();
+                subscriptions = Partner.Customers[CustomerId].Subscriptions.GetAsync().GetAwaiter().GetResult();
 
                 foreach (Subscription subscription in subscriptions.Items.Where(s => s.Status == SubscriptionStatus.Active))
                 {
                     subscription.Status = SubscriptionStatus.Suspended;
-                    Partner.Customers[CustomerId].Subscriptions[subscription.Id].Patch(subscription);
+                    Partner.Customers[CustomerId].Subscriptions[subscription.Id].PatchAsync(subscription).GetAwaiter().GetResult();
                 }
 
-                customer = Partner.Customers[CustomerId].Patch(
+                customer = Partner.Customers[CustomerId].PatchAsync(
                     new PartnerCenter.Models.Customers.Customer
                     {
                         RelationshipToPartner = PartnerCenter.Models.Customers.CustomerPartnerRelationship.None
-                    });
+                    }).GetAwaiter().GetResult();
 
                 WriteObject(new PSCustomer(customer));
             }

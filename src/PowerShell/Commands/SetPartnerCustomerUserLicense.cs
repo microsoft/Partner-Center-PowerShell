@@ -68,7 +68,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     LicensesToRemove = LicenseUpdate.LicensesToRemove
                 };
 
-                update = Partner.Customers[CustomerId].Users[UserId].LicenseUpdates.Create(update);
+                update = Partner.Customers[CustomerId].Users[UserId].LicenseUpdates.CreateAsync(update).GetAwaiter().GetResult();
 
                 WriteObject(new PSLicenseUpdate(update));
             }

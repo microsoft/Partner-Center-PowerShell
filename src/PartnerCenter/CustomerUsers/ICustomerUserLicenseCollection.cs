@@ -24,14 +24,6 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// <param name="licenseGroupIds">The license group identifier.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The assigned licenses to a customer user.</returns>
-        ResourceCollection<License> Get(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Retrieves the assigned licenses to a customer user.
-        /// </summary>
-        /// <param name="licenseGroupIds">The license group identifier.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The assigned licenses to a customer user.</returns>
-        Task<ResourceCollection<License>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<ResourceCollection<License>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default);
     }
 }

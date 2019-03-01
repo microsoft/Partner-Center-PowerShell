@@ -44,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].Delete();
+                Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().GetAwaiter().GetResult();
                 WriteObject(true);
             }
             catch (PartnerCenter.Exceptions.PartnerException ex)

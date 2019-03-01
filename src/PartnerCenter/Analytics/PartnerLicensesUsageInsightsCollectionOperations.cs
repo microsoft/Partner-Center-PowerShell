@@ -31,17 +31,7 @@ namespace Microsoft.Store.PartnerCenter.Analytics
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Collection of licenses usage insights</returns>
-        public ResourceCollection<PartnerLicensesUsageInsights> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the collection of partner's licenses' usage insights.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Collection of licenses usage insights</returns>
-        public async Task<ResourceCollection<PartnerLicensesUsageInsights>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<PartnerLicensesUsageInsights>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<PartnerLicensesUsageInsights>>(
                 new Uri(

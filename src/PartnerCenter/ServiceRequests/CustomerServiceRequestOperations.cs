@@ -36,17 +36,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The requested service request.</returns>
-        public ServiceRequest Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Get the service request.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The requested service request.</returns>
-        public async Task<ServiceRequest> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ServiceRequest> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ServiceRequest>(
                 new Uri(
@@ -65,18 +55,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// <param name="entity">The service request to be updated.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The service request that was just updated.</returns>
-        public ServiceRequest Patch(ServiceRequest entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the specified service request.
-        /// </summary>
-        /// <param name="entity">The service request to be updated.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The service request that was just updated.</returns>
-        public async Task<ServiceRequest> PatchAsync(ServiceRequest entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ServiceRequest> PatchAsync(ServiceRequest entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

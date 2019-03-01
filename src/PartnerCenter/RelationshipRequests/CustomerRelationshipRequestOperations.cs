@@ -30,17 +30,7 @@ namespace Microsoft.Store.PartnerCenter.RelationshipRequests
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A customer relationship request.</returns>
-        public CustomerRelationshipRequest Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the customer relationship request which can be used by a customer to establish a relationship with the current partner.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A customer relationship request.</returns>
-        public async Task<CustomerRelationshipRequest> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerRelationshipRequest> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<CustomerRelationshipRequest>(
                 new Uri(

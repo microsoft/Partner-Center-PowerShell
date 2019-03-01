@@ -124,7 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     UserId = userId
                 };
 
-                agreement = Partner.Customers[CustomerId].Agreements.Create(agreement);
+                agreement = Partner.Customers[CustomerId].Agreements.CreateAsync(agreement).GetAwaiter().GetResult();
 
                 WriteObject(agreement);
             }

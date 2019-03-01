@@ -40,18 +40,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// <param name="licenseGroupIds">A collection of license group identifiers.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer user licenses.</returns>
-        public ResourceCollection<License> Get(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(licenseGroupIds, cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the customer user licenses.
-        /// </summary>
-        /// <param name="licenseGroupIds">A collection of license group identifiers.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer user licenses.</returns>
-        public async Task<ResourceCollection<License>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<License>> GetAsync(List<LicenseGroupId> licenseGroupIds = null, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>();
 

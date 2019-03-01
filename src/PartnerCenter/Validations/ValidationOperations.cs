@@ -33,17 +33,7 @@ namespace Microsoft.Store.PartnerCenter.Validations
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>List of validation codes.</returns>
-        public IEnumerable<ValidationCode> GetValidationCodes(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetValidationCodesAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets validation code which is used for Government Community Cloud customers qualification.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>List of validation codes.</returns>
-        public async Task<IEnumerable<ValidationCode>> GetValidationCodesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<ValidationCode>> GetValidationCodesAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<IEnumerable<ValidationCode>>(
                new Uri(
@@ -58,18 +48,7 @@ namespace Microsoft.Store.PartnerCenter.Validations
         /// <param name="address">The address to be validated.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><c>true</c> if the address is valid; otherwise <c>false</c>.</returns>
-        public bool IsAddressValid(Address address, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => IsAddressValidAsync(address, cancellationToken));
-        }
-
-        /// <summary>
-        /// Checks if the address is valid or not.
-        /// </summary>
-        /// <param name="address">The address to be validated.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns><c>true</c> if the address is valid; otherwise <c>false</c>.</returns>
-        public async Task<bool> IsAddressValidAsync(Address address, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> IsAddressValidAsync(Address address, CancellationToken cancellationToken = default)
         {
             address.AssertNotNull(nameof(address));
 

@@ -76,7 +76,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     SupportTenantId = SupportTenantId
                 };
 
-                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.Update(contact);
+                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.UpdateAsync(contact).GetAwaiter().GetResult();
                 WriteObject(new PSSupportContact(contact));
             }
         }

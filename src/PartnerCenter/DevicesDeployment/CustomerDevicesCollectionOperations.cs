@@ -35,18 +35,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="entity">The device policy update request with devices to be updated.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The location of the status to track the update.</returns>
-        public string Update(DevicePolicyUpdateRequest entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the devices with configuration policies.
-        /// </summary>
-        /// <param name="entity">The device policy update request with devices to be updated.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The location of the status to track the update.</returns>
-        public async Task<string> UpdateAsync(DevicePolicyUpdateRequest entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> UpdateAsync(DevicePolicyUpdateRequest entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

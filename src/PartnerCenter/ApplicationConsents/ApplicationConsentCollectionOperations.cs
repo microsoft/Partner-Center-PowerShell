@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.ApplicationConsents
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
-    using Models;
     using Models.ApplicationConsents;
 
     internal class ApplicationConsentCollectionOperations : BasePartnerComponent<string>, IApplicationConsentCollection
@@ -33,18 +32,7 @@ namespace Microsoft.Store.PartnerCenter.ApplicationConsents
         /// <param name="newEntity">The new application consent to be created.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer information that was just created.</returns>
-        public ApplicationConsent Create(ApplicationConsent newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates a new application consent.
-        /// </summary>
-        /// <param name="newEntity">The new application consent to be created.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer information that was just created.</returns>
-        public async Task<ApplicationConsent> CreateAsync(ApplicationConsent newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ApplicationConsent> CreateAsync(ApplicationConsent newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 

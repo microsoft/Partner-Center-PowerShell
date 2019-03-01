@@ -20,7 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSLegalBusinessProfile(Partner.Profiles.LegalBusinessProfile.Get()));
+            WriteObject(new PSLegalBusinessProfile(Partner.Profiles.LegalBusinessProfile.GetAsync().GetAwaiter().GetResult()));
         }
     }
 }
