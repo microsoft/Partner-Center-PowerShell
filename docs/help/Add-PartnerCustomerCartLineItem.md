@@ -26,7 +26,16 @@ Adds a new line item to the specified cart.
 
 ### Example 1
 ```powershell
-PS C:\> $lineItem = New-PartnerCustomerCartLineItem -BillingCycle 'OneTime' -CatalogItemId 'DG7GMGF0DWTL:0001:DG7GMGF0DSJB' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -FriendlyName 'Sample RI Purchase' -ProvisioningContext ${duration='1Year', scope='shared', subscriptionId='b35d5324-df8e-4306-9023-6edac2d4896c'} -Quantity 10
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
+PS C:\>
+PS C:\> $lineItem.BillingCycle = 'OneTime'
+PS C:\> $lineItem.CatalogItemId = 'DG7GMGF0DWTL:0001:DG7GMGF0DSJB'
+PS C:\> $lineItem.FriendlyName = 'Sample RI Purchase'
+PS C:\> $lineItem.ProvisioningContext.Add('duration', '1Year')
+PS C:\> $lineItem.ProvisioningContext.Add('scope', 'shared')
+PS C:\> $lineItem.ProvisioningContext.Add('subscriptionId', 'D526EF3A-35E6-477F-A64C-906F6177FBFA')
+PS C:\> $lineItem.Quantity = 10
+PS C:\>
 PS C:\> Add-PartnerCustomerCartLineItem -CartId '65faf57b-0205-47ee-92b3-08dcf233ea73' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItem $lineItem
 ```
 

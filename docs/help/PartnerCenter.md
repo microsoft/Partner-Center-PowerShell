@@ -74,6 +74,9 @@ Gets the managed services for a customer.
 ### [Get-PartnerCustomerOrder](Get-PartnerCustomerOrder.md)
 Gets either a specific order or a list of order for the specified customer.
 
+### [Get-PartnerCustomerQualification](Get-PartnerCustomerQualification.md)
+Get the qualification assigned to the customer.
+
 ### [Get-PartnerCustomerServiceCosts](Get-PartnerCustomerServiceCosts.md)
 Gets a customer's service cost line items for the specified billing period.
 
@@ -250,6 +253,9 @@ Updates an order for a customer in a cart.
 
 ### [Set-PartnerCustomerConfigurationPolicy](Set-PartnerCustomerConfigurationPolicy.md)
 Updates an existing configuration policy with the specified options.
+
+### [Set-PartnerCustomerQualification](Set-PartnerCustomerQualification.md)
+Updates the specified customer's qualification to be Education or GovernmentCommunityCloud.
 
 ### [Set-PartnerCustomerSubscription](Set-PartnerCustomerSubscription.md)
 Updates the specified customer subscription.

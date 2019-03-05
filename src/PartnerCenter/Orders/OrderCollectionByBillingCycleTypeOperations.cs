@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
                     string.Format(
                         CultureInfo.InvariantCulture,
                         $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrdersByBillingCyleType.Path}",
-                        Context),
+                        Context.Item1),
                     UriKind.Relative),
                 parameters,
                 new ResourceCollectionConverter<Order>(),

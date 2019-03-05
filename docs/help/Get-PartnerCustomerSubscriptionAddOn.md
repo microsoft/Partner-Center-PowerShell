@@ -4,7 +4,6 @@ external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
 online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerSubscriptionAddOn
 original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionAddOn.md
-
 schema: 2.0.0
 ---
 

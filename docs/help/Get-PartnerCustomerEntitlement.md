@@ -1,9 +1,9 @@
 ---
-content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerEntitlements.md
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerEntitlement.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
 online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerEntitlement
-original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerEntitlements.md
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerEntitlement.md
 schema: 2.0.0
 ---
 
@@ -25,7 +25,7 @@ An entitlement represents the customer's right to use a product (service). It sh
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerCustomerEntitlements -CustomerId c4f6bf3c-60de-432e-a3ec-20bcc5b26ec2
+PS C:\> Get-PartnerCustomerEntitlement -CustomerId c4f6bf3c-60de-432e-a3ec-20bcc5b26ec2
 ```
 
 Return customer entitlements based on customer identifier.

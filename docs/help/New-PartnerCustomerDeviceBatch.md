@@ -27,11 +27,11 @@ Creates a new device batch for the specified customer. The following combination
 ### Example 1
 ```powershell
 PS C:\> $device = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment.PSDevice
-PS C:\> $device.HardwardHash = 'HardwareHas1234'
+PS C:\> $device.HardwareHash = 'HardwareHas1234'
 PS C:\> $device.ProductKey = '00329-00000-0003-AA606'
 PS C:\> $device.SerialNumber = '1R9-ZNP67'
-PS C:\> 
-PS C:\> New-PartnerCustomerDeviceBatch -BatchId 'TestDviceBatch' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -Devices $device
+PS C:\>
+PS C:\> New-PartnerCustomerDeviceBatch -BatchId 'TestDeviceBatch' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -Devices $device
 ```
 
 Creates a new device batch for the specified customer.

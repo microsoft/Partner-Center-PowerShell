@@ -1,0 +1,67 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="SetPartnerCustomerQualification.cs" company="Microsoft">
+//     Copyright (c) Microsoft Corporation. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
+{
+    using System.Globalization;
+    using System.Management.Automation;
+    using System.Text.RegularExpressions;
+    using Models.Customers;
+    using PartnerCenter.Models.Customers;
+    using Properties;
+
+    /// <summary>
+    /// Updates the specified customer’s qualification to be "Education" or "GovernmentCommunityCloud."
+    /// </summary>
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerQualification", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
+    [OutputType(typeof(CustomerQualification))]
+    public class SetPartnerCustomerQualification : PartnerPSCmdlet
+    {
+        /// <summary>
+        /// Gets or sets the customer being modified.
+        /// </summary>
+        [Parameter(
+            HelpMessage = "The customer object to be modified.",
+            Mandatory = true,
+            ParameterSetName = "CustomerObject",
+            ValueFromPipeline = true)]
+        [ValidateNotNull]
+        public PSCustomer InputObject { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the customer.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier of the customer.", Mandatory = true, ParameterSetName = "Customer")]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the qualiciation assigned to the customer.
+        /// </summary>
+        [Parameter(HelpMessage = "The qualification assigned to the customer.", Mandatory = true, ParameterSetName = "Customer")]
+        [Parameter(HelpMessage = "The identifier of the customer.", Mandatory = true, ParameterSetName = "CustomerObject")]
+        [ValidateSet(nameof(CustomerQualification.Education), nameof(CustomerQualification.GovernmentCommunityCloud))]
+        public CustomerQualification Qualification { get; set; }
+
+        /// <summary>
+        /// Executes the operations associated with the cmdlet.
+        /// </summary>
+        public override void ExecuteCmdlet()
+        {
+            string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
+
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
+            {
+                if (InputObject == null && string.IsNullOrEmpty(CustomerId))
+                {
+                    throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
+                }
+
+                WriteObject(Partner.Customers[customerId].Qualification.UpdateAsync(Qualification).GetAwaiter().GetResult());
+            }
+        }
+    }
+}

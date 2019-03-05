@@ -14,6 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Exceptions;
     using Models.CustomerUsers;
     using PartnerCenter.Models.Users;
+    using PartnerCenter.PowerShell.Authentication;
     using Properties;
 
     /// <summary>
@@ -70,6 +71,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(Mandatory = false, ParameterSetName = "UserObject", HelpMessage = "User's new password.")]
         [Parameter(Mandatory = false, ParameterSetName = "UserId", HelpMessage = "User's new password.")]
         public SecureString Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Gets or sets usage location, the location where user intends to use the license.

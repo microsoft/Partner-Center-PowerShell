@@ -15,6 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using Properties;
     using Validations;
+    using PartnerCenter.Models.Customers;
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomer", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(PSCustomer))]
@@ -123,7 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            PartnerCenter.Models.Customers.Customer customer;
+            Customer customer;
             IValidator<Address> validator;
             string customerId;
 

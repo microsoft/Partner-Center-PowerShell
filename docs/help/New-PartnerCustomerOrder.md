@@ -14,14 +14,13 @@ Create a new order for the specified services on behalf of the customer.
 
 ## SYNTAX
 
-### Subscription (Default)
-```
+```powershell
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### AddOn
-```
+```powershell
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> -OrderId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```

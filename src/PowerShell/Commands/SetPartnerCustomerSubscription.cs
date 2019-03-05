@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
-        [ValidateSet(nameof(SubscriptionStatus.Active), nameof(SubscriptionStatus.Suspended))]
+        [ValidateSet(nameof(SubscriptionStatus.Active), nameof(SubscriptionStatus.Deleted), nameof(SubscriptionStatus.Suspended))]
         public SubscriptionStatus? Status { get; set; }
 
         /// <summary>

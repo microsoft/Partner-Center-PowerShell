@@ -14,18 +14,17 @@ Gets either a specific order or a list of order for the specified customer.
 
 ## SYNTAX
 
-### ByBillingCycle
-```
+```powershell
 Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [<CommonParameters>]
 ```
 
 ### ByCustomerId
-```
+```powershell
 Get-PartnerCustomerOrder -CustomerId <String> [<CommonParameters>]
 ```
 
 ### ByOrderId
-```
+```powershell
 Get-PartnerCustomerOrder -CustomerId <String> -OrderId <String> [<CommonParameters>]
 ```
 
@@ -36,7 +35,7 @@ Gets either a specific order or a list of order for the specified customer.
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerCustomerOrder -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -BillingCycleType Monthly
+PS C:\> Get-PartnerCustomerOrder -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -BillingCycle Monthly
 ```
 
 Gets the list of orders with a billing cycle type of monthly for the specified customer.
