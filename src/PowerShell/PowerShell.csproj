@@ -25,6 +25,7 @@
     <Compile Remove="BreakingChangeBaseAttribute.cs" />
     <Compile Remove="Common\BreakingChangeAttributeHelper.cs" />
     <None Remove="Commands\GetPartnerCustomerQualification.cs" />
+    <None Remove="Commands\GetPartnerInvoiceTaxReceiptStatement.cs" />
     <None Remove="Commands\SetPartnerCustomerQualification.cs" />
     <ProjectReference Include="..\PartnerCenter\PartnerCenter.csproj" />
   </ItemGroup>

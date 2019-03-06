@@ -12,6 +12,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Entitlements
     public class ReferenceOrder : ResourceBaseWithLinks<StandardResourceLinks>
     {
         /// <summary>
+        /// Gets or sets the order alternate identifier.
+        /// </summary>
+        public string AlternateId { get; set; }
+
+        /// <summary>
         /// Gets or sets order identifier.
         /// </summary>
         public string Id { get; set; }

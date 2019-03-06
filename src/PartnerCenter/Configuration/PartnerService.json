@@ -509,6 +509,9 @@
     "GetInvoiceStatement": {
       "Path": "invoices/{0}/documents/statement"
     },
+    "GetInvoiceTaxReceiptStatement": {
+      "Path": "invoices/{0}/receipts/{1}/documents/statement"
+    },
     "GetInvoiceSummaries": {
       "Path": "invoices/summaries"
     },

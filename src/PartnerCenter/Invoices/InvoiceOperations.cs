@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     using Models.Invoices;
 
     /// <summary>
-    /// Operations available for the reseller's invoice.
+    /// Represents the operations that can be performed on the reseller's invoice.
     /// </summary>
     internal class InvoiceOperations : BasePartnerComponent<string>, IInvoice
     {
@@ -31,6 +31,11 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// Gets an invoice documents operations.
         /// </summary>
         public IInvoiceDocuments Documents => new InvoiceDocumentsOperations(Partner, Context);
+
+        /// <summary>
+        /// Gets the receipts behavior of the invoice.
+        /// </summary>
+        public IReceiptCollection Receipts => new ReceiptCollectionOperations(Partner, Context);
 
         /// <summary>
         /// Creates an invoice line item collection operation given a billing provider and invoice line item type.

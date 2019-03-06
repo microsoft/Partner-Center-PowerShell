@@ -18,66 +18,86 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         /// <summary>
         /// The undefined
         /// </summary>
-        Undefined,
+        Undefined = 0,
 
         /// <summary>
         /// Customer Resource
         /// </summary>
-        Customer,
+        Customer = 1,
 
         /// <summary>
         /// Customer User
         /// </summary>
-        CustomerUser,
+        CustomerUser = 2,
 
         /// <summary>
         /// Order Resource
         /// </summary>
-        Order,
+        Order = 3,
 
         /// <summary>
         /// Subscription Resource
         /// </summary>
-        Subscription,
+        Subscription = 4,
 
         /// <summary>
         /// License Resource
         /// </summary>
-        License,
+        License = 5,
 
         /// <summary>
         /// Third party add-on Resource
         /// </summary>
-        ThirdPartyAddOn,
+        ThirdPartyAddOn = 6,
 
         /// <summary>
         /// MPN association Resource
         /// </summary>
-        MpnAssociation,
+        MpnAssociation = 7,
 
         /// <summary>
         /// Transfer Resource
         /// </summary>
-        Transfer,
+        Transfer = 8,
 
         /// <summary>
         /// Application Resource
         /// </summary>
-        Application,
+        Application = 9,
 
         /// <summary>
         /// Application Credential Resource
         /// </summary>
-        ApplicationCredential,
+        ApplicationCredential = 10,
 
         /// <summary>
         /// Partner User Resource
         /// </summary>
-        PartnerUser,
+        PartnerUser = 11,
 
         /// <summary>
         /// Partner Relationship Resource
         /// </summary>
-        PartnerRelationship,
+        PartnerRelationship = 12,
+
+        /// <summary>
+        /// Partner Referral Resource
+        /// </summary>
+        Referral = 13,
+
+        /// <summary>
+        /// Software Key Resource
+        /// </summary>
+        SoftwareKey = 14,
+
+        /// <summary>
+        /// Software Download Link Resource
+        /// </summary>
+        SoftwareDownloadLink = 15,
+
+        /// <summary>
+        /// Credit Limit Resource
+        /// </summary>
+        CreditLimit = 16
     }
 }

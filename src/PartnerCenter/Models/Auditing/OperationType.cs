@@ -18,162 +18,187 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         /// <summary>
         /// The undefined
         /// </summary>
-        Undefined,
+        Undefined = 0,
 
         /// <summary>
         /// Update Customer Qualification
         /// </summary>
-        UpdateCustomerQualification,
+        UpdateCustomerQualification = 1,
 
         /// <summary>
         /// Updates an existing subscription.
         /// </summary>
-        UpdateSubscription,
+        UpdateSubscription = 2,
 
         /// <summary>
         /// Transition a subscription.
         /// </summary>
-        UpgradeSubscription,
+        UpgradeSubscription = 3,
 
         /// <summary>
         /// Convert a trial subscription to a paid one.
         /// </summary>
-        ConvertTrialSubscription,
+        ConvertTrialSubscription = 4,
 
-        /// <summary>Adding a Customer</summary>
-        AddCustomer,
+        /// <summary>
+        /// Adding a Customer
+        /// </summary>
+        AddCustomer = 5,
 
         /// <summary>
         /// Update a Customer Billing Profile
         /// </summary>
-        UpdateCustomerBillingProfile,
+        UpdateCustomerBillingProfile = 6,
 
         /// <summary>
         /// Update a Customer's Partner Contract Company Name
         /// </summary>
-        UpdateCustomerPartnerContractCompanyName,
+        UpdateCustomerPartnerContractCompanyName = 7,
 
         /// <summary>
         /// Updates a customer spending budget.
         /// </summary>
-        UpdateCustomerSpendingBudget,
+        UpdateCustomerSpendingBudget = 8,
 
         /// <summary>
         /// Deleting a Customer.
-        /// </summary>
-        /// <remarks>
         /// Happens only in the sandbox integration accounts.
-        /// </remarks>
-        DeleteCustomer,
+        /// </summary>
+        DeleteCustomer = 9,
 
         /// <summary>
         /// Remove Partner Customer relationship.
         /// </summary>
-        RemovePartnerCustomerRelationship,
+        RemovePartnerCustomerRelationship = 10,
 
         /// <summary>
         /// Create a new order.
         /// </summary>
-        CreateOrder,
+        CreateOrder = 11,
 
         /// <summary>
         /// Updates an existing order.
         /// </summary>
-        UpdateOrder,
+        UpdateOrder = 12,
 
         /// <summary>
         /// Creates a customer user.
         /// </summary>
-        CreateCustomerUser,
+        CreateCustomerUser = 13,
 
         /// <summary>
         /// Deletes a customer user.
         /// </summary>
-        DeleteCustomerUser,
+        DeleteCustomerUser = 14,
 
         /// <summary>
         /// Updates a customer user.
         /// </summary>
-        UpdateCustomerUser,
+        UpdateCustomerUser = 15,
 
         /// <summary>
         /// Updates a customer user licenses.
         /// </summary>
-        UpdateCustomerUserLicenses,
+        UpdateCustomerUserLicenses = 16,
 
         /// <summary>
         /// Reset customer user password.
         /// </summary>
-        ResetCustomerUserPassword,
+        ResetCustomerUserPassword = 17,
 
         /// <summary>
         /// Update customer user UPN.
         /// </summary>
-        UpdateCustomerUserPrincipalName,
+        UpdateCustomerUserPrincipalName = 18,
 
         /// <summary>
         /// Restore customer user.
         /// </summary>
-        RestoreCustomerUser,
+        RestoreCustomerUser = 19,
 
         /// <summary>
         /// Create MPN association.
         /// </summary>
-        CreateMpnAssociation,
+        CreateMpnAssociation = 20,
 
-        /// <summary>U
-        /// pdate MPN association.
+        /// <summary>
+        /// Update MPN association.
         /// </summary>
-        UpdateMpnAssociation,
+        UpdateMpnAssociation = 21,
 
         /// <summary>
         /// Updates a Sfb customer user licenses.
         /// </summary>
-        UpdateSfbCustomerUserLicenses,
+        UpdateSfbCustomerUserLicenses = 22,
 
         /// <summary>
         /// Update transfer.
         /// </summary>
-        UpdateTransfer,
+        UpdateTransfer = 23,
 
         /// <summary>
         /// Creates a partner relationship.
         /// </summary>
-        CreatePartnerRelationship,
+        CreatePartnerRelationship = 24,
 
         /// <summary>
         /// Add and registers an application.
         /// </summary>
-        RegisterApplication,
+        RegisterApplication = 25,
 
         /// <summary>
         /// Unregisters an application.
         /// </summary>
-        UnregisterApplication,
+        UnregisterApplication = 26,
 
         /// <summary>
         /// Adds an application credential.
         /// </summary>
-        AddApplicationCredential,
+        AddApplicationCredential = 27,
 
         /// <summary>
         /// Adds an application credential.
         /// </summary>
-        RemoveApplicationCredential,
+        RemoveApplicationCredential = 28,
 
         /// <summary>
         /// Creates a partner user.
         /// </summary>
-        CreatePartnerUser,
+        CreatePartnerUser = 29,
 
         /// <summary>
         /// Updates a partner user.
         /// </summary>
-        UpdatePartnerUser,
+        UpdatePartnerUser = 30,
 
         /// <summary>
         /// Removes a partner user.
         /// </summary>
-        RemovePartnerUser
+        RemovePartnerUser = 31,
+
+        /// <summary>
+        /// Create a referral
+        /// </summary>
+        CreateReferral = 32,
+
+        /// <summary>
+        /// Update a referral
+        /// </summary>
+        UpdateReferral = 33,
+
+        /// <summary>
+        /// Get software key
+        /// </summary>
+        GetSoftwareKey = 34,
+
+        /// <summary>
+        /// Get software download link
+        /// </summary>
+        GetSoftwareDownloadLink = 35,
+
+        /// <summary>
+        /// Increase credit limit
+        /// </summary>
+        IncreaseCreditLimit = 36
     }
 }

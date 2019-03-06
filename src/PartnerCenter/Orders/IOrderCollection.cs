@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
     using Models.Orders;
 
     /// <summary>
-    /// Encapsulates customer orders behavior.
+    /// Encapsulates the order collection operations.
     /// </summary>
     public interface IOrderCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Order, ResourceCollection<Order>>, IEntityCreateOperations<Order, Order>, IEntitySelector<IOrder>
     {

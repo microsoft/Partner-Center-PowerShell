@@ -25,7 +25,7 @@ Gets the add-ons for an offer by country and offer identifier.
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerOffAddon -OfferId 031C9E47-4802-4248-838E-778FB1D2CC05
+PS C:\> Get-PartnerOfferAddon -OfferId 031C9E47-4802-4248-838E-778FB1D2CC05
 ```
 
 Gets the add-ons for the the specified offer. If the country code is not specified it will default to the country code associated with the partner's legal business profile.

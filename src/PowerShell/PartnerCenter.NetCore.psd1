@@ -113,6 +113,7 @@
                         'Get-PartnerInvoice',
                         'Get-PartnerInvoiceLineItem',
                         'Get-PartnerInvoiceStatement',
+                        'Get-PartnerInvoiceTaxReceiptStatement',
                         'Get-PartnerInvoiceSummary',
                         'Get-PartnerLegalProfile',
                         'Get-PartnerLicenseDeploymentInfo',
