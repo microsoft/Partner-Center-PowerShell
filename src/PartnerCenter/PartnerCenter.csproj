@@ -14,6 +14,8 @@
     <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

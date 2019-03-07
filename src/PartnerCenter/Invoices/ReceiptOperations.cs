@@ -28,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         }
 
         /// <summary>
-        /// Gets the receipt documents operations.
+        /// Gets the available receipt document operations.
         /// </summary>
         public IReceiptDocuments Documents => new ReceiptDocumentsOperations(Partner, Context.Item1, Context.Item2);
     }
