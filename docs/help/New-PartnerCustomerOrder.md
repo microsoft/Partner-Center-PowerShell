@@ -14,14 +14,13 @@ Create a new order for the specified services on behalf of the customer.
 
 ## SYNTAX
 
-### Subscription (Default)
-```
+```powershell
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### AddOn
-```
+```powershell
 New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> -OrderId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
@@ -48,7 +47,7 @@ Creates a new order for the specified services on behalf of the customer.
 ### Example 2
 
 ```powershell
-PS C:\> $s = Get-PartnerCustomer -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -SubscriptionId '10704f2f-3fc6-4e42-8acf-08df4f81c93c'
+PS C:\> $s = Get-PartnerCustomerSubscription -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -SubscriptionId '10704f2f-3fc6-4e42-8acf-08df4f81c93c'
 PS C:\> $addOn = Get-PartnerOfferAddon -OfferId $s.OfferId | Where-Object {$_.Name -eq 'Microsoft MyAnalytics'}
 PS C:\>
 PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Orders.PSOrderLineItem

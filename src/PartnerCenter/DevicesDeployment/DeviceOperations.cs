@@ -37,16 +37,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// Deletes a device associated to the customer.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Delete(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => DeleteAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Deletes a device associated to the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             await Partner.ServiceClient.DeleteAsync(
                 new Uri(
@@ -66,18 +57,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="entity">The device that is to be updated.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Device that was updated.</returns>
-        public Device Patch(Device entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates a device associated to the customer with a configuration policy.
-        /// </summary>
-        /// <param name="entity">The device that is to be updated.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Device that was updated.</returns>
-        public async Task<Device> PatchAsync(Device entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Device> PatchAsync(Device entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

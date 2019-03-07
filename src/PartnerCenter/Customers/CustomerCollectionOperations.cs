@@ -78,18 +78,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// <param name="newEntity">The new customer information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer information that was just created.</returns>
-        public Customer Create(Customer newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates a new customer.
-        /// </summary>
-        /// <param name="newEntity">The new customer information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer information that was just created.</returns>
-        public async Task<Customer> CreateAsync(Customer newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Customer> CreateAsync(Customer newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -106,17 +95,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A collection of customers associated with the partner.</returns>
-        public SeekBasedResourceCollection<Customer> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets a collection of customers associated with the partner.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A collection of customers associated with the partner.</returns>
-        public async Task<SeekBasedResourceCollection<Customer>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SeekBasedResourceCollection<Customer>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SeekBasedResourceCollection<Customer>>(
                 new Uri
@@ -137,23 +116,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// <param name="customersQuery">A query to apply onto customers. Check <see cref="QueryFactory" /> to see how to build queries.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The requested customers.</returns>
-        public SeekBasedResourceCollection<Customer> Query(IQuery customersQuery, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(customersQuery));
-        }
-
-        /// <summary>
-        /// Queries customers associated to the partner.
-        /// - Count queries are not supported by this operation.
-        /// - You can set the page size or filter or do both at the same time.
-        /// - Sort is not supported.
-        /// - You can navigate to other pages by specifying a seek query with the seek operation and the continuation
-        ///   token sent by the previous operation.
-        /// </summary>
-        /// <param name="customersQuery">A query to apply onto customers. Check <see cref="QueryFactory" /> to see how to build queries.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The requested customers.</returns>
-        public async Task<SeekBasedResourceCollection<Customer>> QueryAsync(IQuery customersQuery, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SeekBasedResourceCollection<Customer>> QueryAsync(IQuery customersQuery, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> headers = null;
             IDictionary<string, string> parameters;

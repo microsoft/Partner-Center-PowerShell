@@ -30,17 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The support profile.</returns>
-        public SupportProfile Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the support profile.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The support profile.</returns>
-        public async Task<SupportProfile> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SupportProfile> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SupportProfile>(
                 new Uri(
@@ -55,18 +45,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="entity">The updated instance of the support profile.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated support profile</returns>
-        public SupportProfile Update(SupportProfile entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the support Profile.
-        /// </summary>
-        /// <param name="entity">The updated instance of the support profile.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated support profile</returns>
-        public async Task<SupportProfile> UpdateAsync(SupportProfile entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SupportProfile> UpdateAsync(SupportProfile entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<SupportProfile, SupportProfile>(
                 new Uri(

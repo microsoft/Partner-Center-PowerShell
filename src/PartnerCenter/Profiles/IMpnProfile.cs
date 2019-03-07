@@ -22,14 +22,6 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="mpnId">The MPN identifier.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The partner's MPN profile.</returns>
-        MpnProfile Get(string mpnId, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Retrieves a partner's MPN profile by identifier.
-        /// </summary>
-        /// <param name="mpnId">The MPN identifier.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The partner's MPN profile.</returns>
-        Task<MpnProfile> GetAsync(string mpnId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<MpnProfile> GetAsync(string mpnId, CancellationToken cancellationToken = default);
     }
 }

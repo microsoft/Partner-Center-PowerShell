@@ -64,17 +64,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The collection of invoices.</returns>
-        public ResourceCollection<Invoice> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all invoices associated to the partner.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The collection of invoices.</returns>
-        public async Task<ResourceCollection<Invoice>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Invoice>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Invoice>>(
                 new Uri(
@@ -89,18 +79,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// <param name="query">The query parameter.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subset of invoices.</returns>
-        public ResourceCollection<Invoice> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => QueryAsync(query, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all invoices associated to the partner.
-        /// </summary>
-        /// <param name="query">The query parameter.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subset of invoices.</returns>
-        public async Task<ResourceCollection<Invoice>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Invoice>> QueryAsync(IQuery query, CancellationToken cancellationToken = default)
         {
             query.AssertNotNull(nameof(query));
 

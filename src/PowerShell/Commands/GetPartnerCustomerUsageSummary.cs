@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCustomerUsageSummary(Partner.Customers[CustomerId].UsageSummary.Get()));
+            WriteObject(new PSCustomerUsageSummary(Partner.Customers[CustomerId].UsageSummary.GetAsync().GetAwaiter().GetResult()));
         }
     }
 }

@@ -35,11 +35,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (string.IsNullOrEmpty(MpnId))
             {
-                profile = Partner.Profiles.MpnProfile.Get();
+                profile = Partner.Profiles.MpnProfile.GetAsync().GetAwaiter().GetResult();
             }
             else
             {
-                profile = Partner.Profiles.MpnProfile.Get(MpnId);
+                profile = Partner.Profiles.MpnProfile.GetAsync(MpnId).GetAwaiter().GetResult();
             }
 
             WriteObject(new PSMpnProfile(profile));

@@ -116,7 +116,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             };
 
 
-            devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies.Create(configurationPolicy);
+            devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies.CreateAsync(configurationPolicy).GetAwaiter().GetResult();
             WriteObject(new PSConfigurationPolicy(devicePolicy));
         }
     }

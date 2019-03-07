@@ -38,17 +38,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer user's directory roles.</returns>
-        public ResourceCollection<DirectoryRole> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the customer user's directory roles.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer user's directory roles.</returns>
-        public async Task<ResourceCollection<DirectoryRole>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<DirectoryRole>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<DirectoryRole>>(
                 new Uri(

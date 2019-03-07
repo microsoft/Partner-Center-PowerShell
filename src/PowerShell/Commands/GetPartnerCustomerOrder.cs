@@ -79,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             orderId.AssertNotEmpty(nameof(orderId));
 
-            order = Partner.Customers.ById(customerId).Orders.ById(orderId).Get();
+            order = Partner.Customers.ById(customerId).Orders.ById(orderId).GetAsync().GetAwaiter().GetResult();
 
             WriteObject(new PSOrder(order));
         }
@@ -100,11 +100,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (billingCycle.HasValue)
             {
-                orders = Partner.Customers.ById(customerId).Orders.ByBillingCycleType(billingCycle.Value).Get().Items;
+                orders = Partner.Customers.ById(customerId).Orders.ByBillingCycleType(billingCycle.Value).GetAsync().GetAwaiter().GetResult().Items;
             }
             else
             {
-                orders = Partner.Customers.ById(customerId).Orders.Get().Items;
+                orders = Partner.Customers.ById(customerId).Orders.GetAsync().GetAwaiter().GetResult().Items;
             }
 
             WriteObject(orders.Select(o => new PSOrder(o)), true);

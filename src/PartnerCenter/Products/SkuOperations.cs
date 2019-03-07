@@ -61,17 +61,7 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The information for the SKU.</returns>
-        public Sku Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the information for the SKU.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The information for the SKU.</returns>
-        public async Task<Sku> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Sku> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {

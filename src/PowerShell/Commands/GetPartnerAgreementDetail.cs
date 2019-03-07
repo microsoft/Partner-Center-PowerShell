@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<AgreementMetaData> agreements = Partner.AgreementDetails.Get();
+            ResourceCollection<AgreementMetaData> agreements = Partner.AgreementDetails.GetAsync().GetAwaiter().GetResult();
 
             WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);
         }

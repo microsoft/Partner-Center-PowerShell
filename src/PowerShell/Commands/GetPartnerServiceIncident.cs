@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ResourceCollection<ServiceIncidents> incidents;
             IEnumerable<ServiceIncidentDetail> results;
 
-            incidents = Partner.ServiceIncidents.Get();
+            incidents = Partner.ServiceIncidents.GetAsync().GetAwaiter().GetResult();
 
             if (incidents.TotalCount > 0)
             {

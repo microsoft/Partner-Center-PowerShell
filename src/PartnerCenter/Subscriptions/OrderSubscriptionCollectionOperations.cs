@@ -39,17 +39,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscriptions associated with the specified order.</returns>
-        public ResourceCollection<Subscription> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the subscriptions for the given order.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscriptions associated with the specified order.</returns>
-        public async Task<ResourceCollection<Subscription>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Subscription>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {

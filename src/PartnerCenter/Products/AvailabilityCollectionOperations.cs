@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// <returns>The availability collection operations by target segment.</returns>
         public IAvailabilityCollectionByTargetSegment ByTargetSegment(string targetSegment)
         {
-            throw new NotImplementedException();
+            return new AvailabilityCollectionByTargetSegmentOperations(Partner, Context.Item1, Context.Item2, Context.Item3, targetSegment);
         }
 
         /// <summary>
@@ -69,17 +69,7 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The availabilities for the provided SKU.</returns>
-        public ResourceCollection<Availability> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the availabilities for the provided SKU.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The availabilities for the provided SKU.</returns>
-        public async Task<ResourceCollection<Availability>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Availability>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {

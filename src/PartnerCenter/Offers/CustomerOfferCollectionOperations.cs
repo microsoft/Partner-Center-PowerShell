@@ -29,30 +29,12 @@ namespace Microsoft.Store.PartnerCenter.Offers
         {
         }
 
-        /// <summary>Gets the offers available to customer from partner.</summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Offers available to customer from partner.</returns>
-        public ResourceCollection<Offer> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
         /// <summary>
-        /// Gets a segment of the offers available to customer from partner.
+        /// Gets the offers available to customer from partner.
         /// </summary>
-        /// <param name="offset">The starting index.</param>
-        /// <param name="size">The desired segment size.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The required offers segment.</returns>
-        public ResourceCollection<Offer> Get(int offset, int size, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(offset, size, cancellationToken));
-        }
-
-        /// <summary>Gets the offers available to customer from partner.</summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Offers available to customer from partner.</returns>
-        public async Task<ResourceCollection<Offer>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Offer>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Offer>>(
                 new Uri(
@@ -71,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.Offers
         /// <param name="size">The desired segment size.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The required offers segment.</returns>
-        public async Task<ResourceCollection<Offer>> GetAsync(int offset, int size, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Offer>> GetAsync(int offset, int size, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters;
 

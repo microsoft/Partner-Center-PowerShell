@@ -52,18 +52,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// <param name="newCart"> A cart item to be created.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A cart object </returns>
-        public Cart Create(Cart newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates a new cart for the customer.
-        /// </summary>
-        /// <param name="newCart"> A cart item to be created.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A cart object </returns>
-        public async Task<Cart> CreateAsync(Cart newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Cart> CreateAsync(Cart newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 

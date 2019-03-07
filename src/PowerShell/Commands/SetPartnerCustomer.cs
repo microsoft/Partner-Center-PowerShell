@@ -15,6 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using Properties;
     using Validations;
+    using PartnerCenter.Models.Customers;
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomer", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(PSCustomer))]
@@ -123,7 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            PartnerCenter.Models.Customers.Customer customer;
+            Customer customer;
             IValidator<Address> validator;
             string customerId;
 
@@ -138,7 +139,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
                     }
 
-                    customer = Partner.Customers[customerId].Get();
+                    customer = Partner.Customers[customerId].GetAsync().GetAwaiter().GetResult();
 
                     customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
                     customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
@@ -155,7 +156,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     if (validator.IsValid(customer.BillingProfile.DefaultAddress))
                     {
-                        Partner.Customers[customerId].Profiles.Billing.Update(customer.BillingProfile);
+                        Partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile).GetAwaiter().GetResult();
 
                         WriteObject(new PSCustomer(customer));
                     }

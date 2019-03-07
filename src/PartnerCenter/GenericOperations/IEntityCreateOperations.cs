@@ -19,17 +19,9 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
         /// <summary>
         /// Creates a new entity.
         /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <param name="newEntity">The new entity information.</param>
-        /// <returns>The entity information that was just created.</returns>
-        T1 Create(T newEntity, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Creates a new entity.
-        /// </summary>
         /// <param name="newEntity">The new entity information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The entity information that was just created.</returns>
-        Task<T1> CreateAsync(T newEntity, CancellationToken cancellationToken = default(CancellationToken));
+        Task<T1> CreateAsync(T newEntity, CancellationToken cancellationToken = default);
     }
 }

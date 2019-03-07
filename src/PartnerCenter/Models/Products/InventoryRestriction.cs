@@ -15,9 +15,12 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
     public class InventoryRestriction
     {
         /// <summary>
-        /// The set of properties that further describe this restriction.
+        /// Initializes a new instance of the <see cref="InventoryRestriction" /> class.
         /// </summary>
-        private Dictionary<string, string> properties;
+        public InventoryRestriction()
+        {
+            Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
 
         /// <summary>
         /// Gets or sets the description.
@@ -25,24 +28,9 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the set of properties that further describe this restriction.
+        /// Gets the set of properties that further describe this restriction.
         /// </summary>
-        public Dictionary<string, string> Properties
-        {
-            get
-            {
-                if (properties == null)
-                {
-                    properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                }
-
-                return properties;
-            }
-            set
-            {
-                properties = new Dictionary<string, string>(value, StringComparer.OrdinalIgnoreCase);
-            }
-        }
+        public Dictionary<string, string> Properties { get; private set; }
 
         /// <summary>
         /// Gets or sets the reason code.

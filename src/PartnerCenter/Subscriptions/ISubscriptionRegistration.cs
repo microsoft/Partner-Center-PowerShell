@@ -20,13 +20,6 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The location which indicates the URL of the API to query for status.</returns>
-        string Register(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Register a subscription to enable Azure Reserved instance purchase.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The location which indicates the URL of the API to query for status.</returns>
-        Task<string> RegisterAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<string> RegisterAsync(CancellationToken cancellationToken = default);
     }
 }

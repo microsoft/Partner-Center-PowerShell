@@ -36,17 +36,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Devices batch upload status.</returns>
-        public BatchUploadDetails Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets devices batch upload status of the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Devices batch upload status.</returns>
-        public async Task<BatchUploadDetails> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<BatchUploadDetails> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<BatchUploadDetails>(
                 new Uri(

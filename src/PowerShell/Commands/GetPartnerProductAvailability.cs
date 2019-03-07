@@ -98,13 +98,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 // If segment is specified, get the information using the segment. Otherwise don't
                 if (!string.IsNullOrEmpty(segment))
                 {
-                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).Get();
+                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
                     if (productAvailability.TotalCount > 0)
                         WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
                 }
                 else
                 {
-                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.Get();
+                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().GetAwaiter().GetResult();
                     if (productAvailability.TotalCount > 0)
                         WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
                 }
@@ -128,7 +128,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).Get();
+                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().GetAwaiter().GetResult();
+
                 if (productAvailability != null)
                 {
                     WriteObject(new PSProductAvailability(productAvailability));

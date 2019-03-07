@@ -41,17 +41,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The cart checkout result.</returns>
-        public CartCheckoutResult Checkout(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CheckoutAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Checks out the cart.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The cart checkout result.</returns>
-        public async Task<CartCheckoutResult> CheckoutAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CartCheckoutResult> CheckoutAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PostAsync<string, CartCheckoutResult>(
                 new Uri(
@@ -70,17 +60,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Required cart object</returns>
-        public Cart Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves a customer cart.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Required cart object</returns>
-        public async Task<Cart> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Cart> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Cart>(
                 new Uri(
@@ -99,18 +79,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// <param name="entity">The cart to update.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated cart object.</returns>
-        public Cart Put(Cart entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PutAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates an existing cart.
-        /// </summary>
-        /// <param name="entity">The cart to update.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated cart object.</returns>
-        public async Task<Cart> PutAsync(Cart entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Cart> PutAsync(Cart entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

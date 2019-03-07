@@ -30,17 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The organization profile.</returns>
-        public OrganizationProfile Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the organization profile.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The organization profile.</returns>
-        public async Task<OrganizationProfile> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<OrganizationProfile> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<OrganizationProfile>(
                 new Uri(
@@ -54,17 +44,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="entity">The updated organization profile.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated organization profile.</returns>
-        public OrganizationProfile Update(OrganizationProfile entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity));
-        }
-
-        /// <summary>
-        /// Updates the organization profile.</summary>
-        /// <param name="entity">The updated organization profile.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated organization profile.</returns>
-        public async Task<OrganizationProfile> UpdateAsync(OrganizationProfile entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<OrganizationProfile> UpdateAsync(OrganizationProfile entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<OrganizationProfile, OrganizationProfile>(
                 new Uri(

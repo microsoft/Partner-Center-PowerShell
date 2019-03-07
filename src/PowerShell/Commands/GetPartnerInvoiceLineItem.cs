@@ -56,14 +56,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<InvoiceLineItem> items;
             ResourceCollection<InvoiceLineItem> lineItems;
 
-            lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).Get();
+            lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).GetAsync().GetAwaiter().GetResult();
             enumerator = Partner.Enumerators.InvoiceLineItems.Create(lineItems);
             items = new List<InvoiceLineItem>();
 
             while (enumerator.HasValue)
             {
                 items.AddRange(enumerator.Current.Items);
-                enumerator.Next();
+                enumerator.NextAsync().GetAwaiter().GetResult();
             }
 
             if (LineItemType == InvoiceLineItemType.BillingLineItems)

@@ -26,17 +26,20 @@ namespace Microsoft.Store.PartnerCenter.Tests
         [TestMethod]
         public async Task GetOfferCategories()
         {
-            ResourceCollection<OfferCategory> offerCategories = await PartnerOperations.OfferCategories.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
+            await UsePartnerFor(async partnerOperations =>
+            {
+                ResourceCollection<OfferCategory> offerCategories = await partnerOperations.OfferCategories.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(offerCategories);
-            Assert.IsNotNull(offerCategories.Attributes);
-            Assert.IsNotNull(offerCategories.Items);
-            Assert.IsNotNull(offerCategories.Links);
+                Assert.IsNotNull(offerCategories);
+                Assert.IsNotNull(offerCategories.Attributes);
+                Assert.IsNotNull(offerCategories.Items);
+                Assert.IsNotNull(offerCategories.Links);
 
-            Assert.IsNotNull(offerCategories.Items.SingleOrDefault(c => c.Id.Equals(TestConstants.EnterpriseOfferCategoryId, StringComparison.InvariantCultureIgnoreCase)));
+                Assert.IsNotNull(offerCategories.Items.SingleOrDefault(c => c.Id.Equals(TestConstants.EnterpriseOfferCategoryId, StringComparison.InvariantCultureIgnoreCase)));
 
-            Assert.IsTrue(offerCategories.Items.Any());
-            Assert.IsTrue(offerCategories.TotalCount > 0);
+                Assert.IsTrue(offerCategories.Items.Any());
+                Assert.IsTrue(offerCategories.TotalCount > 0);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -46,17 +49,20 @@ namespace Microsoft.Store.PartnerCenter.Tests
         [TestMethod]
         public async Task GetOffers()
         {
-            ResourceCollection<Offer> offers = await PartnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
+            await UsePartnerFor(async partnerOperations =>
+            {
+                ResourceCollection<Offer> offers = await partnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(offers);
-            Assert.IsNotNull(offers.Attributes);
-            Assert.IsNotNull(offers.Items);
-            Assert.IsNotNull(offers.Links);
+                Assert.IsNotNull(offers);
+                Assert.IsNotNull(offers.Attributes);
+                Assert.IsNotNull(offers.Items);
+                Assert.IsNotNull(offers.Links);
 
-            Assert.IsNotNull(offers.Items.SingleOrDefault(o => o.Id.Equals(TestConstants.Microsoft365E5OfferId, StringComparison.InvariantCultureIgnoreCase)));
+                Assert.IsNotNull(offers.Items.SingleOrDefault(o => o.Id.Equals(TestConstants.Microsoft365E5OfferId, StringComparison.InvariantCultureIgnoreCase)));
 
-            Assert.IsTrue(offers.Items.Any());
-            Assert.IsTrue(offers.TotalCount > 0);
+                Assert.IsTrue(offers.Items.Any());
+                Assert.IsTrue(offers.TotalCount > 0);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -66,13 +72,16 @@ namespace Microsoft.Store.PartnerCenter.Tests
         [TestMethod]
         public async Task GetOfferById()
         {
-            Offer offer = await PartnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).ById(TestConstants.Microsoft365E5OfferId).GetAsync().ConfigureAwait(false);
+            await UsePartnerFor(async partnerOperations =>
+            {
+                Offer offer = await partnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).ById(TestConstants.Microsoft365E5OfferId).GetAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(offer);
-            Assert.IsNotNull(offer.Attributes);
-            Assert.IsNotNull(offer.Links);
+                Assert.IsNotNull(offer);
+                Assert.IsNotNull(offer.Attributes);
+                Assert.IsNotNull(offer.Links);
 
-            Assert.IsFalse(string.IsNullOrEmpty(offer.Id));
+                Assert.IsFalse(string.IsNullOrEmpty(offer.Id));
+            }).ConfigureAwait(false);
         }
     }
 }

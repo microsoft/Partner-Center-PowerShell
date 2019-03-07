@@ -85,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             subscriptionId.AssertNotEmpty(nameof(subscriptionId));
 
-            subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].Get();
+            subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].GetAsync().GetAwaiter().GetResult();
             WriteObject(new PSSubscription(subscription));
         }
 
@@ -95,15 +95,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (!string.IsNullOrWhiteSpace(mpnId))
             {
-                subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).Get();
+                subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).GetAsync().GetAwaiter().GetResult();
             }
             else if (!string.IsNullOrWhiteSpace(orderId))
             {
-                subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).Get();
+                subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).GetAsync().GetAwaiter().GetResult();
             }
             else
             {
-                subscriptions = Partner.Customers[customerId].Subscriptions.Get();
+                subscriptions = Partner.Customers[customerId].Subscriptions.GetAsync().GetAwaiter().GetResult();
             }
 
             WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);

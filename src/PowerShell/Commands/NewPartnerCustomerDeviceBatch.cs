@@ -64,7 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 })
             };
 
-            deviceBatch = Partner.Customers[CustomerId].DeviceBatches.Create(request);
+            deviceBatch = Partner.Customers[CustomerId].DeviceBatches.CreateAsync(request).GetAwaiter().GetResult();
 
             WriteObject(deviceBatch);
         }

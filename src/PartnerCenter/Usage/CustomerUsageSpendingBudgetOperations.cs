@@ -34,17 +34,7 @@ namespace Microsoft.Store.PartnerCenter.Usage
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer usage spending budget.</returns>
-        public SpendingBudget Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the usage spending budget allocated to a customer by the partner.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer usage spending budget.</returns>
-        public async Task<SpendingBudget> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SpendingBudget> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SpendingBudget>(
                 new Uri(
@@ -62,18 +52,7 @@ namespace Microsoft.Store.PartnerCenter.Usage
         /// <param name="usageSpendingBudget">The new customer usage spending budget.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated customer usage spending budget.</returns>
-        public SpendingBudget Patch(SpendingBudget entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the usage spending budget allocated to a customer by the partner.
-        /// </summary>
-        /// <param name="usageSpendingBudget">The new customer usage spending budget.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated customer usage spending budget.</returns>
-        public async Task<SpendingBudget> PatchAsync(SpendingBudget entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SpendingBudget> PatchAsync(SpendingBudget entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

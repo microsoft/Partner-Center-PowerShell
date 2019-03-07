@@ -30,17 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Usage
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The partner's usage summary.</returns>
-        public PartnerUsageSummary Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the partner's usage summary.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The partner's usage summary.</returns>
-        public async Task<PartnerUsageSummary> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<PartnerUsageSummary> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<PartnerUsageSummary>(
                new Uri(

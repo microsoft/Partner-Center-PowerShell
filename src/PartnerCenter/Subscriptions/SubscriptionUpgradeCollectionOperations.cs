@@ -36,21 +36,10 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// <summary>
         /// Performs a subscription upgrade.
         /// </summary>
-        /// <param name="subscriptionUpgrade">The subscription upgrade to perform.</param>
+        /// <param name="newEntity">The subscription upgrade to perform.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscription upgrade result.</returns>
-        public UpgradeResult Create(Upgrade newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Performs a subscription upgrade.
-        /// </summary>
-        /// <param name="subscriptionUpgrade">The subscription upgrade to perform.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscription upgrade result.</returns>
-        public async Task<UpgradeResult> CreateAsync(Upgrade newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<UpgradeResult> CreateAsync(Upgrade newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -71,17 +60,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscription upgrades.</returns>
-        public ResourceCollection<Upgrade> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all subscription upgrades.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscription upgrades.</returns>
-        public async Task<ResourceCollection<Upgrade>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Upgrade>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Upgrade>>(
                 new Uri(

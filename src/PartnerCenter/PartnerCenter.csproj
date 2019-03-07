@@ -9,11 +9,14 @@
     <Copyright>Copyright ©  2019</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Product>Microsoft Partner Center</Product>
-    <Version>1.5.1902.5</Version>
+    <Version>1.5.1903.1</Version>
     <PackageLicenseUrl>https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

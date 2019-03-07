@@ -159,17 +159,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Information for the specified subscription.</returns>
-        public Subscription Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the subscription innformation.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Information for the specified subscription.</returns>
-        public async Task<Subscription> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Subscription> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Subscription>(
                 new Uri(
@@ -188,18 +178,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// <param name="entity">The subscription information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated subscription information.</returns>
-        public Subscription Patch(Subscription entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Patches a subscription.
-        /// </summary>
-        /// <param name="entity">The subscription information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated subscription information.</returns>
-        public async Task<Subscription> PatchAsync(Subscription entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Subscription> PatchAsync(Subscription entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

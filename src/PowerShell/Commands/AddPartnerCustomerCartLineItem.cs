@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
             {
-                cart = Partner.Customers[CustomerId].Carts[CartId].Get();
+                cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().GetAwaiter().GetResult();
                 lineItems = cart.LineItems.ToList();
 
                 cartLineItem = new CartLineItem();
@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 lineItems.Add(cartLineItem);
 
-                cart = Partner.Customers[CustomerId].Carts[CartId].Put(cart);
+                cart = Partner.Customers[CustomerId].Carts[CartId].PutAsync(cart).GetAwaiter().GetResult();
 
                 WriteObject(new PSCart(cart));
             }

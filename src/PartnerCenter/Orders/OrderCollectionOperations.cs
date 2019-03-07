@@ -65,18 +65,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// <param name="newOrder">The new order.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The newly created order.</returns>
-        public Order Create(Order newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Places a new order for the customer.
-        /// </summary>
-        /// <param name="newOrder">The new order.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The newly created order.</returns>
-        public async Task<Order> CreateAsync(Order newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Order> CreateAsync(Order newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -96,17 +85,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>All the customer orders.</returns>
-        public ResourceCollection<Order> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all the orders the customer made.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>All the customer orders.</returns>
-        public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Order>>(
                 new Uri(

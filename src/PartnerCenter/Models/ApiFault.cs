@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
@@ -15,7 +14,6 @@ namespace Microsoft.Store.PartnerCenter.Models
     /// <summary>
     /// Represents a failure with the API.
     /// </summary>
-    [Serializable]
     public sealed class ApiFault : ResourceBase
     {
         /// <summary>

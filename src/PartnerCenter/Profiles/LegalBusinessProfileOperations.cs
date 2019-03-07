@@ -32,18 +32,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="vettingVersion">The vetting version. The default value is set to Current.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The legal business profile.</returns>
-        public LegalBusinessProfile Get(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(vettingVersion, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the legal business profile.
-        /// </summary>
-        /// <param name="vettingVersion">The vetting version. The default value is set to Current.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The legal business profile.</returns>
-        public async Task<LegalBusinessProfile> GetAsync(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<LegalBusinessProfile> GetAsync(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
@@ -67,18 +56,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="entity">Payload of the update request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated legal business profile.</returns>
-        public LegalBusinessProfile Update(LegalBusinessProfile entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the legal business profile.
-        /// </summary>
-        /// <param name="entity">Payload of the update request.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated legal business profile.</returns>
-        public async Task<LegalBusinessProfile> UpdateAsync(LegalBusinessProfile entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<LegalBusinessProfile> UpdateAsync(LegalBusinessProfile entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<LegalBusinessProfile, LegalBusinessProfile>(
                 new Uri(

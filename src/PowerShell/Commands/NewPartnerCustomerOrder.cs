@@ -89,11 +89,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (string.IsNullOrEmpty(OrderId))
             {
-                newOrder = Partner.Customers[CustomerId].Orders.Create(newOrder);
+                newOrder = Partner.Customers[CustomerId].Orders.CreateAsync(newOrder).GetAwaiter().GetResult();
             }
             else
             {
-                newOrder = Partner.Customers[CustomerId].Orders.ById(OrderId).Patch(newOrder);
+                newOrder = Partner.Customers[CustomerId].Orders.ById(OrderId).PatchAsync(newOrder).GetAwaiter().GetResult();
             }
 
             WriteObject(new PSOrder(newOrder));

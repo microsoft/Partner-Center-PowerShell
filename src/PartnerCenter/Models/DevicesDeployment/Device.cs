@@ -15,6 +15,14 @@ namespace Microsoft.Store.PartnerCenter.Models.DevicesDeployment
     public sealed class Device : ResourceBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Device" /> class.
+        /// </summary>
+        public Device()
+        {
+            Policies = new List<KeyValuePair<PolicyCategory, string>>();
+        }
+
+        /// <summary>
         /// Gets or sets the list of HTTP methods allowed on a device as GET, PATCH, DELETE.
         /// </summary>
         public IEnumerable<string> AllowedOperations { get; set; }
@@ -40,9 +48,9 @@ namespace Microsoft.Store.PartnerCenter.Models.DevicesDeployment
 
 
         /// <summary>
-        /// Gets or sets the list of policies assigned to a device.
+        /// Gets the list of policies assigned to a device.
         /// </summary>
-        public List<KeyValuePair<PolicyCategory, string>> Policies { get; set; }
+        public List<KeyValuePair<PolicyCategory, string>> Policies { get; private set; }
 
         /// <summary>
         /// Gets or sets the product key uniquely associated with a device.

@@ -36,17 +36,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The support contact.</returns>
-        public SupportContact Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the support contact of the customer's subscription.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The support contact.</returns>
-        public async Task<SupportContact> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SupportContact> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<SupportContact>(
                 new Uri(
@@ -65,18 +55,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// <param name="supportContact">The support contact.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated support contact.</returns>
-        public SupportContact Update(SupportContact entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the support contact of the customer's subscription.
-        /// </summary>
-        /// <param name="supportContact">The support contact.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated support contact.</returns>
-        public async Task<SupportContact> UpdateAsync(SupportContact entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SupportContact> UpdateAsync(SupportContact entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

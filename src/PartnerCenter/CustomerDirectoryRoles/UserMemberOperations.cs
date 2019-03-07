@@ -36,16 +36,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
         /// Remove directory user member from directory role.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Delete(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => DeleteAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Remove directory user member from directory role.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             await Partner.ServiceClient.DeleteAsync(
                 new Uri(

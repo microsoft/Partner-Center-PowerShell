@@ -26,8 +26,8 @@ Creates a service request at the partner level.
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerServiceRequestTopic 
-PS C:\> New-PartnerServiceRquest -Description 'Please ignore this SR' -Severity -SupportTopicId '32569836' -Title 'Please ignore this SR'
+PS C:\> Get-PartnerServiceRequestTopic
+PS C:\> New-PartnerServiceRequest -Description 'Please ignore this SR' -Severity Critical -SupportTopicId '32569836' -Title 'Please ignore this SR'
 ```
 
 Creates a service request at the partner level.

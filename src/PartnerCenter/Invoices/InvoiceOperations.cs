@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     using Models.Invoices;
 
     /// <summary>
-    /// Operations available for the reseller's invoice.
+    /// Represents the operations that can be performed on the reseller's invoice.
     /// </summary>
     internal class InvoiceOperations : BasePartnerComponent<string>, IInvoice
     {
@@ -33,6 +33,11 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         public IInvoiceDocuments Documents => new InvoiceDocumentsOperations(Partner, Context);
 
         /// <summary>
+        /// Gets the receipts behavior of the invoice.
+        /// </summary>
+        public IReceiptCollection Receipts => new ReceiptCollectionOperations(Partner, Context);
+
+        /// <summary>
         /// Creates an invoice line item collection operation given a billing provider and invoice line item type.
         /// </summary>
         /// <param name="billingProvider">The billing provider.</param>
@@ -46,17 +51,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The invoice.</returns>
-        public Invoice Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves information about a specific invoice.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The invoice.</returns>
-        public async Task<Invoice> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Invoice> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Invoice>(
                new Uri(

@@ -39,17 +39,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer orders.</returns>
-        public ResourceCollection<Order> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets all customer orders.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer orders.</returns>
-        public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
@@ -64,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
                     string.Format(
                         CultureInfo.InvariantCulture,
                         $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrdersByBillingCyleType.Path}",
-                        Context),
+                        Context.Item1),
                     UriKind.Relative),
                 parameters,
                 new ResourceCollectionConverter<Order>(),

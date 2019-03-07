@@ -34,17 +34,7 @@ namespace Microsoft.Store.PartnerCenter.Domains
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><c>true</c> if the domain is available; otherwise <c>false</c>.</returns>
-        public bool Exists(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => ExistsAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Checks the availability of a domain.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns><c>true</c> if the domain is available; otherwise <c>false</c>.</returns>
-        public async Task<bool> ExistsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> ExistsAsync(CancellationToken cancellationToken = default)
         {
             try
             {

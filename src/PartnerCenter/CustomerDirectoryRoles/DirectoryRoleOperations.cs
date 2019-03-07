@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DirectoryRoleCollectionOperations.cs" company="Microsoft">
+// <copyright file="DirectoryRoleOperations.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -29,9 +29,9 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
           : base(rootPartnerOperations, new Tuple<string, string>(customerId, roleId))
         {
             customerId.AssertNotEmpty(nameof(customerId));
-            roleId.AssertNotEmpty(nameof(roleId)); 
+            roleId.AssertNotEmpty(nameof(roleId));
 
-            directoryRoleUserMemberOperations = new Lazy<IUserMemberCollection>((Func<IUserMemberCollection>)(() => (IUserMemberCollection)new UserMemberCollectionOperations(Partner, customerId, roleId)));
+            directoryRoleUserMemberOperations = new Lazy<IUserMemberCollection>(() => new UserMemberCollectionOperations(Partner, customerId, roleId));
         }
 
         /// <summary>

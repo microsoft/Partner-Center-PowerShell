@@ -48,7 +48,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].Delete();
+                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
                 WriteObject(true);
             }
             catch (PSPartnerException ex)

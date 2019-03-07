@@ -22,13 +22,6 @@ namespace Microsoft.Store.PartnerCenter.Carts
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The cart checkout result.</returns>
-        CartCheckoutResult Checkout(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Checks out the cart.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The cart checkout result.</returns>
-        Task<CartCheckoutResult> CheckoutAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<CartCheckoutResult> CheckoutAsync(CancellationToken cancellationToken = default);
     }
 }

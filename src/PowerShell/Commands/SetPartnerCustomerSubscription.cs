@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
         [Parameter(HelpMessage = "The status of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
-        [ValidateSet(nameof(SubscriptionStatus.Active), nameof(SubscriptionStatus.Suspended))]
+        [ValidateSet(nameof(SubscriptionStatus.Active), nameof(SubscriptionStatus.Deleted), nameof(SubscriptionStatus.Suspended))]
         public SubscriptionStatus? Status { get; set; }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Get();
+            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().GetAwaiter().GetResult();
 
             if (AutoRenew.HasValue)
             {
@@ -104,7 +104,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (BillingCycle.HasValue)
             {
-                Partner.Customers[customerId].Orders[subscription.OrderId].Patch(new Order
+                Partner.Customers[customerId].Orders[subscription.OrderId].PatchAsync(new Order
                 {
                     BillingCycle = BillingCycle.Value,
                     LineItems = new List<OrderLineItem>
@@ -119,7 +119,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                        }
                     },
                     ReferenceCustomerId = customerId
-                });
+                }).GetAwaiter().GetResult();
 
                 subscription.BillingCycle = BillingCycle.Value;
             }
@@ -139,7 +139,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 subscription.Status = Status.Value;
             }
 
-            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].Patch(subscription);
+            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].PatchAsync(subscription).GetAwaiter().GetResult();
 
             WriteObject(new PSSubscription(subscription));
         }

@@ -22,14 +22,6 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="vettingVersion">(Optional) The vetting version. The default value is set to Current.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The legal business profile.</returns>
-        LegalBusinessProfile Get(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Gets the legal business profile.
-        /// </summary>
-        /// <param name="vettingVersion">(Optional) The vetting version. The default value is set to Current.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The legal business profile.</returns>
-        Task<LegalBusinessProfile> GetAsync(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default(CancellationToken));
+        Task<LegalBusinessProfile> GetAsync(VettingVersion vettingVersion = VettingVersion.Current, CancellationToken cancellationToken = default);
     }
 }

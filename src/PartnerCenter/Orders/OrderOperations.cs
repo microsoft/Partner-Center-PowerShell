@@ -41,17 +41,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer order.</returns>
-        public Order Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the customer order.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer order.</returns>
-        public async Task<Order> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Order> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Order>(
                 new Uri(
@@ -70,18 +60,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// <param name="order">The order to be patched.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated order.</returns>
-        public Order Patch(Order entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Patches the specified customer order.
-        /// </summary>
-        /// <param name="order">The order to be patched.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The updated order.</returns>
-        public async Task<Order> PatchAsync(Order entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Order> PatchAsync(Order entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PatchAsync<Order, Order>(
                 new Uri(

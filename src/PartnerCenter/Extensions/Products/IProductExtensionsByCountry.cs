@@ -22,14 +22,6 @@ namespace Microsoft.Store.PartnerCenter.Extensions.Products
         /// <param name="checkRequest">The request for the inventory check.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The inventory check results.</returns>
-        IEnumerable<InventoryItem> CheckInventory(InventoryCheckRequest checkRequest, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Gets inventory validation results for the provided country.
-        /// </summary>
-        /// <param name="checkRequest">The request for the inventory check.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The inventory check results.</returns>
-        Task<IEnumerable<InventoryItem>> CheckInventoryAsync(InventoryCheckRequest checkRequest, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<InventoryItem>> CheckInventoryAsync(InventoryCheckRequest checkRequest, CancellationToken cancellationToken = default);
     }
 }

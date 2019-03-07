@@ -23,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCountryValidationRules(Partner.CountryValidationRules.ByCountry(CountryCode).Get()));
+            WriteObject(new PSCountryValidationRules(Partner.CountryValidationRules.ByCountry(CountryCode).GetAsync().GetAwaiter().GetResult()));
         }
     }
 }

@@ -20,13 +20,6 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The entity.</returns>
-        T Get(CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Retrieves an entity.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The entity.</returns>
-        Task<T> GetAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<T> GetAsync(CancellationToken cancellationToken = default);
     }
 }

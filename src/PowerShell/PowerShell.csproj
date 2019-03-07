@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1902.5</Version>
+    <Version>1.5.1903.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +24,9 @@
     <Compile Remove="BreakingChangeAttribute.cs" />
     <Compile Remove="BreakingChangeBaseAttribute.cs" />
     <Compile Remove="Common\BreakingChangeAttributeHelper.cs" />
+    <None Remove="Commands\GetPartnerCustomerQualification.cs" />
+    <None Remove="Commands\GetPartnerInvoiceTaxReceiptStatement.cs" />
+    <None Remove="Commands\SetPartnerCustomerQualification.cs" />
     <ProjectReference Include="..\PartnerCenter\PartnerCenter.csproj" />
   </ItemGroup>
 

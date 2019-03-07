@@ -34,17 +34,7 @@ namespace Microsoft.Store.PartnerCenter.ValidationRules
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The market specific validation data operations.</returns>
-        public CountryValidationRules Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the market specific validation data by country.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The market specific validation data operations.</returns>
-        public async Task<CountryValidationRules> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CountryValidationRules> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<CountryValidationRules>(
                 new Uri(

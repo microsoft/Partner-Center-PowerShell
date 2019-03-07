@@ -329,16 +329,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// Deletes the customer from a testing in production account. This only works for accounts created in the integration sandbox.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Delete(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => DeleteAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Deletes the customer from a testing in production account. This only works for accounts created in the integration sandbox.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             await Partner.ServiceClient.DeleteAsync(
                 new Uri(
@@ -355,17 +346,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The information for the customer.</returns>
-        public Customer Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the information for the customer.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The information for the customer.</returns>
-        public async Task<Customer> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Customer> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<Customer>(
                 new Uri(
@@ -378,23 +359,12 @@ namespace Microsoft.Store.PartnerCenter.Customers
         }
 
         /// <summary>
-        /// Removes Customer Partner relationship when RelationshipToPartner == CustomerPartnerRelationship.None.
-        /// </summary>
-        /// <param name="customer">A customer with RelationshipToPartner == CustomerPartnerRelationship.None.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer information.</returns>
-        public Customer Patch(Customer entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
         /// Removes the relationship between the partner and customer when RelationshipToPartner == CustomerPartnerRelationship.None.
         /// </summary>
         /// <param name="customer">A customer with RelationshipToPartner == CustomerPartnerRelationship.None.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer information.</returns>
-        public async Task<Customer> PatchAsync(Customer entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Customer> PatchAsync(Customer entity, CancellationToken cancellationToken = default)
         {
             entity.AssertNotNull(nameof(entity));
 

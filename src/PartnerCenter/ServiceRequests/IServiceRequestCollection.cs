@@ -28,18 +28,6 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
         /// to build queries.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The requested service requests.</returns>
-        ResourceCollection<ServiceRequest> Query(IQuery query, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Queries service requests.
-        /// - Count queries are not supported by this operation.
-        /// - You can set the page size or filter or do both at the same time.
-        /// - Sort is not supported. Default sorting is on status field.
-        /// </summary>
-        /// <param name="query">A query to apply onto service requests. Check <see cref="QueryFactory" /> to see how
-        /// to build queries.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The requested service requests.</returns>
-        Task<ResourceCollection<ServiceRequest>> QueryAsync(IQuery query, CancellationToken cancellationToken = default(CancellationToken));
+        Task<ResourceCollection<ServiceRequest>> QueryAsync(IQuery query, CancellationToken cancellationToken = default);
     }
 }

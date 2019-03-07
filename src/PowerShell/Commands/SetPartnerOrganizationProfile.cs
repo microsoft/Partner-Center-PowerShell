@@ -121,7 +121,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess("Updates the partner's organization profile"))
             {
-                profile = Partner.Profiles.OrganizationProfile.Get();
+                profile = Partner.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
 
                 profile.CompanyName = UpdateValue(CompanyName, profile.CompanyName);
                 profile.Email = UpdateValue(Email, profile.Email);
@@ -142,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (validator.IsValid(profile.DefaultAddress))
                 {
-                    profile = Partner.Profiles.OrganizationProfile.Update(profile);
+                    profile = Partner.Profiles.OrganizationProfile.UpdateAsync(profile).GetAwaiter().GetResult();
                     WriteObject(new PSOrganizationProfile(profile));
                 }
             }

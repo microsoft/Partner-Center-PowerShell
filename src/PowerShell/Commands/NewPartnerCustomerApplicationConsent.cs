@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             consent.ApplicationGrants.AddRange(ApplicationGrants);
 
-            consent = Partner.Customers[CustomerId].ApplicationConsents.Create(consent);
+            consent = Partner.Customers[CustomerId].ApplicationConsents.CreateAsync(consent).GetAwaiter().GetResult();
 
             WriteObject(consent);
         }

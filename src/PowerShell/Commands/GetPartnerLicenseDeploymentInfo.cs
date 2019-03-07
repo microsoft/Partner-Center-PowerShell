@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.Get();
+            ResourceCollection<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.GetAsync().GetAwaiter().GetResult();
             WriteObject(insights.Items.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
         }
     }

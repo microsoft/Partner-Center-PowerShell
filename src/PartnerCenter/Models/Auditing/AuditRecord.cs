@@ -8,6 +8,8 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// Represents a record of operation performed by a partner user or application.
@@ -86,5 +88,25 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         /// This could be in the context of a 3rd party or 1st party application.
         /// </remarks>
         public string UserPrincipalName { get; set; }
+
+        /// <summary>
+        /// Handles errors with deserializing the enum values.
+        /// </summary>
+        /// <param name="context">The streaming context.</param>
+        /// <param name="errorContext">The error context.</param>
+        [OnError]
+        internal void OnError(StreamingContext context, ErrorContext errorContext)
+        {
+            if (string.Equals(errorContext.Member.ToString(), nameof(ResourceType), StringComparison.OrdinalIgnoreCase))
+            {
+                (errorContext.OriginalObject as AuditRecord).ResourceType = ResourceType.Undefined;
+                errorContext.Handled = true;
+            }
+            else if (string.Equals(errorContext.Member.ToString(), nameof(OperationType), StringComparison.OrdinalIgnoreCase))
+            {
+                (errorContext.OriginalObject as AuditRecord).OperationType = OperationType.Undefined;
+                errorContext.Handled = true;
+            }
+        }
     }
 }

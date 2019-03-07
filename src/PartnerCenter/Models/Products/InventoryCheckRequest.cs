@@ -15,29 +15,17 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
     public sealed class InventoryCheckRequest
     {
         /// <summary>
-        /// Any context values that apply towards inventory check of the provided items.
+        /// Initializes a new instance of the <see cref="InventoryCheckRequest" /> class.
         /// </summary>
-        private Dictionary<string, string> inventoryContext;
+        public InventoryCheckRequest()
+        {
+            InventoryContext = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
 
         /// <summary>
-        /// Gets or sets any context values that apply towards inventory check of the provided items.
+        /// Gets any context values that apply towards inventory check of the provided items.
         /// </summary>
-        public Dictionary<string, string> InventoryContext
-        {
-            get
-            {
-                if (inventoryContext == null)
-                {
-                    inventoryContext = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                }
-
-                return inventoryContext;
-            }
-            set
-            {
-                inventoryContext = new Dictionary<string, string>(value, StringComparer.OrdinalIgnoreCase);
-            }
-        }
+        public Dictionary<string, string> InventoryContext { get; private set; }
 
         /// <summary>
         /// Gets or sets the target items for the inventory check.

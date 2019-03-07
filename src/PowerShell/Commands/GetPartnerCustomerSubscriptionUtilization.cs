@@ -77,11 +77,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             utilizationRecords = Partner.Customers[CustomerId]
                 .Subscriptions[SubscriptionId]
-                .Utilization.Azure.Query(
+                .Utilization.Azure.QueryAsync(
                     StartDate,
                     EndDate ?? DateTimeOffset.Now,
                     Granularity ?? AzureUtilizationGranularity.Daily,
-                    (!ShowDetails.IsPresent) || ShowDetails.ToBool());
+                    (!ShowDetails.IsPresent) || ShowDetails.ToBool()).GetAwaiter().GetResult();
 
             enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
 
@@ -90,7 +90,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (enumerator.HasValue)
             {
                 records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                enumerator.Next();
+                enumerator.NextAsync().GetAwaiter().GetResult();
             }
 
             WriteObject(records, true);

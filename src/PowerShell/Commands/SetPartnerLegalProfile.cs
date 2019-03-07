@@ -109,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
             {
-                profile = Partner.Profiles.LegalBusinessProfile.Get();
+                profile = Partner.Profiles.LegalBusinessProfile.GetAsync().GetAwaiter().GetResult();
 
                 profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
                 profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
@@ -135,7 +135,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
                 }
 
-                profile = Partner.Profiles.LegalBusinessProfile.Update(profile);
+                profile = Partner.Profiles.LegalBusinessProfile.UpdateAsync(profile).GetAwaiter().GetResult();
 
                 WriteObject(new PSLegalBusinessProfile(profile));
             }

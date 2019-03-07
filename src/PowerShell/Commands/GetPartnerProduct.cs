@@ -95,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                product = Partner.Products.ByCountry(countryCode).ById(productId).Get();
+                product = Partner.Products.ByCountry(countryCode).ById(productId).GetAsync().GetAwaiter().GetResult();
                 if (product != null)
                     WriteObject(new PSProduct(product));
             }
@@ -124,7 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).Get();
+                products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).GetAsync().GetAwaiter().GetResult();
                 if (products.TotalCount > 0)
                     WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
@@ -155,15 +155,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             targetView.AssertNotEmpty(nameof(targetView));
             targetSegment.AssertNotEmpty(nameof(targetSegment));
 
-            try
+            products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).ByTargetSegment(targetSegment).GetAsync().GetAwaiter().GetResult();
+
+            if (products.TotalCount > 0)
             {
-                products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).ByTargetSegment(targetSegment).Get();
-                if (products.TotalCount > 0)
-                    WriteObject(products.Items.Select(p => new PSProduct(p)), true);
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("Error getting products for segment: " + targetSegment, ex);
+                WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
         }
     }

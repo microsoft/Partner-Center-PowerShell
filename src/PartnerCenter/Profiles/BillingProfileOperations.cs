@@ -30,17 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The billing profile.</returns>
-        public BillingProfile Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the billing profile.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The billing profile.</returns>
-        public async Task<BillingProfile> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<BillingProfile> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<BillingProfile>(
                 new Uri(
@@ -55,18 +45,7 @@ namespace Microsoft.Store.PartnerCenter.Profiles
         /// <param name="entity">The updated instacne of the billing profile.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Updated billing Profile.</returns>
-        public BillingProfile Update(BillingProfile entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => UpdateAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates the billing profile.
-        /// </summary>
-        /// <param name="entity">The updated instacne of the billing profile.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Updated billing Profile.</returns>
-        public async Task<BillingProfile> UpdateAsync(BillingProfile entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<BillingProfile> UpdateAsync(BillingProfile entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<BillingProfile, BillingProfile>(
                 new Uri(

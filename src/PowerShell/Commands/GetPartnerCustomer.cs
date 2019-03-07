@@ -56,15 +56,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (string.IsNullOrEmpty(Domain))
                 {
-                    seekCustomers = Partner.Customers.Get();
+                    seekCustomers = Partner.Customers.GetAsync().GetAwaiter().GetResult();
                 }
                 else
                 {
-                    seekCustomers = Partner.Customers.Query(
+                    seekCustomers = Partner.Customers.QueryAsync(
                         QueryFactory.Instance.BuildSimpleQuery(new SimpleFieldFilter(
                             CustomerSearchField.Domain.ToString(),
                             FieldFilterOperation.StartsWith,
-                            Domain)));
+                            Domain))).GetAwaiter().GetResult();
                 }
 
                 customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
@@ -72,14 +72,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 while (customersEnumerator.HasValue)
                 {
                     customers.AddRange(customersEnumerator.Current.Items);
-                    customersEnumerator.Next();
+                    customersEnumerator.NextAsync().GetAwaiter().GetResult();
                 }
 
                 WriteObject(customers.Select(c => new PSCustomer(c)), true);
             }
             else
             {
-                WriteObject(new PSCustomer(Partner.Customers[CustomerId].Get()));
+                WriteObject(new PSCustomer(Partner.Customers[CustomerId].GetAsync().GetAwaiter().GetResult()));
             }
         }
     }

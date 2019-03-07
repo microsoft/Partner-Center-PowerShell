@@ -67,7 +67,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Gets the specified product sku.
+        /// Gets the specified product SKU.
         /// </summary>
         /// <param name="countryCode">The country used to obtain the offer.</param>
         /// <param name="productId">Identifier for the product.</param>
@@ -92,10 +92,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 request = new InventoryCheckRequest()
                 {
                     TargetItems = string.IsNullOrEmpty(skuId) ? new InventoryItem[] { new InventoryItem { ProductId = productId } } : new InventoryItem[] { new InventoryItem { ProductId = productId, SkuId = skuId } },
-                    InventoryContext = context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)
                 };
 
-                item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventory(request);
+                foreach (KeyValuePair<string, string> kvp in context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value))
+                {
+                    request.InventoryContext.Add(kvp.Key, kvp.Value);
+                }
+
+                item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventoryAsync(request).GetAwaiter().GetResult();
 
                 WriteObject(item.Select(i => new PSInventoryItem(i)), true);
             }

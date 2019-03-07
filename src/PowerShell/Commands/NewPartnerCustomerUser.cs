@@ -109,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         UsageLocation = country,
                         UserPrincipalName = UserPrincipalName
                     };
-                    CustomerUser createdUser = Partner.Customers[CustomerId].Users.Create(newUser);
+                    CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
                     WriteObject(new PSCustomerUser(createdUser));
                 }
             }

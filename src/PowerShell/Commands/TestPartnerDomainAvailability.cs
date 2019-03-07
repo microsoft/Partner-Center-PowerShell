@@ -27,7 +27,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(!Partner.Domains.ByDomain(Domain).Exists());
+            WriteObject(!Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult());
         }
     }
 }

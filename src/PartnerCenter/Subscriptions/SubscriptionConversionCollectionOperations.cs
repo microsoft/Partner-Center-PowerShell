@@ -39,18 +39,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// <param name="conversion">The new subscription conversion information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscription conversion results.</returns>
-        public ConversionResult Create(Conversion newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Submits a subscription conversion.
-        /// </summary>
-        /// <param name="conversion">The new subscription conversion information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscription conversion results.</returns>
-        public async Task<ConversionResult> CreateAsync(Conversion newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ConversionResult> CreateAsync(Conversion newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
@@ -71,17 +60,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The subscription conversions.</returns>
-        public ResourceCollection<Conversion> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves all conversions for the trial subscription.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The subscription conversions.</returns>
-        public async Task<ResourceCollection<Conversion>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Conversion>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Conversion>>(
                 new Uri(

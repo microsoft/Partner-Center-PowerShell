@@ -99,18 +99,8 @@ namespace Microsoft.Store.PartnerCenter.Enumerators
         /// </summary>
         /// <param name="context">An optional request context. If not provided, the context associated with the partner operations will be used.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Next(IRequestContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => NextAsync(context, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the next customer result set.
-        /// </summary>
-        /// <param name="context">An optional request context. If not provided, the context associated with the partner operations will be used.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A task which completes when fetching the next set of results is done.</returns>
-        public async Task NextAsync(IRequestContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task NextAsync(IRequestContext context = null, CancellationToken cancellationToken = default)
         {
             if (!HasValue)
             {
@@ -119,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.Enumerators
 
             if (IsLastPage)
             {
-                resourceCollection = default(T);
+                resourceCollection = default;
             }
             else
             {
@@ -136,18 +126,8 @@ namespace Microsoft.Store.PartnerCenter.Enumerators
         /// </summary>
         /// <param name="context">An optional request context. If not provided, the context associated with the partner operations will be used.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Previous(IRequestContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => PreviousAsync(context, cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the previous customer result set.
-        /// </summary>
-        /// <param name="context">An optional request context. If not provided, the context associated with the partner operations will be used.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A task which completes when fetching the previous set of results is done.</returns>
-        public async Task PreviousAsync(IRequestContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task PreviousAsync(IRequestContext context = null, CancellationToken cancellationToken = default)
         {
             if (!HasValue)
             {

@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.CheckoutPartnerCustomerCartWhatIf, CartId)))
             {
-                checkoutResult = Partner.Customers[CustomerId].Carts[CartId].Checkout();
+                checkoutResult = Partner.Customers[CustomerId].Carts[CartId].CheckoutAsync().GetAwaiter().GetResult();
                 WriteObject(new PSCartCheckoutResult(checkoutResult));
             }
         }

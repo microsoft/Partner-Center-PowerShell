@@ -32,17 +32,7 @@ namespace Microsoft.Store.PartnerCenter.Customers.Profiles
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The customer's company profile.</returns>
-        public CustomerCompanyProfile Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync());
-        }
-
-        /// <summary>
-        /// Gets the customer's company profile.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer's company profile.</returns>
-        public async Task<CustomerCompanyProfile> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CustomerCompanyProfile> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<CustomerCompanyProfile>(
                 new Uri(

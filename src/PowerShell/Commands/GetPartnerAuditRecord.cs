@@ -55,15 +55,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             foreach (DateTime date in ChunkDate(StartDate, endDate, 30))
             {
-                auditRecords = Partner.AuditRecords.Query(
-                    date);
+                auditRecords = Partner.AuditRecords.QueryAsync(date).GetAwaiter().GetResult();
 
                 enumerator = Partner.Enumerators.AuditRecords.Create(auditRecords);
 
                 while (enumerator.HasValue)
                 {
                     records.AddRange(enumerator.Current.Items.Select(r => new PSAuditRecord(r)));
-                    enumerator.Next();
+                    enumerator.NextAsync().GetAwaiter().GetResult();
                 }
             }
 

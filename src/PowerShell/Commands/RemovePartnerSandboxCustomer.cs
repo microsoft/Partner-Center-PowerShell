@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerSandboxCustomerWhatIf, CustomerId)))
             {
-                Partner.Customers[CustomerId].Delete();
+                Partner.Customers[CustomerId].DeleteAsync().GetAwaiter().GetResult();
                 WriteObject(true);
             }
         }

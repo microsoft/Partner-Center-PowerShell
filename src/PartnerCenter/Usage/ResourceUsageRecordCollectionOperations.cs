@@ -38,17 +38,7 @@ namespace Microsoft.Store.PartnerCenter.Usage
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Collection of subscription usage records.</returns>
-        public ResourceCollection<AzureResourceMonthlyUsageRecord> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Retrieves the subscription usage records.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Collection of subscription usage records.</returns>
-        public async Task<ResourceCollection<AzureResourceMonthlyUsageRecord>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<AzureResourceMonthlyUsageRecord>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<AzureResourceMonthlyUsageRecord>>(
                 new Uri(

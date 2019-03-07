@@ -35,16 +35,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// Deletes a configuration policy.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public void Delete(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            PartnerService.SynchronousExecute(() => DeleteAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Deletes a configuration policy.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async Task DeleteAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             await Partner.ServiceClient.DeleteAsync(
                 new Uri(
@@ -62,17 +53,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The policy retrieved by policy identifier under a particular customer.</returns>
-        public ConfigurationPolicy Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the policy details.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The policy retrieved by policy identifier under a particular customer.</returns>
-        public async Task<ConfigurationPolicy> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ConfigurationPolicy> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ConfigurationPolicy>(
                 new Uri(
@@ -91,18 +72,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
         /// <param name="entity">Payload of the update request.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Updated configuration policy.</returns>
-        public ConfigurationPolicy Patch(ConfigurationPolicy entity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => PatchAsync(entity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Updates a configuration policy.
-        /// </summary>
-        /// <param name="entity">Payload of the update request.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Updated configuration policy.</returns>
-        public async Task<ConfigurationPolicy> PatchAsync(ConfigurationPolicy entity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ConfigurationPolicy> PatchAsync(ConfigurationPolicy entity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PutAsync<ConfigurationPolicy, ConfigurationPolicy>(
                 new Uri(

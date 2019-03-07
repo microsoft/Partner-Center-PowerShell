@@ -6,9 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System;
-    using System.Globalization;
-    using System.Linq;
     using System.Management.Automation;
     using Authentication;
     using Models.ServiceRequests;
@@ -39,6 +36,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public ServiceRequestSeverity Severity { get; set; }
 
         /// <summary>
+        /// Gets or sets the types of authentication supported by the command.
+        /// </summary>
+        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+
+        /// <summary>
         /// Gets or sets the support topic identifier for the service request.
         /// </summary>
         [Parameter(HelpMessage = "The support topic identifier for the service reuqest.", Mandatory = true)]
@@ -64,11 +66,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
 
-                if (!IsValidCulture(agentLocale))
-                {
-                    throw new PSInvalidOperationException(string.Format(CultureInfo.CurrentCulture, "{0} is an invalid culture.", agentLocale));
-                }
-
                 request = new ServiceRequest
                 {
                     Description = Description,
@@ -77,18 +74,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Title = Title
                 };
 
-                request = Partner.ServiceRequests.Create(request, agentLocale);
+                request = Partner.ServiceRequests.CreateAsync(request, agentLocale).GetAwaiter().GetResult();
 
                 WriteObject(new PSServiceRequest(request));
             }
-        }
-
-        private static bool IsValidCulture(string locale)
-        {
-            CultureInfo culture = CultureInfo.GetCultures(CultureTypes.UserCustomCulture)
-                .FirstOrDefault(x => x.Name.Equals(locale, StringComparison.OrdinalIgnoreCase));
-
-            return culture != null;
         }
     }
 }

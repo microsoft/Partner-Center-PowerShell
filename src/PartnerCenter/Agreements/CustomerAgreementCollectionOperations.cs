@@ -42,18 +42,7 @@ namespace Microsoft.Store.PartnerCenter.Agreements
         /// <param name="newEntity">The customer agreement to be created.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The newly created customer agreement.</returns>
-        public Agreement Create(Agreement newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() =>CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Creates an agreement between the partner and customer.
-        /// </summary>
-        /// <param name="newEntity">The customer agreement to be created.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The newly created customer agreement.</returns>
-        public async Task<Agreement> CreateAsync(Agreement newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Agreement> CreateAsync(Agreement newEntity, CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.PostAsync<Agreement, Agreement>(
                 new Uri(
@@ -71,17 +60,7 @@ namespace Microsoft.Store.PartnerCenter.Agreements
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>A list of agreements between the partner and customer.</returns>
-        public ResourceCollection<Agreement> Get(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => GetAsync(cancellationToken));
-        }
-
-        /// <summary>
-        /// Gets the partner-customer agreements.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>A list of agreements between the partner and customer.</returns>
-        public async Task<ResourceCollection<Agreement>> GetAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResourceCollection<Agreement>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Agreement>>(
                 new Uri(

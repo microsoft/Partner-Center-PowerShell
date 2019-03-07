@@ -20,6 +20,11 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         IInvoiceDocuments Documents { get; }
 
         /// <summary>
+        /// Gets the receipts behavior of the invoice.
+        /// </summary>
+        IReceiptCollection Receipts { get; }
+
+        /// <summary>
         /// Creates an invoice line item collection operations given a billing provider and invoice line item type.
         /// </summary>
         /// <param name="billingProvider">The billing provider.</param>

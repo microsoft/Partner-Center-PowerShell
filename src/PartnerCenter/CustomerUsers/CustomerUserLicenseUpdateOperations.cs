@@ -41,22 +41,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
         /// <param name="entity">License update object.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An object that represents the license update.</returns>
-        public LicenseUpdate Create(LicenseUpdate newEntity, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return PartnerService.SynchronousExecute(() => CreateAsync(newEntity, cancellationToken));
-        }
-
-        /// <summary>
-        /// Assign licenses to a user.
-        /// This method serves three scenarios:
-        /// 1. Add license to a customer user.
-        /// 2. Remove license from a customer user.
-        /// 3. Update existing license for a customer user.
-        /// </summary>
-        /// <param name="entity">License update object.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>An object that represents the license update.</returns>
-        public async Task<LicenseUpdate> CreateAsync(LicenseUpdate newEntity, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<LicenseUpdate> CreateAsync(LicenseUpdate newEntity, CancellationToken cancellationToken = default)
         {
             newEntity.AssertNotNull(nameof(newEntity));
 
