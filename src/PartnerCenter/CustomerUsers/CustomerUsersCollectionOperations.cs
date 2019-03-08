@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -16,6 +17,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
     using Models.JsonConverters;
     using Models.Query;
     using Models.Users;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Customer user collection operations class.
@@ -151,7 +153,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
                 {
                     parameters.Add(
                         PartnerService.Instance.Configuration.Apis.GetCustomerUsers.Parameters.Filter,
-                        query.Filter.ToString());
+                        WebUtility.UrlEncode(JsonConvert.SerializeObject(query.Filter)));
                 }
 
                 if (query.Sort != null)

@@ -27,14 +27,17 @@
 * Customers
   * Added the ability to manage customer qualifications
   * Corrected issue #90 that was causing directory role operations to not function as excepted
+  * Corrected issue #91 that was causing searching for a customer by domain to not function as expected
 * Entitlements
   * Added the AlternateId property to the reference order object
 * Invoice
-  * Added the ability to download the Taiwan tax receipt
+  * Added the ability to download the tax receipt
 * Orders
   * Addressed an issue with requesting an order by the billing cycle
 * Products
   * Corrected an issue with requesting products by country, target view, and target segment
+* Users
+  * Corrected an issue with performing a query for users from a customer.
 
 ## Version 1.5.1902.5
 

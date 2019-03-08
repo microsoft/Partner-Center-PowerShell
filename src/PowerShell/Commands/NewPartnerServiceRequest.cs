@@ -24,14 +24,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the description for the service request.
         /// </summary>
-        [Parameter(HelpMessage = "The descripion for the service reuqest.", Mandatory = true)]
+        [Parameter(HelpMessage = "The description for the service request.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the severity for the service reuqest.
+        /// Gets or sets the severity for the service request.
         /// </summary>
-        [Parameter(HelpMessage = "The severity for the service reuqest.", Mandatory = true)]
+        [Parameter(HelpMessage = "The severity for the service request.", Mandatory = true)]
         [ValidateSet(nameof(ServiceRequestSeverity.Critical), nameof(ServiceRequestSeverity.Minimal), nameof(ServiceRequestSeverity.Moderate))]
         public ServiceRequestSeverity Severity { get; set; }
 
@@ -43,14 +43,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the support topic identifier for the service request.
         /// </summary>
-        [Parameter(HelpMessage = "The support topic identifier for the service reuqest.", Mandatory = true)]
+        [Parameter(HelpMessage = "The support topic identifier for the service request.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string SupportTopicId { get; set; }
 
         /// <summary>
         /// Gets or sets the title for the service request.
         /// </summary>
-        [Parameter(HelpMessage = "The title for the service reuqest.", Mandatory = true)]
+        [Parameter(HelpMessage = "The title for the service request.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string Title { get; set; }
 

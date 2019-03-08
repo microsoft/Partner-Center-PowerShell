@@ -14,6 +14,7 @@ Removes a user from the customer's tenant.
 
 ## SYNTAX
 
+### ByUserId (Default)
 ```powershell
 Remove-PartnerCustomerUser [-CustomerId] <String> -UserId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

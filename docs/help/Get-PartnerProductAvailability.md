@@ -14,6 +14,7 @@ Gets the availability for a specified product.
 
 ## SYNTAX
 
+### BySku (Default)
 ```powershell
 Get-PartnerProductAvailability -ProductId <String> -SkuId <String> [-CountryCode <String>] [-Segment <String>]
  [<CommonParameters>]

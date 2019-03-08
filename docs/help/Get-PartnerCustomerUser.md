@@ -14,6 +14,7 @@ Gets a list of all customer users or a specified user for the tenant.
 
 ## SYNTAX
 
+### ByCustomerId (Default)
 ```powershell
 Get-PartnerCustomerUser [-CustomerId] <String> [-ReturnDeletedUsers] [<CommonParameters>]
 ```

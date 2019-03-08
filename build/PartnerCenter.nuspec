@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+<metadata>
+  <id>PartnerCenter</id>
+  <version>1.5.1903.1</version>
+  <authors>Microsoft Corporation</authors>
+  <owners>Microsoft</owners>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  <description>Microsoft Partner Center - cmdlets for managing Partner Center resources.</description>
+  <releaseNotes></releaseNotes>
+  <copyright>Microsoft Corporation. All rights reserved.</copyright>
+  <tags>CSP PartnerCenter Azure Office365</tags>
+  <dependencies>
+  </dependencies>
+</metadata>
+</package>

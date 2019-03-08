@@ -14,6 +14,7 @@ Updates the specified customer's qualification to be Education or GovernmentComm
 
 ## SYNTAX
 
+### Customer (Default)
 ```powershell
 Set-PartnerCustomerQualification -CustomerId <String> -Qualification <CustomerQualification> [-WhatIf]
  [-Confirm] [<CommonParameters>]
