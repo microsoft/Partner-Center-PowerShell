@@ -15,12 +15,12 @@ Gets a specific customer or a list of available customers.
 ## SYNTAX
 
 ### ById (Default)
-```
+```powershell
 Get-PartnerCustomer [[-CustomerId] <String>] [<CommonParameters>]
 ```
 
 ### ByDomain
-```
+```powershell
 Get-PartnerCustomer -Domain <String> [<CommonParameters>]
 ```
 

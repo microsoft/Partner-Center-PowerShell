@@ -19,7 +19,7 @@ Get-PartnerCustomerQualification -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the qualification assigned to the customer.
 
 ## EXAMPLES
 

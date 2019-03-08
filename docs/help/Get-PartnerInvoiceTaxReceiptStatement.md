@@ -1,7 +1,9 @@
 ---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceTaxReceiptStatement.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerInvoiceTaxReceiptStatement
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceTaxReceiptStatement.md
 schema: 2.0.0
 ---
 
@@ -18,7 +20,7 @@ Get-PartnerInvoiceTaxReceiptStatement -InvoiceId <String> [-OutputPath <String>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Gets the tax receipt statement for the specified invoice.
 
 ## EXAMPLES
 
