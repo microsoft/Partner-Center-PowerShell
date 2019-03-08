@@ -140,6 +140,9 @@ Gets an invoice statement using the invoice identifier.
 ### [Get-PartnerInvoiceSummary](Get-PartnerInvoiceSummary.md)
 Gets a summary view of the invoice.
 
+### [Get-PartnerInvoiceTaxReceiptStatement](Get-PartnerInvoiceTaxReceiptStatement.md)
+Gets the tax receipt statement for the specified invoice.
+
 ### [Get-PartnerLegalProfile](Get-PartnerLegalProfile.md)
 Gets the partner legal business profile from Partner Center.
 

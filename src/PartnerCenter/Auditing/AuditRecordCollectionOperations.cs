@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.Auditing
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Models;
@@ -81,7 +82,7 @@ namespace Microsoft.Store.PartnerCenter.Auditing
                 {
                     parameters.Add(
                         PartnerService.Instance.Configuration.Apis.GetAuditRecordsRequest.Parameters.Filter,
-                        JsonConvert.SerializeObject(query.Filter));
+                        WebUtility.UrlEncode(JsonConvert.SerializeObject(query.Filter)));
                 }
 
                 if (query.Token != null)

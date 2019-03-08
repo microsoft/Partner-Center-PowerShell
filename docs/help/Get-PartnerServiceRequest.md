@@ -14,6 +14,7 @@ Gets the specified customer's service requests.
 
 ## SYNTAX
 
+### ByStatus (Default)
 ```powershell
 Get-PartnerServiceRequest [-Status <ServiceRequestStatus>] [-Severity <ServiceRequestSeverity>]
  [<CommonParameters>]

@@ -50,7 +50,7 @@ Accept wildcard characters: False
 ```
 
 ### -Description
-The descripion for the service reuqest.
+The description for the service request.
 
 ```yaml
 Type: String
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 ```
 
 ### -Severity
-The severity for the service reuqest.
+The severity for the service request.
 
 ```yaml
 Type: ServiceRequestSeverity
@@ -81,7 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -SupportTopicId
-The support topic identifier for the service reuqest.
+The support topic identifier for the service request.
 
 ```yaml
 Type: String
@@ -96,7 +96,7 @@ Accept wildcard characters: False
 ```
 
 ### -Title
-The title for the service reuqest.
+The title for the service request.
 
 ```yaml
 Type: String

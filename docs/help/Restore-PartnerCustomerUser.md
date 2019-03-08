@@ -14,6 +14,7 @@ Restores a previously removed customer user from the customer's tenant.
 
 ## SYNTAX
 
+### ByUserId (Default)
 ```powershell
 Restore-PartnerCustomerUser [-CustomerId] <String> -UserId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

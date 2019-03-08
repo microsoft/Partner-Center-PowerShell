@@ -14,6 +14,7 @@ Updates the specified customer subscription.
 
 ## SYNTAX
 
+### Customer
 ```powershell
 Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] [-BillingCycle <BillingCycleType>] -CustomerId <String>
  [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
@@ -42,7 +43,7 @@ Disables the auto renew functionality for the specified subscription.
 ## PARAMETERS
 
 ### -AutoRenew
-A flag indiciating whether or not the subscription will auto renew.
+A flag indicating whether or not the subscription will auto renew.
 
 ```yaml
 Type: Boolean

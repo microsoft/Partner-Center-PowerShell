@@ -13,9 +13,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Exceptions;
     using Models.Customers;
     using PartnerCenter.Models;
+    using PartnerCenter.Models.Customers;
     using Properties;
     using Validations;
-    using PartnerCenter.Models.Customers;
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomer", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(PSCustomer))]

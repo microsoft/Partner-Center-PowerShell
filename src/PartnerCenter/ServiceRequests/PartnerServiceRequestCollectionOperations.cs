@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -126,7 +127,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
             {
                 parameters.Add(
                     PartnerService.Instance.Configuration.Apis.SearchPartnerServiceRequests.Parameters.Filter,
-                    JsonConvert.SerializeObject(query.Filter));
+                     WebUtility.UrlEncode(JsonConvert.SerializeObject(query.Filter)));
             }
 
             return await Partner.ServiceClient.GetAsync<ResourceCollection<ServiceRequest>>(

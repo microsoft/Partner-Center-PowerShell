@@ -14,6 +14,7 @@ Updates the specified customer user account.
 
 ## SYNTAX
 
+### UserId (Default)
 ```powershell
 Set-PartnerCustomerUser [-DisplayName <String>] [-ForceChangePasswordNextLogin] [-CustomerId] <String>
  [-FirstName <String>] [-LastName <String>] [-Password <SecureString>] [-UsageLocation <String>]

@@ -25,7 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// The invoice identifier of the statement to retrieve.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The indentifier of the invoice.")]
+        [Parameter(Mandatory = true, HelpMessage = "The identifier of the invoice.")]
         [ValidateNotNullOrEmpty]
         public string InvoiceId { get; set; }
 
@@ -37,16 +37,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string OutputPath { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indiciating whether or to overwrite the file if it exists.
+        /// Gets or sets a flag indicating whether or to overwrite the file if it exists.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "A flag indiciating whether or not to overwrite the file if it exists.")]
+        [Parameter(Mandatory = false, HelpMessage = "A flag indicating whether or not to overwrite the file if it exists.")]
         [ValidateNotNull]
         public SwitchParameter Overwrite { get; set; }
 
         /// <summary>
         /// The tax receipt identifier of the statement to retrieve.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The indentifier of the tax receipt.")]
+        [Parameter(Mandatory = true, HelpMessage = "The identifier of the tax receipt.")]
         [ValidateNotNullOrEmpty]
         public string TaxReceiptId { get; set; }
 

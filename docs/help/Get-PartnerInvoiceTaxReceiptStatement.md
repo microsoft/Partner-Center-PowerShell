@@ -1,39 +1,40 @@
 ---
-content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceStatement.md
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceTaxReceiptStatement.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerInvoiceStatement
-original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceStatement.md
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerInvoiceTaxReceiptStatement
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerInvoiceTaxReceiptStatement.md
 schema: 2.0.0
 ---
 
-# Get-PartnerInvoiceStatement
+# Get-PartnerInvoiceTaxReceiptStatement
 
 ## SYNOPSIS
-Gets an invoice statement using the invoice identifier.
+Gets the tax receipt statement for the specified invoice.
 
 ## SYNTAX
 
 ```powershell
-Get-PartnerInvoiceStatement -InvoiceId <String> [-OutputPath <String>] [-Overwrite] [<CommonParameters>]
+Get-PartnerInvoiceTaxReceiptStatement -InvoiceId <String> [-OutputPath <String>] [-Overwrite]
+ -TaxReceiptId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets an invoice statement using the invoice identifier and writes it to the specified path.
+Gets the tax receipt statement for the specified invoice.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerInvoiceStatement -InvoiceId G000024135 -OutputPath 'C:\Invoices\'
+PS C:\> Get-PartnerInvoiceStatement -InvoiceId G000024135 -OutputPath 'C:\Invoices\' -TaxReceiptId 00123
 ```
 
-Downloads the invoice statement associated with the invoice with the identifier of G000024135.
+Gets the tax receipt statement for the specified invoice.
 
 ## PARAMETERS
 
 ### -InvoiceId
-The invoice id of the statement to retrieve.
+The identifier of the invoice.
 
 ```yaml
 Type: String
@@ -63,7 +64,7 @@ Accept wildcard characters: False
 ```
 
 ### -Overwrite
-A flag indicating whether or to overwrite the file if it exists.
+A flag indicating whether or not to overwrite the file if it exists.
 
 ```yaml
 Type: SwitchParameter
@@ -71,6 +72,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -TaxReceiptId
+The identifier of the tax receipt.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

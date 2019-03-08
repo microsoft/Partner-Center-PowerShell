@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -16,6 +17,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
     using Models.Customers;
     using Models.JsonConverters;
     using Models.Query;
+    using Newtonsoft.Json;
     using RelationshipRequests;
     using Usage;
 
@@ -166,7 +168,7 @@ namespace Microsoft.Store.PartnerCenter.Customers
                 {
                     parameters.Add(
                         PartnerService.Instance.Configuration.Apis.GetCustomers.Parameters.Filter,
-                        customersQuery.Filter.ToString());
+                        WebUtility.UrlEncode(JsonConvert.SerializeObject(customersQuery.Filter)));
                 }
             }
 

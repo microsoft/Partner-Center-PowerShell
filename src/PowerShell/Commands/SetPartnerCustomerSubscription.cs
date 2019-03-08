@@ -21,10 +21,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class SetPartnerCustomerSubscription : PartnerPSCmdlet
     {
         /// <summary>
-        /// Gets or sets a flag indiciating whether or not the subscription will auto renew.
+        /// Gets or sets a flag indicating whether or not the subscription will auto renew.
         /// </summary>
-        [Parameter(HelpMessage = "A flag indiciating whether or not the subscription will auto renew.", ParameterSetName = "Customer", Mandatory = false)]
-        [Parameter(HelpMessage = "A flag indiciating whether or not the subscription will auto renew.", ParameterSetName = "CustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "Customer", Mandatory = false)]
+        [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "CustomerObject", Mandatory = false)]
         public bool? AutoRenew { get; set; }
 
         /// <summary>
@@ -51,14 +51,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the friendly name of the subscription.
         /// </summary>
         [Parameter(HelpMessage = "The friendly name of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
-        [Parameter(HelpMessage = "The friendly name of the sbuscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "The friendly name of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
         public string FriendlyName { get; set; }
 
         /// <summary>
         /// Gets or sets the quantity.
         /// </summary>
         [Parameter(HelpMessage = "The quantity of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
-        [Parameter(HelpMessage = "The quantity of the sbuscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
+        [Parameter(HelpMessage = "The quantity of the subscription.", ParameterSetName = "CustomerObject", Mandatory = false)]
         public int? Quantity { get; set; }
 
         /// <summary>

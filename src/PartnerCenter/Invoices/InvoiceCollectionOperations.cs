@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -100,7 +101,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
             {
                 parameters.Add(
                     PartnerService.Instance.Configuration.Apis.GetInvoices.Parameters.Filter,
-                    JsonConvert.SerializeObject(query.Filter));
+                     WebUtility.UrlEncode(JsonConvert.SerializeObject(query.Filter)));
             }
 
             return await Partner.ServiceClient.GetAsync<ResourceCollection<Invoice>>(

@@ -14,6 +14,7 @@ Gets either a specific order or a list of order for the specified customer.
 
 ## SYNTAX
 
+### ByBillingCycle
 ```powershell
 Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [<CommonParameters>]
 ```

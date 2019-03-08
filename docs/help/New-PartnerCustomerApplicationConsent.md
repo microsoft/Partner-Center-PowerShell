@@ -32,7 +32,7 @@ PS C:\> $grant.Scope = "Domain.ReadWrite.All,User.ReadWrite.All,Directory.Read.A
 PS C:\> New-PartnerCustomerApplicationConsent -ApplicationId 'c33c2273-9329-42ec-948d-152ead47cf65' -ApplicationGrants @($grant) -CustomerId 'f1c5e45f-7dea-4863-a55d-b5a5479201df' -DisplayName 'CPV Web App'
 ```
 
-{{ Add example description here }}
+Creates a new application consent for the specified customer.
 
 ## PARAMETERS
 

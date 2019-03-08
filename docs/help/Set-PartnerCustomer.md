@@ -14,6 +14,7 @@ Updates a customer's billing profile, including the address associated with the 
 
 ## SYNTAX
 
+### Customer (Default)
 ```powershell
 Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
  [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
