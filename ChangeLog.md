@@ -24,6 +24,8 @@
 
 * Auditing
   * Added new operation and resource types
+* Authentication
+  * Added support for the pre-production environment
 * Customers
   * Added the ability to manage customer qualifications
   * Corrected issue #90 that was causing directory role operations to not function as excepted
@@ -37,7 +39,7 @@
 * Products
   * Corrected an issue with requesting products by country, target view, and target segment
 * Users
-  * Corrected an issue with performing a query for users from a customer.
+  * Corrected an issue with performing a query for users from a customer
 
 ## Version 1.5.1902.5
 

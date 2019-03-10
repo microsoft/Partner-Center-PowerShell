@@ -57,6 +57,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
                     PartnerCenterEndpoint = EnvironmentConstants.ChinaPartnerCenterEndpoint,
                 },
 
+                [EnvironmentName.PPE] = new PartnerEnvironment
+                {
+                    ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryPpeEndpoint,
+                    AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphPpeEndpoint,
+                    PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterPpeEndpoint,
+                },
+
                 [EnvironmentName.USGovernment] = new PartnerEnvironment
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.USGovernmentActiveDirectoryEndpoint,

@@ -27,6 +27,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         GermanCloud,
 
         /// <summary>
+        /// The pre-productions instance of Microsoft Partner Center.
+        /// </summary>
+        PPE,
+
+        /// <summary>
         /// The US Government sovereign cloud instance of Microsoft Partner Center.
         /// </summary>
         USGovernment

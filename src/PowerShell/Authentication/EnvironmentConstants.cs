@@ -17,6 +17,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         public const string AzureActiveDirectoryEndpoint = "https://login.microsoftonline.com/";
 
         /// <summary>
+        /// The Azure Active Directory authentication endpoint for the pre-production environment.
+        /// </summary>
+        public const string AzureActiveDirectoryPpeEndpoint = "https://login.windows-ppe.net/";
+
+        /// <summary>
         /// The Azure Active Directory authentication endpoint for the China cloud.
         /// </summary>
         public const string ChinaActiveDirectoryEndpoint = "https://login.chinacloudapi.cn/";
@@ -29,12 +34,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// <summary>
         /// The Azure Active Directory authentication endpoint for the US Goverment cloud.
         /// </summary>
-        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us/";
+        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microenvironmnentsoftonline.us/";
 
         /// <summary>
         /// The Azure Active Directory Graph endpoint for the commercial cloud.
         /// </summary>
         public const string AzureGraphEndpoint = "https://graph.windows.net";
+
+        /// <summary>
+        /// The Azure Active Directory Graph endpoint for the pre-production envivornment (PPE).
+        /// </summary>
+        public const string AzureGraphPpeEndpoint = "https://graph.ppe.windows.net";
 
         /// <summary>
         /// The Azure Active Directory Graph endpoint for the China cloud.
@@ -55,6 +65,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// The Partner Center endpoint address.
         /// </summary>
         public const string PartnerCenterEndpoint = "https://api.partnercenter.microsoft.com";
+
+        /// <summary>
+        /// The Partner Center Pre-Production Envivornment (PPE) endpoint address.
+        /// </summary>
+        public const string PartnerCenterPpeEndpoint = "https://api.partnercenter.microsoft-ppe.com";
 
         /// <summary>
         /// The Partner Center endpoint for the China cloud.
