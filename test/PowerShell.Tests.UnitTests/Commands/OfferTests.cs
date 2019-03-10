@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Commands
+namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests.Commands
 {
     using VisualStudio.TestTools.UnitTesting;
 

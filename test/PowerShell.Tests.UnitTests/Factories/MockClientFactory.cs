@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.Factories
+namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests.Factories
 {
     using System;
     using PowerShell.Factories;

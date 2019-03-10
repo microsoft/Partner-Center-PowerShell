@@ -10,7 +10,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Authentication;
-    using Exceptions;
     using Models.Partners;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;
@@ -42,6 +41,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "The city portion of the address.")]
         [ValidateNotNullOrEmpty]
         public string City { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag that indicates whether the additional client side validation should be disabled.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag that indicates whether the additional client side validation should be disabled.", Mandatory = false)]
+        public SwitchParameter DisableValidation { get; set; }
 
         /// <summary>
         /// Gets or sets the email address of the primary billing contact.
@@ -130,20 +135,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.Address.Region = UpdateValue(Region, profile.Address.Region);
                 profile.Address.State = UpdateValue(State, profile.Address.State);
 
-                try
-                {
-                    validator = new AddressValidator(Partner);
-
-                    if (!validator.IsValid(profile.Address))
-                    {
-                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
-                    }
-                }
-                catch (PartnerCenter.Exceptions.PartnerException ex)
-                {
-                    throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
-                }
-
                 profile.PrimaryContact.Email = UpdateValue(EmailAddress, profile.PrimaryContact.Email);
                 profile.PrimaryContact.FirstName = UpdateValue(FirstName, profile.PrimaryContact.FirstName);
                 profile.PrimaryContact.LastName = UpdateValue(LastName, profile.PrimaryContact.LastName);
@@ -151,6 +142,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
                 profile.TaxId = UpdateValue(TaxId, profile.TaxId);
+
+
+                if (!DisableValidation.ToBool())
+                {
+                    validator = new AddressValidator(Partner);
+
+                    if (!validator.IsValid(profile.Address, d => WriteDebug(d)))
+                    {
+                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                    }
+                }
 
                 Partner.Profiles.BillingProfile.UpdateAsync(profile).GetAwaiter().GetResult();
 

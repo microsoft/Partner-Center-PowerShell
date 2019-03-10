@@ -86,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             validator = new AddressValidator(Partner);
 
-            WriteObject(validator.IsValid(address));
+            WriteObject(validator.IsValid(address, d => WriteDebug(d)));
         }
     }
 }

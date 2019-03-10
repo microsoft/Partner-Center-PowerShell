@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Tests
+namespace Microsoft.Store.PartnerCenter.Tests.UnitTests
 {
     using System;
     using System.Linq;
@@ -20,13 +20,13 @@ namespace Microsoft.Store.PartnerCenter.Tests
     public class OfferTests : TestBase
     {
         /// <summary>
-        /// Test that varifies the get offer categories operation.
+        /// Test that verifies the get offer categories operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetOfferCategories()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
                 ResourceCollection<OfferCategory> offerCategories = await partnerOperations.OfferCategories.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
 
@@ -43,13 +43,13 @@ namespace Microsoft.Store.PartnerCenter.Tests
         }
 
         /// <summary>
-        /// Test that varifies the get offers operation.
+        /// Test that verifies the get offers operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetOffers()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
                 ResourceCollection<Offer> offers = await partnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).GetAsync().ConfigureAwait(false);
 
@@ -66,13 +66,13 @@ namespace Microsoft.Store.PartnerCenter.Tests
         }
 
         /// <summary>
-        /// Test that varifies the get offer by the identifier operation.
+        /// Test that verifies the get offer by the identifier operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetOfferById()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
                 Offer offer = await partnerOperations.Offers.ByCountry(TestConstants.UsCountryCode).ById(TestConstants.Microsoft365E5OfferId).GetAsync().ConfigureAwait(false);
 

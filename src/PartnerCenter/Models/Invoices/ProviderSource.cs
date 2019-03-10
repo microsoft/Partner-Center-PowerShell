@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="BillingType.cs" company="Microsoft">
+// <copyright file="ProviderSource.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -8,25 +8,31 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
 {
     using JsonConverters;
     using Newtonsoft.Json;
+
     /// <summary>
-    /// The way billing is processed for a subscription.
+    /// Different providers of billing information
     /// </summary>
     [JsonConverter(typeof(EnumJsonConverter))]
-    public enum BillingType
+    public enum ProviderSource
     {
         /// <summary>
-        /// Indicates nothing - not set, used as an initializer.
+        /// Enum initializer
         /// </summary>
-        None = 0,
+        None,
 
         /// <summary>
-        /// Usage based billing.
+        /// Indicates that the provider is both first party and third party
         /// </summary>
-        Usage = 1,
+        All,
 
         /// <summary>
-        /// License based billing.
+        /// Indicates that the provider is first party    
         /// </summary>
-        License = 2
+        Microsoft,
+
+        /// <summary>
+        /// Indicates that the provider is third party       
+        /// </summary>
+        External
     }
 }

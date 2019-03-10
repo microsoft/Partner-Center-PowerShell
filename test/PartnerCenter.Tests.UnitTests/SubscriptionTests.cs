@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Tests
+namespace Microsoft.Store.PartnerCenter.Tests.UnitTests
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,13 +19,13 @@ namespace Microsoft.Store.PartnerCenter.Tests
     public class SubscriptionTests : TestBase
     {
         /// <summary>
-        /// Test that varifies the get subscription add on operation.
+        /// Test that verifies the get subscription add on operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetSubscriptionAddOns()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
                 ResourceCollection<Subscription> addons = await partnerOperations.Customers[TestConstants.CustomerId].Subscriptions[TestConstants.SubscriptionId].AddOns.GetAsync().ConfigureAwait(false);
 

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Tests
+namespace Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests
 {
     using System;
     using System.Collections.ObjectModel;

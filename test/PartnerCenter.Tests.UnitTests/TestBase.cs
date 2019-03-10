@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Tests
         /// <returns>
         /// An instance of the <see cref="Task" /> class that represents the asynchronous operation.
         /// </returns>
-        public async Task UsePartnerFor(Func<IPartner, Task> test, [CallerMemberName] string identity = null)
+        public async Task UsePartnerForAsync(Func<IPartner, Task> test, [CallerMemberName] string identity = null)
         {
             IPartnerCredentials credentials = new TestPartnerCredentials();
 

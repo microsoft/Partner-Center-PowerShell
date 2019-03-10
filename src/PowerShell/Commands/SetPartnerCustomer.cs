@@ -104,6 +104,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates whether the additional client side validation should be disabled.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag that indicates whether the additional client side validation should be disabled.", Mandatory = false)]
+        public SwitchParameter DisableValidation { get; set; }
+
+        /// <summary>
         /// Gets or sets the email address of the contact at the customer.
         /// </summary>
         [Parameter(HelpMessage = "Email address of the contact at the customer.", Mandatory = false, ParameterSetName = "Customer")]
@@ -128,47 +134,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             IValidator<Address> validator;
             string customerId;
 
-            try
+            customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
+
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
             {
-                customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
+                if (InputObject == null && string.IsNullOrEmpty(CustomerId))
                 {
-                    if (InputObject == null && string.IsNullOrEmpty(CustomerId))
-                    {
-                        throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
-                    }
+                    throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
+                }
 
-                    customer = Partner.Customers[customerId].GetAsync().GetAwaiter().GetResult();
+                customer = Partner.Customers[customerId].GetAsync().GetAwaiter().GetResult();
 
-                    customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
-                    customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
-                    customer.BillingProfile.DefaultAddress.City = UpdateValue(BillingAddressCity, customer.BillingProfile.DefaultAddress.City);
-                    customer.BillingProfile.DefaultAddress.Country = UpdateValue(BillingAddressCountry, customer.BillingProfile.DefaultAddress.Country);
-                    customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(BillingAddressPhoneNumber, customer.BillingProfile.DefaultAddress.PhoneNumber);
-                    customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(BillingAddressPostalCode, customer.BillingProfile.DefaultAddress.PostalCode);
-                    customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
-                    customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
-                    customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
-                    customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
+                customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
+                customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
+                customer.BillingProfile.DefaultAddress.City = UpdateValue(BillingAddressCity, customer.BillingProfile.DefaultAddress.City);
+                customer.BillingProfile.DefaultAddress.Country = UpdateValue(BillingAddressCountry, customer.BillingProfile.DefaultAddress.Country);
+                customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(BillingAddressPhoneNumber, customer.BillingProfile.DefaultAddress.PhoneNumber);
+                customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(BillingAddressPostalCode, customer.BillingProfile.DefaultAddress.PostalCode);
+                customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
+                customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
+                customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
+                customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
 
+
+                if (!DisableValidation.ToBool())
+                {
                     validator = new AddressValidator(Partner);
 
-                    if (validator.IsValid(customer.BillingProfile.DefaultAddress))
+                    if (!validator.IsValid(customer.BillingProfile.DefaultAddress, d => WriteDebug(d)))
                     {
-                        Partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile).GetAwaiter().GetResult();
-
-                        WriteObject(new PSCustomer(customer));
-                    }
-                    else
-                    {
-                        throw new PSInvalidOperationException("The address specified was invalid. Please check the values and try again.");
+                        throw new PartnerPSException("The address for the customer is not valid.");
                     }
                 }
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
+
+                Partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile).GetAwaiter().GetResult();
+
+                WriteObject(new PSCustomer(customer));
             }
         }
 

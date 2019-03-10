@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Tests
+namespace Microsoft.Store.PartnerCenter.Tests.UnitTests
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,13 +19,13 @@ namespace Microsoft.Store.PartnerCenter.Tests
     public class AgreementTests : TestBase
     {
         /// <summary>
-        /// Test that varifies the get agreement details operation.
+        /// Test that verifies the get agreement details operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetAgreementDetails()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
                 ResourceCollection<AgreementMetaData> details = await partnerOperations.AgreementDetails.GetAsync().ConfigureAwait(false);
 

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Tests
+namespace Microsoft.Store.PartnerCenter.Tests.UnitTests
 {
     using System.Threading.Tasks;
     using Models.Customers;
@@ -17,15 +17,15 @@ namespace Microsoft.Store.PartnerCenter.Tests
     public class CustomerTests : TestBase
     {
         /// <summary>
-        /// Test that varifies the get customer qualification operation.
+        /// Test that verifies the get customer qualification operation.
         /// </summary>
         /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         [TestMethod]
         public async Task GetCustomerQualification()
         {
-            await UsePartnerFor(async partnerOperations =>
+            await UsePartnerForAsync(async partnerOperations =>
             {
-                CustomerQualification qualification = await partnerOperations.Customers[""].Qualification.GetAsync().ConfigureAwait(false);
+                CustomerQualification qualification = await partnerOperations.Customers[TestConstants.CustomerId].Qualification.GetAsync().ConfigureAwait(false);
 
                 Assert.AreEqual(CustomerQualification.None, qualification);
             }).ConfigureAwait(false);

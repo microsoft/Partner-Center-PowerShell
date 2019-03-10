@@ -11,6 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Authentication;
+    using Exceptions;
     using Models.Customers;
     using PartnerCenter.Models;
     using Properties;
@@ -19,6 +20,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.New, "PartnerCustomer", SupportsShouldProcess = true), OutputType(typeof(PSCustomer))]
     public class NewPartnerCustomer : PartnerPSCmdlet
     {
+        /// <summary>
+        /// The country code for the United States.
+        /// </summary>
+        private const string UnitedStatesCountryCode = "US";
+
         /// <summary>
         /// Gets or sets the associated partner identifier.
         /// </summary>
@@ -132,6 +138,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates whether the additional client side validation should be disabled.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag that indicates whether the additional client side validation should be disabled.", Mandatory = false)]
+        public SwitchParameter DisableValidation { get; set; }
+
+        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
@@ -144,14 +156,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
             {
-                if (Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult())
-                {
-                    throw new PSInvalidOperationException(
-                        string.Format(
-                            CultureInfo.CurrentCulture,
-                            Resources.DomainExistsError,
-                            Domain));
-                }
 
                 country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
                 culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
@@ -162,7 +166,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 }
                 else
                 {
-                    region = BillingAddressRegion.Equals("US", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
+                    region = BillingAddressRegion.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
                 }
 
                 customer = new PartnerCenter.Models.Customers.Customer
@@ -197,14 +201,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 };
 
-                validator = new AddressValidator(Partner);
-
-                if (validator.IsValid(customer.BillingProfile.DefaultAddress))
+                if (!DisableValidation.ToBool())
                 {
-                    customer = Partner.Customers.CreateAsync(customer).GetAwaiter().GetResult();
+                    if (Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult())
+                    {
+                        throw new PSInvalidOperationException(
+                            string.Format(
+                                CultureInfo.CurrentCulture,
+                                Resources.DomainExistsError,
+                                Domain));
+                    }
 
-                    WriteObject(customer);
+                    validator = new AddressValidator(Partner);
+
+                    if (!validator.IsValid(customer.BillingProfile.DefaultAddress, d => WriteDebug(d)))
+                    {
+                        throw new PartnerPSException("The address for the customer is not valid.");
+                    }
                 }
+
+                WriteObject(Partner.Customers.CreateAsync(customer).GetAwaiter().GetResult());
             }
         }
     }
