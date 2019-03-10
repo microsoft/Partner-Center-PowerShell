@@ -157,7 +157,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
 
 
-                if (DisableValidation.IsPresent && DisableValidation.ToBool())
+                if (!DisableValidation.ToBool())
                 {
                     validator = new AddressValidator(Partner);
 

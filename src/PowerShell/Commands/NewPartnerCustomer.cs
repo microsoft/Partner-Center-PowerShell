@@ -196,7 +196,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 };
 
-                if (DisableValidation.IsPresent && DisableValidation.ToBool())
+                if (!DisableValidation.ToBool())
                 {
                     if (Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult())
                     {

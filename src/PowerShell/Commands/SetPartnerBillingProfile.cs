@@ -144,7 +144,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.TaxId = UpdateValue(TaxId, profile.TaxId);
 
 
-                if (DisableValidation.IsPresent && DisableValidation.ToBool())
+                if (!DisableValidation.ToBool())
                 {
                     validator = new AddressValidator(Partner);
 

@@ -144,7 +144,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.DefaultAddress.LastName = UpdateValue(LastName, profile.DefaultAddress.LastName);
                 profile.DefaultAddress.PhoneNumber = UpdateValue(PhoneNumber, profile.DefaultAddress.PhoneNumber);
 
-                if (DisableValidation.IsPresent && DisableValidation.ToBool())
+                if (!DisableValidation.ToBool())
                 {
                     validator = new AddressValidator(Partner);
 

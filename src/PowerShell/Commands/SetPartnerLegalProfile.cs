@@ -127,7 +127,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.CompanyApproverAddress = profile.Address;
                 profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
 
-                if (DisableValidation.IsPresent && DisableValidation.ToBool())
+                if (!DisableValidation.ToBool())
                 {
                     validator = new AddressValidator(Partner);
 
