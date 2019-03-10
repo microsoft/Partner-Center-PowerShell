@@ -1,0 +1,65 @@
+[
+  {
+    "EncodedReqeustAddress": "L3YxL2FncmVlbWVudHM=",
+    "RequestBody": null,
+    "RequestHeaders": {
+      "Accept": [
+        "application/json"
+      ],
+      "MS-PartnerCenter-Client": [
+        "Partner Center PowerShell"
+      ],
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "X-Locale": [
+        "en-US"
+      ],
+      "MS-RequestId": [
+        "cecda132-2122-4af2-9afd-2e5bfd26fba0"
+      ],
+      "MS-SdkVersion": [
+        "1.5.1901.1"
+      ],
+      "User-Agent": [
+        "FxVersion/4.8.3710.0",
+        "OSName/Windows",
+        "OSVersion/10.0.18312.0",
+        "Microsoft.Store.PartnerCenter.Network.PartnerServiceClient/1.0.0.0"
+      ]
+    },
+    "RequestMethod": "GET",
+    "RequestUri": "https://api.partnercenter.microsoft.com/v1/agreements",
+    "ResponseBody": "{\r\n  \"totalCount\": 1,\r\n  \"items\": [\r\n    {\r\n      \"templateId\": \"998b88de-aa99-4388-a42c-1b3517d49490\",\r\n      \"agreementType\": \"MicrosoftCloudAgreement\",\r\n      \"agreementLink\": \"https://docs.microsoft.com/en-us/partner-center/agreements\",\r\n      \"versionRank\": 0\r\n    }\r\n  ],\r\n  \"links\": {\r\n    \"self\": {\r\n      \"uri\": \"/agreements\",\r\n      \"method\": \"GET\",\r\n      \"headers\": []\r\n    }\r\n  },\r\n  \"attributes\": {\r\n    \"objectType\": \"Collection\"\r\n  }\r\n}",
+    "ResponseHeaders": {
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "MS-RequestId": [
+        "cecda132-2122-4af2-9afd-2e5bfd26fba0"
+      ],
+      "X-Locale": [
+        "en-US,en-US"
+      ],
+      "MS-CV": [
+        "eZ4oHogRA0SehiQH.0"
+      ],
+      "MS-ServerId": [
+        "00000L"
+      ],
+      "Request-Context": [
+        "appId=cid-v1:03ce8ca8-8373-4021-8f25-d5dd45c7b12f"
+      ],
+      "Date": [
+        "Fri, 11 Jan 2019 23:18:30 GMT"
+      ],
+      "Content-Length": [
+        "326"
+      ],
+      "Content-Type": [
+        "application/json"
+      ]
+    },
+    "StatusCode": "OK"
+  }
+]
