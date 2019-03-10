@@ -21,6 +21,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class NewPartnerCustomer : PartnerPSCmdlet
     {
         /// <summary>
+        /// The country code for the United States.
+        /// </summary>
+        private const string UnitedStatesCountryCode = "US";
+
+        /// <summary>
         /// Gets or sets the associated partner identifier.
         /// </summary>
         [Parameter(HelpMessage = "The associated partner identifier. Used if creating a customer for an indirect reseller.", Mandatory = false)]
@@ -161,7 +166,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 }
                 else
                 {
-                    region = BillingAddressRegion.Equals("US", StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
+                    region = BillingAddressRegion.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
                 }
 
                 customer = new PartnerCenter.Models.Customers.Customer

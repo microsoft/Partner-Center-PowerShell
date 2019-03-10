@@ -34,7 +34,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// <summary>
         /// The Azure Active Directory authentication endpoint for the US Goverment cloud.
         /// </summary>
-        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microenvironmnentsoftonline.us/";
+        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us/";
 
         /// <summary>
         /// The Azure Active Directory Graph endpoint for the commercial cloud.
