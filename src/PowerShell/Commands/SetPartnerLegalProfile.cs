@@ -51,6 +51,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string Country { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates whether the additional client side validation should be disabled.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag that indicates whether the additional client side validation should be disabled.", Mandatory = false)]
+        public SwitchParameter DisableValidation { get; set; }
+
+        /// <summary>
         /// Gets or sets the email address of the primary billing contact.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "The email address of the primary billing contact.")]
@@ -121,18 +127,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.CompanyApproverAddress = profile.Address;
                 profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
 
-                try
+                if (DisableValidation.IsPresent && DisableValidation.ToBool())
                 {
                     validator = new AddressValidator(Partner);
 
-                    if (!validator.IsValid(profile.Address))
+                    if (!validator.IsValid(profile.Address, d => WriteDebug(d)))
                     {
                         throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
                     }
-                }
-                catch (PartnerCenter.Exceptions.PartnerException ex)
-                {
-                    throw new PSPartnerException("The specified address is invalid. Please verify the address and try again.", ex);
                 }
 
                 profile = Partner.Profiles.LegalBusinessProfile.UpdateAsync(profile).GetAwaiter().GetResult();

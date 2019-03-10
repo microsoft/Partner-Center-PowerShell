@@ -6,8 +6,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 {
+    using System; 
+
     public interface IValidator<in T>
     {
-        bool IsValid(T resource);
+        bool IsValid(T resource, Action<string> debugAction);
     }
 }

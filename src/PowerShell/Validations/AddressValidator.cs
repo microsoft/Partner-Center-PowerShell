@@ -19,9 +19,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     public sealed class AddressValidator : IValidator<Address>
     {
         /// <summary>
+        /// The country code for China.
+        /// </summary>
+        private const string ChinaCountryCode = "CN";
+
+        /// <summary>
+        /// The country code for Mexico.
+        /// </summary>
+        private const string MexicoCountryCode = "MX";
+
+        /// <summary>
+        /// The country code for the United States.
+        /// </summary>
+        private const string UnitedStatesCountryCode = "US";
+
+        /// <summary>
         /// Provides the ability to interact with Partner Center.
         /// </summary>
-        private readonly PartnerCenter.IPartner partner;
+        private readonly IPartner partner;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddressValidator" /> class.
@@ -41,7 +56,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// </summary>
         /// <param name="resource">The resource to be validate.</param>
         /// <returns><c>true</c> if the resource is valid; otherwise <c>false</c>.</returns>
-        public bool IsValid(Address resource)
+        public bool IsValid(Address resource, Action<string> debugAction)
         {
             CountryValidationRules validationRules;
 
@@ -49,10 +64,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 
             try
             {
-                if (resource.Country.Equals("CN", StringComparison.InvariantCultureIgnoreCase) ||
-                    resource.Country.Equals("MX", StringComparison.InvariantCultureIgnoreCase) ||
-                    resource.Country.Equals("US", StringComparison.InvariantCultureIgnoreCase))
+                if (resource.Country.Equals(ChinaCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
+                    resource.Country.Equals(MexicoCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
+                    resource.Country.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase))
                 {
+                    debugAction("Requesting country validation services from the partner service.");
                     validationRules = partner.CountryValidationRules.ByCountry(resource.Country).GetAsync().GetAwaiter().GetResult();
 
                     if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
@@ -94,6 +110,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                     }
                 }
 
+                debugAction("Checking if the address is valid using the partner service.");
                 return partner.Validations.IsAddressValidAsync(resource).GetAwaiter().GetResult();
             }
             catch (PartnerCenter.Exceptions.PartnerException ex)

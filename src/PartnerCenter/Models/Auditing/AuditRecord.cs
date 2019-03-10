@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.Models.Auditing
 {
     using System;
+    using Extensions;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using Newtonsoft.Json.Serialization;
@@ -97,6 +98,9 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         [OnError]
         internal void OnError(StreamingContext context, ErrorContext errorContext)
         {
+            context.AssertNotNull(nameof(context));
+            errorContext.AssertNotNull(nameof(errorContext));
+
             if (string.Equals(errorContext.Member.ToString(), nameof(ResourceType), StringComparison.OrdinalIgnoreCase))
             {
                 (errorContext.OriginalObject as AuditRecord).ResourceType = ResourceType.Undefined;

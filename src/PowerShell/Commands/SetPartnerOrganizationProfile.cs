@@ -63,6 +63,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string Culture { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag that indicates whether the additional client side validation should be disabled.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag that indicates whether the additional client side validation should be disabled.", Mandatory = false)]
+        public SwitchParameter DisableValidation { get; set; }
+
+        /// <summary>
         /// Gets or sets the email address of the organization contact.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "The organization technical contact's email address.")]
@@ -138,13 +144,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 profile.DefaultAddress.LastName = UpdateValue(LastName, profile.DefaultAddress.LastName);
                 profile.DefaultAddress.PhoneNumber = UpdateValue(PhoneNumber, profile.DefaultAddress.PhoneNumber);
 
-                validator = new AddressValidator(Partner);
-
-                if (validator.IsValid(profile.DefaultAddress))
+                if (DisableValidation.IsPresent && DisableValidation.ToBool())
                 {
-                    profile = Partner.Profiles.OrganizationProfile.UpdateAsync(profile).GetAwaiter().GetResult();
-                    WriteObject(new PSOrganizationProfile(profile));
+                    validator = new AddressValidator(Partner);
+
+                    if (!validator.IsValid(profile.DefaultAddress, d => WriteDebug(d)))
+                    {
+                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                    }
                 }
+
+                profile = Partner.Profiles.OrganizationProfile.UpdateAsync(profile).GetAwaiter().GetResult();
+                WriteObject(new PSOrganizationProfile(profile));
             }
         }
 
