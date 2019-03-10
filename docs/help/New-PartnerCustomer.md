@@ -20,7 +20,7 @@ New-PartnerCustomer [-AssociatedPartnerId <String>] -BillingAddressLine1 <String
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
  [-ContactEmail <String>] [-ContactFirstName <String>] [-ContactLastName <String>]
  [-ContactPhoneNumber <String>] [-Culture <String>] -Domain <String> -Language <String> -Name <String>
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-DisableValidation] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -222,6 +222,21 @@ The preferred culture for communication and currency.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisableValidation
+A flag that indicates whether the additional client side validation should be disabled.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

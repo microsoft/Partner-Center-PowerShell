@@ -152,7 +152,7 @@ The environment use for authentication.
 Type: EnvironmentName
 Parameter Sets: (All)
 Aliases: EnvironmentName
-Accepted values: GlobalCloud, ChinaCloud, GermanCloud, USGovernment
+Accepted values: GlobalCloud, ChinaCloud, GermanCloud, PPE, USGovernment
 
 Required: False
 Position: Named

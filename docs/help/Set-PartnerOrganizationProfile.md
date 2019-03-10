@@ -16,9 +16,9 @@ Updates the partner's organization profile
 
 ```powershell
 Set-PartnerOrganizationProfile [-CompanyName <String>] [-AddressLine1 <String>] [-AddressLine2 <String>]
- [-City <String>] [-Country <String>] [-Culture <String>] [-Email <String>] [-FirstName <String>]
- [-Language <String>] [-LastName <String>] [-PhoneNumber <String>] [-PostalCode <String>] [-State <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-City <String>] [-Country <String>] [-Culture <String>] [-DisableValidation] [-Email <String>]
+ [-FirstName <String>] [-Language <String>] [-LastName <String>] [-PhoneNumber <String>] [-PostalCode <String>]
+ [-State <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -115,6 +115,21 @@ The preferred organization culture.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisableValidation
+A flag that indicates whether the additional client side validation should be disabled.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

@@ -16,9 +16,9 @@ Updates the partner's billing profile.
 
 ```powershell
 Set-PartnerBillingProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>]
- [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>] [-PhoneNumber <String>]
- [-PostalCode <String>] [-PurchaseOrderNumber <String>] [-Region <String>] [-State <String>] [-TaxId <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-DisableValidation] [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>]
+ [-PhoneNumber <String>] [-PostalCode <String>] [-PurchaseOrderNumber <String>] [-Region <String>]
+ [-State <String>] [-TaxId <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -70,6 +70,21 @@ The city portion of the address.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisableValidation
+A flag that indicates whether the additional client side validation should be disabled.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

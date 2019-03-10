@@ -19,7 +19,8 @@ Updates a customer's billing profile, including the address associated with the 
 Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
  [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
- -CustomerId <String> [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ -CustomerId <String> [-DisableValidation] [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### CustomerObject
@@ -27,7 +28,7 @@ Set-PartnerCustomer [-BillingAddressLine1 <String>] [-BillingAddressLine2 <Strin
 Set-PartnerCustomer -InputObject <PSCustomer> [-BillingAddressLine1 <String>] [-BillingAddressLine2 <String>]
  [-BillingAddressCity <String>] [-BillingAddressCountry <String>] [-BillingAddressPhoneNumber <String>]
  [-BillingAddressPostalCode <String>] [-BillingAddressRegion <String>] [-BillingAddressState <String>]
- [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-DisableValidation] [-Email <String>] [-Name <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -181,6 +182,21 @@ Parameter Sets: Customer
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisableValidation
+A flag that indicates whether the additional client side validation should be disabled.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
