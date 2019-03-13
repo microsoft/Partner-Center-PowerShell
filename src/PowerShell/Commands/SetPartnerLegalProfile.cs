@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Exceptions;
     using Models.Partners;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;

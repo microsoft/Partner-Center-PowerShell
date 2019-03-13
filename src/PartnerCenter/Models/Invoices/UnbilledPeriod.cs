@@ -1,33 +1,34 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ServiceCostsBillingPeriod.cs" company="Microsoft">
+// <copyright file="UnbilledPeriod.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Models.ServiceCosts
+
+namespace Microsoft.Store.PartnerCenter.Models.Invoices
 {
     using Models.JsonConverters;
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Represents service costs billing periods.
+    /// Represents unbilled periods.
     /// </summary>
     [JsonConverter(typeof(EnumJsonConverter))]
-    public enum ServiceCostsBillingPeriod
+    public enum UnbilledPeriod
     {
         /// <summary>
-        /// Default billing period, does not mean anything.
+        /// Default period, does not mean anything.
         /// </summary>
         None,
 
         /// <summary>
-        /// The most recently completed billing period.
+        /// The current period that is ongoing.
         /// </summary>
-        MostRecent,
+        Current,
 
         /// <summary>
-        /// The current billing period that is ongoing.
+        /// The pervious period.
         /// </summary>
-        Current
+        Previous
     }
 }

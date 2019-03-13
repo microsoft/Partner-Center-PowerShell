@@ -1,18 +1,35 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DailyRatedUsageReconLineItem.cs" company="Microsoft">
+// <copyright file="PSDailyRatedUsageReconLineItem.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Models.Invoices
+namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
     using System;
+    using Common;
+    using PartnerCenter.Models.Invoices;
 
     /// <summary>
     /// Represents unbilled, billed recon line items for daily rated usage.
     /// </summary>
-    public sealed class DailyRatedUsageReconLineItem : InvoiceLineItem
+    public sealed class PSDailyRatedUsageReconLineItem : PSInvoiceLineItem
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSDailyRatedUsageReconLineItem" /> class.
+        /// </summary>
+        public PSDailyRatedUsageReconLineItem()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSDailyRatedUsageReconLineItem" /> class.
+        /// </summary>
+        /// <param name="lineItem">The base line item for this instance.</param>
+        public PSDailyRatedUsageReconLineItem(DailyRatedUsageReconLineItem lineItem)
+        {
+            this.CopyFrom(lineItem);
+        }
+
         /// <summary>
         /// Gets or sets the partner Id.
         /// </summary>

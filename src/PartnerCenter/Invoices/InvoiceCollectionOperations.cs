@@ -41,6 +41,11 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         public IInvoice this[string invoiceId] => ById(invoiceId);
 
         /// <summary>
+        /// Gets estimates operations.
+        /// </summary>
+        public IEstimateCollection Estimates => new EstimateCollectionOperations(Partner);
+
+        /// <summary>
         /// Gets a single invoice summary operations.
         /// </summary>
         public IInvoiceSummary Summary => new InvoiceSummaryOperations(Partner);

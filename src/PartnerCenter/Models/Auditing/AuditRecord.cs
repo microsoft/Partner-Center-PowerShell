@@ -7,9 +7,9 @@
 namespace Microsoft.Store.PartnerCenter.Models.Auditing
 {
     using System;
-    using Extensions;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using Extensions;
     using Newtonsoft.Json.Serialization;
 
     /// <summary>

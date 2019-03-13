@@ -83,6 +83,10 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
                     {
                         lineItem = new OneTimeInvoiceLineItem();
                     }
+                    else if (billingProvider == BillingProvider.All)
+                    {
+                        lineItem = new OneTimeInvoiceLineItem();
+                    }
                 }
             }
             else
@@ -94,6 +98,10 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
                 else if (billingProvider == BillingProvider.AzureDataMarket)
                 {
                     lineItem = new AzureDataMarketDailyUsageLineItem();
+                }
+                else if (billingProvider == BillingProvider.External)
+                {
+                    lineItem = new DailyRatedUsageReconLineItem();
                 }
             }
 

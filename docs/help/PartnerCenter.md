@@ -143,6 +143,9 @@ Gets a summary view of the invoice.
 ### [Get-PartnerInvoiceTaxReceiptStatement](Get-PartnerInvoiceTaxReceiptStatement.md)
 Gets the tax receipt statement for the specified invoice.
 
+### [Get-PartnerInvoiceUnbilledThirdPartyLineItem](Get-PartnerInvoiceUnbilledThirdPartyLineItem.md)
+Gets a collection of unbilled third-party consumption line item details.
+
 ### [Get-PartnerLegalProfile](Get-PartnerLegalProfile.md)
 Gets the partner legal business profile from Partner Center.
 
