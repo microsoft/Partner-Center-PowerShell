@@ -19,15 +19,18 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     public interface IInvoiceCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Invoice, ResourceCollection<Invoice>>, IEntitySelector<IInvoice>
     {
         /// <summary>
+        /// Gets an estimates operations.
+        /// </summary>
+        IEstimateCollection Estimates { get; }
+
+        /// <summary>
         /// Gets an invoice summary operations.
         /// </summary>
-        /// <returns>The invoice summary operations.</returns>
         IInvoiceSummary Summary { get; }
 
         /// <summary>
         /// Gets invoice summary collection operations.
         /// </summary>
-        /// <returns>The invoice summary collection.</returns>
         IInvoiceSummaryCollection Summaries { get; }
 
         /// <summary>

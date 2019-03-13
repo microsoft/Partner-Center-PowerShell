@@ -47,6 +47,18 @@ namespace Microsoft.Store.PartnerCenter.Invoices
             => new InvoiceLineItemCollectionOperations(Partner, Context, billingProvider, invoiceLineItemType);
 
         /// <summary>
+        /// Creates an invoice line item collection operations given a billing provider and invoice line item type.
+        /// </summary>
+        /// <param name="provider">The provider type.</param>
+        /// <param name="invoiceLineItemType">The invoice line item.</param>
+        /// <param name="currencyCode">The currency code.</param>
+        /// <param name="period">The period for unbilled recon.</param>
+        /// <param name="size">The page size.</param>
+        /// <returns>The recon line item collection operations.</returns>
+        public IReconLineItemCollection By(BillingProvider provider, InvoiceLineItemType invoiceLineItemType, string currencyCode, UnbilledPeriod period, int? size)
+            => new ReconLineItemCollectionOperations(Partner, Context, provider, invoiceLineItemType, currencyCode, period, size);
+     
+        /// <summary>
         /// Retrieves information about a specific invoice.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>

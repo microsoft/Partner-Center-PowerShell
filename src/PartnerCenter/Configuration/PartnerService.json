@@ -485,6 +485,12 @@
     "UpdatePartnerBillingProfile": {
       "Path": "profiles/billing"
     },
+    "GetEstimatesLinks": {
+      "Path": "invoices/estimates/links",
+      "Parameters": {
+        "CurrencyCode": "currencyCode"
+      }
+    },
     "GetInvoices": {
       "Path": "invoices",
       "Parameters": {
@@ -514,6 +520,20 @@
     },
     "GetInvoiceSummaries": {
       "Path": "invoices/summaries"
+    },
+    "GetReconLineItems": {
+      "Path": "invoices/{0}/lineitems",
+      "Parameters": {
+        "Provider": "provider",
+        "InvoiceLineItemType": "invoiceLineItemType",
+        "CurrencyCode": "currencyCode",
+        "Period": "period",
+        "Size": "size",
+        "SeekOperation": "seekoperation"
+      },
+      "AdditionalHeaders": {
+        "ContinuationToken": "MS-ContinuationToken"
+      }
     },
     "GetCustomerBillingProfile": {
       "Path": "customers/{0}/profiles/billing"

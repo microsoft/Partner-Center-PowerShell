@@ -6,7 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 {
-    using System; 
+    using System;
 
     public interface IValidator<in T>
     {

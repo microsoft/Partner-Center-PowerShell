@@ -31,5 +31,16 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// <param name="invoiceLineItemType">The invoice line item type.</param>
         /// <returns>The invoice line item collection operations.</returns>
         IInvoiceLineItemCollection By(BillingProvider billingProvider, InvoiceLineItemType invoiceLineItemType);
+
+        /// <summary>
+        /// Creates an invoice line item collection operations given a billing provider and invoice line item type.
+        /// </summary>
+        /// <param name="provider">The provider type.</param>
+        /// <param name="invoiceLineItemType">The invoice line item.</param>
+        /// <param name="currencyCode">The currency code.</param>
+        /// <param name="period">The period for unbilled recon.</param>
+        /// <param name="size">The page size.</param>
+        /// <returns>The recon line item collection operations.</returns>
+        IReconLineItemCollection By(BillingProvider provider, InvoiceLineItemType invoiceLineItemType, string currencyCode, UnbilledPeriod period, int? size = null);
     }
 }

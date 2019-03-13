@@ -63,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         }
 
         /// <summary>
-        ///  Retrieves a subset of invoice line items for a specific billing provider and invoice line item type
+        /// Retrieves a subset of invoice line items for a specific billing provider and invoice line item type
         /// </summary>
         /// <param name="size">The maximum number of invoice line items to return.</param>
         /// <param name="offset">The page offset.</param>
