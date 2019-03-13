@@ -51,7 +51,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContactEmail
-The email address of the contact of the customer.
+The email address of the primary contact of the customer.
 
 ```yaml
 Type: String

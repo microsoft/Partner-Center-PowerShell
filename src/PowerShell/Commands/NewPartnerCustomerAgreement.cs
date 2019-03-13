@@ -28,9 +28,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public AgreementType AgreementType { get; set; }
 
         /// <summary>
-        /// Gets or sets the email address of the contact of the customer.
+        /// Gets or sets The email address of the primary contact of the customer.
         /// </summary>
-        [Parameter(HelpMessage = "The email address of the contact of the customer.", Mandatory = true)]
+        [Parameter(HelpMessage = "The email address of the primary contact of the customer.", Mandatory = true)]
         [ValidatePattern(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ContactEmail { get; set; }
 

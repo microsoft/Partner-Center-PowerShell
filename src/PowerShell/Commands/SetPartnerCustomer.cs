@@ -110,7 +110,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public SwitchParameter DisableValidation { get; set; }
 
         /// <summary>
-        /// Gets or sets the email address of the contact of the customer.
+        /// Gets or sets The email address of the primary contact of the customer.
         /// </summary>
         [Parameter(HelpMessage = "Email address of the contact of the customer.", Mandatory = false, ParameterSetName = "Customer")]
         [Parameter(HelpMessage = "Email address of the contact of the customer.", Mandatory = false, ParameterSetName = "CustomerObject")]
