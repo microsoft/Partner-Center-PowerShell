@@ -204,7 +204,7 @@ Accept wildcard characters: False
 ```
 
 ### -Email
-Email address of the contact at the customer.
+Email address of the contact of the customer.
 
 ```yaml
 Type: String
