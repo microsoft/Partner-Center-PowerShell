@@ -158,7 +158,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContactEmail
-The email address of the primary contact at the customer.
+The email address of the primary contact of the customer.
 
 ```yaml
 Type: String
@@ -173,7 +173,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContactFirstName
-The first name of the primary contact at the customer.
+The first name of the primary contact of the customer.
 
 ```yaml
 Type: String
@@ -188,7 +188,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContactLastName
-The last name of the primary contact at the customer.
+The last name of the primary contact of the customer.
 
 ```yaml
 Type: String
@@ -203,7 +203,7 @@ Accept wildcard characters: False
 ```
 
 ### -ContactPhoneNumber
-The phone number of the primary contact at the customer.
+The phone number of the primary contact of the customer.
 
 ```yaml
 Type: String
