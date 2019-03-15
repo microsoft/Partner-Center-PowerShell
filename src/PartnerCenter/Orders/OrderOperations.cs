@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.Orders
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
@@ -32,6 +33,11 @@ namespace Microsoft.Store.PartnerCenter.Orders
         }
 
         /// <summary>
+        /// Gets line item collection operations.
+        /// </summary>
+        public IOrderLineItemCollection OrderLineItems => new OrderLineItemCollectionOperations(Partner, Context.Item1, Context.Item2);
+
+        /// <summary>
         /// Gets the order provisioning status operations.
         /// </summary>
         public IOrderProvisioningStatus ProvisioningStatus => new OrderProvisioningStatusOperations(Partner, Context.Item1, Context.Item2);
@@ -43,14 +49,34 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// <returns>The customer order.</returns>
         public async Task<Order> GetAsync(CancellationToken cancellationToken = default)
         {
+            return await GetAsync(false, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the order information.
+        /// </summary>
+        /// <param name="includePrice">A flag indicating whether to include pricing details in the order information or not.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The order information including pricing details (based on access permissions) when requested.</returns>
+        public async Task<Order> GetAsync(bool includePrice, CancellationToken cancellationToken = default)
+        {
+            IDictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {
+                    PartnerService.Instance.Configuration.Apis.GetOrder.Parameters.IncludePrice,
+                    includePrice.ToString(CultureInfo.InvariantCulture)
+                }
+            };
+
             return await Partner.ServiceClient.GetAsync<Order>(
                 new Uri(
                     string.Format(
                         CultureInfo.InvariantCulture,
                         $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrder.Path}",
-                        Context.Item1, 
+                        Context.Item1,
                         Context.Item2),
                     UriKind.Relative),
+                parameters,
                 cancellationToken).ConfigureAwait(false);
         }
 

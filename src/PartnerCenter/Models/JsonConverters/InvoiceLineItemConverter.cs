@@ -71,10 +71,6 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
                     {
                         lineItem = new UsageBasedLineItem();
                     }
-                    else if (billingProvider == BillingProvider.AzureDataMarket)
-                    {
-                        lineItem = new AzureDataMarketLineItem();
-                    }
                     else if (billingProvider == BillingProvider.Office)
                     {
                         lineItem = new LicenseBasedLineItem();
@@ -95,13 +91,9 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
                 {
                     lineItem = new DailyUsageLineItem();
                 }
-                else if (billingProvider == BillingProvider.AzureDataMarket)
-                {
-                    lineItem = new AzureDataMarketDailyUsageLineItem();
-                }
                 else if (billingProvider == BillingProvider.External)
                 {
-                    lineItem = new DailyRatedUsageReconLineItem();
+                    lineItem = new DailyRatedUsageLineItem();
                 }
             }
 

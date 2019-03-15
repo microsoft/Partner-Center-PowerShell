@@ -38,6 +38,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
+        /// Gets or sets a flag indicating whether to include pricing details in the order information.
+        /// </summary>
+        [Parameter(HelpMessage = "A flag indicating whether to include pricing details in the order information.", Mandatory = false)]
+        public SwitchParameter IncludePrice { get; set; }
+
+        /// <summary>
         /// Gets or sets the optional order identifier.
         /// </summary>
         /// <remarks>
@@ -75,11 +81,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private void GetCustomerOrder(string customerId, string orderId)
         {
             Order order;
+            bool includePrice = IncludePrice.ToBool();
 
             customerId.AssertNotEmpty(nameof(customerId));
             orderId.AssertNotEmpty(nameof(orderId));
 
-            order = Partner.Customers.ById(customerId).Orders.ById(orderId).GetAsync().GetAwaiter().GetResult();
+            order = Partner.Customers.ById(customerId).Orders.ById(orderId).GetAsync(includePrice).GetAwaiter().GetResult();
 
             WriteObject(new PSOrder(order));
         }
@@ -95,16 +102,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private void GetCustomerOrders(string customerId, BillingCycleType? billingCycle)
         {
             IEnumerable<Order> orders;
+            bool includePrice = IncludePrice.ToBool();
 
             customerId.AssertNotEmpty(nameof(customerId));
 
             if (billingCycle.HasValue)
             {
-                orders = Partner.Customers.ById(customerId).Orders.ByBillingCycleType(billingCycle.Value).GetAsync().GetAwaiter().GetResult().Items;
+                orders = Partner.Customers.ById(customerId).Orders.ByBillingCycleType(billingCycle.Value).GetAsync(includePrice).GetAwaiter().GetResult().Items;
             }
             else
             {
-                orders = Partner.Customers.ById(customerId).Orders.GetAsync().GetAwaiter().GetResult().Items;
+                orders = Partner.Customers.ById(customerId).Orders.GetAsync(includePrice).GetAwaiter().GetResult().Items;
             }
 
             WriteObject(orders.Select(o => new PSOrder(o)), true);

@@ -31,22 +31,17 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         Azure,
 
         /// <summary>
-        /// Bill is provided by Azure Data Market.
-        /// </summary>
-        AzureDataMarket,
-
-        /// <summary>
         /// Bill is provided for one time purchases.
         /// </summary>
         OneTime,
 
         /// <summary>
-        /// Indicates that the provider is third party       
+        /// Indicates that the provider is marketplace   
         /// </summary>
         External,
 
         /// <summary>
-        /// Indicates that the provider is both first party and third party
+        /// Indicates that the provider is both first party and marketplace
         /// </summary>
         All
     }

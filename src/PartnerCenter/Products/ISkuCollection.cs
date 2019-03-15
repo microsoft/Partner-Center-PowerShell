@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.Products
     /// <summary>
     /// Holds operations that can be performed on SKUs.
     /// </summary>
-    public interface ISkuCollection : IPartnerComponent<Tuple<string, string>>, IEntitySelector<ISku>, IEntireEntityCollectionRetrievalOperations<Sku, ResourceCollection<Sku>>
+    public interface ISkuCollection : IPartnerComponent<Tuple<string, string>>, IEntitySelector<string, ISku>, IEntireEntityCollectionRetrievalOperations<Sku, ResourceCollection<Sku>>
     {
         /// <summary>
         /// Gets the operations that can be applied on skus that belong to a segment.

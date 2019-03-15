@@ -22,6 +22,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         }
 
         /// <summary>
+        /// Gets or sets the friendly name for the result contract (subscription).
+        /// </summary>
+        public string FriendlyName { get; set; }
+
+        /// <summary>
         /// Gets or sets the line item number.
         /// </summary>
         public int LineItemNumber { get; set; }
@@ -32,25 +37,10 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         public string OfferId { get; set; }
 
         /// <summary>
-        /// Gets or sets the resulting subscription identifier.
-        /// </summary>
-        public string SubscriptionId { get; set; }
-
-        /// <summary>
         /// Gets or sets the parent subscription identifier.
         /// This parameter should only be set for add-on offer purchase. This applies to Order updates only.
         /// </summary>
         public string ParentSubscriptionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the friendly name for the result contract (subscription).
-        /// </summary>
-        public string FriendlyName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the product quantity.
-        /// </summary>
-        public int Quantity { get; set; }
 
         /// <summary>
         /// Gets or sets the partner identifier on record.
@@ -58,8 +48,36 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         public string PartnerIdOnRecord { get; set; }
 
         /// <summary>
+        /// Gets or sets the total price for the order.
+        /// </summary>
+        /// <remarks>
+        /// This information will not be returned unless explicitly requested. 
+        /// </remarks>
+        public Pricing Pricing { get; set; }
+        
+        /// <summary>
         /// Gets or sets the provisioning context for the offer.
         /// </summary>
         public Dictionary<string, string> ProvisioningContext { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the product quantity.
+        /// </summary>
+        public int Quantity { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the resulting subscription identifier.
+        /// </summary>
+        public string SubscriptionId { get; set; }
+
+        /// <summary>
+        /// Gets the term duration.
+        /// </summary>
+        public string TermDuration { get; private set; }
+
+        /// <summary>
+        /// Gets the transaction type.
+        /// </summary>
+        public string TransactionType { get; private set; }
     }
 }

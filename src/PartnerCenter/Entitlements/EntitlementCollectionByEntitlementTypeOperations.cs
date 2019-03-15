@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.Entitlements
         /// Initializes a new instance of the <see cref="EntitlementCollectionByEntitlementTypeOperations" /> class.
         /// </summary>
         /// <param name="rootPartnerOperations">The root partner operations instance.</param>
-        /// <param name="customerId">The customer id.</param>
+        /// <param name="customerId">The customer identifier.</param>
         /// <param name="entitlementType">The entitlement type.</param>
         public EntitlementCollectionByEntitlementTypeOperations(IPartner rootPartnerOperations, string customerId, string entitlementType)
           : base(rootPartnerOperations, new Tuple<string, string>(customerId, entitlementType))

@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.Carts
     /// <summary>
     /// Encapsulates a customer cart behavior.
     /// </summary>
-    public interface ICartCollection : IPartnerComponent<string>, IEntityCreateOperations<Cart, Cart>, IEntitySelector<ICart>
+    public interface ICartCollection : IPartnerComponent<string>, IEntityCreateOperations<Cart, Cart>, IEntitySelector<string, ICart>
     {
     }
 }

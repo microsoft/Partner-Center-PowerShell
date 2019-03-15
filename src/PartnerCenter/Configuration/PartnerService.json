@@ -363,6 +363,9 @@
     "GetCustomerServiceCostLineItems": {
       "Path": "customers/{0}/servicecosts/{1}/lineitems"
     },
+    "GetActivationLinksByLineItemNumber": {
+      "Path": "customers/{0}/orders/{1}/lineitems/{2}/activationlinks"
+    },
     "GetCustomerQualification": {
       "Path": "customers/{0}/qualification"
     },
@@ -403,16 +406,23 @@
       "Path": "profiles/support"
     },
     "GetOrders": {
-      "Path": "customers/{0}/orders"
+      "Path": "customers/{0}/orders",
+      "Parameters": {
+        "IncludePrice": "include_price"
+      }
     },
     "GetOrdersByBillingCyleType": {
       "Path": "customers/{0}/orders",
       "Parameters": {
-        "BillingType": "billingType"
+        "BillingType": "billingType",
+        "IncludePrice": "include_price"
       }
     },
     "GetOrder": {
-      "Path": "customers/{0}/orders/{1}"
+      "Path": "customers/{0}/orders/{1}",
+      "Parameters": {
+        "IncludePrice": "include_price"
+      }
     },
     "UpdateOrder": {
       "Path": "customers/{0}/orders/{1}"

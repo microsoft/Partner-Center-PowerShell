@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
     /// <summary>
     /// Represents the operations that can be done on the partner's configuration policies.
     /// </summary>
-    public interface IConfigurationPolicyCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<ConfigurationPolicy, ResourceCollection<ConfigurationPolicy>>, IEntityCreateOperations<ConfigurationPolicy, ConfigurationPolicy>, IEntitySelector<IConfigurationPolicy>
+    public interface IConfigurationPolicyCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<ConfigurationPolicy, ResourceCollection<ConfigurationPolicy>>, IEntityCreateOperations<ConfigurationPolicy, ConfigurationPolicy>, IEntitySelector<string, IConfigurationPolicy>
     {
     }
 }

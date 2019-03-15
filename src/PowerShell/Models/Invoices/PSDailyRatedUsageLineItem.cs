@@ -13,19 +13,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
     /// <summary>
     /// Represents unbilled, billed recon line items for daily rated usage.
     /// </summary>
-    public sealed class PSDailyRatedUsageReconLineItem : PSInvoiceLineItem
+    public sealed class PSDailyRatedUsageLineItem : PSInvoiceLineItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PSDailyRatedUsageReconLineItem" /> class.
+        /// Initializes a new instance of the <see cref="PSDailyRatedUsageLineItem" /> class.
         /// </summary>
-        public PSDailyRatedUsageReconLineItem()
+        public PSDailyRatedUsageLineItem()
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PSDailyRatedUsageReconLineItem" /> class.
+        /// Initializes a new instance of the <see cref="PSDailyRatedUsageLineItem" /> class.
         /// </summary>
         /// <param name="lineItem">The base line item for this instance.</param>
-        public PSDailyRatedUsageReconLineItem(DailyRatedUsageReconLineItem lineItem)
+        public PSDailyRatedUsageLineItem(DailyRatedUsageLineItem lineItem)
         {
             this.CopyFrom(lineItem);
         }

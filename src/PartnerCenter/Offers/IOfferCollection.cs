@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.Offers
     /// <summary>
     /// Represents the operations that can be performed on offers.
     /// </summary>
-    public interface IOfferCollection : IPartnerComponent<string>, IEntityCollectionRetrievalOperations<Offer, ResourceCollection<Offer>>, IEntitySelector<IOffer>
+    public interface IOfferCollection : IPartnerComponent<string>, IEntityCollectionRetrievalOperations<Offer, ResourceCollection<Offer>>, IEntitySelector<string, IOffer>
     {
         /// <summary>
         /// Retrieves the operations that can be applied on offers that belong to an offer category.

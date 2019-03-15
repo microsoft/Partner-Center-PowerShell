@@ -34,10 +34,13 @@
   * Added the AlternateId property to the reference order object
 * Invoice
   * Added the ability to download the tax receipt
+  * Removed Azure Data Market billing provider type and models because this is no longer supported
 * Orders
+  * Added the ability to include pricing details when requesting order information
   * Addressed an issue with requesting an order by the billing cycle
 * Products
   * Corrected an issue with requesting products by country, target view, and target segment
+  * Removed the SKU download operations. No commands where impacted by this change
 * Users
   * Corrected an issue with performing a query for users from a customer
 

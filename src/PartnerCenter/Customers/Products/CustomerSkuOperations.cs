@@ -25,11 +25,6 @@ namespace Microsoft.Store.PartnerCenter.Customers.Products
         private readonly Lazy<IAvailabilityCollection> availabilities;
 
         /// <summary>
-        /// Provides the SKU download options operations.
-        /// </summary>
-        private readonly Lazy<ISkuDownloadOptions> downloadOptions;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CustomerSkuOperations" /> class.
         /// </summary>
         /// <param name="rootPartnerOperations">The root partner operations instance.</param>
@@ -44,18 +39,12 @@ namespace Microsoft.Store.PartnerCenter.Customers.Products
             skuId.AssertNotEmpty(nameof(skuId));
 
             availabilities = new Lazy<IAvailabilityCollection>(() => new CustomerAvailabilityCollectionOperations(Partner, customerId, productId, skuId));
-            downloadOptions = new Lazy<ISkuDownloadOptions>(() => new CustomerSkuDownloadOptionsOperations(Partner, customerId, productId, skuId));
         }
 
         /// <summary>
         /// Gets the operations for the current SKU's availabilities.
         /// </summary>
         public IAvailabilityCollection Availabilities => availabilities.Value;
-
-        /// <summary>
-        /// Gets the operations for the current SKU's download options.
-        /// </summary>
-        public ISkuDownloadOptions DownloadOptions => downloadOptions.Value;
 
         /// <summary>
         /// Gets the SKU information.

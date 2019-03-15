@@ -2,7 +2,7 @@
 <package>
 <metadata>
   <id>PartnerCenter.NetCore</id>
-  <version>1.5.1903.1</version>
+  <version>1.5.1903.2</version>
   <authors>Microsoft Corporation</authors>
   <owners>Microsoft</owners>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>

@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.Products
     /// <summary>
     /// Holds operations that can be performed on availabilities.
     /// </summary>
-    public interface IAvailabilityCollection : IPartnerComponent<Tuple<string, string, string>>, IEntireEntityCollectionRetrievalOperations<Availability, ResourceCollection<Availability>>, IEntitySelector<IAvailability>
+    public interface IAvailabilityCollection : IPartnerComponent<Tuple<string, string, string>>, IEntireEntityCollectionRetrievalOperations<Availability, ResourceCollection<Availability>>, IEntitySelector<string, IAvailability>
     {
         /// <summary>
         /// Gets the operations that can be applied on availabilities filtered by a specific target segment.

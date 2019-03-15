@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     /// <summary>
     /// Represents the operations that can be done on the partner's invoices.
     /// </summary>
-    public interface IInvoiceCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Invoice, ResourceCollection<Invoice>>, IEntitySelector<IInvoice>
+    public interface IInvoiceCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Invoice, ResourceCollection<Invoice>>, IEntitySelector<string, IInvoice>
     {
         /// <summary>
         /// Gets an estimates operations.

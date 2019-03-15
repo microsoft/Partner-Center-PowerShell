@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.Orders
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
@@ -94,6 +95,34 @@ namespace Microsoft.Store.PartnerCenter.Orders
                         $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrders.Path}",
                         Context),
                     UriKind.Relative),
+                new ResourceCollectionConverter<Order>(),
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets a collection of orders.
+        /// </summary>
+        /// <param name="includePrice">A flag indicating whether to include pricing details in the order information or not.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The collection of orders.</returns>
+        public async Task<ResourceCollection<Order>> GetAsync(bool includePrice, CancellationToken cancellationToken = default)
+        {
+            IDictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {
+                    PartnerService.Instance.Configuration.Apis.GetOrders.Parameters.IncludePrice,
+                    includePrice.ToString(CultureInfo.InvariantCulture)
+                }
+            };
+
+            return await Partner.ServiceClient.GetAsync<ResourceCollection<Order>>(
+                new Uri(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrders.Path}",
+                        Context),
+                    UriKind.Relative),
+                parameters,
                 new ResourceCollectionConverter<Order>(),
                 cancellationToken).ConfigureAwait(false);
         }

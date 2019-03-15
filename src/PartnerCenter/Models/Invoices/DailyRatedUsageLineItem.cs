@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DailyRatedUsageReconLineItem.cs" company="Microsoft">
+// <copyright file="DailyRatedUsageLineItem.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -7,11 +7,12 @@
 namespace Microsoft.Store.PartnerCenter.Models.Invoices
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Represents unbilled, billed recon line items for daily rated usage.
     /// </summary>
-    public sealed class DailyRatedUsageReconLineItem : InvoiceLineItem
+    public sealed class DailyRatedUsageLineItem : InvoiceLineItem
     {
         /// <summary>
         /// Gets or sets the partner Id.
@@ -161,7 +162,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         /// <summary>
         /// Gets or sets the customer added tags. For more information, see Organize your Azure resources with tags.
         /// </summary>
-        public string Tags { get; set; }
+        public IDictionary<string, string> Tags { get; private set; }
 
         /// <summary>
         /// Gets or sets the service-specific metadata. For example, an image type for a virtual machine.
