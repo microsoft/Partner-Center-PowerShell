@@ -199,6 +199,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         /// <summary>
         /// Increase credit limit
         /// </summary>
-        IncreaseCreditLimit = 36
+        IncreaseCreditLimit = 36,
+
+        /// <summary>
+        /// Create invoice
+        /// </summary>
+        CreateInvoice = 37
     }
 }

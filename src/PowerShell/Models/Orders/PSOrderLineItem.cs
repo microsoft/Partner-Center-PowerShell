@@ -63,6 +63,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         public string ParentSubscriptionId { get; set; }
 
         /// <summary>
+        /// Gets or sets the pricing for the order.
+        /// </summary>
+        /// <remarks>
+        /// This information will not be returned unless explicitly requested. 
+        /// </remarks>
+        public Pricing Pricing { get; set; }
+
+        /// <summary>
         /// Gets the provisioning context for the offer.
         /// </summary>
         public Hashtable ProvisioningContext { get; }
@@ -76,6 +84,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         /// Gets or sets the resulting subscription identifier.
         /// </summary>
         public string SubscriptionId { get; set; }
+
+        /// <summary>
+        /// Gets the term duration.
+        /// </summary>
+        public string TermDuration { get; private set; }
+
+        /// <summary>
+        /// Gets the transaction type.
+        /// </summary>
+        public string TransactionType { get; private set; }
 
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="OrderLineItem" /> to an instance of <see cref="PSOrderLineItem" />. 

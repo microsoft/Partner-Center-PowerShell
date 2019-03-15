@@ -41,11 +41,26 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// <returns>The customer orders.</returns>
         public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default)
         {
+            return await GetAsync(false, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets all customer orders.
+        /// </summary>
+        /// <param name="includePrice">A flag indicating whether to include pricing details in the order information or not.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The customer orders.</returns>
+        public async Task<ResourceCollection<Order>> GetAsync(bool includePrice, CancellationToken cancellationToken = default)
+        {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {
                     PartnerService.Instance.Configuration.Apis.GetOrdersByBillingCyleType.Parameters.BillingType,
                     Context.Item2.ToString()
+                },
+                {
+                    PartnerService.Instance.Configuration.Apis.GetOrdersByBillingCyleType.Parameters.IncludePrice,
+                    includePrice.ToString(CultureInfo.InvariantCulture)
                 }
             };
 

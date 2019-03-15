@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.Products
     /// <summary>
     /// Holds operations that can be performed on products from a given country.
     /// </summary>
-    public interface IProductCollectionByCountry : IPartnerComponent<string>, IEntitySelector<IProduct>
+    public interface IProductCollectionByCountry : IPartnerComponent<string>, IEntitySelector<string, IProduct>
     {
 
         /// <summary>

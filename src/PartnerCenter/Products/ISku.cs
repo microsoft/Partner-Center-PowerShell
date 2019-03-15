@@ -19,10 +19,5 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// Gets the operations for the current SKU's availabilities.
         /// </summary>
         IAvailabilityCollection Availabilities { get; }
-
-        /// <summary>
-        /// Gets the operations for the current SKU's download options.
-        /// </summary>
-        ISkuDownloadOptions DownloadOptions { get; }
     }
 }

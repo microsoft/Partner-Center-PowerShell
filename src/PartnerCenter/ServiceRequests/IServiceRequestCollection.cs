@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.ServiceRequests
     /// <summary>
     /// Represents the behavior of service requests.
     /// </summary>
-    public interface IServiceRequestCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<ServiceRequest, ResourceCollection<ServiceRequest>>, IEntitySelector<IServiceRequest>
+    public interface IServiceRequestCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<ServiceRequest, ResourceCollection<ServiceRequest>>, IEntitySelector<string, IServiceRequest>
     {
         /// <summary>
         /// Queries service requests.

@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
     /// <summary>
     /// Represents the behavior of directory role collection.
     /// </summary>
-    public interface IDirectoryRoleCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<DirectoryRole, ResourceCollection<DirectoryRole>>, IEntitySelector<IDirectoryRole>
+    public interface IDirectoryRoleCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<DirectoryRole, ResourceCollection<DirectoryRole>>, IEntitySelector<string, IDirectoryRole>
     {
     }
 }

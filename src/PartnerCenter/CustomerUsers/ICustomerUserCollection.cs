@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerUsers
     /// <summary>
     /// Represents the behavior of the customers users.
     /// </summary>
-    public interface ICustomerUserCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<CustomerUser, SeekBasedResourceCollection<CustomerUser>>, IEntityCreateOperations<CustomerUser, CustomerUser>, IEntitySelector<ICustomerUser>
+    public interface ICustomerUserCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<CustomerUser, SeekBasedResourceCollection<CustomerUser>>, IEntityCreateOperations<CustomerUser, CustomerUser>, IEntitySelector<string, ICustomerUser>
     {
         /// <summary>
         /// Queries users of customer.

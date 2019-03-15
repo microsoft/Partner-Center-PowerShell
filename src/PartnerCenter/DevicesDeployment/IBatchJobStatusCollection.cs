@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
     /// <summary>
     /// Represents the operations that can be done on the partner's batch upload status collection.
     /// </summary>
-    public interface IBatchJobStatusCollection : IPartnerComponent<string>, IEntitySelector<IBatchJobStatus>
+    public interface IBatchJobStatusCollection : IPartnerComponent<string>, IEntitySelector<string, IBatchJobStatus>
     {
     }
 }

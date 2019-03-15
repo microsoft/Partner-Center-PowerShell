@@ -46,13 +46,26 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         public OrderLinks Links { get; set; }
 
         /// <summary>
+        /// Gets or sets the reference customer identifier.
+        /// </summary>
+        public string ReferenceCustomerId { get; set; }
+
+        /// <summary>
         /// Gets or sets the order status.
         /// </summary>
         public string Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the reference customer identifier.
+        /// Gets the total price for the order.
         /// </summary>
-        public string ReferenceCustomerId { get; set; }
+        /// <remarks>
+        /// This information will not be returned unless explicitly requested. 
+        /// </remarks>
+        public double? TotalPrice { get; private set; }
+
+        /// <summary>
+        /// Gets the transaction type.
+        /// </summary>
+        public string TransactionType { get; private set; }
     }
 }

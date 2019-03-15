@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
     /// <summary>
     /// Represents the operations that can be done on the partner's devices.
     /// </summary>
-    public interface IDeviceCollection : IPartnerComponent<Tuple<string, string>>, IEntireEntityCollectionRetrievalOperations<Device, ResourceCollection<Device>>, IEntityCreateOperations<IEnumerable<Device>, string>, IEntitySelector<IDevice>
+    public interface IDeviceCollection : IPartnerComponent<Tuple<string, string>>, IEntireEntityCollectionRetrievalOperations<Device, ResourceCollection<Device>>, IEntityCreateOperations<IEnumerable<Device>, string>, IEntitySelector<string, IDevice>
     {
     }
 }

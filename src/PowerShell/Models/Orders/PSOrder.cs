@@ -72,6 +72,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         public string Status { get; set; }
 
         /// <summary>
+        /// Gets the total price for the order.
+        /// </summary>
+        /// <remarks>
+        /// This information will not be returned unless explicitly requested. 
+        /// </remarks>
+        public double? TotalPrice { get; private set; }
+
+        /// <summary>
+        /// Gets the transaction type.
+        /// </summary>
+        public string TransactionType { get; private set; }
+
+        /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="Order"/> to an instance of <see cref="PSOrder" />. 
         /// </summary>
         /// <param name="order">The order being cloned.</param>

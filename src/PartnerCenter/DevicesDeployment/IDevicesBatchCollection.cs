@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.DevicesDeployment
     /// <summary>
     /// Represents the operations that can be done on the partner's devices batches.
     /// </summary>
-    public interface IDevicesBatchCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<DeviceBatch, ResourceCollection<DeviceBatch>>, IEntitySelector<IDevicesBatch>, IEntityCreateOperations<DeviceBatchCreationRequest, string>
+    public interface IDevicesBatchCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<DeviceBatch, ResourceCollection<DeviceBatch>>, IEntitySelector<string, IDevicesBatch>, IEntityCreateOperations<DeviceBatchCreationRequest, string>
     {
     }
 }

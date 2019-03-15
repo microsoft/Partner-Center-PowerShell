@@ -8,6 +8,22 @@
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests</AssemblyName>
 
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests</RootNamespace>
+
+    <Version>1.5.1903.2</Version>
+
+    <Authors>Microsoft</Authors>
+
+    <Company>Microsoft Corporation</Company>
+
+    <Product>Microsoft Partner Center PowerShell</Product>
+
+    <Description>Unit test for the Microsoft Partner Center PowerShell module.</Description>
+
+    <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
+
+    <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
+
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

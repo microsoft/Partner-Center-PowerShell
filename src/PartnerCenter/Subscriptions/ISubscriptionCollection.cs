@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
     /// <summary>
     /// Represents the behavior of the customer subscriptions as a whole.
     /// </summary>
-    public interface ISubscriptionCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Subscription, ResourceCollection<Subscription>>, IEntitySelector<ISubscription>
+    public interface ISubscriptionCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<Subscription, ResourceCollection<Subscription>>, IEntitySelector<string, ISubscription>
     {
         /// <summary>
         /// Groups customer subscriptions by an order.

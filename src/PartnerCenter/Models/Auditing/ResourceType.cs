@@ -46,7 +46,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         License = 5,
 
         /// <summary>
-        /// Third party add-on Resource
+        /// Third party add-on resource
         /// </summary>
         ThirdPartyAddOn = 6,
 
@@ -98,6 +98,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         /// <summary>
         /// Credit Limit Resource
         /// </summary>
-        CreditLimit = 16
+        CreditLimit = 16,
+
+        /// <summary>
+        /// Invoice Resource
+        /// </summary>
+        Invoice = 17
     }
 }

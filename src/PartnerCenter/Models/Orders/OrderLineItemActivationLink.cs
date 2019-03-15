@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="OrderLinks.cs" company="Microsoft">
+// <copyright file="OrderLineItemActivationLink.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -7,18 +7,18 @@
 namespace Microsoft.Store.PartnerCenter.Models.Orders
 {
     /// <summary>
-    /// Bundles the links for an order.
+    /// Represents the activation link for the order line item.
     /// </summary>
-    public sealed class OrderLinks : StandardResourceLinks
+    public sealed class OrderLineItemActivationLink
     {
         /// <summary>
-        /// Gets or sets the link to the patch operation. 
+        /// Gets or sets the line item number.
         /// </summary>
-        public Link PatchOperation { get; set; }
+        public int LineItemNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the link to the provisioning status of an order.
+        /// Gets or sets the activation link.
         /// </summary>
-        public Link ProvisioningStatus { get; set; }
+        public Link Link { get; set; }
     }
 }

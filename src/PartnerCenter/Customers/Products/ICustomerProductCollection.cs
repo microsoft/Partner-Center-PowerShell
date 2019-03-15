@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.Customers.Products
     /// <summary>
     /// Holds operations that can be performed on products that apply to a given customer.
     /// </summary>
-    public interface ICustomerProductCollection : IPartnerComponent<string>, IEntitySelector<IProduct>
+    public interface ICustomerProductCollection : IPartnerComponent<string>, IEntitySelector<string, IProduct>
     {
         /// <summary>
         /// Gets the operations that can be applied on products in a given catalog view and that apply to a given customer.

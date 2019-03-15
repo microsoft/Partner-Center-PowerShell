@@ -15,7 +15,7 @@ Gets the line items for the specified invoice.
 ## SYNTAX
 
 ```powershell
-Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> -InvoiceId <String>
+Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> [-CurrencyCode <String>] -InvoiceId <String>
  -LineItemType <InvoiceLineItemType> [<CommonParameters>]
 ```
 
@@ -40,9 +40,24 @@ The billing provide for the line items.
 Type: BillingProvider
 Parameter Sets: (All)
 Aliases:
-Accepted values: Azure, AzureDataMarket, Office, OneTime
+Accepted values: Azure, Office, OneTime, External
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CurrencyCode
+The currency code for the unbilled line items.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

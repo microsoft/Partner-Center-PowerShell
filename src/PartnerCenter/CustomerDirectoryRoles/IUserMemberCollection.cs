@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.CustomerDirectoryRoles
     /// <summary>
     /// Represents the behavior of user member collection.
     /// </summary>
-    public interface IUserMemberCollection : IPartnerComponent<Tuple<string, string>>, IEntityCreateOperations<UserMember, UserMember>, IEntireEntityCollectionRetrievalOperations<UserMember, SeekBasedResourceCollection<UserMember>>, IEntitySelector<IUserMember>
+    public interface IUserMemberCollection : IPartnerComponent<Tuple<string, string>>, IEntityCreateOperations<UserMember, UserMember>, IEntireEntityCollectionRetrievalOperations<UserMember, SeekBasedResourceCollection<UserMember>>, IEntitySelector<string, IUserMember>
     {
         /// <summary>
         /// Queries the user members of a customer directory role.

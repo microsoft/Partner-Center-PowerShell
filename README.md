@@ -1,6 +1,6 @@
 # Microsoft Partner Center PowerShell
 
-![Build status](https://dev.azure.com/partnercenter/powershell/_apis/build/status/partner-center-powershell-CI) ![Deployment status](https://vsrm.dev.azure.com/partnercenter/_apis/public/Release/badge/330fa980-0fb5-4550-8242-f162a4c6d7c7/1/1)
+![Build status](https://dev.azure.com/partnercenter/powershell/_apis/build/status/partner-center-powershell-CI) ![Deployment status](https://vsrm.dev.azure.com/partnercenter/_apis/public/Release/badge/330fa980-0fb5-4550-8242-f162a4c6d7c7/4/6)
 
 [![PartnerCenter](https://img.shields.io/powershellgallery/v/PartnerCenter.svg?style=flat-square&label=PartnerCenter)](https://www.powershellgallery.com/packages/PartnerCenter/) [![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
@@ -74,7 +74,7 @@ Connect-PartnerCenter -AccessToken $token.AccessToken -ApplicationId '<AAD-AppId
 
 #### Sovereign Cloud
 
-To log into a specific cloud (_ChinaCloud_, _GlobalCloud_, _GermanCloud_, _USGovernment_), use the `Environment` parameter:
+To log into a specific cloud (_ChinaCloud_, _GlobalCloud_, _GermanCloud_, _USGovernment_, _PPE_), use the `Environment` parameter:
 
 ```powershell
 # Log into a specific cloud - in this case, the German cloud

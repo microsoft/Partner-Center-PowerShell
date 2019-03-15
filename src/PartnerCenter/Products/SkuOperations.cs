@@ -24,10 +24,6 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// </summary>
         private readonly Lazy<IAvailabilityCollection> availabilities;
 
-        /// <summary>Provides access to the SKU download options operations.
-        /// </summary>
-        private readonly Lazy<ISkuDownloadOptions> downloadOptions;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SkuOperations" /> class.
         /// </summary>
@@ -43,7 +39,6 @@ namespace Microsoft.Store.PartnerCenter.Products
             country.AssertNotEmpty(nameof(country));
 
             availabilities = new Lazy<IAvailabilityCollection>(() => new AvailabilityCollectionOperations(rootPartnerOperations, productId, skuId, country));
-            downloadOptions = new Lazy<ISkuDownloadOptions>(() => new SkuDownloadOptionsOperations(rootPartnerOperations, productId, skuId, country));
         }
 
         /// <summary>
@@ -51,10 +46,6 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// </summary>
         public IAvailabilityCollection Availabilities => availabilities.Value;
 
-        /// <summary>
-        /// Gets the operations for the current SKU's download options.
-        /// </summary>
-        public ISkuDownloadOptions DownloadOptions => downloadOptions.Value;
 
         /// <summary>
         /// Gets the information for the SKU.

@@ -16,17 +16,18 @@ Gets either a specific order or a list of order for the specified customer.
 
 ### ByBillingCycle
 ```powershell
-Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [-IncludePrice]
+ [<CommonParameters>]
 ```
 
 ### ByCustomerId
 ```powershell
-Get-PartnerCustomerOrder -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerOrder -CustomerId <String> [-IncludePrice] [<CommonParameters>]
 ```
 
 ### ByOrderId
 ```powershell
-Get-PartnerCustomerOrder -CustomerId <String> -OrderId <String> [<CommonParameters>]
+Get-PartnerCustomerOrder -CustomerId <String> [-IncludePrice] -OrderId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -75,6 +76,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludePrice
+A flag indicating whether to include pricing details in the order information.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
