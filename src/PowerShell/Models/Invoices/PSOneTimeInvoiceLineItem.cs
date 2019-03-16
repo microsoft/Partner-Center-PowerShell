@@ -31,6 +31,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         }
 
         /// <summary>
+        /// Gets or sets the alternate identifier (quote identifier).
+        /// </summary>
+        public string AlternateId { get; set; }
+
+        /// <summary>
         /// Gets or sets the availability unique identifier.
         /// </summary>
         public string AvailabilityId { get; set; }
@@ -39,6 +44,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// Gets the billing provider.
         /// </summary>
         public override BillingProvider BillingProvider => BillingProvider.OneTime;
+
+        /// <summary>
+        /// Gets or sets the charge end date associated with this purchase.
+        /// </summary>
+        public DateTime ChargeEndDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the charge start date associated with this purchase.
+        /// </summary>
+        public DateTime ChargeStartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the type of charge.
@@ -78,6 +93,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// Gets or sets the discount details associated with this purchase.
         /// </summary>
         public string DiscountDetails { get; set; }
+
+        /// <summary>
+        /// Gets or sets the effective unit price.
+        /// </summary>
+        public decimal EffectiveUnitPrice { get; set; }
 
         /// <summary>
         /// Gets the the type of invoice line item.
@@ -120,6 +140,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string ProductName { get; set; }
 
         /// <summary>
+        /// Gets or sets the publisher identifier associated with this purchase.
+        /// </summary>
+        public string PublisherId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the publisher name associated with this purchase.
+        /// </summary>
+        public string PublisherName { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of units associated with this line item.
         /// </summary>
         public int Quantity { get; set; }
@@ -140,6 +170,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string SkuName { get; set; }
 
         /// <summary>
+        /// Gets or sets the subscription description associated with this purchase.
+        /// </summary>
+        public string SubscriptionDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the subscription id associated with this purchase.
+        /// </summary>
+        public string SubscriptionId { get; set; }
+
+        /// <summary>
         /// Gets or sets the amount after discount.
         /// </summary>
         public decimal Subtotal { get; set; }
@@ -150,6 +190,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public decimal TaxTotal { get; set; }
 
         /// <summary>
+        /// Gets or sets the term and billing cycle associated with this purchase. 
+        /// </summary>
+        public string TermAndBillingCycle { get; set; }
+
+        /// <summary>
         /// Gets or sets the total amount after discount and tax.
         /// </summary>
         public decimal TotalForCustomer { get; set; }
@@ -158,5 +203,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// Gets or sets the unit price.
         /// </summary>
         public decimal UnitPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unit type.
+        /// </summary>
+        public string UnitType { get; set; }
     }
 }

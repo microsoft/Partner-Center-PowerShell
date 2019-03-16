@@ -6,9 +6,9 @@
 
 namespace Microsoft.Store.PartnerCenter.Orders
 {
-    using GenericOperations;
     using System.Threading;
     using System.Threading.Tasks;
+    using GenericOperations;
     using Models;
     using Models.Offers;
     using Models.Orders;

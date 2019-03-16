@@ -715,7 +715,11 @@
     "GetEntitlements": {
       "Path": "customers/{0}/entitlements",
       "Parameters": {
-        "EntitlementType": "entitlementType"
+        "EntitlementType": "entitlementType",
+        "ShowExpiry": "showExpiry"
+      },
+      "AdditionalHeaders": {
+        "Version": "version"
       }
     }
   }

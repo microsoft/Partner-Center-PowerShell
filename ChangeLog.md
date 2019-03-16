@@ -30,15 +30,40 @@
   * Added the ability to manage customer qualifications
   * Corrected issue #90 that was causing directory role operations to not function as excepted
   * Corrected issue #91 that was causing searching for a customer by domain to not function as expected
+* Carts
+  * Added the Status property to the Cart model
+  * Added the TermDuration property to the CartLineItem model
 * Entitlements
+  * Added the ability to obtain the expiration date for the entitlement (if applicable)
   * Added the AlternateId property to the reference order object
+  * Added the following properties to the Entitlement model
+    * FulfillmentState
+    * ExpiryDate
 * Invoice
   * Added the ability to download the tax receipt
+  * Added the following properties to the OneTimeInvoiceLineItem model
+    * AlternateId
+    * ChargeEndDate
+    * ChargeStartDate
+    * PublisherId
+    * PublisherName
+    * SubscriptionDescription
+    * SubscriptionId
+    * TermAndBillingCycle
+    * UnitType
   * Removed Azure Data Market billing provider type and models because this is no longer supported
 * Orders
+  * Added the ability to get the activation link for an order line item
   * Added the ability to include pricing details when requesting order information
   * Addressed an issue with requesting an order by the billing cycle
 * Products
+  * Added the following properties to the Availability model
+    * IsPurchasable
+    * IsRenewable
+    * Terms
+  * Added the following properties to the Product model
+    * IsMicrosoftProduct
+    * PublisherName
   * Corrected an issue with requesting products by country, target view, and target segment
   * Removed the SKU download operations. No commands where impacted by this change
 * Users

@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         public CartError Error { get; set; }
 
         /// <summary>
-        /// Gets or sets the friendly name for the result contract (subscription)
+        /// Gets or sets the friendly name for the result contract (subscription).
         /// </summary>
         public string FriendlyName { get; set; }
 
@@ -81,7 +81,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         public IEnumerable<KeyValuePair<ParticipantType, string>> Participants { get; set; }
 
         /// <summary>
-        /// Gets or sets a context that will be used for provisioning of the catalog item.
+        /// Gets a context that will be used for provisioning of the catalog item.
         /// </summary>
         public Hashtable ProvisioningContext { get; }
 
@@ -89,6 +89,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// Gets or sets the product quantity.
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the term duration if applicable.
+        /// </summary>
+        public string TermDuration { get; set; }
 
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="CartLineItem" /> to an instance of <see cref="PSCartLineItem" />. 

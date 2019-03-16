@@ -88,15 +88,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// <returns>All the customer orders.</returns>
         public async Task<ResourceCollection<Order>> GetAsync(CancellationToken cancellationToken = default)
         {
-            return await Partner.ServiceClient.GetAsync<ResourceCollection<Order>>(
-                new Uri(
-                    string.Format(
-                        CultureInfo.InvariantCulture,
-                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetOrders.Path}",
-                        Context),
-                    UriKind.Relative),
-                new ResourceCollectionConverter<Order>(),
-                cancellationToken).ConfigureAwait(false);
+            return await GetAsync(false, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

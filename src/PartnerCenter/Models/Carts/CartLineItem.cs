@@ -76,5 +76,10 @@ namespace Microsoft.Store.PartnerCenter.Models.Carts
         /// Gets or sets the product quantity.
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the term duration if applicable.
+        /// </summary>
+        public string TermDuration { get; set; }
     }
 }

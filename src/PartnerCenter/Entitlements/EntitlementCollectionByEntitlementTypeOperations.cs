@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.Entitlements
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
-    using GenericOperations;
     using Models;
     using Models.Entitlements;
     using Models.JsonConverters;
@@ -20,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.Entitlements
     /// <summary>
     /// Entitlement collection by entitlement type operations class.
     /// </summary>
-    internal class EntitlementCollectionByEntitlementTypeOperations : BasePartnerComponent<Tuple<string, string>>, IEntireEntityCollectionRetrievalOperations<Entitlement, ResourceCollection<Entitlement>>
+    internal class EntitlementCollectionByEntitlementTypeOperations : BasePartnerComponent<Tuple<string, string>>, IEntitlementCollectionByEntitlementType
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EntitlementCollectionByEntitlementTypeOperations" /> class.
@@ -36,17 +35,32 @@ namespace Microsoft.Store.PartnerCenter.Entitlements
         }
 
         /// <summary>
-        /// Gets entitlement collection with the given entitlement type.
+        /// Gets an entitlement collection with the given entitlement type.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The entitlement collection with the given entitlement type.</returns>
+        /// <returns>The collection of entitlements corresponding to a specific entitlement type for the customer.</returns>
         public async Task<ResourceCollection<Entitlement>> GetAsync(CancellationToken cancellationToken = default)
+        {
+            return await GetAsync(false, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets an entitlement collection with the given entitlement type.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <param name="showExpiry">A flag to indicate if the expiry date is required to be returned along with the entitlement (if applicable).</param>
+        /// <returns>The collection of entitlements corresponding to a specific entitlement type for the customer.</returns>
+        public async Task<ResourceCollection<Entitlement>> GetAsync(bool showExpiry, CancellationToken cancellationToken = default)
         {
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {
                     PartnerService.Instance.Configuration.Apis.GetEntitlements.Parameters.EntitlementType,
                     Context.Item2
+                },
+                {
+                    PartnerService.Instance.Configuration.Apis.GetEntitlements.Parameters.ShowExpiry,
+                    showExpiry.ToString(CultureInfo.InvariantCulture)
                 }
             };
 

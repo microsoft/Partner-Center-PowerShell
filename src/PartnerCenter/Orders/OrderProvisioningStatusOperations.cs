@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// Gets the order provisioning status.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The customer order.</returns>
+        /// <returns>The provisioning status for the order.</returns>
         public async Task<ResourceCollection<OrderLineItemProvisioningStatus>> GetAsync(CancellationToken cancellationToken = default)
         {
             return await Partner.ServiceClient.GetAsync<ResourceCollection<OrderLineItemProvisioningStatus>>(

@@ -22,9 +22,19 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this is a Microsoft product or not.
+        /// </summary>
+        public bool IsMicrosoftProduct { get; set; }
+
+        /// <summary>
         /// Gets or sets the product type.
         /// </summary>
         public ItemType ProductType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the publisher name.
+        /// </summary>
+        public string PublisherName { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
