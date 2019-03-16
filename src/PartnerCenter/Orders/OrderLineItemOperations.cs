@@ -9,6 +9,9 @@ namespace Microsoft.Store.PartnerCenter.Orders
     using System;
     using Extensions;
 
+    /// <summary>
+    /// Implements the available order line item operations.
+    /// </summary>
     internal class OrderLineItemOperations : BasePartnerComponent<Tuple<string, string, int>>, IOrderLineItem
     {
         /// <summary>

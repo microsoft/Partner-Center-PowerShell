@@ -6,7 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.Orders
 {
-    using System; 
+    using System;
 
     /// <summary>
     /// Represents the available order line item operations.

@@ -35,24 +35,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the id.
+        /// Gets or sets a value indicating whether this is a Microsoft product or not.
+        /// </summary>
+        public bool IsMicrosoftProduct { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier.
         /// </summary>
         public string ProductId { get; set; }
 
         /// <summary>
         /// Gets or sets the product type.
         /// </summary>
-        public ItemType ProductType { get; set; }
+        public string ProductType { get; set; }
 
         /// <summary>
-        /// Gets or sets the product type name.
+        /// Gets or sets the publisher name.
         /// </summary>
-        public string Type { get; set; }
+        public string PublisherName { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the produc type.
+        /// </summary>
+        public string Type { get; set; }
 
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="Product"/> to an instance of <see cref="PSProduct" />. 

@@ -25,7 +25,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the billing provider.
         /// </summary>
         [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true)]
-        [ValidateSet(nameof(BillingProvider.Azure), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime), nameof(BillingProvider.External))]
+        [ValidateSet(nameof(BillingProvider.Azure), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime), nameof(BillingProvider.Marketplace))]
         public BillingProvider BillingProvider { get; set; }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<InvoiceLineItem> items;
             ResourceCollection<InvoiceLineItem> lineItems;
 
-            if (BillingProvider == BillingProvider.External)
+            if (BillingProvider == BillingProvider.Marketplace)
             {
                 lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType, CurrencyCode, UnbilledPeriod.Current).GetAsync().GetAwaiter().GetResult();
             }
@@ -95,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     WriteObject(items.Select(i => new PSOneTimeInvoiceLineItem((OneTimeInvoiceLineItem)i)), true);
                 }
-                else if (BillingProvider == BillingProvider.External)
+                else if (BillingProvider == BillingProvider.Marketplace)
                 {
                     WriteObject(items.Select(i => new PSDailyRatedUsageLineItem((DailyRatedUsageLineItem)i)), true);
                 }
@@ -106,7 +106,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     WriteObject(items.Select(i => new PSDailyUsageLineItem((DailyUsageLineItem)i)), true);
                 }
-                else if (BillingProvider == BillingProvider.External)
+                else if (BillingProvider == BillingProvider.Marketplace)
                 {
                     WriteObject(items.Select(i => new PSDailyRatedUsageLineItem((DailyRatedUsageLineItem)i)), true);
                 }

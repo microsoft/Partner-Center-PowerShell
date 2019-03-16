@@ -39,7 +39,14 @@ namespace Microsoft.Store.PartnerCenter.Models.Carts
         /// </summary>
         public string LastModifiedUser { get; set; }
 
-        /// <summary>Gets or sets a collection of cart line items.</summary>
+        /// <summary>
+        /// Gets or sets a collection of cart line items.
+        /// </summary>
         public IEnumerable<CartLineItem> LineItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cart status.
+        /// </summary>
+        public string Status { get; set; }
     }
 }

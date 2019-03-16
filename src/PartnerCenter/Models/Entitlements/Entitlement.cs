@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.Models.Entitlements
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -22,6 +23,16 @@ namespace Microsoft.Store.PartnerCenter.Models.Entitlements
         /// Gets or sets entitlement type.
         /// </summary>
         public string EntitlementType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the entitlement expiry date.
+        /// </summary>
+        public DateTime? ExpiryDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fulfillment state for the current entitlement.
+        /// </summary>
+        public string FulfillmentState { get; set; }
 
         /// <summary>
         /// Gets or sets included entitlements.

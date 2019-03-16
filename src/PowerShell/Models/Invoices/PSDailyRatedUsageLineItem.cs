@@ -258,6 +258,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// <summary>
         /// Returns the billing provider
         /// </summary>
-        public override BillingProvider BillingProvider => BillingProvider.External;
+        public override BillingProvider BillingProvider => BillingProvider.Marketplace;
     }
 }

@@ -91,7 +91,7 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
                 {
                     lineItem = new DailyUsageLineItem();
                 }
-                else if (billingProvider == BillingProvider.External)
+                else if (billingProvider == BillingProvider.Marketplace)
                 {
                     lineItem = new DailyRatedUsageLineItem();
                 }

@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
     /// <summary>
     /// Order line item provisioning status.
     /// </summary>
-    public class OrderLineItemProvisioningStatus : ResourceBase
+    public sealed class OrderLineItemProvisioningStatus : ResourceBase
     {
         /// <summary>
         /// Gets or sets the line item number.

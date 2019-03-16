@@ -32,11 +32,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         }
 
         /// <summary>
-        /// Gets or sets a unique cart identifier.
-        /// </summary>
-        public string CartId { get; set; }
-
-        /// <summary>
         /// Gets or sets the creation timestamp.
         /// </summary>
         public DateTime? CreationTimestamp { get; set; }
@@ -45,6 +40,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// Gets or sets the expiration timestamp.
         /// </summary>
         public DateTime ExpirationTimestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets a unique cart identifier.
+        /// </summary>
+        public string CartId { get; set; }
 
         /// <summary>
         /// Gets or sets the last modified timestamp.
@@ -60,6 +60,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
         /// Gets or sets a collection of cart line items.
         /// </summary>
         public IEnumerable<CartLineItem> LineItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cart status.
+        /// </summary>
+        public string Status { get; set; }
 
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="Cart" /> to an instance of <see cref="PSCart" />. 
