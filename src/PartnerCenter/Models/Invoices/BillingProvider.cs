@@ -38,7 +38,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         /// <summary>
         /// Indicates that the provider is marketplace   
         /// </summary>
-        External,
+        Marketplace,
 
         /// <summary>
         /// Indicates that the provider is both first party and marketplace
