@@ -16,14 +16,14 @@ Updates the specified customer's qualification to be Education or GovernmentComm
 
 ### Customer (Default)
 ```powershell
-Set-PartnerCustomerQualification -CustomerId <String> -Qualification <CustomerQualification> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Set-PartnerCustomerQualification -CustomerId <String> -Qualification <CustomerQualification>
+ [-ValidationCode <ValidationCode>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
 ```powershell
-Set-PartnerCustomerQualification -InputObject <PSCustomer> -Qualification <CustomerQualification> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Set-PartnerCustomerQualification -InputObject <PSCustomer> -Qualification <CustomerQualification>
+ [-ValidationCode <ValidationCode>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -80,6 +80,21 @@ Aliases:
 Accepted values: Education, GovernmentCommunityCloud
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ValidationCode
+The validation code used when assigning the Government Community Cloud qualification.
+
+```yaml
+Type: ValidationCode
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

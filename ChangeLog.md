@@ -54,6 +54,7 @@
   * Removed Azure Data Market billing provider type and models because this is no longer supported
 * Orders
   * Added the ability to get the activation link for an order line item
+  * Added the ability to get the provisioning status of an order
   * Added the ability to include pricing details when requesting order information
   * Addressed an issue with requesting an order by the billing cycle
 * Products
@@ -68,6 +69,8 @@
   * Removed the SKU download operations. No commands where impacted by this change
 * Users
   * Corrected an issue with performing a query for users from a customer
+* Validations
+  * Added the ability to request validation codes used to create Government Community Cloud customers
 
 ## Version 1.5.1902.5
 

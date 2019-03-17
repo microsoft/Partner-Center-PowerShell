@@ -49,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// <summary>
         /// The period for the unbilled recon line items.
         /// </summary>
-        private readonly UnbilledPeriod period;
+        private readonly BillingPeriod period;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReconLineItemCollectionOperations"/> class.
@@ -57,11 +57,11 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// <param name="rootPartnerOperations">The partner operations.</param>
         /// <param name="invoiceId">The invoice Id.</param>
         /// <param name="billingProvider">The billing provider type.</param>
-        /// <param name="invoiceLineItemType">The invoice line item</param>
+        /// <param name="invoiceLineItemType">The invoice line item type.</param>
         /// <param name="currencyCode">The currency code.</param>
         /// <param name="period">The period for unbilled recon.</param>
         /// <param name="size">The page size.</param>
-        public ReconLineItemCollectionOperations(IPartner rootPartnerOperations, string invoiceId, BillingProvider billingProvider, InvoiceLineItemType invoiceLineItemType, string currencyCode, UnbilledPeriod period, int? size = null)
+        public ReconLineItemCollectionOperations(IPartner rootPartnerOperations, string invoiceId, BillingProvider billingProvider, InvoiceLineItemType invoiceLineItemType, string currencyCode, BillingPeriod period, int? size = null)
             : base(rootPartnerOperations, invoiceId)
         {
             invoiceId.AssertNotEmpty(nameof(invoiceId));
@@ -75,9 +75,9 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         }
 
         /// <summary>
-        /// Retrieves recon line items collection of the partner.
+        /// Gets the recon line items collection of the partner.
         /// </summary>
-        /// <param name="cancellationToken"></param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The collection of recon line items.</returns>
         public async Task<SeekBasedResourceCollection<InvoiceLineItem>> GetAsync(CancellationToken cancellationToken = default)
         {

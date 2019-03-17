@@ -1,20 +1,34 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ValidationCode.cs" company="Microsoft">
+// <copyright file="PSValidationCode.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.Models.ValidationCodes
+namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ValidationCodes
 {
+    using Common;
+    using PartnerCenter.Models.ValidationCodes;
+
     /// <summary>
     /// Represents validation codes. Used to create Government Community Cloud (GCC) accounts.
     /// </summary>
-    public sealed class ValidationCode
+    public sealed class PSValidationCode
     {
         /// <summary>
-        /// Gets or sets the objects ETag.
+        /// Initializes a new instance of the <see cref="PSValidationCode" /> class.
         /// </summary>
-        public string ETag { get; set; }
+        public PSValidationCode()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSValidationCode" /> class.
+        /// </summary>
+        /// <param name="validationCode">The validation code used to create Government Community Cloud (GCC) accounts.</param>
+        public PSValidationCode(ValidationCode validationCode)
+        {
+            this.CopyFrom(validationCode);
+        }
 
         /// <summary>
         /// Gets or sets number of maximum customer creates for this code.

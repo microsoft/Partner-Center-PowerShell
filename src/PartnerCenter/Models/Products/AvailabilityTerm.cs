@@ -7,19 +7,19 @@
 namespace Microsoft.Store.PartnerCenter.Models.Products
 {
     /// <summary>
-    /// Represents an availability term.
+    /// Represents the terms for an availability.
     /// </summary>
     public sealed class AvailabilityTerm
     {
+        /// <summary>
+        /// Gets or sets the description for the term.
+        /// </summary>
+        public string Description { get; set; }
+
         /// <summary>
         /// Gets or sets the ISO standard representation of this term's duration.
         /// </summary>
         /// <remarks>Example: P1M, P1Y, P3Y</remarks>
         public string Duration { get; set; }
-
-        /// <summary>
-        /// Gets or sets the term description.
-        /// </summary>
-        public string Description { get; set; }
     }
 }

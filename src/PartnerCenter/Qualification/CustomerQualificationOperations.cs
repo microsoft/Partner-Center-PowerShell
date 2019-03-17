@@ -68,7 +68,7 @@ namespace Microsoft.Store.PartnerCenter.Qualification
         }
 
         /// <summary>
-        /// Updates the customer qualification.  Use for GovernmentCommunityCloud with validation code after successful registration through Microsoft.
+        /// Updates the customer qualification. Use for GovernmentCommunityCloud with validation code after successful registration through Microsoft.
         /// </summary>
         /// <param name="customerQualification">Customer qualification to be updated.</param>
         /// <param name="governmentCommunityCloudValidationCode">Validation code necessary to complete only Government Community Cloud customer creation. List validation codes with GetValidationCodes in ValidationOperations.</param>

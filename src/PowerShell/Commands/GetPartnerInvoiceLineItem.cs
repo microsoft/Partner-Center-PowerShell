@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (BillingProvider == BillingProvider.Marketplace)
             {
-                lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType, CurrencyCode, UnbilledPeriod.Current).GetAsync().GetAwaiter().GetResult();
+                lineItems = Partner.Invoices[InvoiceId].By(BillingProvider, LineItemType, CurrencyCode, BillingPeriod.Current).GetAsync().GetAwaiter().GetResult();
             }
             else
             {

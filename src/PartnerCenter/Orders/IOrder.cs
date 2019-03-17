@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
     public interface IOrder : IPartnerComponent<Tuple<string, string>>, IEntityGetOperations<Order>, IEntityPatchOperations<Order>
     {
         /// <summary>
-        /// Gets line item collection operations.
+        /// Gets the line item collection operations.
         /// </summary>
         IOrderLineItemCollection OrderLineItems { get; }
 

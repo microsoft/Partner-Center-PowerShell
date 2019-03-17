@@ -77,6 +77,9 @@ Gets either a specific order or a list of order for the specified customer.
 ### [Get-PartnerCustomerOrderLineItemActivationLink](Get-PartnerCustomerOrderLineItemActivationLink.md)
 Gets the activation link for the specified order line item.
 
+### [Get-PartnerCustomerOrderProvisioningStatus](Get-PartnerCustomerOrderProvisioningStatus.md)
+Gets the provisioning status for a customer order.
+
 ### [Get-PartnerCustomerQualification](Get-PartnerCustomerQualification.md)
 Get the qualification assigned to the customer.
 
@@ -196,6 +199,9 @@ Gets a list of service request topics.
 
 ### [Get-PartnerSupportProfile](Get-PartnerSupportProfile.md)
 Gets the partner's support profile.
+
+### [Get-PartnerValidationCode](Get-PartnerValidationCode.md)
+Gets a collection of a partner's Government Community Cloud validation codes.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
 Acquires an access token from the authority.

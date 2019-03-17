@@ -40,7 +40,7 @@ The billing provide for the line items.
 Type: BillingProvider
 Parameter Sets: (All)
 Aliases:
-Accepted values: Azure, Office, OneTime, External
+Accepted values: Azure, Office, OneTime, Marketplace
 
 Required: True
 Position: Named

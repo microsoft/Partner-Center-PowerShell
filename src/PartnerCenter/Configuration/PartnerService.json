@@ -36,9 +36,6 @@
     "GetCustomerAgreements": {
       "Path": "customers/{0}/agreements"
     },
-    "GetCustomerApplicationConsents": {
-      "Path": "customers/{0}/applicationconsents"
-    },
     "CreateCustomerApplicationConsent": {
       "Path": "customers/{0}/applicationconsents"
     },
@@ -366,6 +363,9 @@
     "GetActivationLinksByLineItemNumber": {
       "Path": "customers/{0}/orders/{1}/lineitems/{2}/activationlinks"
     },
+    "GetSubscriptionActivationLink": {
+      "Path": "{0}/subscriptions/{1}/activationlinks"
+    },
     "GetCustomerQualification": {
       "Path": "customers/{0}/qualification"
     },
@@ -495,12 +495,6 @@
     "UpdatePartnerBillingProfile": {
       "Path": "profiles/billing"
     },
-    "GetEstimatesLinks": {
-      "Path": "invoices/estimates/links",
-      "Parameters": {
-        "CurrencyCode": "currencyCode"
-      }
-    },
     "GetInvoices": {
       "Path": "invoices",
       "Parameters": {
@@ -543,6 +537,12 @@
       },
       "AdditionalHeaders": {
         "ContinuationToken": "MS-ContinuationToken"
+      }
+    },
+    "GetEstimatesLinks": {
+      "Path": "invoices/estimates/links",
+      "Parameters": {
+        "CurrencyCode": "currencyCode"
       }
     },
     "GetCustomerBillingProfile": {

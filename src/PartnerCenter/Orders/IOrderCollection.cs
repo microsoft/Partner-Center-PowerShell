@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.Orders
         /// </summary>
         /// <param name="includePrice">A flag indicating whether to include pricing details in the order information or not.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>The collection of orders.</returns>
+        /// <returns>The collection of orders including pricing details (based on access permissions) when requested.</returns>
         Task<ResourceCollection<Order>> GetAsync(bool includePrice, CancellationToken cancellationToken = default);
     }
 }

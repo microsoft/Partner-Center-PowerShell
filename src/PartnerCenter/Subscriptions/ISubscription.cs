@@ -18,6 +18,11 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
     public interface ISubscription : IPartnerComponent<Tuple<string, string>>, IEntityGetOperations<Subscription>, IEntityPatchOperations<Subscription>
     {
         /// <summary>
+        /// Gets the current subscription's activation link operations.
+        /// </summary>
+        ISubscriptionActivationLinkCollection ActivationLinks { get; }
+
+        /// <summary>
         /// Gets the current subscription's add-ons operations.
         /// </summary>
         ISubscriptionAddOnCollection AddOns { get; }
