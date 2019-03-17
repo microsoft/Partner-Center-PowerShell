@@ -21,6 +21,11 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
     internal class SubscriptionOperations : BasePartnerComponent<Tuple<string, string>>, ISubscription
     {
         /// <summary>
+        /// A lazy reference to the current subscription's activation link operations.
+        /// </summary>
+        private readonly Lazy<ISubscriptionActivationLinkCollection> subscriptionActivationLinkOperations;
+
+        /// <summary>
         /// A lazy reference to the current subscription's add-ons operations.
         /// </summary>
         private readonly Lazy<ISubscriptionAddOnCollection> subscriptionAddOnsOperations;
@@ -82,6 +87,8 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
             customerId.AssertNotEmpty(nameof(customerId));
             subscriptionId.AssertNotEmpty(nameof(subscriptionId));
 
+            subscriptionActivationLinkOperations = new Lazy<ISubscriptionActivationLinkCollection>(
+                () => new SubscriptionActivationLinkCollectionOperations(rootPartnerOperations, customerId, subscriptionId));
             subscriptionAddOnsOperations = new Lazy<ISubscriptionAddOnCollection>(
                 () => new SubscriptionAddOnCollectionOperations(rootPartnerOperations, customerId, subscriptionId));
             subscriptionConversionOperations = new Lazy<ISubscriptionConversionCollection>(
@@ -103,6 +110,11 @@ namespace Microsoft.Store.PartnerCenter.Subscriptions
             usageRecordsOperations = new Lazy<ISubscriptionUsageRecordCollection>(
                 () => new SubscriptionUsageRecordCollectionOperations(rootPartnerOperations, customerId, subscriptionId));
         }
+
+        /// <summary>
+        /// Gets the current subscription's activation link operations.
+        /// </summary>
+        public ISubscriptionActivationLinkCollection ActivationLinks => subscriptionActivationLinkOperations.Value;
 
         /// <summary>
         /// Gets the current subscription's add-ons operations.

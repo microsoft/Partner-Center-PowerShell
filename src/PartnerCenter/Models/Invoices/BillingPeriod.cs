@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="UnbilledPeriod.cs" company="Microsoft">
+// <copyright file="BillingPeriod.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -11,10 +11,10 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Represents unbilled periods.
+    /// Represents the billing periods.
     /// </summary>
     [JsonConverter(typeof(EnumJsonConverter))]
-    public enum UnbilledPeriod
+    public enum BillingPeriod
     {
         /// <summary>
         /// Default period, does not mean anything.
@@ -27,7 +27,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         Current,
 
         /// <summary>
-        /// The pervious period.
+        /// The previous period.
         /// </summary>
         Previous
     }

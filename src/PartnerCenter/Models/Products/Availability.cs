@@ -34,12 +34,12 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the availability is purchasable or not.
+        /// Gets or sets a flag indicating whether the availability is purchasable or not.
         /// </summary>
         public bool IsPurchasable { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the availability is renewable or not.
+        /// Gets or sets a flag indicating whether the availability is renewable or not.
         /// </summary>
         public bool IsRenewable { get; set; }
 

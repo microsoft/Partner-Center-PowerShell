@@ -158,7 +158,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         public string SubscriptionDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the subscription id associated with this purchase.
+        /// Gets or sets the subscription identifier associated with this purchase.
         /// </summary>
         public string SubscriptionId { get; set; }
 
@@ -188,7 +188,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit type.
+        /// Gets or sets the type of unit.
         /// </summary>
         public string UnitType { get; set; }
     }

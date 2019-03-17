@@ -72,7 +72,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.Models.ServiceIncidents.ServiceIncidentDetail
+### Microsoft.Store.PartnerCenter.Models.Incidents.ServiceIncidentDetail
 
 ## NOTES
 

@@ -15,7 +15,7 @@ Gets a collection of entitlements.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerEntitlement -CustomerId <String> [-OrderId <String>] [<CommonParameters>]
+Get-PartnerCustomerEntitlement -CustomerId <String> [-ShowExpiry] [-OrderId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -52,6 +52,21 @@ Identifier for the order.
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ShowExpiry
+A flag to indicate if the expiry date is required to be returned along with the entitlement (if applicable).
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 

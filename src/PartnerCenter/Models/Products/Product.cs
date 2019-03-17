@@ -22,7 +22,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this is a Microsoft product or not.
+        /// Gets or sets a flag indicating whether this is a Microsoft product or not.
         /// </summary>
         public bool IsMicrosoftProduct { get; set; }
 
@@ -32,7 +32,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Products
         public ItemType ProductType { get; set; }
 
         /// <summary>
-        /// Gets or sets the publisher name.
+        /// Gets or sets the name of the publisher.
         /// </summary>
         public string PublisherName { get; set; }
 
