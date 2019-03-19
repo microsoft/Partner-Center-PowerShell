@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
     using System;
     using System.Collections.Generic;
     using Common;
-    using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
     using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Subscriptions;
@@ -46,45 +45,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public bool AutoRenewEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the billing cycle. 
+        /// Gets or sets the billing cycle for the subscription.
         /// </summary>
-        /// <remarks>
-        /// Defines how often the partner is billed for this subscription.
-        /// </remarks>
         public BillingCycleType BillingCycle { get; set; }
 
         /// <summary>
-        /// Gets or sets the billing type.
+        /// Gets or sets the billing type for the subscription.
         /// </summary>
         public BillingType BillingType { get; set; }
 
         /// <summary>
-        /// Gets or sets the commitment end date for this subscription. For subscriptions which are not auto renewable, this represents a date far away in the future.
+        /// Gets or sets the commitment end date for this subscription.
         /// </summary>
         public DateTime CommitmentEndDate { get; set; }
 
         /// <summary>
-        /// Gets the type of contract.
-        /// </summary>
-        public ContractType ContractType { get; } = ContractType.Subscription;
-
-        /// <summary>
-        /// Gets or sets the creation date.
+        /// Gets or sets the date and time when the subscription was created.
         /// </summary>
         public DateTime CreationDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the effective start date for this subscription. It is used to back date a migrated subscription or to align it with another.
+        /// Gets or sets the effective start date for this subscription.
         /// </summary>
         public DateTime EffectiveStartDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the entitlement identifier.
+        /// Gets or sets the entitlment identifier for the subscription.
         /// </summary>
-        public string EntitlementId { get; set; }
+        public string EntiltmentId { get; set; }
 
         /// <summary>
-        /// Gets or sets the friendly name for the subscription.
+        /// Gets or sets the subscription's friendly name.
         /// </summary>
         public string FriendlyName { get; set; }
 
@@ -94,24 +85,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public bool HasPurchasableAddons { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the value indicating that the subscription is a Microsoft product.
+        /// </summary>
+        public bool IsMicrosoftProduct { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the subscription is a trial.
         /// </summary>
         public bool IsTrial { get; set; }
 
         /// <summary>
-        /// Gets or sets the offer identifier.
+        /// Gets or sets the offer identifier used to purchase the subscription.
         /// </summary>
         public string OfferId { get; set; }
 
         /// <summary>
-        /// Gets or sets the offer name.
+        /// Gets or sets the offer name used to purchase the subscription.
         /// </summary>
         public string OfferName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the  order identifier.
-        /// </summary>
-        public string OrderId { get; set; }
 
         /// <summary>
         /// Gets or sets the parent subscription identifier.
@@ -124,28 +115,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public string PartnerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the quantity.
-        /// For example, in case of seat based billing, this property is set to seat count.
+        /// Gets or sets the publisher name.
+        /// </summary>
+        public string PublisherName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the quantity of the subscription.
         /// </summary>
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the subscription identifier.
-        /// </summary>
-        public string SubscriptionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the subscription status.
+        /// Gets or sets the status of the subscription.
         /// </summary>
         public SubscriptionStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the suspension reason.
+        /// Gets or sets the refund options for this subscription if applicable.
+        /// </summary>
+        public IEnumerable<RefundOption> RefundOptions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier for the subscription.
+        /// </summary>
+        public string SubscriptionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the suspension reason for the subscription.
         /// </summary>
         public IEnumerable<string> SuspensionReasons { get; set; }
 
         /// <summary>
-        /// Gets or sets the units defining Quantity for the subscription.
+        /// Gets or sets the term duration.
+        /// </summary>
+        public string TermDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the units definig the quantity for the subscription.
         /// </summary>
         public string UnitType { get; set; }
 

@@ -68,24 +68,29 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         /// <remarks>
         /// Paid amount is negative if a payment is received.
         /// </remarks>
-        public Decimal PaidAmount { get; set; }
+        public decimal PaidAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the link to download the invoice PDF document.
         /// </summary>
         /// <remarks>
         /// This value is not returned as part of the search results, and will only
-        /// get populated if invoice is accessed by Id.
+        /// get populated if invoice is accessed by identifier.
         /// This link auto expires in 30 minutes.
         /// </remarks>
         public Uri PdfDownloadLink { get; set; }
-
+        
+        /// <summary>
+        /// Gets or sets the invoice tax receipts
+        /// </summary>
+        public IEnumerable<TaxReceipt> TaxReceipts { get; set; }
+        
         /// <summary>
         /// Gets or sets the total charges in this invoice.
         /// </summary>
         /// <remarks>
         /// Total charges includes the transactions charges and any adjustments.
         /// </remarks>
-        public Decimal TotalCharges { get; set; }
+        public decimal TotalCharges { get; set; }
     }
 }

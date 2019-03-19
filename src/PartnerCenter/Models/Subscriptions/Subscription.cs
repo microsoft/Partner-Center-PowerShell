@@ -78,9 +78,19 @@ namespace Microsoft.Store.PartnerCenter.Models.Subscriptions
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the value indicating that the subscription is a Microsoft product.
+        /// </summary>
+        public bool IsMicrosoftProduct { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the subscription is a trial.
         /// </summary>
         public bool IsTrial { get; set; }
+
+        /// <summary>
+        /// Gets or sets the links.
+        /// </summary>
+        public SubscriptionLinks Links { get; set; }
 
         /// <summary>
         /// Gets or sets the offer identifier used to purchase the subscription.
@@ -103,6 +113,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Subscriptions
         public string PartnerId { get; set; }
 
         /// <summary>
+        /// Gets or sets the publisher name.
+        /// </summary>
+        public string PublisherName { get; set; }
+
+        /// <summary>
         /// Gets or sets the quantity of the subscription.
         /// </summary>
         public int Quantity { get; set; }
@@ -113,14 +128,19 @@ namespace Microsoft.Store.PartnerCenter.Models.Subscriptions
         public SubscriptionStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the links.
+        /// Gets or sets the refund options for this subscription if applicable.
         /// </summary>
-        public SubscriptionLinks Links { get; set; }
+        public IEnumerable<RefundOption> RefundOptions { get; set; }
 
         /// <summary>
         /// Gets or sets the suspension reason for the subscription.
         /// </summary>
         public IEnumerable<string> SuspensionReasons { get; set; }
+
+        /// <summary>
+        /// Gets or sets the term duration.
+        /// </summary>
+        public string TermDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the units definig the quantity for the subscription.

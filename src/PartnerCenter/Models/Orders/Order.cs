@@ -31,6 +31,11 @@ namespace Microsoft.Store.PartnerCenter.Models.Orders
         public string CurrencyCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the currency symbol.
+        /// </summary>
+        public string CurrencySymbol { get; set; }
+
+        /// <summary>
         /// Gets or sets the order identifier.
         /// </summary>
         public string Id { get; set; }
