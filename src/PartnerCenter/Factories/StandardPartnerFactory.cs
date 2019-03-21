@@ -6,6 +6,7 @@
 
 namespace Microsoft.Store.PartnerCenter.Factories
 {
+    using System;
     using System.Net.Http;
     using RequestContext;
 
@@ -62,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.Factories
         /// Builds a <see cref="IPartner" /> instance and configures it using the provided partner credentials.
         /// </summary>
         /// <param name="credentials">The partner credentials. Use the extensions to obtain these.</param>
-        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         /// <returns>A configured partner object.</returns>
         public IPartner Build(IPartnerCredentials credentials, HttpClient httpClient)
         {
@@ -74,7 +75,7 @@ namespace Microsoft.Store.PartnerCenter.Factories
         /// </summary>
         /// <param name="credentials">The partner credentials. Use the extensions to obtain these.</param>
         /// <param name="requestContext">The context used to perform operations.</param>
-        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         /// <returns>A configured partner object.</returns>
         public IPartner Build(IPartnerCredentials credentials, IRequestContext requestContext, HttpClient httpClient)
         {

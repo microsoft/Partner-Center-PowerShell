@@ -9,7 +9,7 @@
 
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.Tests.UnitTests</RootNamespace>
 
-    <Version>1.5.1903.2</Version>
+    <Version>1.5.1903.5</Version>
 
     <Authors>Microsoft</Authors>
 
@@ -24,6 +24,8 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
 
     <RepositoryType>git</RepositoryType>
+
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>

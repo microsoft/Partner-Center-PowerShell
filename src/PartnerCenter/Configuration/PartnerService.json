@@ -95,12 +95,6 @@
         "Country": "country"
       }
     },
-    "GetSkuDownloadOptions": {
-      "Path": "products/{0}/skus/{1}/downloadoptions",
-      "Parameters": {
-        "Country": "country"
-      }
-    },
     "GetAvailabilities": {
       "Path": "products/{0}/skus/{1}/availabilities",
       "Parameters": {
@@ -132,9 +126,6 @@
     },
     "GetCustomerSku": {
       "Path": "customers/{0}/products/{1}/skus/{2}"
-    },
-    "GetCustomerSkuDownloadOptions": {
-      "Path": "customers/{0}/products/{1}/skus/{2}/downloadoptions"
     },
     "GetCustomerAvailabilities": {
       "Path": "customers/{0}/products/{1}/skus/{2}/availabilities",

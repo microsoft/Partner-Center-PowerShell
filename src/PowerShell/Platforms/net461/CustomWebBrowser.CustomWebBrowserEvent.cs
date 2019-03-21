@@ -25,11 +25,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             public void NavigateError(object pDisp, ref object URL, ref object frame, ref object statusCode, ref bool cancel)
             {
-                string uriString = (URL == null) ? "" : ((string)URL);
-                string frameString = (frame == null) ? "" : ((string)frame);
                 int statusCodeInt = (statusCode == null) ? 0 : ((int)statusCode);
 
-                WebBrowserNavigateErrorEventArgs e = new WebBrowserNavigateErrorEventArgs(new Uri(uriString), frameString, statusCodeInt, pDisp);
+                WebBrowserNavigateErrorEventArgs e = new WebBrowserNavigateErrorEventArgs(statusCodeInt, pDisp);
                 parent.OnNavigateError(e);
                 cancel = e.Cancel;
             }

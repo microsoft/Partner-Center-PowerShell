@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
+    using System.Net.Http;
     using Authentication;
     using Common;
 
@@ -15,6 +16,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     public class ClientFactory : IClientFactory
     {
+        /// <summary>
+        /// The client used to perform HTTP operations.
+        /// </summary>
+        private readonly static HttpClient httpClient = new HttpClient();
+
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
@@ -29,7 +35,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(
-                    PartnerSession.Instance.AuthenticationFactory.Authenticate(PartnerSession.Instance.Context, debugAction)));
+                    PartnerSession.Instance.AuthenticationFactory.Authenticate(PartnerSession.Instance.Context, debugAction)),
+                httpClient);
         }
     }
 }

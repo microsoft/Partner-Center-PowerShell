@@ -55,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             List<OrderLineItem> lineItems = new List<OrderLineItem>();
-            Order newOrder = new Order();
+            Order newOrder;
 
             foreach (PSOrderLineItem item in LineItems)
             {

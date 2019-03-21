@@ -120,7 +120,7 @@ namespace Microsoft.Store.PartnerCenter
         /// access all the Partner Center APIs.
         /// </summary>
         /// <param name="credentials">The partner credentials. Use the <see cref="IPartnerCredentials" /> class to obtain these.</param>
-        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         /// <returns>A configured partner operations object.</returns>
         public IPartner CreatePartnerOperations(IPartnerCredentials credentials, HttpClient httpClient)
         {

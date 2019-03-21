@@ -134,7 +134,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
             this.CopyFrom(utilizationRecord?.InstanceData);
             this.CopyFrom(utilizationRecord?.Resource);
 
-            if (utilizationRecord.InstanceData != null && utilizationRecord.InstanceData.AdditionalInfo != null)
+            if (utilizationRecord?.InstanceData != null && utilizationRecord.InstanceData.AdditionalInfo != null)
             {
                 foreach (KeyValuePair<string, string> item in utilizationRecord.InstanceData.AdditionalInfo)
                 {
@@ -142,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
                 }
             }
 
-            if (utilizationRecord.InfoFields != null)
+            if (utilizationRecord?.InfoFields != null)
             {
                 foreach (KeyValuePair<string, string> item in utilizationRecord.InfoFields)
                 {
@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Utilizations
                 }
             }
 
-            if (utilizationRecord.InstanceData != null && utilizationRecord.InstanceData.Tags != null)
+            if (utilizationRecord?.InstanceData != null && utilizationRecord.InstanceData.Tags != null)
             {
                 foreach (KeyValuePair<string, string> item in utilizationRecord.InstanceData.Tags)
                 {

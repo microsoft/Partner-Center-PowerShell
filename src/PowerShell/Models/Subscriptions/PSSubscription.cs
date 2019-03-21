@@ -35,9 +35,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         }
 
         /// <summary>
+        /// Gets or sets a flag indicating whether or not action was taken.
+        /// </summary>
+        public bool ActionTaken { get; set; }
+
+        /// <summary>
         /// Gets or sets the actions.
         /// </summary>
         public IEnumerable<string> Actions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating whether or not attention is needed.
+        /// </summary>
+        public bool AttentionNeeded { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether automatic renew is enabled or not.
@@ -70,9 +80,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public DateTime EffectiveStartDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the entitlment identifier for the subscription.
+        /// Gets or sets the entitlement identifier for the subscription.
         /// </summary>
-        public string EntiltmentId { get; set; }
+        public string EntitlementId { get; set; }
 
         /// <summary>
         /// Gets or sets the subscription's friendly name.
@@ -145,8 +155,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
         public IEnumerable<string> SuspensionReasons { get; set; }
 
         /// <summary>
-        /// Gets or sets the term duration.
+        /// Gets or sets the term duration. 
         /// </summary>
+        /// <remarks>
+        /// An ISO 8601 representation of the term's duration. The current supported values are P1M (1 month), P1Y (1 year) and P3Y (3 years).
+        /// </remarks>
         public string TermDuration { get; set; }
 
         /// <summary>

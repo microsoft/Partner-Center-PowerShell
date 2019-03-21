@@ -83,17 +83,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Granularity ?? AzureUtilizationGranularity.Daily,
                     (!ShowDetails.IsPresent) || ShowDetails.ToBool()).GetAwaiter().GetResult();
 
-            enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
-
-            records = new List<PSAzureUtilizationRecord>();
-
-            while (enumerator.HasValue)
+            if (utilizationRecords?.TotalCount > 0)
             {
-                records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                enumerator.NextAsync().GetAwaiter().GetResult();
-            }
+                enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
 
-            WriteObject(records, true);
+                records = new List<PSAzureUtilizationRecord>();
+
+                while (enumerator.HasValue)
+                {
+                    records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
+                    enumerator.NextAsync().GetAwaiter().GetResult();
+                }
+
+                WriteObject(records, true);
+            }
         }
     }
 }

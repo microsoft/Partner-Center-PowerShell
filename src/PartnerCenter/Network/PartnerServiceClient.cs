@@ -79,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// The name of the SDK version header.
         /// </summary>
         public const string SdkVersionHeader = "MS-SdkVersion";
-
+        
         /// <summary>
         /// The root partner operations instance.
         /// </summary>
@@ -88,7 +88,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PartnerServiceClient" /> class.
         /// </summary>
-        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         public PartnerServiceClient(HttpClient httpClient)
             : base(httpClient, false)
         { }
@@ -128,7 +128,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// </summary>
         /// <param name="rootPartnerOperations">The root partner operations instance.</param>
         /// <param name="endpoint">Address of the resource being accessed.</param>
-        /// <param name="httpClient">The HTTP client to be used.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         public PartnerServiceClient(IPartner rootPartnerOperations, Uri endpoint, HttpClient httpClient)
             : base(httpClient, false)
         {
@@ -817,7 +817,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         {
             IRequestContext context;
 
-            if (rootPartnerOperations.RequestContext.RequestId == default(Guid))
+            if (rootPartnerOperations.RequestContext.RequestId == default)
             {
                 context = RequestContextFactory.Create(
                     rootPartnerOperations.RequestContext.CorrelationId,
@@ -909,7 +909,7 @@ namespace Microsoft.Store.PartnerCenter.Network
             return partnerErrorCategory;
         }
 
-        private JsonSerializerSettings GetSerializationSettings(JsonConverter converter = null)
+        private static JsonSerializerSettings GetSerializationSettings(JsonConverter converter = null)
         {
             return new JsonSerializerSettings
             {

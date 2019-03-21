@@ -22,10 +22,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         }
 
         [StructLayout(LayoutKind.Sequential), ComVisible(true)]
-        public class DOCHOSTUIINFO
+        public class Dochostuiinfo
         {
             [MarshalAs(UnmanagedType.U4)]
-            public int cbSize = Marshal.SizeOf(typeof(DOCHOSTUIINFO));
+            public int cbSize = Marshal.SizeOf(typeof(Dochostuiinfo));
             [MarshalAs(UnmanagedType.I4)]
             public int dwFlags;
             [MarshalAs(UnmanagedType.I4)]
@@ -37,7 +37,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         }
 
         [Serializable, StructLayout(LayoutKind.Sequential)]
-        public struct MSG
+        public struct Msg
         {
             public IntPtr hwnd;
             public int message;
@@ -49,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public class COMRECT
+        public class Comrect
         {
             public int left;
             public int top;
@@ -62,11 +62,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                     string.Concat(new object[] { "Left = ", left, " Top ", top, " Right = ", right, " Bottom = ", bottom });
             }
 
-            public COMRECT()
+            public Comrect()
             {
             }
 
-            public COMRECT(Rectangle r)
+            public Comrect(Rectangle r)
             {
                 left = r.X;
                 top = r.Y;
@@ -74,7 +74,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 bottom = r.Bottom;
             }
 
-            public COMRECT(int left, int top, int right, int bottom)
+            public Comrect(int left, int top, int right, int bottom)
             {
                 this.left = left;
                 this.top = top;
@@ -82,9 +82,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 this.bottom = bottom;
             }
 
-            public static COMRECT FromXYWH(int x, int y, int width, int height)
+            public static Comrect FromXYWH(int x, int y, int width, int height)
             {
-                return new COMRECT(x, y, x + width, y + height);
+                return new Comrect(x, y, x + width, y + height);
             }
         }
 
@@ -97,13 +97,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             int ContextSensitiveHelp(int fEnterMode);
 
             [PreserveSig]
-            int GetBorder([Out] COMRECT lprectBorder);
+            int GetBorder([Out] Comrect lprectBorder);
 
             [PreserveSig]
-            int RequestBorderSpace([In] COMRECT pborderwidths);
+            int RequestBorderSpace([In] Comrect pborderwidths);
 
             [PreserveSig]
-            int SetBorderSpace([In] COMRECT pborderwidths);
+            int SetBorderSpace([In] Comrect pborderwidths);
 
             void SetActiveObject([In, MarshalAs(UnmanagedType.Interface)] IOleInPlaceActiveObject pActiveObject,
                                  [In, MarshalAs(UnmanagedType.LPWStr)] string pszObjName);
@@ -118,11 +118,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             void ContextSensitiveHelp(int fEnterMode);
 
             [PreserveSig]
-            int TranslateAccelerator([In] ref MSG lpmsg);
+            int TranslateAccelerator([In] ref Msg lpmsg);
 
             void OnFrameWindowActivate(bool fActivate);
             void OnDocWindowActivate(int fActivate);
-            void ResizeBorder([In] COMRECT prcBorder, [In] IOleInPlaceUIWindow pUIWindow, bool fFrameWindow);
+            void ResizeBorder([In] Comrect prcBorder, [In] IOleInPlaceUIWindow pUIWindow, bool fFrameWindow);
             void EnableModeless(int fEnable);
         }
 
@@ -135,13 +135,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             int ContextSensitiveHelp(int fEnterMode);
 
             [PreserveSig]
-            int GetBorder([Out] COMRECT lprectBorder);
+            int GetBorder([Out] Comrect lprectBorder);
 
             [PreserveSig]
-            int RequestBorderSpace([In] COMRECT pborderwidths);
+            int RequestBorderSpace([In] Comrect pborderwidths);
 
             [PreserveSig]
-            int SetBorderSpace([In] COMRECT pborderwidths);
+            int SetBorderSpace([In] Comrect pborderwidths);
 
             [PreserveSig]
             int SetActiveObject([In, MarshalAs(UnmanagedType.Interface)] IOleInPlaceActiveObject pActiveObject,
@@ -160,7 +160,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             int EnableModeless(bool fEnable);
 
             [PreserveSig]
-            int TranslateAccelerator([In] ref MSG lpmsg, [In, MarshalAs(UnmanagedType.U2)] short wID);
+            int TranslateAccelerator([In] ref Msg lpmsg, [In, MarshalAs(UnmanagedType.U2)] short wID);
         }
 
         [ComImport, Guid("00000122-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -195,7 +195,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
-            int GetHostInfo([In, Out] DOCHOSTUIINFO info);
+            int GetHostInfo([In, Out] Dochostuiinfo info);
 
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
@@ -224,11 +224,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
-            int ResizeBorder([In] COMRECT rect, [In] IOleInPlaceUIWindow doc, bool fFrameWindow);
+            int ResizeBorder([In] Comrect rect, [In] IOleInPlaceUIWindow doc, bool fFrameWindow);
 
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
-            int TranslateAccelerator([In] ref MSG msg, [In] ref Guid group, [In, MarshalAs(UnmanagedType.I4)] int nCmdID);
+            int TranslateAccelerator([In] ref Msg msg, [In] ref Guid group, [In, MarshalAs(UnmanagedType.I4)] int nCmdID);
 
             [return: MarshalAs(UnmanagedType.I4)]
             [PreserveSig]
@@ -263,9 +263,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         {
             [DispId(0xcb)]
             object Document { [return: MarshalAs(UnmanagedType.IDispatch)] [DispId(0xcb)] get; }
-
-            [DispId(0x227)]
-            bool Silent { [param: MarshalAs(UnmanagedType.Bool)] [DispId(0x227)]set; }
         }
 
         [ComImport, Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"), TypeLibType(TypeLibTypeFlags.FHidden), InterfaceType(ComInterfaceType.InterfaceIsIDispatch)]
