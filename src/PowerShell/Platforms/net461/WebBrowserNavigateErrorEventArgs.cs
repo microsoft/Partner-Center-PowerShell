@@ -15,35 +15,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
     /// </summary>
     public class WebBrowserNavigateErrorEventArgs : CancelEventArgs
     {
-        // Fields
-        private readonly string targetFrameName;
-        private readonly Uri url;
-        private readonly int statusCode;
-        private readonly object webBrowserActiveXInstance;
-
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="WebBrowserNavigateErrorEventArgs" /> class.
         /// </summary>
-        /// <param name="url">url as a string, as in case of error it could be invalid url</param>
-        /// <param name="targetFrameName">Name of the target frame that had the failure</param>
         /// <param name="statusCode">Error status code</param>
         /// <param name="webBrowserActiveXInstance">return object</param>
-        public WebBrowserNavigateErrorEventArgs(Uri url, string targetFrameName, int statusCode, object webBrowserActiveXInstance)
+        public WebBrowserNavigateErrorEventArgs(int statusCode, object webBrowserActiveXInstance)
         {
-            this.url = url;
-            this.targetFrameName = targetFrameName;
-            this.statusCode = statusCode;
-            this.webBrowserActiveXInstance = webBrowserActiveXInstance;
+            StatusCode = statusCode;
+            WebBrowserActiveXInstance = webBrowserActiveXInstance;
         }
 
         /// <summary>
         /// ADAL.Native has code for interpretation of this code to string we don't do it here, as we need to come consideration should we do it or not.
         /// </summary>
-        public int StatusCode => statusCode;
+        public int StatusCode { get; }
 
         /// <summary>
         /// return object
         /// </summary>
-        public object WebBrowserActiveXInstance => webBrowserActiveXInstance;
+        public object WebBrowserActiveXInstance { get; }
     }
 }

@@ -134,7 +134,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<BreakingChangeBaseAttribute> attributes =
                 new List<BreakingChangeBaseAttribute>(GetAllBreakingChangeAttributesInType(type, invocationInfo));
 
-            if (attributes != null && attributes.Count > 0)
+            if (attributes.Count > 0)
             {
                 writeOutput(
                     string.Format(

@@ -192,7 +192,7 @@ namespace Microsoft.Store.PartnerCenter
         /// </summary>
         /// <param name="credentials">Credentials to be used when accessing resources.</param>
         /// <param name="requestContext">The context used to perform operations.</param>
-        /// <param name="httpClient">Client used to send HTTP requests.</param>
+        /// <param name="httpClient">The client used to perform HTTP operations.</param>
         public PartnerOperations(IPartnerCredentials credentials, IRequestContext requestContext, HttpClient httpClient)
             : this()
         {

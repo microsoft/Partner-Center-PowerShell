@@ -69,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 return S_OK;
             }
 
-            public int GetHostInfo(NativeWrapper.DOCHOSTUIINFO info)
+            public int GetHostInfo(NativeWrapper.Dochostuiinfo info)
             {
                 const int DOCHOSTUIFLAG_ENABLE_REDIRECT_NOTIFICATION = 0x4000000;
                 const int DOCHOSTUIFLAG_NO3DOUTERBORDER = 0x0020000;
@@ -129,7 +129,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 return NotImplemented;
             }
 
-            public int ResizeBorder(NativeWrapper.COMRECT rect, NativeWrapper.IOleInPlaceUIWindow doc,
+            public int ResizeBorder(NativeWrapper.Comrect rect, NativeWrapper.IOleInPlaceUIWindow doc,
                 bool fFrameWindow)
             {
                 return NotImplemented;
@@ -156,7 +156,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 return S_FALSE;
             }
 
-            public int TranslateAccelerator(ref NativeWrapper.MSG msg, ref Guid group, int nCmdID)
+            public int TranslateAccelerator(ref NativeWrapper.Msg msg, ref Guid group, int nCmdID)
             {
                 if (msg.message != WM_CHAR && (ModifierKeys == Keys.Shift || ModifierKeys == Keys.Alt ||
                                                ModifierKeys == Keys.Control))

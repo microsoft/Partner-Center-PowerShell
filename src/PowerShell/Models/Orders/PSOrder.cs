@@ -52,6 +52,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Orders
         public string CurrencyCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the currency symbol.
+        /// </summary>
+        public string CurrencySymbol { get; set; }
+
+        /// <summary>
         /// Gets or sets the Order line items. Each order line item refers to one offer's purchase data.
         /// </summary>
         public List<PSOrderLineItem> LineItems { get; }

@@ -67,8 +67,16 @@
     * PublisherName
   * Corrected an issue with requesting products by country, target view, and target segment
   * Removed the SKU download operations. No commands where impacted by this change
+* Subscriptions
+  * Added the following properties to the subscription model
+    * IsMicrosoftProduct
+    * PublisherName
+    * RefundOptions
+    * TermDuration
 * Users
   * Corrected an issue with performing a query for users from a customer
+* Utilization
+  * Addressed an issue caused by the Partner Center API return a HTTP 204 no content when Azure utilization data is not yet ready in a dependent system.
 * Validations
   * Added the ability to request validation codes used to create Government Community Cloud customers
 

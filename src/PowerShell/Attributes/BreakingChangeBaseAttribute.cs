@@ -27,7 +27,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         /// Initializes a new instance of the <see cref="BreakingChangeBaseAttribute" /> class.
         /// </summary>
         /// <param name="message">The message that describes the breaking change.</param>
-        public BreakingChangeBaseAttribute(string message)
+        protected BreakingChangeBaseAttribute(string message)
         {
             message.AssertNotEmpty(nameof(message));
 
@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         /// </summary>
         /// <param name="message">The message that describes the breaking change.</param>
         /// <param name="deprecateByVersion">The version where the change will be required.</param>
-        public BreakingChangeBaseAttribute(string message, string deprecateByVersion)
+        protected BreakingChangeBaseAttribute(string message, string deprecateByVersion)
         {
             message.AssertNotEmpty(nameof(message));
             deprecateByVersion.AssertNotEmpty(nameof(deprecateByVersion));
@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         /// <param name="message">The message that describes the breaking change.</param>
         /// <param name="deprecateByVersion">The version where the change will be required.</param>
         /// <param name="changeInEfectByDate">The data when the change will be required.</param>
-        public BreakingChangeBaseAttribute(string message, string deprecateByVersion, string changeInEfectByDate)
+        protected BreakingChangeBaseAttribute(string message, string deprecateByVersion, string changeInEfectByDate)
         {
             message.AssertNotEmpty(nameof(message));
             deprecateByVersion.AssertNotEmpty(nameof(deprecateByVersion));

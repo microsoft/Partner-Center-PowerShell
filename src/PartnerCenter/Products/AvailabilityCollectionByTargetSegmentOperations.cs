@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.Products
     /// <summary>
     /// Availabilities implementation class.
     /// </summary>
-    internal class AvailabilityCollectionByTargetSegmentOperations : BasePartnerComponent<Tuple<string, string, string, string>>, IAvailabilityCollectionByTargetSegment, IPartnerComponent<Tuple<string, string, string, string>>, IEntireEntityCollectionRetrievalOperations<Availability, ResourceCollection<Availability>>
+    internal class AvailabilityCollectionByTargetSegmentOperations : BasePartnerComponent<Tuple<string, string, string, string>>, IAvailabilityCollectionByTargetSegment
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AvailabilityCollectionByTargetSegmentOperations" /> class.

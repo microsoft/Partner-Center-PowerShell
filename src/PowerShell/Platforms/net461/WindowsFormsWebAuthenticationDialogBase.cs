@@ -34,17 +34,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
         private readonly CustomWebBrowser webBrowser;
 
-        private Panel webBrowserPanel;
         private Keys key = Keys.None;
 
         private Uri desiredCallbackUri;
 
-        private readonly IWin32Window ownerWindow;
-
         internal AuthorizationResult Result { get; set; }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="WindowsFormsWebAuthenticationDialogBase" /> class.
         /// </summary>
         /// <param name="ownerWindow"></param>
         protected WindowsFormsWebAuthenticationDialogBase(object ownerWindow)
@@ -66,15 +63,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
             if (ownerWindow == null)
             {
-                this.ownerWindow = null;
+                OwnerWindow = null;
             }
             else if (ownerWindow is IWin32Window)
             {
-                this.ownerWindow = (IWin32Window)ownerWindow;
+                OwnerWindow = (IWin32Window)ownerWindow;
             }
             else if (ownerWindow is IntPtr)
             {
-                this.ownerWindow = new WindowsFormsWin32Window { Handle = (IntPtr)ownerWindow };
+                OwnerWindow = new WindowsFormsWin32Window { Handle = (IntPtr)ownerWindow };
             }
             else
             {
@@ -88,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             WhiteListedSchemes.Add(BrowserScheme);
         }
 
-        internal IWin32Window OwnerWindow => ownerWindow;
+        internal IWin32Window OwnerWindow { get; }
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -236,7 +233,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal /* internal for test purposes only */ static string GetUrlFromDocument(Uri url, HtmlDocument document)
+        internal static string GetUrlFromDocument(Uri url, HtmlDocument document)
         {
             UriBuilder uriBuilder = new UriBuilder(url);
             List<string> parameters = new List<string>();
@@ -323,7 +320,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         protected void InvokeHandlingOwnerWindow(Action action)
         {
             // We only support WindowsForms (since our dialog is winforms based)
-            if (ownerWindow != null && ownerWindow is Control winFormsControl)
+            if (OwnerWindow != null && OwnerWindow is Control winFormsControl)
             {
                 winFormsControl.Invoke(action);
             }
@@ -335,10 +332,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
         private void InitializeComponent()
         {
+            Panel webBrowserPanel;
+
             InvokeHandlingOwnerWindow(() =>
             {
-                Screen screen = (ownerWindow != null)
-                    ? Screen.FromHandle(ownerWindow.Handle)
+                Screen screen = (OwnerWindow != null)
+                    ? Screen.FromHandle(OwnerWindow.Handle)
                     : Screen.PrimaryScreen;
 
                 // Window height is set to 70% of the screen height.
@@ -380,7 +379,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
                 Name = "BrowserAuthenticationWindow";
 
                 // Move the window to the center of the parent window only if owner window is set.
-                StartPosition = (ownerWindow != null)
+                StartPosition = (OwnerWindow != null)
                     ? FormStartPosition.CenterParent
                     : FormStartPosition.CenterScreen;
                 Text = string.Empty;
@@ -390,7 +389,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 
                 // If we don't have an owner we need to make sure that the pop up browser 
                 // window is in the task bar so that it can be selected with the mouse.
-                ShowInTaskbar = (null == ownerWindow);
+                ShowInTaskbar = (null == OwnerWindow);
 
                 webBrowserPanel.ResumeLayout(false);
                 ResumeLayout(false);
