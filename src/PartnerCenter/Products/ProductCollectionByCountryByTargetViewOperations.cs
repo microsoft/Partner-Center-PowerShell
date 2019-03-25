@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.Products
                     Context.Item2
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetProducts.Parameters.TargetSegment,
+                    PartnerService.Instance.Configuration.Apis.GetProducts.Parameters.TargetView,
                     Context.Item1
                 }
             };

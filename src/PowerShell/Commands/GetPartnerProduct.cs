@@ -38,7 +38,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the product catalog.
         /// </summary>
         [Parameter(ParameterSetName = "ByCatalog", Mandatory = true, HelpMessage = "A string that the product catalog.")]
-        [ValidateSet("Azure", "OnlineServices", "Software")]
+        [ValidateSet("Azure", "AzureReservations", "AzureReservationsVM", "AzureReservationsSQL", "AzureReservationsCosmosDb", "OnlineServices", "Software", "SoftwareSUSELinux", "SoftwarePerpetual", "SoftwareSubscriptions")]
         public string Catalog { get; set; }
 
         /// <summary>
