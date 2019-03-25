@@ -201,7 +201,7 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'Added commands to manage application consents.'
+            ReleaseNotes = ''
 
             # Prerelease string of this module
             # Prerelease = 'preview'
