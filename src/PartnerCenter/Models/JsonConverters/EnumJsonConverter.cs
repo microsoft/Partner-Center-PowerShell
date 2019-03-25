@@ -7,6 +7,7 @@
 namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
 {
     using System;
+    using Extensions;
     using System.Globalization;
     using System.Text;
     using Newtonsoft.Json;
@@ -41,6 +42,18 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
         /// <returns>The object that represents the serialized JSON.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            reader.AssertNotNull(nameof(reader));
+            objectType.AssertNotNull(nameof(objectType));
+
+            if (!objectType.IsEnum)
+            {
+                throw new JsonSerializationException(
+                    string.Format(
+                        CultureInfo.InvariantCulture, 
+                        "EnumJsonConverter cannot deserialize '{0}' values", 
+                        objectType.Name));
+            }
+
             if (reader.TokenType == JsonToken.String)
             {
                 return Enum.Parse(objectType, JScriptToPascalCase(reader.Value.ToString()));
@@ -49,8 +62,10 @@ namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
             {
                 return Enum.ToObject(objectType, reader.Value);
             }
-
-            throw new NotImplementedException();
+            else
+            {
+                throw new JsonSerializationException(string.Format(CultureInfo.InvariantCulture, "EnumJsonConverter cannot deserialize '{0}' values", reader.TokenType));
+            }
         }
 
         /// <summary>
