@@ -45,7 +45,7 @@ A string that the product catalog.
 Type: String
 Parameter Sets: ByCatalog
 Aliases:
-Accepted values: Azure, OnlineServices, Software
+Accepted values: Azure, AzureReservations, AzureReservationsVM, AzureReservationsSQL, AzureReservationsCosmosDb, OnlineServices, Software, SoftwareSUSELinux, SoftwarePerpetual, SoftwareSubscriptions
 
 Required: True
 Position: Named

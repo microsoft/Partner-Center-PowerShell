@@ -40,7 +40,11 @@ namespace Microsoft.Store.PartnerCenter.Products
         /// <returns>The product collection operations by country, by target view and by target segment.</returns>
         public IProductCollectionByCountryByTargetViewByTargetSegment ByTargetSegment(string targetSegment)
         {
-            throw new NotImplementedException();
+            return new ProductCollectionByCountryByTargetViewByTargetSegmentOperations(
+                Partner,
+                Context.Item1,
+                Context.Item2,
+                targetSegment);
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.Products
                     Context.Item2
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetProducts.Parameters.TargetSegment,
+                    PartnerService.Instance.Configuration.Apis.GetProducts.Parameters.TargetView,
                     Context.Item1
                 }
             };

@@ -20,7 +20,12 @@
 
 # Change Log
 
-## Upcoming Release
+## 1.5.1903.6
+
+* Products 
+  * Addressed an issue with requesting products
+
+## 1.5.1903.5
 
 * Auditing
   * Added new operation and resource types

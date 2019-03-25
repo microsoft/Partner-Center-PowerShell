@@ -17,7 +17,6 @@ namespace Microsoft.Store.PartnerCenter.Products
 
     internal class ProductCollectionByCountryByTargetViewByTargetSegmentOperations : BasePartnerComponent<Tuple<string, string, string>>, IProductCollectionByCountryByTargetViewByTargetSegment
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductCollectionByCountryByTargetViewByTargetSegmentOperations" /> class.
         /// </summary>
