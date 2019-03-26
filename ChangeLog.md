@@ -20,6 +20,11 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Utilization 
+  * Modified the default end date value for the Get-PartnerCustomerSubscriptionUtilization command to use UTC time.
+
 ## 1.5.1903.6
 
 * Products 
