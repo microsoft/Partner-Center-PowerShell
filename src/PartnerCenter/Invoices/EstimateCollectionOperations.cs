@@ -21,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         }
 
         /// <summary>
-        /// Gets the estimate links of the recon line items.
+        /// Gets the estimate links of the reconciliation line items.
         /// </summary>
         public IEstimateLink Links => new EstimateLinkOperations(Partner);
     }

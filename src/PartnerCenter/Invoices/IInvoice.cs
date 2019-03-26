@@ -41,6 +41,6 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         /// <param name="period">The period for unbilled recon.</param>
         /// <param name="size">The page size.</param>
         /// <returns>The recon line item collection operations.</returns>
-        IReconLineItemCollection By(BillingProvider provider, InvoiceLineItemType invoiceLineItemType, string currencyCode, BillingPeriod period, int? size = null);
+        IReconciliationLineItemCollection By(BillingProvider provider, InvoiceLineItemType invoiceLineItemType, string currencyCode, BillingPeriod period, int? size = null);
     }
 }

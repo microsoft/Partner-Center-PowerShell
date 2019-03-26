@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IReconLineItemCollection.cs" company="Microsoft">
+// <copyright file="IReconciliationLineItemCollection.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     /// <summary>
     /// Represents the operations that can be done on partner's recon line items.
     /// </summary>
-    public interface IReconLineItemCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<InvoiceLineItem, SeekBasedResourceCollection<InvoiceLineItem>>
+    public interface IReconciliationLineItemCollection : IPartnerComponent<string>, IEntireEntityCollectionRetrievalOperations<InvoiceLineItem, SeekBasedResourceCollection<InvoiceLineItem>>
     {
     }
 }

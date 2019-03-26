@@ -516,7 +516,7 @@
     "GetInvoiceSummaries": {
       "Path": "invoices/summaries"
     },
-    "GetReconLineItems": {
+    "GetReconciliationLineItems": {
       "Path": "invoices/{0}/lineitems",
       "Parameters": {
         "Provider": "provider",

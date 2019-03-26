@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ReconLineItemCollectionOperations.cs" company="Microsoft">
+// <copyright file="ReconciliationLineItemCollectionOperations.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -17,9 +17,9 @@ namespace Microsoft.Store.PartnerCenter.Invoices
     using Models.JsonConverters;
 
     /// <summary>
-    /// The operations available for the partner's recon line item collection.
+    /// The operations available for the partner's reconciliation line item collection.
     /// </summary>
-    internal class ReconLineItemCollectionOperations : BasePartnerComponent<string>, IReconLineItemCollection
+    internal class ReconciliationLineItemCollectionOperations : BasePartnerComponent<string>, IReconciliationLineItemCollection
     {
         /// <summary>
         /// The maximum page size for recon line items.
@@ -52,16 +52,16 @@ namespace Microsoft.Store.PartnerCenter.Invoices
         private readonly BillingPeriod period;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReconLineItemCollectionOperations"/> class.
+        /// Initializes a new instance of the <see cref="ReconciliationLineItemCollectionOperations"/> class.
         /// </summary>
         /// <param name="rootPartnerOperations">The partner operations.</param>
-        /// <param name="invoiceId">The invoice Id.</param>
+        /// <param name="invoiceId">The invoice identifier.</param>
         /// <param name="billingProvider">The billing provider type.</param>
         /// <param name="invoiceLineItemType">The invoice line item type.</param>
         /// <param name="currencyCode">The currency code.</param>
         /// <param name="period">The period for unbilled recon.</param>
         /// <param name="size">The page size.</param>
-        public ReconLineItemCollectionOperations(IPartner rootPartnerOperations, string invoiceId, BillingProvider billingProvider, InvoiceLineItemType invoiceLineItemType, string currencyCode, BillingPeriod period, int? size = null)
+        public ReconciliationLineItemCollectionOperations(IPartner rootPartnerOperations, string invoiceId, BillingProvider billingProvider, InvoiceLineItemType invoiceLineItemType, string currencyCode, BillingPeriod period, int? size = null)
             : base(rootPartnerOperations, invoiceId)
         {
             invoiceId.AssertNotEmpty(nameof(invoiceId));
@@ -84,23 +84,23 @@ namespace Microsoft.Store.PartnerCenter.Invoices
             IDictionary<string, string> parameters = new Dictionary<string, string>
             {
                 {
-                    PartnerService.Instance.Configuration.Apis.GetReconLineItems.Parameters.CurrencyCode,
+                    PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Parameters.CurrencyCode,
                     currencyCode
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetReconLineItems.Parameters.InvoiceLineItemType,
+                    PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Parameters.InvoiceLineItemType,
                     invoiceLineItemType.ToString()
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetReconLineItems.Parameters.Period,
+                    PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Parameters.Period,
                     period.ToString().ToLower(CultureInfo.InvariantCulture)
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetReconLineItems.Parameters.Provider,
+                    PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Parameters.Provider,
                     billingProvider.ToString()
                 },
                 {
-                    PartnerService.Instance.Configuration.Apis.GetReconLineItems.Parameters.Size,
+                    PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Parameters.Size,
                     pageSize.ToString(CultureInfo.InvariantCulture)
                 }
             };
@@ -109,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.Invoices
                 new Uri(
                     string.Format(
                         CultureInfo.InvariantCulture,
-                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetReconLineItems.Path}",
+                        $"/{PartnerService.Instance.ApiVersion}/{PartnerService.Instance.Configuration.Apis.GetReconciliationLineItems.Path}",
                         Context),
                     UriKind.Relative),
                 parameters,
