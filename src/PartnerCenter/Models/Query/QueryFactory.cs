@@ -11,31 +11,14 @@ namespace Microsoft.Store.PartnerCenter.Models.Query
     /// <summary>
     /// Factory used to create instances of <see cref="IQuery" /> objects.
     /// </summary>
-    public sealed class QueryFactory
+    public static class QueryFactory
     {
-        /// <summary>
-        /// A singleton instance of the query factory.
-        /// </summary>
-        private static Lazy<QueryFactory> instance = new Lazy<QueryFactory>(() => new QueryFactory());
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="QueryFactory" /> class from being created.
-        /// </summary>
-        private QueryFactory()
-        {
-        }
-
-        /// <summary>
-        /// Gets an instance of the query factory.
-        /// </summary>
-        public static QueryFactory Instance => QueryFactory.instance.Value;
-
         /// <summary>Builds a simple query.</summary>
         /// <param name="filter">An optional filter.</param>
         /// <param name="sortOption">Optional sorting options.</param>
         /// <param name="token">Optional query token.</param>
         /// <returns>A simple query.</returns>
-        public IQuery BuildSimpleQuery(FieldFilter filter = null, Sort sortOption = null, object token = null)
+        public static IQuery BuildSimpleQuery(FieldFilter filter = null, Sort sortOption = null, object token = null)
         {
             SimpleQuery simpleQuery = new SimpleQuery
             {
@@ -54,7 +37,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Query
         /// <param name="sortOption">Optional sorting options.</param>
         /// <param name="token">Optional query token.</param>
         /// <returns>A paged query.</returns>
-        public IQuery BuildIndexedQuery(int pageSize, int index = 0, FieldFilter filter = null, Sort sortOption = null, object token = null)
+        public static IQuery BuildIndexedQuery(int pageSize, int index = 0, FieldFilter filter = null, Sort sortOption = null, object token = null)
         {
             IndexedQuery indexedQuery = new IndexedQuery
             {
@@ -64,6 +47,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Query
                 Sort = sortOption,
                 Token = token
             };
+
             return indexedQuery;
         }
 
@@ -71,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Query
         /// <param name="filter">An optional filter.</param>
         /// <param name="token">Optional query token.</param>
         /// <returns>A count query.</returns>
-        public IQuery BuildCountQuery(FieldFilter filter = null, object token = null)
+        public static IQuery BuildCountQuery(FieldFilter filter = null, object token = null)
         {
             CountQuery countQuery = new CountQuery
             {
@@ -90,7 +74,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Query
         /// <param name="sortingOption">An optional sorting options.</param>
         /// <param name="token">An optional query token.</param>
         /// <returns>The seek query.</returns>
-        public IQuery BuildSeekQuery(SeekOperation seekOperation, int pageSize = 0, int index = 0, FieldFilter filter = null, Sort sortingOption = null, object token = null)
+        public static IQuery BuildSeekQuery(SeekOperation seekOperation, int pageSize = 0, int index = 0, FieldFilter filter = null, Sort sortingOption = null, object token = null)
         {
             SeekQuery seekQuery = new SeekQuery
             {

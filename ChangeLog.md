@@ -22,6 +22,8 @@
 
 ## Upcoming Release
 
+* Users
+  * No longer throw an error when searching for a user with UPN that does not exists. 
 * Utilization 
   * Modified the default end date value for the Get-PartnerCustomerSubscriptionUtilization command to use UTC time.
 

@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 else
                 {
                     seekCustomers = Partner.Customers.QueryAsync(
-                        QueryFactory.Instance.BuildSimpleQuery(new SimpleFieldFilter(
+                        QueryFactory.BuildSimpleQuery(new SimpleFieldFilter(
                             CustomerSearchField.Domain.ToString(),
                             FieldFilterOperation.StartsWith,
                             Domain))).GetAwaiter().GetResult();
