@@ -22,6 +22,8 @@
 
 ## Upcoming Release
 
+* Auditing
+  * Renamed the CreateInvoice operation type to ReadyInvoice.
 * Invoices 
   * Renamed the reconciliation line item objects
 * Users
