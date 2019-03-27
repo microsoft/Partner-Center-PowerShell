@@ -79,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 .Subscriptions[SubscriptionId]
                 .Utilization.Azure.QueryAsync(
                     StartDate,
-                    EndDate ?? DateTimeOffset.Now,
+                    EndDate ?? DateTimeOffset.UtcNow,
                     Granularity ?? AzureUtilizationGranularity.Daily,
                     (!ShowDetails.IsPresent) || ShowDetails.ToBool()).GetAwaiter().GetResult();
 

@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents unbilled, billed recon line items for daily rated usage.
+    /// Represents unbilled, billed reconciliation line items for daily rated usage.
     /// </summary>
     public sealed class DailyRatedUsageLineItem : InvoiceLineItem
     {
@@ -25,7 +25,7 @@ namespace Microsoft.Store.PartnerCenter.Models.Invoices
         public string PartnerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the id of the customer that usage belongs to.
+        /// Gets or sets the identifier of the customer that usage belongs to.
         /// </summary>
         public string CustomerId { get; set; }
 

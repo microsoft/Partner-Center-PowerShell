@@ -133,14 +133,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             List<CustomerUser> gUsers = GetDeletedUsers(customerId);
 
-            try
-            {
-                return gUsers.First(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
-            }
-            catch
-            {
-                throw new PSPartnerException("Error finding user id for " + userPrincipalName);
-            }
+            return gUsers.SingleOrDefault(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
         }
 
         /// <summary>
@@ -153,7 +146,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private List<CustomerUser> GetDeletedUsers(string customerId)
         {
             SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
-            IQuery simpleQueryWithFilter = QueryFactory.Instance.BuildSimpleQuery(filter);
+            IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
             IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
             List<CustomerUser> users;
             SeekBasedResourceCollection<CustomerUser> seekUsers;

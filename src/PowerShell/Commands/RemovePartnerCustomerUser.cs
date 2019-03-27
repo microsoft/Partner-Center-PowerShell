@@ -123,21 +123,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             List<CustomerUser> gUsers = GetUsers(customerId);
 
-            try
-            {
-                return gUsers.First(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
-            }
-            catch
-            {
-                throw new PSPartnerException("Error finding user id for " + userPrincipalName);
-            }
+            return gUsers.SingleOrDefault(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
         }
 
         /// <summary>
         /// Gets a list of users from Partner Center.
         /// </summary>
         /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
+        /// <exception cref="ArgumentException">
         /// <paramref name="customerId"/> is empty or null.
         /// </exception>
         private List<CustomerUser> GetUsers(string customerId)
