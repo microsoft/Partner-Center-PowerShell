@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-
     <IsPackable>false</IsPackable>
 
     <AssemblyName>Microsoft.Store.PartnerCenter.Tests.UnitTests</AssemblyName>
