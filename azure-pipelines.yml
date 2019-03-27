@@ -15,3 +15,23 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- powershell: |
+  Install-Module -Name platyps -Force -Verbose -Scope CurrentUser
+  
+  $PathToHelpFolder = ".\docs\help\" 
+  $PathToOutputFolder = ".\src\PowerShell\bin\Release\netstandard2.0" 
+  New-ExternalHelp -Path $PathToHelpFolder -OutputPath $PathToOutputFolder
+displayName: 'Generate MAML'
+
+- powershell: |
+  $manifest = ".\src\PowerShell\bin\Release\net461\PartnerCenter.psd1"
+  
+  Test-ModuleManifest $manifest
+displayName: 'Validate Manifest (.NET Framework)'
+
+- powershell: |
+  $manifest = ".\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.NetCore.psd1"
+  
+  Test-ModuleManifest $manifest
+displayName: 'Validate Manifest (.NET Standard)'

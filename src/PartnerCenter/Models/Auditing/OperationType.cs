@@ -202,8 +202,8 @@ namespace Microsoft.Store.PartnerCenter.Models.Auditing
         IncreaseCreditLimit = 36,
 
         /// <summary>
-        /// Create invoice
+        /// An invoice is ready
         /// </summary>
-        CreateInvoice = 37
+        ReadyInvoice = 37
     }
 }
