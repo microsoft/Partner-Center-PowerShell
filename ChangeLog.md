@@ -22,6 +22,8 @@
 
 ## Upcoming Release
 
+* Invoices 
+  * Renamed the reconciliation line item objects
 * Users
   * No longer throw an error when searching for a user with UPN that does not exists. 
 * Utilization 
