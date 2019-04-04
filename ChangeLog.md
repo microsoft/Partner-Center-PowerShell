@@ -20,7 +20,7 @@
 
 # Change Log
 
-## Upcoming Release
+## 1.5.1904.1
 
 * Auditing
   * Renamed the CreateInvoice operation type to ReadyInvoice.
