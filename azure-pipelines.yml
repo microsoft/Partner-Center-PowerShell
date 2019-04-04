@@ -24,6 +24,3 @@ steps:
 
 - pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\net461\PartnerCenter.psd1'
   displayName: 'Validate Manifest (.NET Framework)'
-
-- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.psd1'
-  displayName: 'Validate Manifest (.NET Standard)'
