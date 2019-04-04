@@ -81,7 +81,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     StartDate,
                     EndDate ?? DateTimeOffset.UtcNow,
                     Granularity ?? AzureUtilizationGranularity.Daily,
-                    (!ShowDetails.IsPresent) || ShowDetails.ToBool()).GetAwaiter().GetResult();
+                    (!ShowDetails.IsPresent) || ShowDetails.ToBool()).ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (utilizationRecords?.TotalCount > 0)
             {
@@ -92,7 +92,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 while (enumerator.HasValue)
                 {
                     records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                    enumerator.NextAsync().GetAwaiter().GetResult();
+                    enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 }
 
                 WriteObject(records, true);

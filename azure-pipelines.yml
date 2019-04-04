@@ -1,13 +1,17 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+strategy:
+  matrix:
+    Linux:
+      imageName: 'ubuntu-16.04'
+    Mac:
+      imageName: 'macos-10.13'
+    Windows:
+      imageName: 'Windows-2019'
 
 trigger:
 - master
 
 pool:
-  vmImage: 'Windows-2019'
+  vmImage: $(imageName)
 
 variables:
   buildConfiguration: 'Release'
@@ -16,22 +20,14 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- powershell: |
-  Install-Module -Name platyps -Force -Verbose -Scope CurrentUser
-  
-  $PathToHelpFolder = ".\docs\help\" 
-  $PathToOutputFolder = ".\src\PowerShell\bin\Release\netstandard2.0" 
-  New-ExternalHelp -Path $PathToHelpFolder -OutputPath $PathToOutputFolder
-displayName: 'Generate MAML'
+- pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
+  displayName: 'Install platyPS'
 
-- powershell: |
-  $manifest = ".\src\PowerShell\bin\Release\net461\PartnerCenter.psd1"
-  
-  Test-ModuleManifest $manifest
-displayName: 'Validate Manifest (.NET Framework)'
+- pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\src\PowerShell\bin\Release\netstandard2.0'
+  displayName: 'Generate MAML'
 
-- powershell: |
-  $manifest = ".\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.NetCore.psd1"
-  
-  Test-ModuleManifest $manifest
-displayName: 'Validate Manifest (.NET Standard)'
+- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\net461\PartnerCenter.psd1'
+  displayName: 'Validate Manifest (.NET Framework)'
+
+- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.psd1'
+  displayName: 'Validate Manifest (.NET Standard)'

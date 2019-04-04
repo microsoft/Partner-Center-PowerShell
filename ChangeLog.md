@@ -24,16 +24,16 @@
 
 * Auditing
   * Renamed the CreateInvoice operation type to ReadyInvoice.
-* Invoices 
+* Invoices
   * Renamed the reconciliation line item objects
 * Users
-  * No longer throw an error when searching for a user with UPN that does not exists. 
-* Utilization 
+  * No longer throw an error when searching for a user with UPN that does not exists.
+* Utilization
   * Modified the default end date value for the Get-PartnerCustomerSubscriptionUtilization command to use UTC time.
 
 ## 1.5.1903.6
 
-* Products 
+* Products
   * Addressed an issue with requesting products
 
 ## 1.5.1903.5
