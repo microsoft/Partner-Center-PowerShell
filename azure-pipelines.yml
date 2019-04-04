@@ -1,13 +1,13 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+strategy:
+  matrix:
+    Windows:
+      imageName: 'Windows-2019'
 
 trigger:
 - master
 
 pool:
-  vmImage: 'Windows-2019'
+  vmImage: $(imageName)
 
 variables:
   buildConfiguration: 'Release'
@@ -15,3 +15,12 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
+  displayName: 'Install platyPS'
+
+- pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\src\PowerShell\bin\Release\netstandard2.0'
+  displayName: 'Generate MAML'
+
+- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\net461\PartnerCenter.psd1'
+  displayName: 'Validate Manifest (.NET Framework)'

@@ -148,7 +148,7 @@ namespace Microsoft.Store.PartnerCenter.TestFramework.Network
                 XDocument.Parse(content);
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
