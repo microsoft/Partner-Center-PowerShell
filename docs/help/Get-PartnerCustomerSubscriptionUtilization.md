@@ -16,7 +16,7 @@ Gets the utilization of a customer's Azure subscription.
 
 ```powershell
 Get-PartnerCustomerSubscriptionUtilization -CustomerId <String> [-EndDate <DateTimeOffset>]
- [-Granularity <AzureUtilizationGranularity>] [-ShowDetails] -StartDate <DateTimeOffset>
+ [-Granularity <AzureUtilizationGranularity>] [-PageSize <Int32>] [-ShowDetails] -StartDate <DateTimeOffset>
  -SubscriptionId <String> [<CommonParameters>]
 ```
 
@@ -92,6 +92,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -PageSize
+The number of records returned with a single request to the partner service.
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ShowDetails
 Flag indicating whether or not utilization records will be aggregated on the resource level
 
@@ -138,7 +153,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

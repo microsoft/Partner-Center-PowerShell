@@ -44,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the page size.
         /// </summary>
-        [Parameter(HelpMessage = "The number of records to return with a single request to the partner service.", Mandatory = false)]
+        [Parameter(HelpMessage = "The number of records returned with a single request to the partner service.", Mandatory = false)]
         public int? PageSize { get; set; }
 
         /// <summary>
