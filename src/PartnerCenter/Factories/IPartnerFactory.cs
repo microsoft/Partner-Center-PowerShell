@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.Factories
 {
-    using System;
     using System.Net.Http;
     using RequestContext;
 

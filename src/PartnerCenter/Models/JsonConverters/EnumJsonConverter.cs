@@ -7,9 +7,9 @@
 namespace Microsoft.Store.PartnerCenter.Models.JsonConverters
 {
     using System;
-    using Extensions;
     using System.Globalization;
     using System.Text;
+    using Extensions;
     using Newtonsoft.Json;
 
     /// <summary>

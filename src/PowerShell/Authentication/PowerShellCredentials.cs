@@ -7,6 +7,9 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
 {
     using System;
+    using System.Diagnostics;
+    using System.Threading.Tasks;
+    using RequestContext;
 
     /// <summary>
     /// Provides the credentials need to access the partner service.
@@ -16,7 +19,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         /// <summary>
         /// The result from a successfully token request.
         /// </summary>
-        private readonly AuthenticationToken authToken;
+        private AuthenticationToken authToken;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="PowerShellCredentials" /> class.
+        /// </summary>
+        static PowerShellCredentials()
+        {
+            PartnerService.Instance.RefreshCredentials += new PartnerService.RefreshCredentialsHandler(OnCredentialsRefreshNeededAsync);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PowerShellCredentials" /> class.
@@ -44,6 +55,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
         public bool IsExpired()
         {
             return DateTimeOffset.UtcNow > authToken.ExpiryTime;
+        }
+
+        /// <summary>
+        /// Refreshes the partner credentials.
+        /// </summary>
+        /// <param name="context">The partner context.</param>
+        /// <returns>A task which is complete when the refresh is done.</returns>
+        private async Task RefreshAsync(IRequestContext context)
+        {
+            context.AssertNotNull(nameof(context));
+
+            authToken = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                PartnerSession.Instance.Context,
+                s => Debug.WriteLine(s));
+
+            await Task.CompletedTask.ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Called when a partner credentials instance needs to be refreshed.
+        /// </summary>
+        /// <param name="credentials">The outdated partner credentials.</param>
+        /// <param name="context">The partner context.</param>
+        /// <returns>A task that is complete when the credential refresh is complete.</returns>
+        private static async Task OnCredentialsRefreshNeededAsync(IPartnerCredentials credentials, IRequestContext context)
+        {
+            if (credentials is PowerShellCredentials partnerCredentials)
+            {
+                await partnerCredentials.RefreshAsync(context).ConfigureAwait(false);
+            }
         }
     }
 }

@@ -11,9 +11,8 @@ namespace Microsoft.Store.PartnerCenter.Products
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
-    using GenericOperations;
-    using Microsoft.Store.PartnerCenter.Models.JsonConverters;
     using Models;
+    using Models.JsonConverters;
     using Models.Products;
 
     /// <summary>

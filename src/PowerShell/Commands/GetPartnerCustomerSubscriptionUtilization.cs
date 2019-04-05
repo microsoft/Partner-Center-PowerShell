@@ -38,8 +38,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the resource usage time granularity. Can either be daily or hourly. The default value is daily.
         /// </summary>
-        [Parameter(HelpMessage = "The resource usage time granularity. Can either be daily or hourly. The default value is daily", Mandatory = false)]
+        [Parameter(HelpMessage = "The resource usage time granularity. Can either be daily or hourly. The default value is daily.", Mandatory = false)]
         public AzureUtilizationGranularity? Granularity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page size.
+        /// </summary>
+        [Parameter(HelpMessage = "The number of records returned with a single request to the partner service.", Mandatory = false)]
+        public int? PageSize { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating whether or not utilization records will be aggregated on the resource level.
@@ -81,7 +87,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     StartDate,
                     EndDate ?? DateTimeOffset.UtcNow,
                     Granularity ?? AzureUtilizationGranularity.Daily,
-                    (!ShowDetails.IsPresent) || ShowDetails.ToBool()).ConfigureAwait(false).GetAwaiter().GetResult();
+                    !ShowDetails.IsPresent || ShowDetails.ToBool(),
+                    PageSize == null ? 1000 : PageSize.Value).ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (utilizationRecords?.TotalCount > 0)
             {

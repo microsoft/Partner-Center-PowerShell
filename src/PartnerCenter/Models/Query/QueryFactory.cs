@@ -6,8 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.Models.Query
 {
-    using System;
-
     /// <summary>
     /// Factory used to create instances of <see cref="IQuery" /> objects.
     /// </summary>

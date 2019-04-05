@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 {
-    using System;
     using System.ComponentModel;
 
     /// <summary>

@@ -384,7 +384,7 @@ namespace Microsoft.Store.PartnerCenter.Network
             {
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, new Uri(Endpoint, relativeUri)))
                 {
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -419,7 +419,7 @@ namespace Microsoft.Store.PartnerCenter.Network
                         request.Headers.Add(header.Key, header.Value);
                     }
 
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
                     content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -515,7 +515,7 @@ namespace Microsoft.Store.PartnerCenter.Network
 
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, address))
                 {
-                    AddRequestHeaders(request, headers);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -562,7 +562,7 @@ namespace Microsoft.Store.PartnerCenter.Network
             {
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, new Uri(Endpoint, relativeUri)))
                 {
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
 
@@ -598,7 +598,7 @@ namespace Microsoft.Store.PartnerCenter.Network
             {
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, new Uri(Endpoint, relativeUri)))
                 {
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
@@ -628,7 +628,7 @@ namespace Microsoft.Store.PartnerCenter.Network
             {
                 using (HttpRequestMessage request = new HttpRequestMessage(new HttpMethod(PatchMethod), new Uri(Endpoint, relativeUri)))
                 {
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     request.Content = new StringContent(JsonConvert.SerializeObject(content, GetSerializationSettings()));
                     request.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaType);
@@ -684,8 +684,7 @@ namespace Microsoft.Store.PartnerCenter.Network
 
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, address))
                 {
-
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     request.Content = new StringContent(JsonConvert.SerializeObject(content, GetSerializationSettings()));
                     request.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaType);
@@ -741,7 +740,7 @@ namespace Microsoft.Store.PartnerCenter.Network
 
                 using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, address))
                 {
-                    AddRequestHeaders(request);
+                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
 
                     request.Content = new StringContent(JsonConvert.SerializeObject(content, GetSerializationSettings()));
                     request.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaType);
@@ -813,7 +812,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <param name="rootPartnerOperations">The root partner operations instance.</param>
         /// <param name="request">The HTTP request being made.</param>
         /// <param name="additionalHeaders">Additional headers to be added.</param>
-        private void AddRequestHeaders(HttpRequestMessage request, IDictionary<string, string> additionalHeaders = null)
+        private async Task AddRequestHeadersAsync(HttpRequestMessage request, IDictionary<string, string> additionalHeaders = null)
         {
             IRequestContext context;
 
@@ -849,10 +848,19 @@ namespace Microsoft.Store.PartnerCenter.Network
 
             if (rootPartnerOperations.Credentials.IsExpired())
             {
-                throw new PartnerException(
-                    "The credential refresh mechanism provided expired credentials.",
-                    rootPartnerOperations.RequestContext,
-                    PartnerErrorCategory.Unauthorized);
+                if (PartnerService.Instance.RefreshCredentials != null)
+                {
+                    await PartnerService.Instance.RefreshCredentials(
+                        rootPartnerOperations.Credentials, 
+                        context).ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new PartnerException(
+                        "The partner credentials have expired. Please provide updated credentials.",
+                        rootPartnerOperations.RequestContext,
+                        PartnerErrorCategory.Unauthorized);
+                }
             }
 
             request.Headers.Authorization = new AuthenticationHeaderValue(
