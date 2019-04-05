@@ -78,6 +78,7 @@ namespace Microsoft.Store.PartnerCenter.Extensions
                 if (tokenRefresher != null)
                 {
                     AuthenticationToken authenticationToken = await tokenRefresher(AADToken).ConfigureAwait(false);
+
                     if (authenticationToken == null)
                     {
                         throw new PartnerException("Token refresher returned null token.", context, PartnerErrorCategory.Unauthorized, null);

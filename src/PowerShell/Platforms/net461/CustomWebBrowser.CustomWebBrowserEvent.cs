@@ -6,7 +6,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
 {
-    using System;
     using System.Runtime.InteropServices;
 
     internal partial class CustomWebBrowser

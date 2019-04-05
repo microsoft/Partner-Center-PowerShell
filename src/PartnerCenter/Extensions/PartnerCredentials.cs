@@ -44,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.Extensions
         }
 
         /// <summary>
-        /// Generates partner credentials using a user plus application Azure Active Directory token.
+        /// Generates partner credentials using app + user authentication.
         /// </summary>
         /// <param name="clientId">The client id of the application in Azure Active Directory. This application should be an Azure native application.</param>
         /// <param name="authenticationToken">The Azure Active Directory token.</param>

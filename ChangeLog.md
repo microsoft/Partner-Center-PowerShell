@@ -20,6 +20,13 @@
 
 # Change Log
 
+## 1.5.1904.2
+
+* Authentication
+  * Addressed issue [#113](https://github.com/Microsoft/Partner-Center-PowerShell/issues/113), where the access token would expire for long running operations.
+* Utilization
+  * Added the page size parameter to the Get-PartnerCustomerSubscriptionUtilization command.
+
 ## 1.5.1904.1
 
 * Auditing
