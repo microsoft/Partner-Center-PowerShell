@@ -23,6 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating whether or not the subscription will auto renew.
         /// </summary>
+        [BreakingChange("The auto renew flag cannot be modified. So, this parameter will be removed.", "1.5.1905.1", "5/1/2019")]
         [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "Customer", Mandatory = false)]
         [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "CustomerObject", Mandatory = false)]
         public bool? AutoRenew { get; set; }

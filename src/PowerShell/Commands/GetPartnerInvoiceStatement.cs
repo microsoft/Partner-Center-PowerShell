@@ -54,37 +54,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
 
             DirectoryInfo dirInfo = Directory.CreateDirectory(OutputPath);
-            string filePath = "";
+            string filePath;
 
             if (dirInfo.FullName.EndsWith(Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture), System.StringComparison.CurrentCulture))
             {
-                filePath = dirInfo.FullName + InvoiceId + ".pdf";
+                filePath = $"{dirInfo.FullName}{InvoiceId}.pdf";
             }
             else
             {
-                filePath = dirInfo.FullName + Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture) + InvoiceId + ".pdf";
+                filePath = $"{dirInfo.FullName}{Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture)}{InvoiceId}.pdf";
             }
 
             if (File.Exists(filePath) && !Overwrite.IsPresent)
             {
-                throw new PSInvalidOperationException("The path already exists: " + filePath + ". Specify the -Overwrite switch to overwrite the file");
+                throw new PSInvalidOperationException($"The path already exists: {filePath}. Specify the -Overwrite switch to overwrite the file");
             }
 
-            GetStatement(InvoiceId, filePath);
-        }
-
-        /// <summary>
-        ///  Gets the specified invoice statement for the specified invoiceId and outputs the PDF file to outputPath
-        /// </summary>
-        private void GetStatement(string invoiceId, string filePath)
-        {
-            FileStream file;
-
-            using (Stream stream = Partner.Invoices.ById(invoiceId).Documents.Statement.GetAsync().GetAwaiter().GetResult())
+            using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().GetAwaiter().GetResult())
             {
-                file = File.Create(filePath);
+                FileStream file = File.Create(filePath);
                 stream.Seek(0, SeekOrigin.Begin);
                 stream.CopyTo(file);
+
+                file.Close();
             }
         }
     }
