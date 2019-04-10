@@ -23,20 +23,22 @@
 ## 1.5.1904.2
 
 * Authentication
-  * Addressed issue [#113](https://github.com/Microsoft/Partner-Center-PowerShell/issues/113), where the access token would expire for long running operations.
+  * Addressed issue [#113](https://github.com/Microsoft/Partner-Center-PowerShell/issues/113), where the access token would expire for long running operations
+* Network
+  * Any operation that is aborted due to task cancellation exception will now be retired three times
 * Utilization
-  * Added the page size parameter to the Get-PartnerCustomerSubscriptionUtilization command.
+  * Added the page size parameter to the Get-PartnerCustomerSubscriptionUtilization command
 
 ## 1.5.1904.1
 
 * Auditing
-  * Renamed the CreateInvoice operation type to ReadyInvoice.
+  * Renamed the CreateInvoice operation type to ReadyInvoice
 * Invoices
   * Renamed the reconciliation line item objects
 * Users
-  * No longer throw an error when searching for a user with UPN that does not exists.
+  * No longer throw an error when searching for a user with UPN that does not exists
 * Utilization
-  * Modified the default end date value for the Get-PartnerCustomerSubscriptionUtilization command to use UTC time.
+  * Modified the default end date value for the Get-PartnerCustomerSubscriptionUtilization command to use UTC time
 
 ## 1.5.1903.6
 

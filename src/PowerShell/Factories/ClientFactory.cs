@@ -7,7 +7,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
-    using System.Net.Http;
     using Authentication;
     using Common;
 
@@ -17,9 +16,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     public class ClientFactory : IClientFactory
     {
         /// <summary>
-        /// The client used to perform HTTP operations.
+        /// The default cancellation retry delegating handler.
         /// </summary>
-        private readonly static HttpClient httpClient = new HttpClient();
+        private static readonly CancelRetryHandler DefaultCancelRetryHandler = new CancelRetryHandler(3, TimeSpan.FromSeconds(10));
 
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
@@ -36,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(
                     PartnerSession.Instance.AuthenticationFactory.Authenticate(PartnerSession.Instance.Context, debugAction)),
-                httpClient);
+                DefaultCancelRetryHandler);
         }
     }
 }

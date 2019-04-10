@@ -24,6 +24,7 @@
     <None Remove="Commands\GetPartnerCustomerOrderLineItemActivationLink.cs" />
     <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />
     <None Remove="Commands\GetPartnerValidationCode.cs" />
+    <None Remove="Factories\CancelRetryHandler.cs" />
     <None Remove="Models\Orders\PSOrderLineItemProvisioningStatus.cs" />
     <None Remove="Models\ValidationCodes\PSValidationCode.cs" />
     <ProjectReference Include="..\PartnerCenter\PartnerCenter.csproj" />

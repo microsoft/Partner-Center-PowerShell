@@ -15,6 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Utilizations;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Utilizations;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Cmdlet used to obtain Azure utilization records for the specified subscription.
@@ -77,33 +78,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
+            List<PSAzureUtilizationRecord> records = Task.Run(() => RunAsync()).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            WriteObject(records, true);
+        }
+
+        public async Task<List<PSAzureUtilizationRecord>> RunAsync()
+        {
             IResourceCollectionEnumerator<ResourceCollection<AzureUtilizationRecord>> enumerator;
-            List<PSAzureUtilizationRecord> records;
+            List<PSAzureUtilizationRecord> records = new List<PSAzureUtilizationRecord>();
             ResourceCollection<AzureUtilizationRecord> utilizationRecords;
 
-            utilizationRecords = Partner.Customers[CustomerId]
+            utilizationRecords = await Partner.Customers[CustomerId]
                 .Subscriptions[SubscriptionId]
                 .Utilization.Azure.QueryAsync(
                     StartDate,
                     EndDate ?? DateTimeOffset.UtcNow,
                     Granularity ?? AzureUtilizationGranularity.Daily,
                     !ShowDetails.IsPresent || ShowDetails.ToBool(),
-                    PageSize == null ? 1000 : PageSize.Value).ConfigureAwait(false).GetAwaiter().GetResult();
+                    PageSize == null ? 1000 : PageSize.Value).ConfigureAwait(false);
 
             if (utilizationRecords?.TotalCount > 0)
             {
                 enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
 
-                records = new List<PSAzureUtilizationRecord>();
-
                 while (enumerator.HasValue)
                 {
                     records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                    enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    await enumerator.NextAsync().ConfigureAwait(false);
                 }
-
-                WriteObject(records, true);
             }
+
+            return records;
         }
     }
 }
