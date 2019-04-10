@@ -79,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// The name of the SDK version header.
         /// </summary>
         public const string SdkVersionHeader = "MS-SdkVersion";
-        
+
         /// <summary>
         /// The root partner operations instance.
         /// </summary>
@@ -555,33 +555,21 @@ namespace Microsoft.Store.PartnerCenter.Network
         /// <returns>The file content stream.</returns>
         public async Task<Stream> GetFileContentAsync(Uri relativeUri, string mediaType, CancellationToken cancellationToken = default)
         {
-            HttpResponseMessage response = null;
-            Stream stream;
+            HttpRequestMessage request;
 
-            try
+            request = new HttpRequestMessage(HttpMethod.Get, new Uri(Endpoint, relativeUri));
+            await AddRequestHeadersAsync(request).ConfigureAwait(false);
+
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
+
+            HttpResponseMessage response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+
+            if (response.Content == null)
             {
-                using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, new Uri(Endpoint, relativeUri)))
-                {
-                    await AddRequestHeadersAsync(request).ConfigureAwait(false);
-
-                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
-
-                    response = await HttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-
-                    if (response.Content == null)
-                    {
-                        return null;
-                    }
-
-                    stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-                    return stream;
-                }
+                return null;
             }
-            finally
-            {
-                response?.Dispose();
-            }
+
+            return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -851,7 +839,7 @@ namespace Microsoft.Store.PartnerCenter.Network
                 if (PartnerService.Instance.RefreshCredentials != null)
                 {
                     await PartnerService.Instance.RefreshCredentials(
-                        rootPartnerOperations.Credentials, 
+                        rootPartnerOperations.Credentials,
                         context).ConfigureAwait(false);
                 }
                 else

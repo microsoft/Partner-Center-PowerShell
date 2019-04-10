@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         /// </summary>
         /// <param name="message">The message that describes the breaking change.</param>
         /// <param name="deprecateByVersion">The version where the change will be required.</param>
-        /// <param name="changeInEfectByDate">The data when the change will be required.</param>
+        /// <param name="changeInEfectByDate">The date when the change will be required.</param>
         protected BreakingChangeBaseAttribute(string message, string deprecateByVersion, string changeInEfectByDate)
         {
             message.AssertNotEmpty(nameof(message));
@@ -66,7 +66,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         }
 
         /// <summary>
-        /// Gets or sets the description for hte change.
+        /// Gets or sets the description for the change.
         /// </summary>
         public string ChangeDescription { get; set; } = null;
 

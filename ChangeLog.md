@@ -20,6 +20,13 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Invoices
+  * Addressed issue [#117](https://github.com/Microsoft/Partner-Center-PowerShell/issues/117), where the cannot access stream error was being thrown
+* Subscriptions
+  * Added breaking change warning for the removal the *AutoRenew* flag from the [Set-PartnerCustomerSubscription](https://docs.microsoft.com/powershell/module/partnercenter/set-partnercustomersubscription) command
+
 ## 1.5.1904.2
 
 * Authentication
