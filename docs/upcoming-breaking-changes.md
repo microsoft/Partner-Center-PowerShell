@@ -23,6 +23,11 @@
 
 # Upcoming Breaking Changes
 
+## Release 1.5.1906.1 - June 2019
+
+* Agreements
+  * The *UserId* parameter will be removed from the [New-PartnerCustomerAgreement](https://docs.microsoft.com/powershell/module/partnercenter/new-partnercustomeragreement) command. Enhancements to the API have been to derive this value based on the authenticated user
+
 ## Release 1.5.1905.1 - May 2019
 
 * Subscriptions

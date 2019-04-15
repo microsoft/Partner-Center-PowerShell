@@ -83,6 +83,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the user identifier.
         /// </summary>
+        [BreakingChange("The API will now derive this value based on the authenticated user. So, this parameter will be removed in a future release.", "1.5.1906.1")]
         [Parameter(HelpMessage = "The identifier of the user in the partner tenant who is providing confirmation on behalf of the customer.", Mandatory = false)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string UserId { get; set; }
