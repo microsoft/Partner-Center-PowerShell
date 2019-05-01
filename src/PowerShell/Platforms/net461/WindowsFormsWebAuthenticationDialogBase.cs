@@ -85,6 +85,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
             WhiteListedSchemes.Add(BrowserScheme);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                StopWebBrowser();
+                webBrowser?.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
         internal IWin32Window OwnerWindow { get; }
 
         private void WebBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -399,20 +410,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Platforms
         private sealed class WindowsFormsWin32Window : IWin32Window
         {
             public IntPtr Handle { get; set; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                StopWebBrowser();
-            }
-
-            base.Dispose(disposing);
         }
 
         /// <summary>
