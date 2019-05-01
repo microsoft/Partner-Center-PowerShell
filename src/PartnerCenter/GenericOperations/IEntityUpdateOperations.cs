@@ -12,9 +12,9 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
     /// <summary>
     /// Groups operations for updating a single entity.
     /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    /// <typeparam name="V">The return type.</typeparam>
-    public interface IEntityUpdateOperations<T, V>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TResponse">The return type.</typeparam>
+    public interface IEntityUpdateOperations<TEntity, TResponse>
     {
         /// <summary>
         /// Updates an entity.
@@ -22,6 +22,6 @@ namespace Microsoft.Store.PartnerCenter.GenericOperations
         /// <param name="entity">The entity information.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>The updated entity.</returns>
-        Task<V> UpdateAsync(T entity, CancellationToken cancellationToken = default);
+        Task<TResponse> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
     }
 }
