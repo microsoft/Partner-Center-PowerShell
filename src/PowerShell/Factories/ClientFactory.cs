@@ -41,6 +41,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             debugAction.AssertNotNull(nameof(debugAction));
 
+            PartnerEnvironment env = PartnerEnvironment.PublicEnvironments[PartnerSession.Instance.Context.Environment];
+
+            PartnerService.Instance.ApiRootUrl = new Uri(env.PartnerCenterEndpoint);
+
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(
                     PartnerSession.Instance.AuthenticationFactory.Authenticate(PartnerSession.Instance.Context, debugAction)),
