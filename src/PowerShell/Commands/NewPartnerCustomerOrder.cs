@@ -11,6 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Orders;
     using PartnerCenter.PowerShell.Models.Orders;
 
@@ -27,6 +28,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// The name for the subscription parameter set.
         /// </summary>
         private const string SubscriptionParameterSet = "Subscription";
+
+        /// <summary>
+        /// Gets or sets the billing cycle type.
+        /// </summary>
+        [Parameter(HelpMessage = "The frequency with which the partner is billed for this order.", Mandatory = false)]
+        [ValidateSet(nameof(BillingCycleType.Annual), nameof(BillingCycleType.Monthly), nameof(BillingCycleType.None))]
+        public BillingCycleType BillingCycle { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the customer making the purchase.
@@ -83,6 +91,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             newOrder = new Order
             {
+                BillingCycle = BillingCycle,
                 LineItems = lineItems,
                 ReferenceCustomerId = CustomerId
             };
