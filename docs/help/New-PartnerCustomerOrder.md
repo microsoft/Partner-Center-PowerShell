@@ -16,14 +16,14 @@ Create a new order for the specified services on behalf of the customer.
 
 ### Subscription (Default)
 ```powershell
-New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+New-PartnerCustomerOrder [-BillingCycle <BillingCycleType>] -CustomerId <String> -LineItems <PSOrderLineItem[]>
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### AddOn
 ```powershell
-New-PartnerCustomerOrder -CustomerId <String> -LineItems <PSOrderLineItem[]> -OrderId <String> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+New-PartnerCustomerOrder [-BillingCycle <BillingCycleType>] -CustomerId <String> -LineItems <PSOrderLineItem[]>
+ -OrderId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -40,7 +40,7 @@ PS C:\> $lineItem.LineItemNumber = 0
 PS C:\> $lineItem.OfferId = '031C9E47-4802-4248-838E-778FB1D2CC05'
 PS C:\> $lineItem.Quantity = 1
 PS C:\>
-PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems @($lineItem)
+PS C:\> New-PartnerCustomerOrder -BillingCycle Monthly -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems @($lineItem)
 ```
 
 Creates a new order for the specified services on behalf of the customer.
@@ -65,6 +65,22 @@ PS C:\> New-PartnerCustomerOrder -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc
 Creates an order to purchase an add-on for the specific subscription on behalf of the customer. This example shows how to purchase the Microsoft MyAnalytics add-on for the specified subscription. In this case the specified subscription is an Office 365 E3 subscription.
 
 ## PARAMETERS
+
+### -BillingCycle
+The frequency with which the partner is billed for this order.
+
+```yaml
+Type: BillingCycleType
+Parameter Sets: (All)
+Aliases:
+Accepted values: Annual, Monthly, None
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -CustomerId
 The identifier of the customer making the purchase.
