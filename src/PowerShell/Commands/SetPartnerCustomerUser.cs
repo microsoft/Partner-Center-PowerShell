@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Common;
     using Exceptions;
-    using Models.CustomerUsers;
+    using Models.Users;
     using PartnerCenter.Models.Users;
     using PartnerCenter.PowerShell.Authentication;
     using Properties;

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
+namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Users
 {
     using System;
     using Common;
@@ -31,19 +31,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
         }
 
         /// <summary>
-        /// Gets or sets the user object identifier.
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
         /// Gets or sets the display name.
         /// </summary>
         public string DisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the user principal.
-        /// </summary>
-        public string UserPrincipalName { get; set; }
 
         /// <summary>
         /// Gets or sets the first name.
@@ -51,14 +41,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
         public string FirstName { get; set; }
 
         /// <summary>
+        /// Gets or sets the immutable identifier.
+        /// </summary>
+        public string ImmutableId { get; set; }
+
+        /// <summary>
         /// Gets or sets the last name.
         /// </summary>
         public string LastName { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the last directory sync time for the user.
+        /// </summary>
+        public DateTime? LastDirectorySyncTime { get; set; }
 
         /// <summary>
-        /// Gets or sets user domain type.
+        /// Gets or sets the phone number.
         /// </summary>
-        public UserDomainType UserDomainType { get; set; }
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the deleted time for the inactive user.
+        /// </summary>
+        public DateTime? SoftDeletionTime { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the user, for the deleted user this is "Inactive" and
@@ -67,19 +72,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers
         public UserState State { get; set; }
 
         /// <summary>
-        /// Gets or sets the deleted time for the inactive user.
-        /// </summary>
-        public DateTime? SoftDeletionTime { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last directory sync time for the user.
-        /// </summary>
-        public DateTime? LastDirectorySyncTime { get; set; }
-
-        /// <summary>
         /// Gets or sets usage location, the location where user intends to use the license.
         /// </summary>
         public string UsageLocation { get; set; }
+
+        /// <summary>
+        /// Gets or sets user domain type.
+        /// </summary>
+        public UserDomainType UserDomainType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user object identifier.
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the user principal.
+        /// </summary>
+        public string UserPrincipalName { get; set; }
 
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="User" /> to an instance of <see cref="PSCustomerUser" />. 
