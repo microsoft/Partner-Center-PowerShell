@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Authentication;
     using Common;
     using Exceptions;
-    using Models.CustomerUsers;
+    using Models.Users;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;

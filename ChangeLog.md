@@ -22,6 +22,13 @@
 
 ## Upcoming Release
 
+* Users
+  * Added the following properties to the user model
+    * ImmutableId
+    * PhoneNumber
+
+## 1.5.1904.3
+
 * Invoices
   * Addressed issue [#117](https://github.com/Microsoft/Partner-Center-PowerShell/issues/117), where the cannot access stream error was being thrown
 * Subscriptions

@@ -11,11 +11,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using Enumerators;
     using Models.Utilizations;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Utilizations;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Cmdlet used to obtain Azure utilization records for the specified subscription.
