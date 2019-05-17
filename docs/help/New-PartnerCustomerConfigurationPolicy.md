@@ -15,7 +15,7 @@ Creates a new configuration policy for the specified customer.
 
 ## SYNTAX
 
-```powershell
+```
 New-PartnerCustomerConfigurationPolicy [-CustomerId] <String> [-Name] <String> [-Description <String>]
  [-RemoveOemPreinstalls <Boolean>] [-OobeUserNotLocalAdmin <Boolean>] [-SkipExpressSettings <Boolean>]
  [-SkipEula <Boolean>] [-SkipOemRegistration <Boolean>] [-WhatIf] [-Confirm] [<CommonParameters>]

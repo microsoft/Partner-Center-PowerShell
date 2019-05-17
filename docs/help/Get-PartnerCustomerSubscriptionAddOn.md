@@ -14,7 +14,7 @@ Gets the purchased add-ons for the specified subscription.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerCustomerSubscriptionAddOn -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 

@@ -14,7 +14,7 @@ Updates a service request at the partner level.
 
 ## SYNTAX
 
-```powershell
+```
 Set-PartnerServiceRequest [-NewNote <String>] [-ServiceRequestId] <String> [-Status <ServiceRequestStatus>]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

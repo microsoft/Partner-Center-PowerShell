@@ -65,7 +65,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.0" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.1" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>

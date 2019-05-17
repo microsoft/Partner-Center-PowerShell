@@ -14,7 +14,7 @@ Creates a new application consent for the specified customer.
 
 ## SYNTAX
 
-```powershell
+```
 New-PartnerCustomerApplicationConsent -ApplicationGrants <ApplicationGrant[]> -ApplicationId <String>
  -CustomerId <String> -DisplayName <String> [<CommonParameters>]
 ```
