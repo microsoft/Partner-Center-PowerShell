@@ -14,7 +14,7 @@ Gets the partner organization profile from Partner Center.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerOrganizationProfile [<CommonParameters>]
 ```
 

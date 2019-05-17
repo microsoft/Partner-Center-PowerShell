@@ -14,7 +14,7 @@ Gets a list of service request topics.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerServiceRequestTopic [-SupportTopicId <String>] [<CommonParameters>]
 ```
 

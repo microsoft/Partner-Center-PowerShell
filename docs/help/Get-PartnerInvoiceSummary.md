@@ -14,7 +14,7 @@ Gets a summary view of the invoice.
 
 ## SYNTAX
 
-```powershell
+```
 Get-PartnerInvoiceSummary [<CommonParameters>]
 ```
 

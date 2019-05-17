@@ -14,7 +14,7 @@ Adds a new line item to the specified cart.
 
 ## SYNTAX
 
-```powershell
+```
 Add-PartnerCustomerCartLineItem -CartId <String> -CustomerId <String> -LineItem <PSCartLineItem> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```

@@ -15,13 +15,13 @@ Updates the specified customer's qualification to be Education or GovernmentComm
 ## SYNTAX
 
 ### Customer (Default)
-```powershell
+```
 Set-PartnerCustomerQualification -CustomerId <String> -Qualification <CustomerQualification>
  [-ValidationCode <ValidationCode>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
-```powershell
+```
 Set-PartnerCustomerQualification -InputObject <PSCustomer> -Qualification <CustomerQualification>
  [-ValidationCode <ValidationCode>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
