@@ -141,8 +141,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
             {
                 writeOutput(
                     string.Format(
-                        CultureInfo.CurrentCulture, 
-                        Resources.BreakingChangesAttributesDeclarationMessage, 
+                        CultureInfo.CurrentCulture,
+                        Resources.BreakingChangesAttributesDeclarationMessage,
                         GetAttributeSpecificMessage()));
             }
             else
@@ -150,8 +150,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesDeclarationMessageWithCmdletName, 
-                        GetNameFromCmdletType(type), 
+                        Resources.BreakingChangesAttributesDeclarationMessageWithCmdletName,
+                        GetNameFromCmdletType(type),
                         GetAttributeSpecificMessage()));
             }
 
@@ -160,7 +160,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesChangeDescriptionMessage, 
+                        Resources.BreakingChangesAttributesChangeDescriptionMessage,
                         ChangeDescription));
             }
 
@@ -169,7 +169,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesInEffectByDateMessage, 
+                        Resources.BreakingChangesAttributesInEffectByDateMessage,
                         ChangeInEfectByDate.Value));
             }
 
@@ -178,7 +178,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesInEffectByVersion, 
+                        Resources.BreakingChangesAttributesInEffectByVersion,
                         DeprecateByVersion));
             }
 
@@ -187,8 +187,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesUsageChangeMessageConsole, 
-                        OldWay, 
+                        Resources.BreakingChangesAttributesUsageChangeMessageConsole,
+                        OldWay,
                         NewWay));
             }
         }
