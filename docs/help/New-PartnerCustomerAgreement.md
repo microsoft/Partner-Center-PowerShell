@@ -17,7 +17,7 @@ Confirms the customer acceptance of the Microsoft Cloud agreement.
 ```
 New-PartnerCustomerAgreement -AgreementType <AgreementType> -ContactEmail <String> -ContactFirstName <String>
  -ContactLastName <String> [-ContactPhoneNumber <String>] -CustomerId <String> [-DateAgreed <DateTime>]
- -TemplateId <String> [-UserId <String>] [<CommonParameters>]
+ -TemplateId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -149,21 +149,6 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -UserId
-The identifier of the user in the partner tenant who is providing confirmation on behalf of the customer.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

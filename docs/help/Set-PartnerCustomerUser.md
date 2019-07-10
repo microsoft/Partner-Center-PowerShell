@@ -239,11 +239,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers.PSCustomerUser
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Users.PSCustomerUser
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerUsers.PSCustomerUser
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Users.PSCustomerUser
 
 ## NOTES
 
