@@ -138,8 +138,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 writeOutput(
                     string.Format(
-                        CultureInfo.CurrentCulture, 
-                        Resources.BreakingChangesAttributesHeaderMessage, 
+                        CultureInfo.CurrentCulture,
+                        Resources.BreakingChangesAttributesHeaderMessage,
                         GetNameFromCmdletType(type)));
 
                 foreach (BreakingChangeBaseAttribute attribute in attributes)
@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 writeOutput(
                     string.Format(
                         CultureInfo.CurrentCulture,
-                        Resources.BreakingChangesAttributesFooterMessage, 
+                        Resources.BreakingChangesAttributesFooterMessage,
                         BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK));
             }
         }

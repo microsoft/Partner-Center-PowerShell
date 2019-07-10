@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public PSLicenseUpdate()
         {
             LicensesToAssign = new List<PSLicenseAssignment>();
-            LicensesToRemove = new List<string>(); 
+            LicensesToRemove = new List<string>();
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Licenses
         public PSLicenseUpdate(LicenseUpdate licenseUpdate)
         {
             LicensesToAssign = new List<PSLicenseAssignment>();
-            LicensesToRemove = new List<string>(); 
+            LicensesToRemove = new List<string>();
 
             this.CopyFrom(licenseUpdate);
         }

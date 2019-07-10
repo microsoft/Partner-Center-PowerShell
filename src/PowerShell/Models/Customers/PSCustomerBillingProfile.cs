@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Customers
     /// <summary>
     /// The customer billing profile information.
     /// </summary>
-    public sealed class PSCustomerBillingProfile 
+    public sealed class PSCustomerBillingProfile
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PSCustomerBillingProfile" /> class.

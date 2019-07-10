@@ -49,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Users
         /// Gets or sets the last name.
         /// </summary>
         public string LastName { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the last directory sync time for the user.
         /// </summary>

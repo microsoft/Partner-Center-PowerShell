@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authentication
     [Flags]
     public enum AuthenticationTypes
     {
-        None = 0, 
+        None = 0,
         AppOnly = 1,
         AppPlusUser = 2,
         Both = AppOnly | AppPlusUser
