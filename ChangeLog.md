@@ -22,8 +22,13 @@
 
 ## 1.5.1907.2
 
+* Devices
+  * Modified the output for the [New-PartnerCustomerDeviceBatch](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerAgreement) command.
+
+## 1.5.1907.1
+
 * Agreements
-  * Removed the *UserId* parameter from the [New-PartnerCustomerAgreement](https://docs.microsoft.com/powershell/module/partnercenter/set-partnercustomersubscription) command
+  * Removed the *UserId* parameter from the [New-PartnerCustomerAgreement](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerAgreement) command
 * Devices
   * Addressed an issue preventing the successful creation of a device batch
 
