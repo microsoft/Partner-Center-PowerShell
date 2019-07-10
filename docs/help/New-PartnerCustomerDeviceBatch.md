@@ -123,7 +123,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.String
+### Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment.PSBatchUploadDetails
 
 ## NOTES
 

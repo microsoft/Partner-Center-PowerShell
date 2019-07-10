@@ -21,17 +21,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// </summary>
         public PSDevice()
         {
-            Policies = new List<KeyValuePair<PolicyCategory, string>>();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PSDevice" /> class.
         /// </summary>
-        /// <param name="device">The base PSDevice for this instance.</param>
-        public PSDevice(Device device)
+        /// <param name="item">The base item for this instance.</param>
+        public PSDevice(Device item)
         {
-            Policies = new List<KeyValuePair<PolicyCategory, string>>();
-            this.CopyFrom(device, CloneAdditionalOperations);
+            this.CopyFrom(item, CloneAdditionalOperations);
         }
 
         /// <summary>
@@ -62,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// <summary>
         /// Gets or sets the policies assigned. 
         /// </summary>
-        public List<KeyValuePair<PolicyCategory, string>> Policies { get; }
+        public List<KeyValuePair<PolicyCategory, string>> Policies { get; set; }
 
         /// <summary>
         /// Gets or sets the product key.

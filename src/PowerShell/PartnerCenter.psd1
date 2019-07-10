@@ -11,7 +11,7 @@
     RootModule = 'Microsoft.Store.PartnerCenter.PowerShell.dll'
 
     # Version number of this module.
-    ModuleVersion = '1.5.1907.1'
+    ModuleVersion = '1.5.1907.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()

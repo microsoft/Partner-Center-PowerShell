@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1907.1</Version>
+    <Version>1.5.1907.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,8 @@
     <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />
     <None Remove="Commands\GetPartnerValidationCode.cs" />
     <None Remove="Factories\CancelRetryHandler.cs" />
+    <None Remove="Models\DevicesDeployment\PSBatchUploadDetails.cs" />
+    <None Remove="Models\DevicesDeployment\PSDeviceUploadDetails.cs" />
     <None Remove="Models\Orders\PSOrderLineItemProvisioningStatus.cs" />
     <None Remove="Models\ValidationCodes\PSValidationCode.cs" />
   </ItemGroup>
@@ -65,7 +67,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.3" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.3.2" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
   </ItemGroup>
