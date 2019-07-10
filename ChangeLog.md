@@ -20,7 +20,14 @@
 
 # Change Log
 
-## Upcoming Release
+## 1.5.1907.1
+
+* Agreements
+  * Removed the *UserId* parameter from the [New-PartnerCustomerAgreement](https://docs.microsoft.com/powershell/module/partnercenter/set-partnercustomersubscription) command
+* Devices
+  * Addressed an issue preventing the successful creation of a device batch
+
+## 1.5.1905.1
 
 * Users
   * Added the following properties to the user model
