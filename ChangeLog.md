@@ -20,7 +20,7 @@
 
 # Change Log
 
-## 1.5.1907.1
+## 1.5.1907.2
 
 * Agreements
   * Removed the *UserId* parameter from the [New-PartnerCustomerAgreement](https://docs.microsoft.com/powershell/module/partnercenter/set-partnercustomersubscription) command

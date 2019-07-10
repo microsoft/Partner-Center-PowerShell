@@ -6,15 +6,19 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using Models.DevicesDeployment;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.DevicesDeployment;
     using Properties;
 
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerDeviceBatch", SupportsShouldProcess = true), OutputType(typeof(string))]
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerDeviceBatch", SupportsShouldProcess = true), OutputType(typeof(PSBatchUploadDetails))]
     public class NewPartnerCustomerDeviceBatch : PartnerPSCmdlet
     {
         /// <summary>
@@ -44,29 +48,61 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             DeviceBatchCreationRequest request;
-            string deviceBatch;
+            ResourceCollection<DeviceBatch> batches;
+            IEnumerable<Device> devices;
+            BatchUploadDetails status;
+            string location;
 
             if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerDeviceBatchWhatIf, BatchId)))
             {
                 return;
             }
 
-            request = new DeviceBatchCreationRequest
+            batches = Partner.Customers[CustomerId].DeviceBatches.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            devices = Devices.Select(d => new Device
             {
-                BatchId = BatchId,
-                Devices = Devices.Select(d => new Device
+                HardwareHash = d.HardwareHash,
+                ModelName = d.ModelName,
+                OemManufacturerName = d.OemManufacturerName,
+                Policies = d.Policies,
+                ProductKey = d.ProductKey,
+                SerialNumber = d.SerialNumber
+            });
+
+            if (batches.Items.SingleOrDefault(b => b.Id.Equals(BatchId, StringComparison.InvariantCultureIgnoreCase)) != null)
+            {
+                location = Partner.Customers[CustomerId].DeviceBatches[BatchId].Devices.CreateAsync(Devices.Select(d => new Device
                 {
                     HardwareHash = d.HardwareHash,
                     ModelName = d.ModelName,
                     OemManufacturerName = d.OemManufacturerName,
+                    Policies = d.Policies,
                     ProductKey = d.ProductKey,
                     SerialNumber = d.SerialNumber
-                })
-            };
+                })).GetAwaiter().GetResult();
+            }
+            else
+            {
+                request = new DeviceBatchCreationRequest
+                {
+                    BatchId = BatchId,
+                    Devices = devices
+                };
 
-            deviceBatch = Partner.Customers[CustomerId].DeviceBatches.CreateAsync(request).GetAwaiter().GetResult();
+                location = Partner.Customers[CustomerId].DeviceBatches.CreateAsync(request).GetAwaiter().GetResult();
+            }
 
-            WriteObject(deviceBatch);
+            status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().GetAwaiter().GetResult();
+
+            while (status.Status == DeviceUploadStatusType.Processing || status.Status == DeviceUploadStatusType.Queued)
+            {
+                Thread.Sleep(5000);
+
+                status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().GetAwaiter().GetResult();
+            }
+
+            WriteObject(new PSBatchUploadDetails(status));
         }
     }
 }
