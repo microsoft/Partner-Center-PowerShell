@@ -44,7 +44,7 @@ The following example demonstrates how to connect using a service principal. It 
 # Service principal login
 $appId = '<Web-AAD-AppId-for-PartnerCenter>'
 $appSecret = '<Web-AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
-$credential = New-Object System.Management.Automation.PSCredential $appId $appSecret
+$credential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
 
 Connect-PartnerCenter -Credential $credential -TenantId '<TenantId>'
 ```
