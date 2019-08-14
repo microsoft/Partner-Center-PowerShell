@@ -188,6 +188,9 @@ Gets the list of SKUs for a product.
 ### [Get-PartnerResellerRequestLink](Get-PartnerResellerRequestLink.md)
 Gets a relationship request URL to send to a customer.
 
+### [Get-PartnerRole](Get-PartnerRole.md)
+{{ Fill in the Synopsis }}
+
 ### [Get-PartnerServiceIncident](Get-PartnerServiceIncident.md)
 Gets a list of service incidents.
 

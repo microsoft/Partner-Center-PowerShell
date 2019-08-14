@@ -14,7 +14,7 @@ Removes the reseller relationship between the specified customer and the partner
 
 ## SYNTAX
 
-```
+```powershell
 Remove-PartnerResellerRelationship -CustomerId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 

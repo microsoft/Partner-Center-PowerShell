@@ -130,6 +130,7 @@
                         'Get-PartnerProductInventory',
                         'Get-PartnerProductSku',
                         'Get-PartnerResellerRequestLink',
+                        'Get-PartnerRole',
                         'Get-PartnerServiceIncident',
                         'Get-PartnerServiceRequest',
                         'Get-PartnerServiceRequestTopic',

@@ -14,7 +14,7 @@ Updates the partner's support profile.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerSupportProfile [-SupportEmail <String>] [-SupportPhoneNumber <String>] [-SupportWebsite <String>]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

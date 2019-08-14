@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="GlobalSuppressions.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation. All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Build", "CA1812:NativeWrapper.Dochostuiinfo is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static members, make it static (Shared in Visual Basic).", Justification = "Required for the native operations.", Scope = "type", Target = "~T:Microsoft.Store.PartnerCenter.PowerShell.Platforms.NativeWrapper.Dochostuiinfo")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Property used as part of a PowerShell cmdlet", Scope = "member", Target = "~P:Microsoft.Store.PartnerCenter.PowerShell.Commands.NewPartnerCustomerOrder.LineItems")]

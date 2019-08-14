@@ -14,7 +14,7 @@ Gets a collection resource that contains a list of services within a customer's 
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerSubscriptionUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 

@@ -1,8 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="SetPartnerCustomerSubscription.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation. All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
@@ -20,14 +17,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscription", SupportsShouldProcess = true), OutputType(typeof(PSSubscription))]
     public class SetPartnerCustomerSubscription : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets or sets a flag indicating whether or not the subscription will auto renew.
-        /// </summary>
-        [BreakingChange("The auto renew flag cannot be modified. So, this parameter will be removed.", "1.5.1905.1", "5/1/2019")]
-        [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "Customer", Mandatory = false)]
-        [Parameter(HelpMessage = "A flag indicating whether or not the subscription will auto renew.", ParameterSetName = "CustomerObject", Mandatory = false)]
-        public bool? AutoRenew { get; set; }
-
         /// <summary>
         /// Gets or sets the customer object used to scope the request.
         /// </summary>
@@ -98,10 +87,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().GetAwaiter().GetResult();
 
-            if (AutoRenew.HasValue)
-            {
-                subscription.AutoRenewEnabled = AutoRenew.Value;
-            }
 
             if (BillingCycle.HasValue)
             {

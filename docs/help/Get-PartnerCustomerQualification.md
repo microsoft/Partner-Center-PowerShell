@@ -14,7 +14,7 @@ Get the qualification assigned to the customer.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerQualification -CustomerId <String> [<CommonParameters>]
 ```
 

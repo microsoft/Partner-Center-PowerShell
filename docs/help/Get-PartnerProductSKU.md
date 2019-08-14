@@ -15,17 +15,17 @@ Gets the list of SKUs for a product.
 ## SYNTAX
 
 ### ByProductId (Default)
-```
+```powershell
 Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
 ```
 
 ### BySkuId
-```
+```powershell
 Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> -SkuId <String> [<CommonParameters>]
 ```
 
 ### BySegment
-```
+```powershell
 Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-Segment <String>] [<CommonParameters>]
 ```
 

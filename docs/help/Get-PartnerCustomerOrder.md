@@ -15,18 +15,18 @@ Gets either a specific order or a list of order for the specified customer.
 ## SYNTAX
 
 ### ByBillingCycle
-```
+```powershell
 Get-PartnerCustomerOrder -BillingCycle <BillingCycleType> -CustomerId <String> [-IncludePrice]
  [<CommonParameters>]
 ```
 
 ### ByCustomerId
-```
+```powershell
 Get-PartnerCustomerOrder -CustomerId <String> [-IncludePrice] [<CommonParameters>]
 ```
 
 ### ByOrderId
-```
+```powershell
 Get-PartnerCustomerOrder -CustomerId <String> [-IncludePrice] -OrderId <String> [<CommonParameters>]
 ```
 
