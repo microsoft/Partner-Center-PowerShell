@@ -44,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Roles
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="Role" /> to an instance of <see cref="PSRole" />. 
         /// </summary>
-        /// <param name="customer">The role being cloned.</param>
+        /// <param name="role">The role being cloned.</param>
         private void CloneAdditionalOperations(Role role)
         {
             RoleId = role.Id;
