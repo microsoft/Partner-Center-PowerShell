@@ -14,7 +14,7 @@ Gets the rules for validating an address for a specific country.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCountryValidation -CountryCode <String> [<CommonParameters>]
 ```
 

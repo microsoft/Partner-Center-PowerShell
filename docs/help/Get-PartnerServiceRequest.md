@@ -15,25 +15,25 @@ Gets the specified customer's service requests.
 ## SYNTAX
 
 ### ByStatus (Default)
-```
+```powershell
 Get-PartnerServiceRequest [-Status <ServiceRequestStatus>] [-Severity <ServiceRequestSeverity>]
  [<CommonParameters>]
 ```
 
 ### BySeverity
-```
+```powershell
 Get-PartnerServiceRequest [-Status <ServiceRequestStatus>] [-Severity <ServiceRequestSeverity>]
  [<CommonParameters>]
 ```
 
 ### ByCustomerId
-```
+```powershell
 Get-PartnerServiceRequest [-Status <ServiceRequestStatus>] [-Severity <ServiceRequestSeverity>]
  -CustomerId <String> [<CommonParameters>]
 ```
 
 ### ByRequestId
-```
+```powershell
 Get-PartnerServiceRequest -CustomerId <String> [-RequestId <String>] [<CommonParameters>]
 ```
 

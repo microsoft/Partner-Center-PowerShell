@@ -14,7 +14,7 @@ Gets the partner's billing profile.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerBillingProfile [<CommonParameters>]
 ```
 

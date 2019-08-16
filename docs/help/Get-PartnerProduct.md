@@ -15,12 +15,12 @@ Gets a list or a single product.
 ## SYNTAX
 
 ### ByCatalog (Default)
-```
+```powershell
 Get-PartnerProduct [-CountryCode <String>] -Catalog <String> [-Segment <String>] [<CommonParameters>]
 ```
 
 ### ByProductId
-```
+```powershell
 Get-PartnerProduct [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
 ```
 

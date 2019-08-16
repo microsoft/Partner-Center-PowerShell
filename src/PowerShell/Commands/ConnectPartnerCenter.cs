@@ -1,14 +1,12 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ConnectPartnerCenter.cs" company="Microsoft">
-//     Copyright (c) Microsoft Corporation. All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
     using System.Globalization;
     using System.Management.Automation;
+    using System.Reflection;
     using System.Text.RegularExpressions;
     using Authentication;
     using Common;
@@ -27,6 +25,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// The name of the access token parameter set.
         /// </summary>
         private const string AccessTokenParameterSet = "AccessToken";
+
+        /// <summary>
+        /// The name of the configuration property.
+        /// </summary>
+        private const string ConfigurationProperty = "Configuration";
+
+        /// <summary>
+        /// The value used to identify the client connect to the partner service.
+        /// </summary>
+        private const string PartnerCenterClient = "Partner Center PowerShell";
 
         /// <summary>
         /// The name of the service principal parameter set.
@@ -90,6 +98,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public void OnImport()
         {
+            PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
+                ConfigurationProperty,
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+            dynamic configuration = prop.GetValue(PartnerService.Instance);
+
+            configuration.PartnerCenterClient = PartnerCenterClient;
+
             if (PartnerSession.Instance.AuthenticationFactory == null)
             {
                 PartnerSession.Instance.AuthenticationFactory = new AuthenticationFactory();

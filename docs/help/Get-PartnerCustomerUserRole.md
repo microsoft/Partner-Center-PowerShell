@@ -14,7 +14,7 @@ Gets a list of directory roles for a customer.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerCustomerUserRole -CustomerId <String> [-UserId <String>] [<CommonParameters>]
 ```
 
@@ -78,7 +78,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.DirectoryRoles.PSDirectoryRole
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Roles.PSDirectoryRole
 
 ## NOTES
 

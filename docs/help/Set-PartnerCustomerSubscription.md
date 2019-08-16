@@ -15,15 +15,15 @@ Updates the specified customer subscription.
 ## SYNTAX
 
 ### Customer
-```
-Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] [-BillingCycle <BillingCycleType>] -CustomerId <String>
+```powershell
+Set-PartnerCustomerSubscription [-BillingCycle <BillingCycleType>] -CustomerId <String>
  [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ### CustomerObject
-```
-Set-PartnerCustomerSubscription [-AutoRenew <Boolean>] -InputObject <PSCustomer>
+```powershell
+Set-PartnerCustomerSubscription -InputObject <PSCustomer>
  [-BillingCycle <BillingCycleType>] [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>]
  -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
@@ -35,27 +35,12 @@ Updates the specified customer subscription.
 
 ### Example 1
 ```powershell
-PS C:\> Set-ParnterCustomerSubscription -AutoRenew $false -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -Subscription dace42ca-22df-4b1f-8f9e-992364dd866e
+PS C:\> Set-ParnterCustomerSubscription -CustomerId 46a62ece-10ad-42e5-b3f1-b2ed53e6fc08 -Subscription dace42ca-22df-4b1f-8f9e-992364dd866e -Quantity 10
 ```
 
-Disables the auto renew functionality for the specified subscription.
+Updates the quantity of the subscription to 10 units.
 
 ## PARAMETERS
-
-### -AutoRenew
-A flag indicating whether or not the subscription will auto renew.
-
-```yaml
-Type: Boolean
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -BillingCycle
 The billing cycle for the subscription.

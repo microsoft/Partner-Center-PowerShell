@@ -14,7 +14,7 @@ Gets real-time prices for an Azure offer.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerAzureRateCard [-Currency <String>] [-Region <String>] [-SharedServices] [<CommonParameters>]
 ```
 

@@ -15,12 +15,12 @@ Removes a user from the customer's tenant.
 ## SYNTAX
 
 ### ByUserId (Default)
-```
+```powershell
 Remove-PartnerCustomerUser [-CustomerId] <String> -UserId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ByUpn
-```
+```powershell
 Remove-PartnerCustomerUser [-CustomerId] <String> -UserPrincipalName <String> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```

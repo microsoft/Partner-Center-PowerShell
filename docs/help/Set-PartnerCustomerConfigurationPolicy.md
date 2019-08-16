@@ -15,7 +15,7 @@ Updates an existing configuration policy with the specified options.
 
 ## SYNTAX
 
-```
+```powershell
 Set-PartnerCustomerConfigurationPolicy [-CustomerId] <String> -PolicyId <String> [-Name <String>]
  [-Description <String>] [-RemoveOemPreinstalls <Boolean>] [-OobeUserNotLocalAdmin <Boolean>]
  [-SkipExpressSettings <Boolean>] [-SkipEula <Boolean>] [-SkipOemRegistration <Boolean>] [-WhatIf] [-Confirm]

@@ -15,13 +15,13 @@ Acquires an access token from the authority.
 ## SYNTAX
 
 ### User (Default)
-```
+```powershell
 New-PartnerAccessToken -ApplicationId <String> [-Consent] [-Environment <EnvironmentName>]
  [-RefreshToken <String>] [-Resource <String>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 New-PartnerAccessToken [-ApplicationId <String>] [-Consent] -Credential <PSCredential>
  [-Environment <EnvironmentName>] [-RefreshToken <String>] [-Resource <String>] -TenantId <String>
  [<CommonParameters>]

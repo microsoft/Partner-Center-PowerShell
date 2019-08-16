@@ -23,11 +23,14 @@
     <Compile Remove="Platforms\**\*.*" />
     <None Remove="Commands\GetPartnerCustomerOrderLineItemActivationLink.cs" />
     <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />
+    <None Remove="Commands\GetPartnerRole.cs" />
     <None Remove="Commands\GetPartnerValidationCode.cs" />
     <None Remove="Factories\CancelRetryHandler.cs" />
     <None Remove="Models\DevicesDeployment\PSBatchUploadDetails.cs" />
     <None Remove="Models\DevicesDeployment\PSDeviceUploadDetails.cs" />
     <None Remove="Models\Orders\PSOrderLineItemProvisioningStatus.cs" />
+    <None Remove="Models\Roles\PSRole.cs" />
+    <None Remove="Models\Roles\PSUserMember.cs" />
     <None Remove="Models\ValidationCodes\PSValidationCode.cs" />
   </ItemGroup>
 
@@ -67,7 +70,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.3.2" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.4" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
   </ItemGroup>

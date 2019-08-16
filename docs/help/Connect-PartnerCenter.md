@@ -15,19 +15,19 @@ Connects to Partner Center with an authenticated account for use with cmdlet req
 ## SYNTAX
 
 ### User (Default)
-```
+```powershell
 Connect-PartnerCenter -ApplicationId <String> [-EnforceMFA] [-Environment <EnvironmentName>]
  [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### AccessToken
-```
+```powershell
 Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>] [-EnforceMFA]
  [-Environment <EnvironmentName>] [-TenantId <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
-```
+```powershell
 Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-EnforceMFA]
  [-Environment <EnvironmentName>] -TenantId <String> [<CommonParameters>]
 ```

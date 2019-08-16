@@ -14,7 +14,7 @@ Gets a relationship request URL to send to a customer.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerResellerRequestLink [<CommonParameters>]
 ```
 
