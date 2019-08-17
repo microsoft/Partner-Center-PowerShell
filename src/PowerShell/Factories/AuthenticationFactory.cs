@@ -7,9 +7,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Globalization;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
-    using System.Security.Claims;
+    using System.Threading.Tasks;
     using Authentication;
-    using IdentityModel.Clients.ActiveDirectory;
+    using Identity.Client;
     using Properties;
 
     /// <summary>
@@ -22,7 +22,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </summary>
         public AuthenticationFactory()
         {
-            LoggerCallbackHandler.UseDefaultLogging = false;
         }
 
         /// <summary>
@@ -34,18 +33,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <returns>The result from the authentication request.</returns>
         public AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction, Action<string> promptAction = null)
         {
-            AuthenticationContext authContext;
             AuthenticationResult authResult;
-            Claim claim;
+            System.Security.Claims.Claim claim;
             DateTimeOffset expiration;
             JwtSecurityToken token;
             JwtSecurityTokenHandler tokenHandler;
             PartnerEnvironment environment;
 
             environment = PartnerEnvironment.PublicEnvironments[context.Environment];
-
-            authContext = new AuthenticationContext(
-                $"{environment.ActiveDirectoryAuthority}{context.Account.Properties[AzureAccountPropertyType.Tenant]}");
 
             if (context.Account.Type == AccountType.AccessToken)
             {
@@ -89,13 +84,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         environment.AzureAdGraphEndpoint,
                         context.Account.Properties[AzureAccountPropertyType.Tenant]));
 
-                authResult = authContext.AcquireTokenAsync(
-                    environment.AzureAdGraphEndpoint,
-                    new ClientCredential(
-                        context.Account.Id,
-                        context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret])).ConfigureAwait(false).GetAwaiter().GetResult();
+                IConfidentialClientApplication app = ConfidentialClientApplicationBuilder.Create(context.ApplicationId)
+                    .WithClientSecret(context.Account.Properties[AzureAccountPropertyType.ServicePrincipalSecret])
+                    .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
+                    .Build();
 
-                context.AuthenticationType = Authentication.AuthenticationTypes.AppOnly;
+                authResult = app.AcquireTokenForClient(new string[] { "https://api.partnercenter.microsoft.com/user_impersonation" })
+                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                context.AuthenticationType = AuthenticationTypes.AppOnly;
             }
             else if (!context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier))
             {
@@ -107,13 +104,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         context.ApplicationId,
                         environment.PartnerCenterEndpoint));
 
-                DeviceCodeResult deviceCodeResult = authContext.AcquireDeviceCodeAsync(
-                    environment.PartnerCenterEndpoint,
-                    context.ApplicationId).ConfigureAwait(false).GetAwaiter().GetResult();
+                IPublicClientApplication app = PublicClientApplicationBuilder.Create(context.ApplicationId)
+                    .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
+                    .Build();
 
-                promptAction(deviceCodeResult.Message);
+                authResult = app.AcquireTokenWithDeviceCode(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" }, deviceCodeResult => {
+                    promptAction(deviceCodeResult.Message);
 
-                authResult = authContext.AcquireTokenByDeviceCodeAsync(deviceCodeResult).ConfigureAwait(false).GetAwaiter().GetResult();
+                    return Task.CompletedTask;
+                }).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
 #else
                 debugAction(
                     string.Format(
@@ -124,18 +124,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         AuthenticationConstants.RedirectUriValue,
                         environment.PartnerCenterEndpoint));
 
-                authResult = authContext.AcquireTokenAsync(
-                    environment.PartnerCenterEndpoint,
-                    context.ApplicationId,
-                    new Uri(AuthenticationConstants.RedirectUriValue),
-                    new PlatformParameters(PromptBehavior.Always),
-                    UserIdentifier.AnyUser).ConfigureAwait(false).GetAwaiter().GetResult();
+                IPublicClientApplication app = PublicClientApplicationBuilder.Create(context.ApplicationId)
+                    .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
+                    .Build();
+
+                TokenCacheHelper.EnableSerialization(app.UserTokenCache);
+
+                authResult = app.AcquireTokenInteractive(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" })
+                    .WithPrompt(Prompt.ForceLogin)
+                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
 
-                context.Account.Id = authResult.UserInfo.DisplayableId;
+                context.Account.Id = authResult.Account.Username;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
-                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
-                context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.Account.HomeAccountId.ObjectId;
+                context.AuthenticationType = AuthenticationTypes.AppPlusUser;
             }
             else
             {
@@ -148,15 +151,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         environment.PartnerCenterEndpoint,
                         context.Account.Id));
 
-                authResult = authContext.AcquireTokenSilentAsync(
-                    environment.PartnerCenterEndpoint,
-                    context.ApplicationId,
-                    new UserIdentifier(context.Account.Id, UserIdentifierType.RequiredDisplayableId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                IPublicClientApplication app = PublicClientApplicationBuilder.Create(context.ApplicationId)
+                    .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
+                    .Build();
 
-                context.Account.Id = authResult.UserInfo.DisplayableId;
+                TokenCacheHelper.EnableSerialization(app.UserTokenCache);
+
+                var accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                authResult = app.AcquireTokenSilent(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" }, accounts.FirstOrDefault())
+                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                context.Account.Id = authResult.Account.Username;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;
-                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.UserInfo.UniqueId;
-                context.AuthenticationType = Authentication.AuthenticationTypes.AppPlusUser;
+                context.Account.Properties[AzureAccountPropertyType.UserIdentifier] = authResult.Account.HomeAccountId.ObjectId;
+                context.AuthenticationType = AuthenticationTypes.AppPlusUser;
             }
 
             return new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
