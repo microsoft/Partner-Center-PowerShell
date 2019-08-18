@@ -16,8 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
         /// <param name="debugAction">The action to write debug statements.</param>
-        /// <param name="promptAction">The action to prompt the user for input.</param>
         /// <returns>The result from the authentication request.</returns>
-        AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction, Action<string> promptAction = null);
+        AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction);
     }
 }
