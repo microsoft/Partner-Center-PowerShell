@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
@@ -89,7 +90,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
                     .Build();
 
-                authResult = app.AcquireTokenForClient(new string[] { "https://api.partnercenter.microsoft.com/user_impersonation" })
+                authResult = app.AcquireTokenForClient(new string[] { $"{environment.AzureAdGraphEndpoint}/.default" })
                     .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 context.AuthenticationType = AuthenticationTypes.AppOnly;
@@ -108,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
                     .Build();
 
-                authResult = app.AcquireTokenWithDeviceCode(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" }, deviceCodeResult => {
+                authResult = app.AcquireTokenWithDeviceCode(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" }, deviceCodeResult => {
                     promptAction(deviceCodeResult.Message);
 
                     return Task.CompletedTask;
@@ -130,7 +131,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 TokenCacheHelper.EnableSerialization(app.UserTokenCache);
 
-                authResult = app.AcquireTokenInteractive(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" })
+                authResult = app.AcquireTokenInteractive(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" })
                     .WithPrompt(Prompt.ForceLogin)
                     .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
@@ -157,9 +158,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 TokenCacheHelper.EnableSerialization(app.UserTokenCache);
 
-                var accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                IEnumerable<IAccount> accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
-                authResult = app.AcquireTokenSilent(new[] { "https://api.partnercenter.microsoft.com/user_impersonation" }, accounts.FirstOrDefault())
+                authResult = app.AcquireTokenSilent(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" }, accounts.FirstOrDefault())
                     .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 context.Account.Id = authResult.Account.Username;
