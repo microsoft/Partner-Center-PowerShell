@@ -21,6 +21,7 @@
     <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
     <None Include="**\*.cs;**\*.xml;**\*.axml" Exclude="obj\**\*.*;bin\**\*.*" />
     <Compile Remove="Platforms\**\*.*" />
+    <None Remove="Authentication\StreamEventArgs.cs" />
     <None Remove="Authentication\TokenCacheHelper.cs" />
     <None Remove="Commands\GetPartnerCustomerOrderLineItemActivationLink.cs" />
     <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />

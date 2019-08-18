@@ -30,9 +30,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
         /// <param name="debugAction">The action to write debug statements.</param>
-        /// <param name="promptAction">The action to prompt the user for input.</param>
         /// <returns>The result from the authentication request.</returns>
-        public AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction, Action<string> promptAction = null)
+        public AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction)
         {
             AuthenticationResult authResult;
             System.Security.Claims.Claim claim;
@@ -109,8 +108,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
                     .Build();
 
-                authResult = app.AcquireTokenWithDeviceCode(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" }, deviceCodeResult => {
-                    promptAction(deviceCodeResult.Message);
+                authResult = app.AcquireTokenWithDeviceCode(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" }, deviceCodeResult =>
+                {
+                    Console.WriteLine(deviceCodeResult?.Message);
 
                     return Task.CompletedTask;
                 }).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();

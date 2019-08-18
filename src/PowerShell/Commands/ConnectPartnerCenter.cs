@@ -158,8 +158,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 PartnerSession.Instance.Context,
-                d => WriteDebug(d),
-                w => WriteWarning(w));
+                d => WriteDebug(d));
 
             if (PartnerSession.Instance.Context.AuthenticationType == AuthenticationTypes.AppPlusUser)
             {
