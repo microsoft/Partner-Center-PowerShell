@@ -20,6 +20,14 @@
 
 # Change Log
 
+## 1.5.1908.1
+
+* Authentication
+  * Transitioned from Active Directory Authentication Library (ADAL) to the Microsoft Authentication Library (MSAL)
+* Roles
+  * Added the [Get-PartnerRole](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerRole) command to get partner roles
+  * Added the [Get-PartnerRoleMember](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerRoleMember) command to get the members for the specified partner role
+
 ## 1.5.1907.2
 
 * Devices
