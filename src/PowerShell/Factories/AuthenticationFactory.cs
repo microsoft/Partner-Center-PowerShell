@@ -96,26 +96,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
             else if (!context.Account.Properties.ContainsKey(AzureAccountPropertyType.UserIdentifier))
             {
-#if NETSTANDARD
-                debugAction(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        Resources.AuthenticateDeviceCodeTrace,
-                        context.ApplicationId,
-                        environment.PartnerCenterEndpoint));
-
-                IPublicClientApplication app = PublicClientApplicationBuilder.Create(context.ApplicationId)
-                    .WithTenantId(context.Account.Properties[AzureAccountPropertyType.Tenant])
-                    .Build();
-
-                authResult = app.AcquireTokenWithDeviceCode(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" }, deviceCodeResult =>
-                {
-                    Console.WriteLine(deviceCodeResult?.Message);
-
-                    return Task.CompletedTask;
-                }).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-#else
                 debugAction(
                     string.Format(
                         CultureInfo.CurrentCulture,
@@ -134,7 +114,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 authResult = app.AcquireTokenInteractive(new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" })
                     .WithPrompt(Prompt.ForceLogin)
                     .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-#endif
 
                 context.Account.Id = authResult.Account.Username;
                 context.Account.Properties[AzureAccountPropertyType.Tenant] = authResult.TenantId;

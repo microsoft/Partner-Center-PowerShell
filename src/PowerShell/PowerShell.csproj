@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell</RootNamespace>
     <Authors>Microsoft</Authors>
@@ -14,46 +14,11 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1908.1</Version>
+    <Version>2.0.1908.1-beta</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
-    <None Include="**\*.cs;**\*.xml;**\*.axml" Exclude="obj\**\*.*;bin\**\*.*" />
-    <Compile Remove="Platforms\**\*.*" />
-    <None Remove="Authentication\StreamEventArgs.cs" />
-    <None Remove="Authentication\TokenCacheHelper.cs" />
-    <None Remove="Commands\GetPartnerCustomerOrderLineItemActivationLink.cs" />
-    <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />
-    <None Remove="Commands\GetPartnerRole.cs" />
-    <None Remove="Commands\GetPartnerValidationCode.cs" />
-    <None Remove="Factories\CancelRetryHandler.cs" />
-    <None Remove="Models\DevicesDeployment\PSBatchUploadDetails.cs" />
-    <None Remove="Models\DevicesDeployment\PSDeviceUploadDetails.cs" />
-    <None Remove="Models\Orders\PSOrderLineItemProvisioningStatus.cs" />
-    <None Remove="Models\Roles\PSRole.cs" />
-    <None Remove="Models\Roles\PSUserMember.cs" />
-    <None Remove="Models\ValidationCodes\PSValidationCode.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="System.Management.Automation.dll" Version="10.0.10586.0" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Compile Include="Platforms\net461\**\*.cs" />
-    <Compile Update="Platforms\net461\CustomWebBrowser.CustomWebBrowserEvent.cs" SubType="Component" />
-    <Compile Update="Platforms\net461\CustomWebBrowser.cs" SubType="Component" />
-    <Compile Update="Platforms\net461\WinFormWebAuthenticationDialog.cs" SubType="Form" />
-    <Compile Update="Platforms\net461\WindowsFormsWebAuthenticationDialogBase.cs" SubType="Form" />
-    <Compile Update="Platforms\net461\SilentWindowsFormsAuthenticationDialog.cs" SubType="Form" />
     <None Update="PartnerCenter.psd1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-    <None Update="PartnerCenter.NetCore.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -86,5 +51,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
+
 </Project>

@@ -7,16 +7,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Net.Http;
     using System.Text.RegularExpressions;
-#if !NETSTANDARD
-    using System.Web;
-#endif
     using Authentication;
     using Extensions;
     using Network;
     using PartnerCenter.Models.Authentication;
-#if !NETSTANDARD
-    using Platforms;
-#endif
+
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken", DefaultParameterSetName = UserParameterSet)]
     [OutputType(typeof(AuthenticationResult))]
@@ -94,11 +89,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             AuthenticationResult authResult;
             AzureAccount account = new AzureAccount();
-#if NETSTANDARD
             DeviceCodeResult deviceCodeResult;
-#else
-            AuthorizationResult authorizationResult;
-#endif
             IPartnerServiceClient client;
             PartnerEnvironment environment;
             Uri authority;
@@ -142,7 +133,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     clientId,
                     Credential.Password.ConvertToString()).GetAwaiter().GetResult();
             }
-#if NETSTANDARD
             else
             {
                 deviceCodeResult = client.AcquireDeviceCodeAsync(
@@ -158,25 +148,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     deviceCodeResult,
                     Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
             }
-#else
-            else
-            {
-                using (WindowsFormsWebAuthenticationDialog dialog = new WindowsFormsWebAuthenticationDialog(null))
-                {
-                    authorizationResult = dialog.AuthenticateAAD(
-                        new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/authorize?resource={HttpUtility.UrlEncode(Resource)}&client_id={clientId}&response_type=code&haschrome=1&redirect_uri={HttpUtility.UrlEncode(AuthenticationConstants.RedirectUriValue)}&response_mode=form_post&prompt=login"),
-                        new Uri(AuthenticationConstants.RedirectUriValue));
-                }
-
-                authResult = client.AcquireTokenByAuthorizationCodeAsync(
-                    authority,
-                    resource,
-                    new Uri(AuthenticationConstants.RedirectUriValue),
-                    authorizationResult.Code,
-                    clientId,
-                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
-            }
-#endif
 
             WriteObject(authResult);
         }
