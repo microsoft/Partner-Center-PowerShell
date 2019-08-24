@@ -7,11 +7,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Security;
     using System.Text.RegularExpressions;
-    using Common;
+    using Extensions;
     using Exceptions;
+    using Microsoft.Store.PartnerCenter.Exceptions;
     using Models.Users;
     using PartnerCenter.Models.Users;
-    using PartnerCenter.PowerShell.Authentication;
     using Properties;
 
     /// <summary>
@@ -20,11 +20,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerUser", DefaultParameterSetName = "UserId", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
     public class SetPartnerCustomerUser : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
         /// <summary>
         /// Gets or sets the display name for the user.
         /// </summary>
@@ -168,9 +163,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
+                // TODO -- refactor this so the error is extracted from the exception.
+                throw new PartnerPSException("An error was encountered when communicating with Partner Center.", ex);
             }
         }
     }

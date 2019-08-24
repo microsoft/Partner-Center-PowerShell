@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ValidationRules
 {
     using System.Collections.Generic;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.ValidationRules;
 
     /// <summary>Holds validation information for a single country.</summary>

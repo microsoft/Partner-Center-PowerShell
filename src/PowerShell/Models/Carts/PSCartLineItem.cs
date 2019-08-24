@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Carts
 {
     using System.Collections;
     using System.Collections.Generic;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Carts;
     using PartnerCenter.Models.Products;
 

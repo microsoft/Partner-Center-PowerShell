@@ -5,10 +5,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
+    using Models.Authentication;
+    using Extensions;
     using Exceptions;
     using Models.Products;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
 
@@ -94,11 +95,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 product = Partner.Products.ByCountry(countryCode).ById(productId).GetAsync().GetAwaiter().GetResult();
                 if (product != null)
+                {
                     WriteObject(new PSProduct(product));
+                }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting product id: " + productId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error getting product id: " + productId, ex);
             }
         }
 
@@ -123,11 +127,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).GetAsync().GetAwaiter().GetResult();
                 if (products.TotalCount > 0)
+                {
                     WriteObject(products.Items.Select(p => new PSProduct(p)), true);
+                }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting products for catalog: " + targetView, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error getting products for catalog: " + targetView, ex);
             }
         }
 

@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
 {
     using System;
     using System.Collections.Generic;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.DevicesDeployment;
 
     public sealed class PSConfigurationPolicy

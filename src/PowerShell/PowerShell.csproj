@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell</RootNamespace>
     <Authors>Microsoft</Authors>
@@ -14,56 +14,21 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Version>1.5.1908.1</Version>
+    <Version>2.0.1908.1-preview</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- This None is here so the conditionally included files show up in the Solution Explorer -->
-    <None Include="**\*.cs;**\*.xml;**\*.axml" Exclude="obj\**\*.*;bin\**\*.*" />
-    <Compile Remove="Platforms\**\*.*" />
-    <None Remove="Authentication\StreamEventArgs.cs" />
-    <None Remove="Authentication\TokenCacheHelper.cs" />
-    <None Remove="Commands\GetPartnerCustomerOrderLineItemActivationLink.cs" />
-    <None Remove="Commands\GetPartnerCustomerOrderProvisioningStatus.cs" />
-    <None Remove="Commands\GetPartnerRole.cs" />
-    <None Remove="Commands\GetPartnerValidationCode.cs" />
-    <None Remove="Factories\CancelRetryHandler.cs" />
-    <None Remove="Models\DevicesDeployment\PSBatchUploadDetails.cs" />
-    <None Remove="Models\DevicesDeployment\PSDeviceUploadDetails.cs" />
-    <None Remove="Models\Orders\PSOrderLineItemProvisioningStatus.cs" />
-    <None Remove="Models\Roles\PSRole.cs" />
-    <None Remove="Models\Roles\PSUserMember.cs" />
-    <None Remove="Models\ValidationCodes\PSValidationCode.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="System.Management.Automation.dll" Version="10.0.10586.0" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Compile Include="Platforms\net461\**\*.cs" />
-    <Compile Update="Platforms\net461\CustomWebBrowser.CustomWebBrowserEvent.cs" SubType="Component" />
-    <Compile Update="Platforms\net461\CustomWebBrowser.cs" SubType="Component" />
-    <Compile Update="Platforms\net461\WinFormWebAuthenticationDialog.cs" SubType="Form" />
-    <Compile Update="Platforms\net461\WindowsFormsWebAuthenticationDialogBase.cs" SubType="Form" />
-    <Compile Update="Platforms\net461\SilentWindowsFormsAuthenticationDialog.cs" SubType="Form" />
     <None Update="PartnerCenter.psd1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" />
-    <None Update="PartnerCenter.NetCore.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.5" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.1.0-preview" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.1908.40422" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -86,5 +51,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <PreLoadAssemblies Include="..\lib\System.Security.Cryptography.ProtectedData.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
+
+  <Target Name="CopyFiles" AfterTargets="Build">
+    <Copy SourceFiles="@(PreLoadAssemblies)" DestinationFolder="$(TargetDir)" />
+  </Target>
 </Project>

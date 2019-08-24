@@ -3,8 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using System;
-    using Authentication;
+    using Models.Authentication;
 
     /// <summary>
     /// Represents a factory used to perform authentication operations.
@@ -15,8 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <param name="context">Context to be used when requesting a security token.</param>
-        /// <param name="debugAction">The action to write debug statements.</param>
         /// <returns>The result from the authentication request.</returns>
-        AuthenticationToken Authenticate(PartnerContext context, Action<string> debugAction);
+        AuthenticationToken Authenticate(PartnerAccount account, PartnerEnvironment environment, string resourceId, string tenantId);
     }
 }

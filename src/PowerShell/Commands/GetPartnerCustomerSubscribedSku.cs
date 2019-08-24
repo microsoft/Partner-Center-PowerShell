@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
     using Models.Licenses;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Licenses;
@@ -27,11 +26,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "The identifier for the license group.", Mandatory = false)]
         [ValidateSet(nameof(LicenseGroupId.Group1), nameof(LicenseGroupId.Group2))]
         public LicenseGroupId[] LicenseGroup { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

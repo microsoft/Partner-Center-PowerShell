@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.IO;
     using System.Management.Automation;
-    using Authentication;
 
     /// <summary>
     /// Get partner licenses usage information aggregated to include all customers from Partner Center.
@@ -14,11 +13,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceTaxReceiptStatement")]
     public class GetPartnerInvoiceTaxReceiptStatement : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
         /// <summary>
         /// The invoice identifier of the statement to retrieve.
         /// </summary>

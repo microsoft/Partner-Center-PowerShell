@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerSubscriptionUpgrades
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Subscriptions;
 

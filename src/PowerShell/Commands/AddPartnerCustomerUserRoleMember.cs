@@ -5,9 +5,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
+    using Extensions;
     using Exceptions;
+    using Microsoft.Store.PartnerCenter.Exceptions;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Users;
 
@@ -39,11 +39,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string RoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
-        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
@@ -65,9 +60,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
                 WriteObject(true);
             }
-            catch (PSPartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException($"Error adding user {UserId} to role {RoleId}", ex);
+                // TODO - Refactor this so the error is extracted from the API response.
+                throw new PartnerPSException($"Error adding user {UserId} to role {RoleId}", ex);
             }
         }
 
@@ -91,9 +87,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 user = Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult();
                 return user;
             }
-            catch (PSPartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error finding user:" + userId, ex);
+                // TODO - Refactor this so the error is extracted from the API response.
+                throw new PartnerPSException("Error finding user:" + userId, ex);
             }
         }
     }

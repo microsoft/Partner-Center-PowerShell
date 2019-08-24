@@ -8,9 +8,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
+    using Extensions;
     using Exceptions;
+    using Microsoft.Store.PartnerCenter.Exceptions;
     using Models.Users;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
@@ -52,11 +52,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(ParameterSetName = "ByCustomerId", Mandatory = false, HelpMessage = "A flag that indicates whether or not to show deleted users.")]
         [ValidateNotNullOrEmpty]
         public SwitchParameter ReturnDeletedUsers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
@@ -105,9 +100,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult()));
             }
-            catch (PSPartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error finding user:" + userId, ex);
+                // TODO -- refactor this so the error is extracted from the exception.
+                throw new PartnerPSException("Error finding user:" + userId, ex);
             }
         }
 

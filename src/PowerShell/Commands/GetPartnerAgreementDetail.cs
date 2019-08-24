@@ -5,7 +5,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
     using Models.Agreements;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Agreements;
@@ -16,11 +15,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "PartnerAgreementDetail"), OutputType(typeof(PSAgreementMetaData))]
     public class GetPartnerAgreementDetail : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>

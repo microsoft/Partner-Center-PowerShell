@@ -5,11 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
+    using Extensions;
     using Exceptions;
+    using PartnerCenter.Exceptions;
 
     /// <summary>
-    /// Gets a list of roles for the specified customer user from Partner Center.
+    /// Removes the user from the specified role.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
     public class RemovePartnerCustomerUserRoleMember : PartnerPSCmdlet
@@ -29,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the role  identifier.
+        /// Gets or sets the role identifier.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "Identifier for the role.")]
         public string RoleId { get; set; }
@@ -48,9 +49,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
                 WriteObject(true);
             }
-            catch (PSPartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error removing user " + UserId + "from role " + RoleId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error removing user " + UserId + "from role " + RoleId, ex);
             }
         }
     }

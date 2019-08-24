@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceRequests
 {
     using System.Globalization;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.ServiceRequests;
 
     /// <summary>

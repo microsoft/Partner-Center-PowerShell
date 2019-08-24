@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Relationships
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Relationships;
 
     /// <summary>

@@ -6,8 +6,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
+    using Models.Authentication;
+    using Extensions;
     using Models.Offers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;

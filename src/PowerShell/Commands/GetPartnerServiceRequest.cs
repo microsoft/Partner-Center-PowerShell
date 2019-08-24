@@ -8,8 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
+    using Extensions;
     using Models.ServiceRequests;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
@@ -52,11 +51,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(ParameterSetName = "ByRequestId", Mandatory = false, HelpMessage = "The identifier of the service request.")]
         public string RequestId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.IO;
     using System.Management.Automation;
-    using Authentication;
 
     /// <summary>
     /// Get partner licenses usage information aggregated to include all customers from Partner Center.
@@ -34,11 +33,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "A flag indicating whether or not to overwrite the file if it exists.")]
         [ValidateNotNull]
         public SwitchParameter Overwrite { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

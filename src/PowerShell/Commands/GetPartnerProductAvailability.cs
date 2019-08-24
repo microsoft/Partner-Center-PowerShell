@@ -5,9 +5,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
+    using Models.Authentication;
     using Exceptions;
     using Models.Products;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
 
@@ -97,18 +98,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
                     if (productAvailability.TotalCount > 0)
+                    {
                         WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
+                    }
                 }
                 else
                 {
                     productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().GetAwaiter().GetResult();
                     if (productAvailability.TotalCount > 0)
+                    {
                         WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
+                    }
                 }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting product id: " + productId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error getting product id: " + productId, ex);
             }
         }
 
@@ -132,9 +138,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     WriteObject(new PSProductAvailability(productAvailability));
                 }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting product id: " + productId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error getting product id: " + productId, ex);
             }
         }
     }

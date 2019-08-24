@@ -1,128 +1,89 @@
-# Microsoft Partner Center PowerShell
+# Partner Center PowerShell
 
 ![Build status](https://dev.azure.com/partnercenter/powershell/_apis/build/status/partner-center-powershell-CI) ![Deployment status](https://vsrm.dev.azure.com/partnercenter/_apis/public/Release/badge/330fa980-0fb5-4550-8242-f162a4c6d7c7/6/9)
 
 [![PartnerCenter](https://img.shields.io/powershellgallery/v/PartnerCenter.svg?style=flat-square&label=PartnerCenter)](https://www.powershellgallery.com/packages/PartnerCenter/) [![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
-This repository contains a set of PowerShell commands for administrators and developers to manage Cloud Solution Provider program resources.
+This repository contains PowerShell commands for administrators to develop, deploy, and manage Microsoft Cloud Solution Provider resources.
 
-## Installation
+## Requirements
 
-Run the following command in an elevated PowerShell session to install the Partner Center module:
+Partner Center PowerShell works with PowerShell 5.1 or higher on Windows, or PowerShell Core 6.x and later on
+all platforms. If you aren't sure if you have PowerShell, or are on macOS or Linux,
+[install the latest version of PowerShell Core](https://docs.microsoft.com/powershell/scripting/install/installing-powershell#powershell-core).
 
-```powershell
-# Install the Partner Center PowerShell module
-Install-Module -Name PartnerCenter
-
-# Install the Partner Center PowerShell module for PowerShell Core
-Install-Module -Name PartnerCenter.NetCore
-```
-
-If you have an earlier version of the Partner Center PowerShell modules installed from the PowerShell Gallery and would like to update to the latest version, run the following commands from an elevated PowerShell session.
-
-**Note:** `Update-Module` installs the new version, however, it does not remove the old version.
+To check your PowerShell version, run the command:
 
 ```powershell
-# Install the latest version of the Partner Center PowerShell module
-Update-Module -Name PartnerCenter
-
-# Install the latest version of the Partner Center PowerShell module for PowerShell Core
-Update-Module -Name PartnerCenter.NetCore
+$PSVersionTable.PSVersion
 ```
 
-## Usage
+To run Partner Center PowerShell in PowerShell 5.1 on Windows:
 
-### Connecting to Partner Center
+1. Update to [Windows PowerShell 5.1](https://docs.microsoft.com/powershell/scripting/install/installing-windows-powershell#upgrading-existing-windows-powershell) if needed. If you're on Windows 10, you already
+  have PowerShell 5.1 installed.
+2. Install [.NET Framework 4.7.2 or later](https://docs.microsoft.com/dotnet/framework/install).
 
-To connect to Partner Center, use the [`Connect-PartnerCenter`](docs/help/Connect-PartnerCenter.md) command.
+There are no additional requirements for Partner Center PowerShell when using PowerShell Core.
 
-#### Service Principal
+## Install the Partner Center PowerShell module
 
-The following example demonstrates how to connect using a service principal. It is important to note that not all Partner Center operations support this type of authentication. If you have not already created an Azure AD application, then follow the steps documented in the [Web App](#Web-App) section below.
+The recommended install method is to only install for the active user:
 
 ```powershell
-# Service principal login
-$appId = '<Web-AAD-AppId-for-PartnerCenter>'
-$appSecret = '<Web-AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
-$credential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
-
-Connect-PartnerCenter -Credential $credential -TenantId '<TenantId>'
+Install-Module -Name PartnerCenter -AllowClobber -Scope CurrentUser
 ```
 
-#### User Credentials
-
-The following examples demonstrate how to connect using user credentials. Using this approach will leverage app + user authentication. If you have not already configured an Azure AD application for use with this command then, see the steps documented in the [Native App](#Native-App) section below.
+If you want to install for all users on a system, this requires administrator privileges. From an elevated PowerShell session either
+run as administrator or with the `sudo` command on macOS or Linux:
 
 ```powershell
-# Interactive login - a dialog box will appear for you to provide your Partner Center credentials
-Connect-PartnerCenter -ApplicationId '<Native-AAD-AppId-for-PartnerCenter>'
+Install-Module -Name PartnerCenter -AllowClobber -Scope AllUsers
 ```
 
-#### Access Token
+By default, the PowerShell gallery isn't configured as a trusted repository for PowerShellGet. The first time you use the PSGallery you see the following prompt:
 
-The following example demonstrates how to connect using an access token. It is important to note that this type of authentication can leverage either the app only or app + user authentication flows. The example below shows how you can obtain an access token using the app only authentication flow.
+```output
+Untrusted repository
 
-```powershell
-$appId = '<AAD-AppId-for-PartnerCenter>'
-$appSecret = '<AAD-AppSecret>' | ConvertTo-SecureString -AsPlainText -Force
-$PSCredential = New-Object System.Management.Automation.PSCredential $appId, $appSecret
+You are installing the modules from an untrusted repository. If you trust this repository, change
+its InstallationPolicy value by running the Set-PSRepository cmdlet.
 
-$token = New-PartnerAccessToken -Credential $PSCredential -TenantId '<TenantId>'
-
-Connect-PartnerCenter -AccessToken $token.AccessToken -ApplicationId '<AAD-AppId-for-PartnerCenter>' -TenantId '<TenantId>'
+Are you sure you want to install the modules from 'PSGallery'?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"):
 ```
 
-#### Sovereign Cloud
+Answer `Yes` or `Yes to All` to continue with the installation.
 
-To log into a specific cloud (_ChinaCloud_, _GlobalCloud_, _GermanCloud_, _USGovernment_, _PPE_), use the `Environment` parameter:
-
-```powershell
-# Log into a specific cloud - in this case, the German cloud
-Connect-PartnerCenter -Environment GermanCloud
-```
-
-### Discovering Commands
+### Discovering cmdlets
 
 Use the `Get-Command` cmdlet to discover cmdlets within a specific module, or cmdlets that follow a specific search pattern:
 
 ```powershell
-# View all cmdlets in the Partner Center module
+# List all cmdlets in the PartnerCenter module
 Get-Command -Module PartnerCenter
 
-# View all cmdlets that contain "Customer" in the PartnerCenter module
-Get-Command -Module PartnerCenter -Name "*Customer*"
+# List all cmdlets that contain Azure
+Get-Command -Name '*Azure*'
+
+# List all cmdlets that contain Azure in the PartnerCenter module
+Get-Command -Module Az.Compute -Name '*Azure*'
 ```
 
 ### Cmdlet help and examples
 
-To view the cmdlet help content, use the `Get-Help` cmdlet:
+To view the help content for a cmdlet, use the `Get-Help` cmdlet:
 
 ```powershell
-# View the basic help content for Get-PartnerCustomer
-Get-Help -Name Get-PartnerCustomer
+# View the basic help content for Get-PartnerCustomerSubscription
+Get-Help -Name Get-PartnerCustomerSubscription
 
-# View the examples for Get-PartnerCustomer
-Get-Help -Name Get-PartnerCustomer -Examples
+# View the examples for Get-PartnerCustomerSubscription
+Get-Help -Name Get-PartnerCustomerSubscription -Examples
 
-# View the full help content for Get-PartnerCustomer
-Get-Help -Name Get-PartnerCustomer -Full
+# View the full help content for Get-PartnerCustomerSubscription
+Get-Help -Name Get-PartnerCustomerSubscription -Full
+
+# View the help content for Get-PartnerCustomerSubscription on https://docs.microsoft.com
+Get-Help -Name Get-PartnerCustomerSubscription -Online
 ```
-
-## Configuring Azure AD Application
-
-### Native App
-
-1. Sign in to the [Partner Center](https://partner.microsoft.com/cloud-solution-provider/csp-partner) using credentials that have *Admin Agent* and *Global Admin* privileges
-2. Click on _Dashboard_  at the top of the page, then click on the cog icon in the upper right, and then click the _Partner settings_.
-3. Add a new native application if one does not exist already.
-4. Sign in to the [classic portal](https://portal.azure.com) using the same credentials from step 1.
-5. Click on the _Azure Active Directory_ icon in the toolbar.
-6. Click _App registrations_ -> Select _All apps_ from the drop down -> Click on the application created in step 3.
-7. Click _Settings_ and then click _Redirect URIs_
-8. Add **urn:ietf:wg:oauth:2.0:oob** as one of the available Redirect URIs. Be sure to click the _Save_ button to ensure the changes are saved.  
-
-### Web App
-
-1. Sign in to the [Partner Center](https://partner.microsoft.com/cloud-solution-provider/csp-partner) using credentials that have *Admin Agent* and *Global Admin* privileges
-2. Click on _Dashboard_  at the top of the page, then click on the cog icon in the upper right, and then click the _Partner settings_.
-3. Add a new web application if one does not exist already.

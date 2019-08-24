@@ -4,6 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Exceptions
 {
     using System;
+    using System.ComponentModel;
+    using System.Reflection;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -65,6 +67,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Exceptions
             }
 
             base.GetObjectData(info, context);
+        }
+
+        public static string GetApiError(string message, Exception innerException)
+        {
+            PartnerCenter.Exceptions.PartnerException ex = (PartnerCenter.Exceptions.PartnerException)innerException;
+            ApiError error = (ApiError)Enum.Parse(typeof(ApiError), ex.ServiceErrorPayload.ErrorCode);
+            return string.IsNullOrEmpty(message) ? "ErrorCode : " + ex.ServiceErrorPayload.ErrorCode + " - " + GetEnumDescription(error) : message + " - ErrorCode: " + ex.ServiceErrorPayload.ErrorCode + " - " + GetEnumDescription(error);
+        }
+
+        private static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null && attributes.Length > 0)
+            {
+                return attributes[0].Description;
+            }
+            else
+            {
+                return value.ToString();
+            }
         }
     }
 }

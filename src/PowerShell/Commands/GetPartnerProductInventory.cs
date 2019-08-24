@@ -7,10 +7,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
+    using Models.Authentication;
+    using Extensions;
     using Exceptions;
     using Models.Products;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Products;
 
     /// <summary>
@@ -58,7 +59,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
             if (Variables == null)
+            {
                 Variables = new Hashtable();
+            }
 
             GetProductInventory(countryCode, ProductId, SkuId, Variables);
         }
@@ -100,9 +103,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 WriteObject(item.Select(i => new PSInventoryItem(i)), true);
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException(null, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException(null, ex);
             }
         }
     }

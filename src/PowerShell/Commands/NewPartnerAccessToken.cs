@@ -7,16 +7,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Net.Http;
     using System.Text.RegularExpressions;
-#if !NETSTANDARD
-    using System.Web;
-#endif
-    using Authentication;
+    using Models.Authentication;
     using Extensions;
-    using Network;
     using PartnerCenter.Models.Authentication;
-#if !NETSTANDARD
-    using Platforms;
-#endif
+
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken", DefaultParameterSetName = UserParameterSet)]
     [OutputType(typeof(AuthenticationResult))]
@@ -35,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
-        private readonly static HttpClient httpClient = new HttpClient();
+        private static readonly HttpClient httpClient = new HttpClient();
 
         /// <summary>
         /// Gets or sets the application identifier.
@@ -92,93 +86,69 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void ProcessRecord()
         {
-            AuthenticationResult authResult;
-            AzureAccount account = new AzureAccount();
-#if NETSTANDARD
-            DeviceCodeResult deviceCodeResult;
-#else
-            AuthorizationResult authorizationResult;
-#endif
-            IPartnerServiceClient client;
-            PartnerEnvironment environment;
-            Uri authority;
-            string clientId;
-            string resource;
+            //AuthenticationResult authResult;
+            //AzureAccount account = new AzureAccount();
+            //DeviceCodeResult deviceCodeResult;
+            //IPartnerServiceClient client;
+            //PartnerEnvironment environment;
+            //Uri authority;
+            //string clientId;
+            //string resource;
 
-            if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
-                account.Type = AccountType.ServicePrincipal;
-                clientId = string.IsNullOrEmpty(ApplicationId) ? Credential.UserName : ApplicationId;
-            }
-            else
-            {
-                account.Type = AccountType.User;
-                clientId = ApplicationId;
-            }
+            //if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    account.Properties[PartnerAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
+            //    account.Type = AccountType.ServicePrincipal;
+            //    clientId = string.IsNullOrEmpty(ApplicationId) ? Credential.UserName : ApplicationId;
+            //}
+            //else
+            //{
+            //    account.Type = AccountType.User;
+            //    clientId = ApplicationId;
+            //}
 
-            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? AuthenticationConstants.CommonEndpoint : TenantId;
-            environment = PartnerEnvironment.PublicEnvironments[Environment];
+            //account.Properties[PartnerAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? AuthenticationConstants.CommonEndpoint : TenantId;
+            //environment = PartnerEnvironment.PublicEnvironments[Environment];
 
-            client = new PartnerServiceClient(httpClient);
-            authority = new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}");
+            //client = new PartnerServiceClient(httpClient);
+            //authority = new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[PartnerAccountPropertyType.Tenant]}");
 
-            resource = string.IsNullOrEmpty(Resource) ? environment.PartnerCenterEndpoint : Resource;
+            //resource = string.IsNullOrEmpty(Resource) ? environment.PartnerCenterEndpoint : Resource;
 
-            if (!string.IsNullOrEmpty(RefreshToken))
-            {
-                authResult = client.RefreshAccessTokenAsync(
-                    authority,
-                    resource,
-                    RefreshToken,
-                    clientId,
-                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
-            }
-            else if (account.Type == AccountType.ServicePrincipal && !Consent.ToBool())
-            {
-                authResult = client.AcquireTokenAsync(
-                    authority,
-                    resource,
-                    clientId,
-                    Credential.Password.ConvertToString()).GetAwaiter().GetResult();
-            }
-#if NETSTANDARD
-            else
-            {
-                deviceCodeResult = client.AcquireDeviceCodeAsync(
-                    authority,
-                    resource,
-                    clientId,
-                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
+            //if (!string.IsNullOrEmpty(RefreshToken))
+            //{
+            //    authResult = client.RefreshAccessTokenAsync(
+            //        authority,
+            //        resource,
+            //        RefreshToken,
+            //        clientId,
+            //        Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
+            //}
+            //else if (account.Type == AccountType.ServicePrincipal && !Consent.ToBool())
+            //{
+            //    authResult = client.AcquireTokenAsync(
+            //        authority,
+            //        resource,
+            //        clientId,
+            //        Credential.Password.ConvertToString()).GetAwaiter().GetResult();
+            //}
+            //else
+            //{
+            //    deviceCodeResult = client.AcquireDeviceCodeAsync(
+            //        authority,
+            //        resource,
+            //        clientId,
+            //        Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
 
-                WriteWarning(deviceCodeResult.Message);
+            //    WriteWarning(deviceCodeResult.Message);
 
-                authResult = client.AcquireTokenByDeviceCodeAsync(
-                    authority,
-                    deviceCodeResult,
-                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
-            }
-#else
-            else
-            {
-                using (WindowsFormsWebAuthenticationDialog dialog = new WindowsFormsWebAuthenticationDialog(null))
-                {
-                    authorizationResult = dialog.AuthenticateAAD(
-                        new Uri($"{environment.ActiveDirectoryAuthority}{account.Properties[AzureAccountPropertyType.Tenant]}/oauth2/authorize?resource={HttpUtility.UrlEncode(Resource)}&client_id={clientId}&response_type=code&haschrome=1&redirect_uri={HttpUtility.UrlEncode(AuthenticationConstants.RedirectUriValue)}&response_mode=form_post&prompt=login"),
-                        new Uri(AuthenticationConstants.RedirectUriValue));
-                }
+            //    authResult = client.AcquireTokenByDeviceCodeAsync(
+            //        authority,
+            //        deviceCodeResult,
+            //        Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
+            //}
 
-                authResult = client.AcquireTokenByAuthorizationCodeAsync(
-                    authority,
-                    resource,
-                    new Uri(AuthenticationConstants.RedirectUriValue),
-                    authorizationResult.Code,
-                    clientId,
-                    Credential?.Password.ConvertToString()).GetAwaiter().GetResult();
-            }
-#endif
-
-            WriteObject(authResult);
+            //WriteObject(authResult);
         }
     }
 }

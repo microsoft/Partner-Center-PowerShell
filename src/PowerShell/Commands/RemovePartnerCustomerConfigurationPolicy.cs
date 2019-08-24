@@ -5,8 +5,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using PartnerCenter.PowerShell.Exceptions;
-    using PartnerCenter.PowerShell.Properties;
+    using Exceptions;
+    using PartnerCenter.Exceptions;
+    using Properties;
 
     /// <summary>
     /// Return a list of configuration policies or a specific configration policy for the specified customer identifier.
@@ -37,16 +38,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!ShouldProcess(Resources.RemovePartnerCustomerConfigurationPolicyWhatIf, PolicyId)) return;
+            if (!ShouldProcess(Resources.RemovePartnerCustomerConfigurationPolicyWhatIf, PolicyId))
+            {
+                return;
+            }
 
             try
             {
                 Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().GetAwaiter().GetResult();
                 WriteObject(true);
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("An error was encountered deleting policy id " + PolicyId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("An error was encountered deleting policy id " + PolicyId, ex);
             }
         }
     }

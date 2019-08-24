@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.CustomerRelationshipRequests
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.RelationshipRequests;
 
     /// <summary>

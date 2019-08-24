@@ -5,10 +5,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
+    using Models.Authentication;
+    using Extensions;
     using Exceptions;
     using Models.Products;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
 
@@ -95,9 +96,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     WriteObject(new PSSku(sku));
                 }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting sku id: " + skuId, ex);
+                // TODO -- Refactor this so the error is extracted from the partner exception.
+                throw new PartnerPSException("Error getting sku id: " + skuId, ex);
             }
         }
 
@@ -135,9 +137,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     WriteObject(skus.Items.Select(s => new PSSku(s)), true);
                 }
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            catch (PartnerException ex)
             {
-                throw new PSPartnerException("Error getting skus for product id: " + productId, ex);
+                throw new PartnerPSException("Error getting skus for product id: " + productId, ex);
             }
 
         }

@@ -20,6 +20,13 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Authentication
+  * Enabled interactive login support for cross-platform by default
+  * Device code flow login is now the backup option of interactive login fails, or the user provides the `-UseDeviceAuthentication` switch parameter
+  * Token cache is now shared with other products, such as Visual Studio 2019 and Azure CLI
+
 ## 1.5.1908.1
 
 * Authentication
