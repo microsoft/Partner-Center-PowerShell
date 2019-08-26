@@ -5,8 +5,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
     using Exceptions;
+    using Extensions;
     using PartnerCenter.Exceptions;
 
     /// <summary>

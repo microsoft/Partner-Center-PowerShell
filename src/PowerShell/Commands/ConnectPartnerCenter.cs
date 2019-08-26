@@ -7,9 +7,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Reflection;
-    using Models.Authentication;
     using Extensions;
     using Factories;
+    using Models.Authentication;
     using PartnerCenter.Models.Partners;
     using Properties;
 
@@ -202,7 +202,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,
                 PartnerSession.Instance.Context.Environment,
-                string.Empty,
+                account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
+                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
                 account.GetProperty(PartnerAccountPropertyType.Tenant));
 
             partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();

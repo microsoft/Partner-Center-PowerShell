@@ -4,20 +4,22 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
+    using System.Security;
     using Models.Authentication;
 
     /// <summary>
-    /// Represents the parameters used for authenticating using app only authentication.
+    /// Represents the parameters used for authenticating using a refresh token.
     /// </summary>
-    public class ServicePrincipalParameters : AuthenticationParameters
+    public class RefreshTokenParameters : AuthenticationParameters
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServicePrincipalParameters" /> class.
+        /// Initializes a new instance of the <see cref="RefreshTokenParameters" /> class.
         /// </summary>
-        public ServicePrincipalParameters(string applicationId, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId, string thumbprint)
+        public RefreshTokenParameters(string applicationId, PartnerEnvironment environment, SecureString refreshToken, SecureString secret, IEnumerable<string> scopes, string tenantId, string thumbprint)
             : base(applicationId, environment, scopes, tenantId)
         {
             CertificateThumbprint = thumbprint;
+            RefreshToken = refreshToken;
             Secret = secret;
         }
 
@@ -27,8 +29,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public string CertificateThumbprint { get; }
 
         /// <summary>
+        /// Gets the refresh token.
+        /// </summary>
+        public SecureString RefreshToken { get; }
+
+        /// <summary>
         /// Gets the application secret.
         /// </summary>
-        public string Secret { get; }
+        public SecureString Secret { get; }
     }
 }

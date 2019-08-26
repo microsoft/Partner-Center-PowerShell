@@ -25,8 +25,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.1.0-preview" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.1908.40422" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.2-preview" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.1908.40233" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
   </ItemGroup>
@@ -54,10 +54,6 @@
 
   <ItemGroup>
     <PreLoadAssemblies Include="..\lib\System.Security.Cryptography.ProtectedData.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 
   <Target Name="CopyFiles" AfterTargets="Build">

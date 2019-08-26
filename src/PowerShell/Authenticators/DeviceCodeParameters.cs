@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System.Collections.Generic;
     using Models.Authentication;
 
     /// <summary>
@@ -13,11 +14,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceCodeParameters" /> class.
         /// </summary>
-        /// <param name="environment">The partner environment information.</param>
-        /// <param name="resourceEndpoint">The resource endpoint address.</param>
-        /// <param name="tenantId">The tenant identifier.</param>
-        public DeviceCodeParameters(PartnerEnvironment environment, string resourceEndpoint, string tenantId)
-            : base(environment, resourceEndpoint, tenantId)
+        public DeviceCodeParameters(string applicationId, PartnerEnvironment environment, IEnumerable<string> scopes, string tenantId)
+            : base(applicationId, environment, scopes, tenantId)
         {
         }
     }

@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using System.Net.Http;
+    using Extensions;
     using Models.Authentication;
     using Network;
     using Rest;
@@ -38,7 +39,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     PartnerSession.Instance.AuthenticationFactory.Authenticate(
                         PartnerSession.Instance.Context.Account,
                         PartnerSession.Instance.Context.Environment,
-                        "",
+                        PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
+                        new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
                         PartnerSession.Instance.Context.Account.ExtendedProperties[PartnerAccountPropertyType.Tenant])),
                 HttpClient);
         }

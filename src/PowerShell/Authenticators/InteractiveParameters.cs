@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System.Collections.Generic;
     using Models.Authentication;
 
     /// <summary>
@@ -13,12 +14,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractiveParameters" /> class.
         /// </summary>
-        /// <param name="environment">The partner environment information.</param>
-        /// <param name="resourceEndpoint">The resource endpoint address.</param>
-        /// <param name="tenantId">The tenant identifier.</param>
-        public InteractiveParameters(PartnerEnvironment environment, string resourceEndpoint, string tenantId)
-            : base(environment, resourceEndpoint, tenantId)
+        public InteractiveParameters(string applicationId, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId, string thumbprint)
+            : base(applicationId, environment, scopes, tenantId)
         {
+            CertificateThumbprint = thumbprint;
+            Secret = secret;
         }
+
+        /// <summary>
+        /// Gets the certificate thumbprint.
+        /// </summary>
+        public string CertificateThumbprint { get; }
+
+        /// <summary>
+        /// Gets the application secret.
+        /// </summary>
+        public string Secret { get; }
     }
 }

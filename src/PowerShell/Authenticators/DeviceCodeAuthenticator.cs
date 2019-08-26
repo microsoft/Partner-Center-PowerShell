@@ -23,12 +23,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
             IPublicClientApplication client = SharedTokenCacheClientFactory.CreatePublicClient(
-                null,
+                parameters.ApplicationId,
                 parameters.TenantId,
                 $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}");
 
             return client.AcquireTokenWithDeviceCode(
-                new[] { $"{parameters.Environment.PartnerCenterEndpoint}/user_impersonation" }, deviceCodeResult =>
+                parameters.Scopes, deviceCodeResult =>
                 {
                     WriteWarning(deviceCodeResult?.Message);
                     return Task.CompletedTask;

@@ -3,7 +3,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using System.Threading.Tasks;
     using Identity.Client;
 
     /// <summary>

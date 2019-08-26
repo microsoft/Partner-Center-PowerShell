@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
+    using System.Collections.Generic;
     using Authenticators;
     using Extensions;
     using Microsoft.Identity.Client;
@@ -14,9 +15,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     internal class AuthenticationFactory : IAuthenticationFactory
     {
+        private const string ApplicationId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationToken Authenticate(PartnerAccount account, PartnerEnvironment environment, string resourceId, string tenantId)
+        public AuthenticationToken Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
@@ -26,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             {
                 try
                 {
-                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, resourceId, tenantId), out authResult))
+                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, secret, scopes, tenantId), out authResult))
                     {
                         if (authResult != null)
                         {
@@ -50,36 +53,44 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return (authResult == null) ? null : new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
         }
 
-        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, string resourceId, string tenantId)
+        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
         {
-            if (account.Type == AccountType.User)
+            if (account.IsPropertySet("UseAuthCode"))
+            {
+                return new InteractiveParameters(
+                    account.Id,
+                    environment,
+                    secret,
+                    scopes,
+                    tenantId,
+                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
+            }
+            else if (account.Type == AccountType.User)
             {
                 if (!string.IsNullOrEmpty(account.Id))
                 {
-                    return new SilentParameters(environment, resourceId, tenantId, account.Id);
+                    return new SilentParameters(ApplicationId, environment, scopes, tenantId, account.Id);
                 }
                 else if (account.IsPropertySet("UseDeviceAuth"))
                 {
-                    return new DeviceCodeParameters(environment, resourceId, tenantId);
+                    return new DeviceCodeParameters(ApplicationId, environment, scopes, tenantId);
                 }
 
-                return new InteractiveParameters(environment, resourceId, tenantId);
-
+                return new InteractiveParameters(ApplicationId, environment, null, scopes, tenantId, null);
             }
             else if (account.Type == AccountType.ServicePrincipal ||
                      account.Type == AccountType.Certificate)
             {
                 return new ServicePrincipalParameters(
-                    environment, 
-                    tenantId, 
-                    resourceId, 
-                    account.Id, 
-                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint),
-                    null);
+                    account.Id,
+                    environment,
+                    secret,
+                    scopes,
+                    tenantId,
+                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
             }
 
             return null;
         }
-
     }
 }

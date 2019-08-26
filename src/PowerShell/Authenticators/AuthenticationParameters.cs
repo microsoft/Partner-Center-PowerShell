@@ -3,7 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using Models.Authentication; 
+    using System.Collections.Generic;
+    using Models.Authentication;
 
     /// <summary>
     /// Represents the parameters used for authentication.
@@ -13,15 +14,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationParameters" /> class.
         /// </summary>
-        /// <param name="environment">The partner environment information.</param>
-        /// <param name="resourceEndpoint">The resource endpoint address.</param>
-        /// <param name="tenantId">The tenant identifier.</param>
-        protected AuthenticationParameters(PartnerEnvironment environment, string resourceEndpoint, string tenantId)
+        protected AuthenticationParameters(string applicationId, PartnerEnvironment environment, IEnumerable<string> scopes, string tenantId)
         {
+            ApplicationId = applicationId;
             Environment = environment;
-            ResourceEndpoint = resourceEndpoint;
+            Scopes = scopes;
             TenantId = tenantId;
         }
+
+        /// <summary>
+        /// Gets the application identifier.
+        /// </summary>
+        public string ApplicationId { get; }
 
         /// <summary>
         /// Gets the partner environment information.
@@ -29,9 +33,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public PartnerEnvironment Environment { get; }
 
         /// <summary>
-        /// Gets the resource endpoint address.
+        /// Gets the scopes.
         /// </summary>
-        public string ResourceEndpoint { get; }
+        public IEnumerable<string> Scopes { get; }
 
         /// <summary>
         /// Gets the tenant identifier.

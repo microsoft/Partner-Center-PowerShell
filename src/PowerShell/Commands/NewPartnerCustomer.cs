@@ -7,8 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Models.Authentication;
     using Exceptions;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
     using Properties;

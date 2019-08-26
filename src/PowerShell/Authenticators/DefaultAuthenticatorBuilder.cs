@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             AppendAuthenticator(() => { return new InteractiveUserAuthenticator(); });
             AppendAuthenticator(() => { return new DeviceCodeAuthenticator(); });
-            // AppendAuthenticator(() => { return new ServicePrincipalAuthenticator(); });
+            AppendAuthenticator(() => { return new ServicePrincipalAuthenticator(); });
             AppendAuthenticator(() => { return new SilentAuthenticator(); });
         }
 
@@ -29,7 +29,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
 
             IAuthenticator current;
-            for (current = Authenticator; current != null && current.Next != null; current = current.Next) ;
+
+            for (current = Authenticator; current != null && current.Next != null; current = current.Next)
+            {
+                ;
+            }
+
             current.Next = constructor();
             return true;
         }

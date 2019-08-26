@@ -7,9 +7,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Net;
     using System.Net.Sockets;
     using Factories;
+    using System.Threading;
     using Identity.Client;
     using Identity.Client.Extensibility;
     using Network;
+    using System.Web;
+    using System.Collections.Specialized;
 
     /// <summary>
     /// Provides the ability to authenticate using an interactive interface.
@@ -25,6 +28,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
+            AuthenticationResult authResult;
+            InteractiveParameters interactiveParameters;
             TcpListener listener = null;
             string replyUrl = string.Empty;
 
@@ -42,21 +47,49 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(string.Format("Port {0} is taken with exception '{1}'; trying to connect to the next port.", port, ex.Message));
+                    WriteWarning(string.Format("Port {0} is taken with exception '{1}'; trying to connect to the next port.", port, ex.Message));
                     listener?.Stop();
                 }
             }
 
-            IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-                parameters.TenantId,
-                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                replyUrl);
+            interactiveParameters = (InteractiveParameters)parameters;
 
-            AuthenticationResult authResult = app.AcquireTokenInteractive(new[] { $"{parameters.Environment.PartnerCenterEndpoint}/user_impersonation" })
+            if (string.IsNullOrEmpty(interactiveParameters.Secret))
+            {
+                IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
+                    parameters.ApplicationId,
+                    parameters.TenantId,
+                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
+                    replyUrl);
+
+                authResult = app.AcquireTokenInteractive(parameters.Scopes)
                     .WithCustomWebUi(new CustomWebUi())
                     .WithPrompt(Prompt.ForceLogin)
                     .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            else
+            {
+                IConfidentialClientApplication app = SharedTokenCacheClientFactory.CreateConfidentialClient(
+                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
+                    parameters.ApplicationId,
+                    interactiveParameters.Secret,
+                    null,
+                    replyUrl,
+                    parameters.TenantId);
+
+                ICustomWebUi customWebUi = new CustomWebUi();
+
+                Uri authCodeUrl = customWebUi.AcquireAuthorizationCodeAsync(
+                    app.GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult(),
+                    new Uri(replyUrl),
+                    CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
+
+                authResult = app.AcquireTokenByAuthorizationCode(
+                    parameters.Scopes,
+                    queryStringParameters["code"]).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
 
             return authResult;
         }
@@ -69,6 +102,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override bool CanAuthenticate(AuthenticationParameters parameters)
         {
             return parameters is InteractiveParameters;
+        }
+
+        /// <summary>
+        /// Writes a warning message to the console.
+        /// </summary>
+        /// <param name="message">The message that describes the warning.</param>
+        private void WriteWarning(string message)
+        {
+            Console.WriteLine(message);
         }
     }
 }

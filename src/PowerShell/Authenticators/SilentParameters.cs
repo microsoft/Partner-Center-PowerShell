@@ -3,7 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using Models.Authentication; 
+    using System.Collections.Generic;
+    using Models.Authentication;
 
     /// <summary>
     /// Represents the parameters used for authenticating non-interactively.
@@ -13,12 +14,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="SilentParameters" /> class.
         /// </summary>
-        /// <param name="environment">The partner environment information.</param>
-        /// <param name="resourceEndpoint">The resource endpoint address.</param>
-        /// <param name="tenantId">The tenant identifier.</param>
-        /// <param name="userId">The user identifier.</param>
-        public SilentParameters(PartnerEnvironment environment, string resourceEndpoint, string tenantId, string userId)
-            : base(environment, resourceEndpoint, tenantId)
+        public SilentParameters(string applicationId, PartnerEnvironment environment, IEnumerable<string> scopes, string tenantId, string userId)
+            : base(applicationId, environment, scopes, tenantId)
         {
             UserId = userId;
         }

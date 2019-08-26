@@ -3,15 +3,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Factories;
     using Identity.Client;
 
     /// <summary>
-    /// Provides the ability to authenticate non-interactively.
+    /// Provides the ability to authenticate using a refresh token.
     /// </summary>
-    internal class SilentAuthenticator : DelegatingAuthenticator
+    internal class RefreshTokenAuthenticator : DelegatingAuthenticator
     {
         /// <summary>
         /// Apply this authenticator to the given authentication parameters.
@@ -22,22 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                parameters.ApplicationId,
-                parameters.TenantId,
-                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}");
-
-            IEnumerable<IAccount> accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            AuthenticationResult authResult = app.AcquireTokenSilent(
-                parameters.Scopes,
-                accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))
-                .ExecuteAsync()
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
-
-            return authResult;
+            return null;
         }
 
         /// <summary>
@@ -47,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns><c>true</c> if this authenticator can apply; otherwise <c>false</c>.</returns>
         public override bool CanAuthenticate(AuthenticationParameters parameters)
         {
-            return parameters is SilentParameters;
+            return parameters is RefreshTokenParameters;
         }
     }
 }

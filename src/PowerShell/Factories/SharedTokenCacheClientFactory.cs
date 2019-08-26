@@ -3,11 +3,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Security.Cryptography.X509Certificates;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
+    using Utilities;
 
     public static class SharedTokenCacheClientFactory
     {
@@ -15,11 +16,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
         private const string CacheFileName = "msal.cache";
 
-        //private static readonly string CacheFilePath =
-        //    Path.Combine(SharedUtilities.GetUserRootDirectory(), ".IdentityService", CacheFileName);
-
-        private static readonly string CacheFilePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ".IdentityService", CacheFileName);
+        private static readonly string CacheFilePath =
+            Path.Combine(SharedUtilities.GetUserRootDirectory(), ".IdentityService", CacheFileName);
 
         private static MsalCacheHelper InitializeCacheHelper(string clientId)
         {
@@ -38,19 +36,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return MsalCacheHelper.CreateAsync(storageCreationProperties).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public static IPublicClientApplication CreatePublicClient(
-            string clientId = null,
-            string tenantId = null,
+        public static IConfidentialClientApplication CreateConfidentialClient(
             string authority = null,
-            string redirectUri = null)
+            string clientId = null,
+            string clientSecret = null,
+            X509Certificate2 certificate = null,
+            string redirectUri = null,
+            string tenantId = null)
         {
-            clientId = clientId ?? PowerShellClientId;
-
-            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
+            ConfidentialClientApplicationBuilder builder = ConfidentialClientApplicationBuilder.Create(clientId ?? PowerShellClientId);
 
             if (!string.IsNullOrEmpty(authority))
             {
                 builder = builder.WithAuthority(authority);
+            }
+
+            if (!string.IsNullOrEmpty(clientSecret))
+            {
+                builder = builder.WithClientSecret(clientSecret);
+            }
+
+            if (certificate != null)
+            {
+                builder = builder.WithCertificate(certificate);
+            }
+
+            if (!string.IsNullOrEmpty(redirectUri))
+            {
+                builder = builder.WithRedirectUri(redirectUri);
             }
 
             if (!string.IsNullOrEmpty(tenantId))
@@ -58,9 +71,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 builder = builder.WithTenantId(tenantId);
             }
 
+            IConfidentialClientApplication client = builder.Build();
+
+            MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
+            cacheHelper.RegisterCache(client.UserTokenCache);
+
+            return client;
+        }
+
+        public static IPublicClientApplication CreatePublicClient(
+            string clientId = null,
+            string tenantId = null,
+            string authority = null,
+            string redirectUri = null)
+        {
+            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId ?? PowerShellClientId);
+
+            if (!string.IsNullOrEmpty(authority))
+            {
+                builder = builder.WithAuthority(authority);
+            }
+
             if (!string.IsNullOrEmpty(redirectUri))
             {
                 builder = builder.WithRedirectUri(redirectUri);
+            }
+
+            if (!string.IsNullOrEmpty(tenantId))
+            {
+                builder = builder.WithTenantId(tenantId);
             }
 
             IPublicClientApplication client = builder.Build();

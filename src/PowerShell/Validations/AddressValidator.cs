@@ -7,8 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Extensions;
     using Exceptions;
+    using Extensions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ValidationRules;
     using Properties;
