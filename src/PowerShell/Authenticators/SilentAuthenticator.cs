@@ -23,9 +23,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
             IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
+                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
                 parameters.ApplicationId,
-                parameters.TenantId,
-                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}");
+                null,
+                parameters.TenantId);
 
             IEnumerable<IAccount> accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 

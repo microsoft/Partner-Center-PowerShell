@@ -82,10 +82,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         }
 
         public static IPublicClientApplication CreatePublicClient(
-            string clientId = null,
-            string tenantId = null,
             string authority = null,
-            string redirectUri = null)
+            string clientId = null,
+            string redirectUri = null,
+            string tenantId = null)
         {
             PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId ?? PowerShellClientId);
 

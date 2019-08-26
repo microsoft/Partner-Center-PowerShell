@@ -57,10 +57,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             if (string.IsNullOrEmpty(interactiveParameters.Secret))
             {
                 IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                    parameters.ApplicationId,
-                    parameters.TenantId,
                     $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    replyUrl);
+                    parameters.ApplicationId,
+                    replyUrl,
+                    parameters.TenantId);
 
                 authResult = app.AcquireTokenInteractive(parameters.Scopes)
                     .WithCustomWebUi(new CustomWebUi())

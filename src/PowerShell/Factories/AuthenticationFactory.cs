@@ -65,6 +65,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     tenantId,
                     account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
             }
+            else if (account.IsPropertySet(PartnerAccountPropertyType.RefreshToken))
+            {
+                return new RefreshTokenParameters(
+                    account.Id,
+                    environment,
+                    account.GetProperty(PartnerAccountPropertyType.RefreshToken),
+                    secret,
+                    scopes,
+                    tenantId,
+                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
+            }
             else if (account.Type == AccountType.User)
             {
                 if (!string.IsNullOrEmpty(account.Id))

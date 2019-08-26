@@ -4,6 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using Identity.Client;
+    using Extensions;
+    using Factories;
 
     /// <summary>
     /// Provides the ability to authenticate using a refresh token.
@@ -19,7 +21,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            return null;
+            RefreshTokenParameters refreshTokenParameters = parameters as RefreshTokenParameters;
+
+            if (string.IsNullOrEmpty(refreshTokenParameters.Secret))
+            {
+                IConfidentialClientApplication app = SharedTokenCacheClientFactory.CreateConfidentialClient(
+                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
+                    parameters.ApplicationId,
+                    refreshTokenParameters.Secret,
+                    null,
+                    null,
+                    parameters.TenantId);
+
+                return app.AcquireTokenByRefreshToken(
+                    parameters.Scopes,
+                    refreshTokenParameters.RefreshToken).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            else
+            {
+                IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
+                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
+                    parameters.ApplicationId,
+                    null,
+                    parameters.TenantId);
+
+                return app.AcquireTokenByRefreshToken(
+                    parameters.Scopes,
+                    refreshTokenParameters.RefreshToken).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
         }
 
         /// <summary>

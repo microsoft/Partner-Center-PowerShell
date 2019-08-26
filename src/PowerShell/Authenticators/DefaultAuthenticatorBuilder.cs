@@ -16,6 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             AppendAuthenticator(() => { return new DeviceCodeAuthenticator(); });
             AppendAuthenticator(() => { return new ServicePrincipalAuthenticator(); });
             AppendAuthenticator(() => { return new SilentAuthenticator(); });
+            AppendAuthenticator(() => { return new RefreshTokenAuthenticator(); });
         }
 
         public IAuthenticator Authenticator { get; set; }

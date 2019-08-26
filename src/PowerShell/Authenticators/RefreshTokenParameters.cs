@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="RefreshTokenParameters" /> class.
         /// </summary>
-        public RefreshTokenParameters(string applicationId, PartnerEnvironment environment, SecureString refreshToken, SecureString secret, IEnumerable<string> scopes, string tenantId, string thumbprint)
+        public RefreshTokenParameters(string applicationId, PartnerEnvironment environment, string refreshToken, string secret, IEnumerable<string> scopes, string tenantId, string thumbprint)
             : base(applicationId, environment, scopes, tenantId)
         {
             CertificateThumbprint = thumbprint;
@@ -31,11 +31,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Gets the refresh token.
         /// </summary>
-        public SecureString RefreshToken { get; }
+        public string RefreshToken { get; }
 
         /// <summary>
         /// Gets the application secret.
         /// </summary>
-        public SecureString Secret { get; }
+        public string Secret { get; }
     }
 }

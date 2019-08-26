@@ -24,6 +24,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string ServicePrincipalSecret = "ServicePrincipalSecret";
 
         /// <summary>
+        /// Namme of the refresh token extended property.
+        /// </summary>
+        public const string RefreshToken = "RefreshToken";
+
+        /// <summary>
         /// Name of the tenant extended property.
         /// </summary>
         public const string Tenant = "Tenant";

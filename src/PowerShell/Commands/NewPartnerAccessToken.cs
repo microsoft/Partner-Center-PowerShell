@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Newtonsoft.Json.Linq;
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
-    [OutputType(typeof(AuthenticationResult))]
+    [OutputType(typeof(AuthResult))]
     public class NewPartnerAccessToken : PSCmdlet
     {
         /// <summary>
@@ -81,6 +81,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Alias("EnvironmentName")]
         [ValidateNotNullOrEmpty]
         public EnvironmentName Environment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refresh token to use during authentication.
+        /// </summary>
+        [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string RefreshToken { get; set; }
 
         /// <summary>
         /// Gets or sets the scopes used for authentication.
@@ -152,6 +159,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty("UseDeviceAuth", "true");
             }
 
+            if (!string.IsNullOrEmpty(RefreshToken))
+            {
+                account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
+            }
+
             account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(TenantId) ? "common" : TenantId);
 
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
@@ -196,10 +208,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             string key = GetTokenCacheKey(authResult);
 
+            AuthResult result = new AuthResult(
+                authResult.AccessToken,
+                authResult.IsExtendedLifeTimeToken,
+                authResult.UniqueId,
+                authResult.ExpiresOn,
+                authResult.ExtendedExpiresOn,
+                authResult.TenantId,
+                authResult.Account,
+                authResult.IdToken,
+                authResult.Scopes);
+
             if (tokens.ContainsKey(key))
             {
-                Console.WriteLine(tokens[key].Secret);
+                result.RefreshToken = tokens[key].Secret;
             }
+
+            WriteObject(result);
         }
 
         private string GetTokenCacheKey(AuthenticationResult authResult)
