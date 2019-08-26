@@ -5,10 +5,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Management.Automation;
+    using System.Text;
     using Extensions;
+    using Factories;
     using Identity.Client;
     using Models.Authentication;
+    using Newtonsoft.Json.Linq;
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthenticationResult))]
@@ -47,6 +51,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(ParameterSetName = AccessTokenParameterSet, Mandatory = true, HelpMessage = "Account identifier for access token")]
         [ValidateNotNullOrEmpty]
         public string AccountId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true)]
+        [Alias("ClientId")]
+        [ValidateNotNullOrEmpty]
+        public string ApplicationId { get; set; }
 
         /// <summary>
         /// Gets or sets the certificate thumbprint.
@@ -142,14 +154,69 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(TenantId) ? "common" : TenantId);
 
-            AuthenticationToken result = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,
                 PartnerEnvironment.PublicEnvironments[Environment],
                 account.ExtendedProperties[PartnerAccountPropertyType.ServicePrincipalSecret],
                 Scopes,
                 account.GetProperty(PartnerAccountPropertyType.Tenant));
 
-            WriteObject(result);
+            byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();
+
+            IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
+
+            JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
+
+            IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
+                .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
+
+            if (known.ContainsKey("RefreshToken"))
+            {
+                foreach (JToken token in root["RefreshToken"].Values())
+                {
+                    if (token is JObject j)
+                    {
+                        TokenCacheItem item = new TokenCacheItem
+                        {
+                            ClientId = ExtractExistingOrEmptyString(j, "client_id"),
+                            CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
+                            Environment = ExtractExistingOrEmptyString(j, "environment"),
+                            HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
+                            RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
+                            Secret = ExtractExistingOrEmptyString(j, "secret")
+                        };
+
+                        tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                    }
+                }
+            }
+
+            string key = GetTokenCacheKey(authResult);
+
+            if (tokens.ContainsKey(key))
+            {
+                Console.WriteLine(tokens[key].Secret);
+            }
+        }
+
+        private string GetTokenCacheKey(AuthenticationResult authResult)
+        {
+            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{ApplicationId}--";
+        }
+
+        private static string ExtractExistingOrEmptyString(JObject json, string key)
+        {
+            if (json.TryGetValue(key, out JToken val))
+            {
+                string strVal = val.ToObject<string>();
+                json.Remove(key);
+                return strVal;
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -4,15 +4,15 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
+    using System.Collections.Specialized;
     using System.Net;
     using System.Net.Sockets;
-    using Factories;
     using System.Threading;
+    using System.Web;
+    using Factories;
     using Identity.Client;
     using Identity.Client.Extensibility;
     using Network;
-    using System.Web;
-    using System.Collections.Specialized;
 
     /// <summary>
     /// Provides the ability to authenticate using an interactive interface.

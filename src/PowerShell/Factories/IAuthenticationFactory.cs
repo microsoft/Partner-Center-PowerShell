@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System.Collections.Generic;
+    using Identity.Client;
     using Models.Authentication;
 
     /// <summary>
@@ -15,6 +16,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <returns>The result from the authentication request.</returns>
-        AuthenticationToken Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId);
+        AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId);
     }
 }

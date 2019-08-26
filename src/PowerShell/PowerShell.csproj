@@ -17,6 +17,12 @@
     <Version>2.0.1908.1-preview</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Update="PartnerCenter.psd1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

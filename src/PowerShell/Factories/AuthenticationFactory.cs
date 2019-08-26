@@ -7,7 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Collections.Generic;
     using Authenticators;
     using Extensions;
-    using Microsoft.Identity.Client;
+    using Identity.Client;
     using Models.Authentication;
 
     /// <summary>
@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationToken Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
@@ -50,7 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 break;
             }
 
-            return (authResult == null) ? null : new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
+            return authResult ?? null;
         }
 
         private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)

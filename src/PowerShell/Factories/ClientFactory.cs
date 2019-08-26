@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System;
     using System.Net.Http;
     using Extensions;
+    using Identity.Client;
     using Models.Authentication;
     using Network;
     using Rest;
@@ -34,14 +35,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             PartnerService.Instance.ApiRootUrl = new Uri(PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint);
 
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                PartnerSession.Instance.Context.Account,
+                PartnerSession.Instance.Context.Environment,
+                PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
+                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
+                PartnerSession.Instance.Context.Account.ExtendedProperties[PartnerAccountPropertyType.Tenant]);
+
             return PartnerService.Instance.CreatePartnerOperations(
-                new PowerShellCredentials(
-                    PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                        PartnerSession.Instance.Context.Account,
-                        PartnerSession.Instance.Context.Environment,
-                        PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
-                        new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
-                        PartnerSession.Instance.Context.Account.ExtendedProperties[PartnerAccountPropertyType.Tenant])),
+                new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
                 HttpClient);
         }
     }

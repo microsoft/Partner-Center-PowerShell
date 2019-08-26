@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     using System;
     using System.Threading.Tasks;
     using Extensions;
+    using Microsoft.Identity.Client;
     using RequestContext;
 
     /// <summary>
@@ -63,12 +64,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         {
             context.AssertNotNull(nameof(context));
 
-            authToken = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
                 PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
                 new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
                 PartnerSession.Instance.Context.Account.ExtendedProperties[PartnerAccountPropertyType.Tenant]);
+
+            authToken = new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
 
             await Task.CompletedTask.ConfigureAwait(false);
         }
