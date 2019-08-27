@@ -210,7 +210,7 @@ Gets the partner's support profile.
 Gets a collection of a partner's Government Community Cloud validation codes.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
-{{ Fill in the Synopsis }}
+Acquires an access from Azure Active Directory.
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
