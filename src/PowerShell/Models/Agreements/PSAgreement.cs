@@ -50,7 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
         /// <summary>
         ///  Gets or sets the agreement type.
         /// </summary>
-        public AgreementType Type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the partner's user identifier.

@@ -80,28 +80,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
         }
 
-            /// <summary>
-            /// Determine if this request can be authenticated using the given authenticator, and authenticate if it can.
-            /// </summary>
-            /// <param name="parameters">The complex object containing authentication specific information.</param>
-            /// <param name="token">The token based authentication information.</param>
-            /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-            public bool TryAuthenticate(AuthenticationParameters parameters, out AuthenticationResult token)
+        /// <summary>
+        /// Determine if this request can be authenticated using the given authenticator, and authenticate if it can.
+        /// </summary>
+        /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="token">The token based authentication information.</param>
+        /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
+        public bool TryAuthenticate(AuthenticationParameters parameters, out AuthenticationResult token)
+        {
+            token = null;
+
+            if (CanAuthenticate(parameters))
             {
-                token = null;
-
-                if (CanAuthenticate(parameters))
-                {
-                    token = Authenticate(parameters);
-                    return true;
-                }
-
-                if (Next != null)
-                {
-                    return Next.TryAuthenticate(parameters, out token);
-                }
-
-                return false;
+                token = Authenticate(parameters);
+                return true;
             }
+
+            if (Next != null)
+            {
+                return Next.TryAuthenticate(parameters, out token);
+            }
+
+            return false;
         }
     }
+}

@@ -20,8 +20,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the agreement type. 
         /// </summary>
         [Parameter(HelpMessage = "The type of agreement being accepted.", Mandatory = true)]
-        [ValidateSet(nameof(AgreementType.MicrosoftCloudAgreement))]
-        public AgreementType AgreementType { get; set; }
+        [ValidateSet("MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
+        public string AgreementType { get; set; }
 
         /// <summary>
         /// Gets or sets the email address of the primary contact of the customer.

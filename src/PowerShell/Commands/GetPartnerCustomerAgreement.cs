@@ -15,6 +15,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class GetPartnerCustomerAgreement : PartnerPSCmdlet
     {
         /// <summary>
+        /// Gets or sets the agreement type. 
+        /// </summary>
+        [Parameter(HelpMessage = "The type of agreement of being requested.", Mandatory = false)]
+        [ValidateSet("MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
+        public string AgreementType { get; set; }
+
+        /// <summary>
         /// Gets or sets the required customer identifier.
         /// </summary>
         [Parameter(HelpMessage = "The identifier for the customer.", Mandatory = true)]
@@ -26,7 +33,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            if (string.IsNullOrEmpty(AgreementType))
+            {
+                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            }
+            else
+            {
+                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync(AgreementType).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            }
         }
     }
 }

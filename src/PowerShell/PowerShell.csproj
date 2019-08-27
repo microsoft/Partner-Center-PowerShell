@@ -32,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.2-preview" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.13.1908.40233" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="2.0.1908.18057" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
   </ItemGroup>
