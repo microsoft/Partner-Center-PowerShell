@@ -3,9 +3,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using Identity.Client;
     using Extensions;
     using Factories;
+    using Identity.Client;
 
     /// <summary>
     /// Provides the ability to authenticate using a refresh token.

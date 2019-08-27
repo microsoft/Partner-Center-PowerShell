@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Reflection;
     using Extensions;
     using Factories;
+    using Models;
     using Models.Authentication;
     using PartnerCenter.Models.Partners;
     using Properties;
@@ -49,6 +50,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// The name of the user parameter set.
         /// </summary>
         private const string UserParameterSet = "User";
+
+        /// <summary>
+        /// Event handle for the write warning event.
+        /// </summary>
+        private event EventHandler<StreamEventArgs> writeWarningEvent;
 
         /// <summary>
         /// Gets or sets the access token.
@@ -114,6 +120,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Alias("DeviceCode", "DeviceAuth", "Device")]
         [Parameter(ParameterSetName = UserParameterSet, Mandatory = false, HelpMessage = "Use device code authentication instead of a browser control")]
         public SwitchParameter UseDeviceAuthentication { get; set; }
+
+        protected override void BeginProcessing()
+        {
+            writeWarningEvent -= WriteWarningSender;
+            writeWarningEvent += WriteWarningSender;
+
+            PartnerSession.Instance.RegisterComponent("WriteWarning", () => writeWarningEvent);
+        }
 
         /// <summary>
         /// Performs the required operations when the module is imported.
@@ -200,6 +214,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PartnerSession.Instance.Context.Locale = profile.Culture;
 
             WriteObject(PartnerSession.Instance.Context);
+        }
+
+        private void WriteWarningSender(object sender, StreamEventArgs args)
+        {
+            WriteWarning(args.Message);
         }
     }
 }

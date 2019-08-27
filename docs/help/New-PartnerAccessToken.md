@@ -1,5 +1,5 @@
 ---
-content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCPartnerAccessTokenustomer.md
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccessToken.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
 online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken

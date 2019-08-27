@@ -12,6 +12,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Factories;
     using Identity.Client;
     using Identity.Client.Extensibility;
+    using Models;
+    using Models.Authentication;
     using Network;
 
     /// <summary>
@@ -52,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
             }
 
-            interactiveParameters = (InteractiveParameters)parameters;
+            interactiveParameters = parameters as InteractiveParameters;
 
             if (string.IsNullOrEmpty(interactiveParameters.Secret))
             {
@@ -110,7 +112,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            Console.WriteLine(message);
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            {
+                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+            }
         }
     }
 }

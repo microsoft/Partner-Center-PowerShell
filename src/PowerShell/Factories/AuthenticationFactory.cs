@@ -3,7 +3,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using System;
     using System.Collections.Generic;
     using Authenticators;
     using Extensions;
@@ -23,31 +22,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
-            int retries = 5;
 
-            while (retries-- > 0)
+            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, secret, scopes, tenantId), out authResult))
             {
-                try
+                if (authResult != null)
                 {
-                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, secret, scopes, tenantId), out authResult))
-                    {
-                        if (authResult != null)
-                        {
-                            account.Id = authResult.Account.HomeAccountId.ObjectId;
-                            account.SetProperty(PartnerAccountPropertyType.Tenant, authResult.TenantId);
-                            break;
-                        }
-
-                        processAuthenticator = processAuthenticator.Next;
-                    }
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    continue;
+                    account.Id = authResult.Account.HomeAccountId.ObjectId;
+                    account.SetProperty(PartnerAccountPropertyType.Tenant, authResult.TenantId);
+                    break;
                 }
 
-                break;
+                processAuthenticator = processAuthenticator.Next;
             }
 
             return authResult ?? null;

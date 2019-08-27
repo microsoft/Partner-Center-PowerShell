@@ -7,6 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Threading.Tasks;
     using Factories;
     using Identity.Client;
+    using Models;
+    using Models.Authentication;
 
     /// <summary>
     /// Provides the ability to authenticate using the device code flow.
@@ -52,7 +54,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            Console.WriteLine(message);
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            {
+                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+            }
         }
     }
 }

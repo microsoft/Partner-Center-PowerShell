@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
-    using System.Security;
     using Models.Authentication;
 
     /// <summary>
