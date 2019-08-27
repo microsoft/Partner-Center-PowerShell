@@ -23,6 +23,10 @@
 
 # Upcoming Breaking Changes
 
+## Release 2.0 - September 2019
+
+* Authentication
+
 ## Release 1.5.1906.1 - June 2019
 
 * Agreements

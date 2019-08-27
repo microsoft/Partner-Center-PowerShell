@@ -14,18 +14,18 @@ Updates the specified customer subscription.
 
 ## SYNTAX
 
+### CustomerObject
+```powershell
+Set-PartnerCustomerSubscription -InputObject <PSCustomer> [-BillingCycle <BillingCycleType>]
+ [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
 ### Customer
 ```powershell
 Set-PartnerCustomerSubscription [-BillingCycle <BillingCycleType>] -CustomerId <String>
  [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
-```
-
-### CustomerObject
-```powershell
-Set-PartnerCustomerSubscription -InputObject <PSCustomer>
- [-BillingCycle <BillingCycleType>] [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>]
- -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

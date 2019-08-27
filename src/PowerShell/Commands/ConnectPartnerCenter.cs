@@ -31,11 +31,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string ConfigurationProperty = "Configuration";
 
         /// <summary>
-        /// The name of the managed service parameter set.
-        /// </summary>
-        private const string ManagedServiceParameterSet = "ManagedServiceLogin";
-
-        /// <summary>
         /// The value used to identify the client connect to the partner service.
         /// </summary>
         private const string PartnerCenterClient = "Partner Center PowerShell";
@@ -63,14 +58,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// Gets or sets the account identifier.
-        /// </summary>
-        [Parameter(ParameterSetName = AccessTokenParameterSet, Mandatory = true, HelpMessage = "Account identifier for access token")]
-        [Parameter(ParameterSetName = ManagedServiceParameterSet, Mandatory = false, HelpMessage = "Account identifier for managed service. Can be a managed service resource Id, or the associated client id. To use the SyatemAssigned identity, leave this field blank.")]
-        [ValidateNotNullOrEmpty]
-        public string AccountId { get; set; }
-
-        /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
         [Parameter(ParameterSetName = ServicePrincipalCertificateParameterSet, Mandatory = true, HelpMessage = "SPN")]
@@ -85,8 +72,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the service principal credential.
         /// </summary>
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Application identifier and secret for service principal credentials.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Application identifier and secret for service principal credentials.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [ValidateNotNull]
         public PSCredential Credential { get; set; }
 
@@ -99,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the environment used for authentication.
         /// </summary>
-        [Parameter(HelpMessage = "The environment use for authentication.", Mandatory = false)]
+        [Parameter(HelpMessage = "Environment containing the account to log into.", Mandatory = false)]
         [Alias("EnvironmentName")]
         [ValidateNotNullOrEmpty]
         public EnvironmentName Environment { get; set; }
@@ -107,19 +94,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating whether or not a service principal is being used.
         /// </summary>
-        [Parameter(ParameterSetName = ServicePrincipalParameterSet, Mandatory = true)]
-        [Parameter(ParameterSetName = ServicePrincipalCertificateParameterSet, Mandatory = false)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", ParameterSetName = ServicePrincipalParameterSet, Mandatory = true)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials", ParameterSetName = ServicePrincipalCertificateParameterSet, Mandatory = false)]
         public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
-        [Alias("Domain")]
+        [Alias("Domain", "TenantId")]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
         [ValidateNotNullOrEmpty]
-        public string TenantId { get; set; }
+        public string Tenant { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating whether not the device code flow should be used.
@@ -191,7 +178,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty("UseDeviceAuth", "true");
             }
 
-            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(TenantId) ? "common" : TenantId);
+            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(Tenant) ? "common" : Tenant);
 
             PartnerSession.Instance.Context = new PartnerContext
             {

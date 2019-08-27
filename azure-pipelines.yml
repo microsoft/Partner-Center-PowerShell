@@ -22,5 +22,5 @@ steps:
 - pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\src\PowerShell\bin\Release\netstandard2.0'
   displayName: 'Generate MAML'
 
-- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\net461\PartnerCenter.psd1'
+- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.psd1'
   displayName: 'Validate Manifest (.NET Framework)'

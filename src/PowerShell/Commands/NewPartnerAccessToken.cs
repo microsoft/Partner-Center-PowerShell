@@ -46,13 +46,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string AccessToken { get; set; }
 
         /// <summary>
-        /// Gets or sets the account identifier.
-        /// </summary>
-        [Parameter(ParameterSetName = AccessTokenParameterSet, Mandatory = true, HelpMessage = "Account identifier for access token")]
-        [ValidateNotNullOrEmpty]
-        public string AccountId { get; set; }
-
-        /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
         [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true)]
@@ -105,12 +98,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
-        [Alias("Domain")]
+        [Alias("Domain", "TenantId")]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
         [ValidateNotNullOrEmpty]
-        public string TenantId { get; set; }
+        public string Tenant { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the authorization code flow should be used.
@@ -164,7 +157,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
             }
 
-            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(TenantId) ? "common" : TenantId);
+            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(Tenant) ? "common" : Tenant);
 
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,

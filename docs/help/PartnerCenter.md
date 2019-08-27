@@ -18,7 +18,7 @@ Adds a new line item to the specified cart.
 Adds a customer user to a specified role.
 
 ### [Connect-PartnerCenter](Connect-PartnerCenter.md)
-Connects to Partner Center with an authenticated account for use with cmdlet requests.
+Connect to Partner Center with an authenticated account for use with partner cmdlet requests.
 
 ### [Disconnect-PartnerCenter](Disconnect-PartnerCenter.md)
 Disconnects the current session from Partner Center.
@@ -189,7 +189,7 @@ Gets the list of SKUs for a product.
 Gets a relationship request URL to send to a customer.
 
 ### [Get-PartnerRole](Get-PartnerRole.md)
-Gets a list of partner roles.
+Gets the roles at the partner level.
 
 ### [Get-PartnerRoleMember](Get-PartnerRoleMember.md)
 Gets the members of the specified partner role.
@@ -210,7 +210,7 @@ Gets the partner's support profile.
 Gets a collection of a partner's Government Community Cloud validation codes.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
-Acquires an access token from the authority.
+{{ Fill in the Synopsis }}
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
@@ -307,3 +307,4 @@ Tests whether or not the specified address is valid.
 
 ### [Test-PartnerDomainAvailability](Test-PartnerDomainAvailability.md)
 Tests if the specified domain name is available for creating a new tenant.
+
