@@ -16,9 +16,9 @@ Acquires an access from Azure Active Directory.
 
 ### AccessToken
 ```powershell
-New-PartnerAccessToken -AccessToken <String> -ApplicationId <String>
- [-Credential <PSCredential>] [-Environment <EnvironmentName>] [-RefreshToken <String>] -Scopes <String[]>
- [-Tenant <String>] [-UseAuthorizationCode] [<CommonParameters>]
+New-PartnerAccessToken -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] [-RefreshToken <String>] -Scopes <String[]> [-Tenant <String>]
+ [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
@@ -37,8 +37,7 @@ New-PartnerAccessToken -ApplicationId <String> -Credential <PSCredential> [-Envi
 ### User
 ```powershell
 New-PartnerAccessToken -ApplicationId <String> [-Environment <EnvironmentName>] [-RefreshToken <String>]
- -Scopes <String[]> [-Tenant <String>] [-UseAuthorizationCode] [-UseDeviceAuthentication]
- [<CommonParameters>]
+ -Scopes <String[]> [-Tenant <String>] [-UseAuthorizationCode] [-UseDeviceAuthentication] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -146,7 +145,7 @@ The environment use for authentication.
 Type: EnvironmentName
 Parameter Sets: (All)
 Aliases: EnvironmentName
-Accepted values: GlobalCloud, ChinaCloud, GermanCloud, PPE, USGovernment
+Accepted values: AzureCloud, AzureChinaCloud, AzureGermanCloud, AzurePPE, AzureUSGovernment
 
 Required: False
 Position: Named

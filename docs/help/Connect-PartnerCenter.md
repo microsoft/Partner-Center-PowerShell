@@ -168,7 +168,7 @@ Environment containing the account to log into.
 Type: EnvironmentName
 Parameter Sets: (All)
 Aliases: EnvironmentName
-Accepted values: GlobalCloud, ChinaCloud, GermanCloud, PPE, USGovernment
+Accepted values: AzureCloud, AzureChinaCloud, AzureGermanCloud, AzurePPE, AzureUSGovernment
 
 Required: False
 Position: Named

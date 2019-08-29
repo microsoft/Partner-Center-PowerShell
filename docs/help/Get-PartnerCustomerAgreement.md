@@ -15,7 +15,7 @@ Gets confirmation of customer acceptance provided previously.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerAgreement -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerAgreement [-AgreementType <String>] -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,6 +31,22 @@ PS C:\> Get-PartnerCustomerAgreement -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53
 Gets confirmation of customer acceptance provided previously.
 
 ## PARAMETERS
+
+### -AgreementType
+The type of agreement of being requested.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: MicrosoftCloudAgreement, MicrosoftCustomerAgreement
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -CustomerId
 The identifier for the customer.

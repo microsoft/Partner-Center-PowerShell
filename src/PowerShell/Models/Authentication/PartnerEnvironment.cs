@@ -40,38 +40,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         {
             return new ConcurrentDictionary<EnvironmentName, PartnerEnvironment>
             {
-                [EnvironmentName.GlobalCloud] = new PartnerEnvironment
+                [EnvironmentName.AzureCloud] = new PartnerEnvironment
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
                 },
 
-                [EnvironmentName.ChinaCloud] = new PartnerEnvironment
+                [EnvironmentName.AzureChinaCloud] = new PartnerEnvironment
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.ChinaActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.ChinaGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.ChinaPartnerCenterEndpoint,
                 },
 
-                [EnvironmentName.PPE] = new PartnerEnvironment
+                [EnvironmentName.AzureGermanCloud] = new PartnerEnvironment
+                {
+                    ActiveDirectoryAuthority = EnvironmentConstants.GermanActiveDirectoryEndpoint,
+                    AzureAdGraphEndpoint = EnvironmentConstants.GermanGraphEndpoint,
+                    PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
+                },
+
+                [EnvironmentName.AzurePPE] = new PartnerEnvironment
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryPpeEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphPpeEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterPpeEndpoint,
                 },
 
-                [EnvironmentName.USGovernment] = new PartnerEnvironment
+                [EnvironmentName.AzureUSGovernment] = new PartnerEnvironment
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.USGovernmentActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.USGovernmentGraphEndpoint,
-                    PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
-                },
-
-                [EnvironmentName.GermanCloud] = new PartnerEnvironment
-                {
-                    ActiveDirectoryAuthority = EnvironmentConstants.GermanActiveDirectoryEndpoint,
-                    AzureAdGraphEndpoint = EnvironmentConstants.GermanGraphEndpoint,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
                 }
             };

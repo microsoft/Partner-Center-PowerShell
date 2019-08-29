@@ -26,6 +26,9 @@ Disconnects the current session from Partner Center.
 ### [Get-PartnerAgreementDetail](Get-PartnerAgreementDetail.md)
 Gets the agreement metadata for the Microsoft Cloud Agreement.
 
+### [Get-PartnerAgreementTemplate](Get-PartnerAgreementTemplate.md)
+Gets the links to download or view the Microsoft Customer Agreement template.
+
 ### [Get-PartnerAuditRecord](Get-PartnerAuditRecord.md)
 Gets audit records from Partner Center.
 
@@ -130,6 +133,9 @@ Gets a list of licenses assigned to a user within a customer account.
 
 ### [Get-PartnerCustomerUserRole](Get-PartnerCustomerUserRole.md)
 Gets a list of directory roles for a customer.
+
+### [Get-PartnerEnvironment](Get-PartnerEnvironment.md)
+Get endpoints and metadata for an instance of Partner Center.
 
 ### [Get-PartnerIndirectReseller](Get-PartnerIndirectReseller.md)
 Gets a list of indirect resellers.

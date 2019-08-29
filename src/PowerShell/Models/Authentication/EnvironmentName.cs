@@ -11,26 +11,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// The global instance of Microsoft Partner Center.
         /// </summary>
-        GlobalCloud,
+        AzureCloud,
 
         /// <summary>
         /// The Chinese sovereign cloud instance of Microsoft Partner Center.
         /// </summary>
-        ChinaCloud,
+        AzureChinaCloud,
 
         /// <summary>
         /// The German sovereign cloud instance of Microsoft Partner Center.
         /// </summary>
-        GermanCloud,
+        AzureGermanCloud,
 
         /// <summary>
         /// The pre-productions instance of Microsoft Partner Center.
         /// </summary>
-        PPE,
+        AzurePPE,
 
         /// <summary>
         /// The US Government sovereign cloud instance of Microsoft Partner Center.
         /// </summary>
-        USGovernment
+        AzureUSGovernment
     }
 }
