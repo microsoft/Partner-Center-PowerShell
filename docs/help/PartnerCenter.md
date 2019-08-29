@@ -239,6 +239,9 @@ Creates a new device batch for the specified customer.
 ### [New-PartnerCustomerOrder](New-PartnerCustomerOrder.md)
 Create a new order for the specified services on behalf of the customer.
 
+### [New-PartnerCustomerSubscriptionActivation](New-PartnerCustomerSubscriptionActivation.md)
+Activates a third-party subscription in the integration sandbox.
+
 ### [New-PartnerCustomerSubscriptionRegistration](New-PartnerCustomerSubscriptionRegistration.md)
 Registers the specified subscription.
 

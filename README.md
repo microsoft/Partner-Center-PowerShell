@@ -4,7 +4,9 @@
 
 [![PartnerCenter](https://img.shields.io/powershellgallery/v/PartnerCenter.svg?style=flat-square&label=PartnerCenter)](https://www.powershellgallery.com/packages/PartnerCenter/) [![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
-This repository contains PowerShell commands for administrators to develop, deploy, and manage Microsoft Cloud Solution Provider resources.
+The Partner Center PowerShell module is an open source project maintained by the partner community. It contains a set of PowerShell commands for partners in the Cloud Solution Provider program. It is written in .NET Standard, making it available for Windows, macOS, and Linux. Partner Center PowerShell is also available on Azure Cloud Shell. Using .NET Standard allows Partner Center PowerShell to run under PowerShell 5.1 on Windows or PowerShell Core 6.x and later on any platform.
+
+Since this module is maintained by the partner community, it is not officially supported by Microsoft. You can [get help from the community](https://stackoverflow.com/questions/tagged/partner+center) or open an [issue](https://github.com/microsoft/partner-center-powershell/issues) on GitHub if you encounter an issue.
 
 ## Requirements
 
