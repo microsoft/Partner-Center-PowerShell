@@ -148,6 +148,7 @@
                         'New-PartnerCustomerConfigurationPolicy',
                         'New-PartnerCustomerDeviceBatch',
                         'New-PartnerCustomerOrder',
+                        'New-PartnerCustomerSubscriptionActivation',
                         'New-PartnerCustomerSubscriptionRegistration',
                         'New-PartnerCustomerUser',
                         'New-PartnerServiceRequest',

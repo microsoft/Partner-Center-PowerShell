@@ -296,6 +296,9 @@
   <data name="StateRequiredError" xml:space="preserve">
     <value>State is a required feild. Please update the input and try again.</value>
   </data>
+  <data name="SubscriptionActivationWhatIf" xml:space="preserve">
+    <value>Activates the third-party subscription {0} owned by the customer with the identifier of {1}.</value>
+  </data>
   <data name="SubscriptionRegistrationWhatIf" xml:space="preserve">
     <value>Registers the subscription {0} owned by the customer with the identifier of {1}.</value>
   </data>

@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
-{
-
-
+namespace Microsoft.Store.PartnerCenter.PowerShell.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -584,6 +584,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         internal static string StateRequiredError {
             get {
                 return ResourceManager.GetString("StateRequiredError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activates the third-party subscription {0} owned by the customer with the identifier of {1}..
+        /// </summary>
+        internal static string SubscriptionActivationWhatIf {
+            get {
+                return ResourceManager.GetString("SubscriptionActivationWhatIf", resourceCulture);
             }
         }
         

@@ -15,7 +15,7 @@ Gets the list of SKUs for a product.
 ## SYNTAX
 
 ### ByProductId (Default)
-```powershell
+```
 Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
 ```
 

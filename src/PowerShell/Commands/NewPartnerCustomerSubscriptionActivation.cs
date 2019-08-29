@@ -6,13 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Subscriptions;
     using Properties;
 
     /// <summary>
-    /// Registers an existing Subscription so that it is enabled for ordering Azure Reserved VM Instances. 
+    /// Activates a third-party subscription in the integration sandbox. 
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionRegistration", SupportsShouldProcess = true), OutputType(typeof(string))]
-    public class NewPartnerCustomerSubscriptionRegistration : PartnerPSCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionActivation", SupportsShouldProcess = true), OutputType(typeof(PSSubscriptionActivationResult))]
+    public class NewPartnerCustomerSubscriptionActivation : PartnerPSCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -35,11 +36,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             if (ShouldProcess(string.Format(
                 CultureInfo.CurrentCulture,
-                Resources.SubscriptionRegistrationWhatIf,
+                Resources.SubscriptionActivationWhatIf,
                 SubscriptionId,
                 CustomerId)))
             {
-                WriteObject(Partner.Customers[CustomerId].Subscriptions[SubscriptionId].Registration.RegisterAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+                WriteObject(Partner.Customers[CustomerId].Subscriptions[SubscriptionId].ActivateAsync().ConfigureAwait(false).GetAwaiter().GetResult());
             }
         }
     }
