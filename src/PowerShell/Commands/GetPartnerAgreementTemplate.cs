@@ -15,14 +15,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The unique identifier of the agreement type.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public string AgreementTemplateId { get; set; }
+        public string TemplateId { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSAgreementTemplate(Partner.AgreementDetails[AgreementTemplateId].Templates.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            WriteObject(new PSAgreementTemplate(Partner.AgreementDetails[TemplateId].Templates.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
         }
     }
 }

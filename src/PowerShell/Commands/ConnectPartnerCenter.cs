@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Reflection;
     using Extensions;
     using Factories;
+    using Microsoft.Store.PartnerCenter.Exceptions;
     using Models;
     using Models.Authentication;
     using PartnerCenter.Models.Partners;
@@ -200,18 +201,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Environment = PartnerEnvironment.PublicEnvironments[Environment]
             };
 
+            account.SetProperty(
+                PartnerAccountPropertyType.Scope, 
+                ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase) ?
+                    $"{PartnerSession.Instance.Context.Environment.AzureAdGraphEndpoint}/.default" :
+                    $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation");
+
             PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,
                 PartnerSession.Instance.Context.Environment,
                 account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
-                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
+                new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
                 account.GetProperty(PartnerAccountPropertyType.Tenant));
 
-            partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
-            profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
+            try
+            {
+                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
 
-            PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
-            PartnerSession.Instance.Context.Locale = profile.Culture;
+                PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
+                PartnerSession.Instance.Context.Locale = profile.Culture;
+            }
+            catch (PartnerException ex)
+            {
+                /* 
+                 * This exception can occurr if authenticatiing using a service principal because 
+                 * these operations do not support app only authentication
+                 */
+
+                WriteDebug(ex.Message);
+            }
 
             WriteObject(PartnerSession.Instance.Context);
         }

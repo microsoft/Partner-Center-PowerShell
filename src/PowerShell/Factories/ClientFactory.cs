@@ -39,8 +39,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
                 PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
-                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" },
-                PartnerSession.Instance.Context.Account.ExtendedProperties[PartnerAccountPropertyType.Tenant]);
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) },
+                PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Tenant));
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),

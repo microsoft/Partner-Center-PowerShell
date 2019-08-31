@@ -19,6 +19,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string CertificateThumbprint = "CertificateThumbprint";
 
         /// <summary>
+        /// Name of the scope extended property.
+        /// </summary>
+        public const string Scope = "Scope";
+
+        /// <summary>
         /// Name of the service principal secret extended property.
         /// </summary>
         public const string ServicePrincipalSecret = "ServicePrincipalSecret";

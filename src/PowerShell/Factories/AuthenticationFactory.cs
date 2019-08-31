@@ -27,8 +27,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             {
                 if (authResult != null)
                 {
-                    account.Id = authResult.Account.HomeAccountId.ObjectId;
-                    account.SetProperty(PartnerAccountPropertyType.Tenant, authResult.TenantId);
+                    if (authResult.Account?.HomeAccountId != null)
+                    {
+                        account.Id = authResult.Account.HomeAccountId.ObjectId;
+                    }
+
                     break;
                 }
 

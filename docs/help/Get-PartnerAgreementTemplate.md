@@ -15,7 +15,7 @@ Gets the links to download or view the Microsoft Customer Agreement template.
 ## SYNTAX
 
 ```powershell
-Get-PartnerAgreementTemplate -AgreementTemplateId <String> [<CommonParameters>]
+Get-PartnerAgreementTemplate -TemplateId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,14 +25,14 @@ Gets the links to download or view the Microsoft Customer Agreement template.
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerAgreementTemplate -AgreementTemplateId '<TemplateId>'
+PS C:\> Get-PartnerAgreementTemplate -TemplateId '<TemplateId>'
 ```
 
 Gets the links to download or view the Microsoft Customer Agreement template.
 
 ## PARAMETERS
 
-### -AgreementTemplateId
+### -TemplateId
 The unique identifier of the agreement type.
 
 ```yaml
