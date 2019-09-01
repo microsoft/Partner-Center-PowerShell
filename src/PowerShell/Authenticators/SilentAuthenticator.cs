@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Factories;
+    using Extensions;
     using Identity.Client;
 
     /// <summary>
@@ -22,11 +22,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                parameters.ApplicationId,
-                null,
-                parameters.TenantId);
+            IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
             IEnumerable<IAccount> accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 

@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using Factories;
+    using Extensions;
     using Identity.Client;
 
     /// <summary>
@@ -20,29 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            IConfidentialClientApplication app;
-            ServicePrincipalParameters servicePrincipalParameters = parameters as ServicePrincipalParameters;
-
-            if (string.IsNullOrEmpty(servicePrincipalParameters.Secret))
-            {
-                app = SharedTokenCacheClientFactory.CreateConfidentialClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    null,
-                    GetCertificate(servicePrincipalParameters.CertificateThumbprint),
-                    null,
-                    parameters.TenantId);
-            }
-            else
-            {
-                app = SharedTokenCacheClientFactory.CreateConfidentialClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    servicePrincipalParameters.Secret,
-                    null,
-                    null,
-                    parameters.TenantId);
-            }
+            IConfidentialClientApplication app = GetClient(parameters.Account, parameters.Environment).AsConfidentialClient();
 
             return app.AcquireTokenForClient(parameters.Scopes).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }

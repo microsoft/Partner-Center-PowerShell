@@ -14,6 +14,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string AccessToken = "AccessToken";
 
         /// <summary>
+        /// Name of the application identifier extended property0.
+        /// </summary>
+        public const string ApplicationId = "ApplicationId";
+
+        /// <summary>
         /// Name of the certificate thumpbrint extended property.
         /// </summary>
         public const string CertificateThumbprint = "CertificateThumbprint";

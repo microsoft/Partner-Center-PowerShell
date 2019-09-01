@@ -116,7 +116,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             if (tokenCache == null)
             {
-                IPublicClientApplication client = CreatePublicClient(clientId);
+                IPublicClientApplication client = CreatePublicClient(null, clientId);
 
                 tokenCache = client.UserTokenCache;
             }

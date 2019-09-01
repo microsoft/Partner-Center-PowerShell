@@ -38,9 +38,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
-                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) },
-                PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Tenant));
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) });
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),

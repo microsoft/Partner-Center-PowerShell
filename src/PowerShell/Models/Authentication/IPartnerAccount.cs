@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// Get or sets the account identifier.
         /// </summary>
-        string Id { get; set; }
+        string ObjectId { get; set; }
 
         /// <summary>
         /// Gets or sets the account type.

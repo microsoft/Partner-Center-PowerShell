@@ -9,7 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Net.Sockets;
     using System.Threading;
     using System.Web;
-    using Factories;
+    using Extensions;
     using Identity.Client;
     using Identity.Client.Extensibility;
     using Models;
@@ -31,9 +31,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
             AuthenticationResult authResult;
-            InteractiveParameters interactiveParameters;
+            IClientApplicationBase app;
             TcpListener listener = null;
-            string replyUrl = string.Empty;
+            string redirectUri = null;
 
             int port = 8399;
 
@@ -43,7 +43,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 {
                     listener = new TcpListener(IPAddress.Loopback, port);
                     listener.Start();
-                    replyUrl = string.Format("http://localhost:{0}/", port);
+                    redirectUri = string.Format("http://localhost:{0}/", port);
                     listener.Stop();
                     break;
                 }
@@ -54,43 +54,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
             }
 
-            interactiveParameters = parameters as InteractiveParameters;
+            app = GetClient(parameters.Account, parameters.Environment, redirectUri);
 
-            if (string.IsNullOrEmpty(interactiveParameters.Secret))
+            if (app is IConfidentialClientApplication)
             {
-                IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    replyUrl,
-                    parameters.TenantId);
-
-                authResult = app.AcquireTokenInteractive(parameters.Scopes)
-                    .WithCustomWebUi(new CustomWebUi())
-                    .WithPrompt(Prompt.ForceLogin)
-                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else
-            {
-                IConfidentialClientApplication app = SharedTokenCacheClientFactory.CreateConfidentialClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    interactiveParameters.Secret,
-                    null,
-                    replyUrl,
-                    parameters.TenantId);
-
                 ICustomWebUi customWebUi = new CustomWebUi();
 
                 Uri authCodeUrl = customWebUi.AcquireAuthorizationCodeAsync(
-                    app.GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult(),
-                    new Uri(replyUrl),
+                    app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult(),
+                    new Uri(redirectUri),
                     CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
 
                 NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
 
-                authResult = app.AcquireTokenByAuthorizationCode(
+                authResult = app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
                     parameters.Scopes,
                     queryStringParameters["code"]).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            else
+            {
+                authResult = app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
+                    .WithCustomWebUi(new CustomWebUi())
+                    .WithPrompt(Prompt.ForceLogin)
+                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             return authResult;

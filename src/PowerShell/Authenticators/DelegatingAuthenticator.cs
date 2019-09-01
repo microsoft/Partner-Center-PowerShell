@@ -4,7 +4,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Security.Cryptography.X509Certificates;
+    using Extensions;
     using Identity.Client;
+    using Microsoft.Store.PartnerCenter.PowerShell.Factories;
+    using Models.Authentication;
 
     /// <summary>
     /// Provides a chain of responsibility pattern for authenticators.
@@ -32,7 +35,46 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns><c>true</c> if this authenticator can apply; otherwise <c>false</c>.</returns>
         public abstract bool CanAuthenticate(AuthenticationParameters parameters);
 
-        public X509Certificate2 GetCertificate(string thumbprint)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="environment"></param>
+        /// <param name="redirectUri"></param>
+        /// <returns></returns>
+        public IClientApplicationBase GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
+        {
+            IClientApplicationBase app;
+            string tenant = account.GetProperty(PartnerAccountPropertyType.Tenant);
+
+            if (account.IsPropertySet(PartnerAccountPropertyType.CertificateThumbprint) || account.IsPropertySet(PartnerAccountPropertyType.ServicePrincipalSecret))
+            {
+                app = SharedTokenCacheClientFactory.CreateConfidentialClient(
+                    $"{environment.ActiveDirectoryAuthority}{tenant}",
+                    account.GetProperty(PartnerAccountPropertyType.ApplicationId),
+                    account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
+                    GetCertificate(account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint)),
+                    redirectUri,
+                    tenant);
+            }
+            else
+            {
+                app = SharedTokenCacheClientFactory.CreatePublicClient(
+                    $"{environment.ActiveDirectoryAuthority}{tenant}",
+                    account.GetProperty(PartnerAccountPropertyType.ApplicationId),
+                    redirectUri,
+                    tenant);
+            }
+
+            return app;
+        }
+
+        /// <summary>
+        /// Gets the specified certificate.
+        /// </summary>
+        /// <param name="thumbprint">Thumbprint of the certificate to be located.</param>
+        /// <returns>An instance of the <see cref="X509Certificate2"/> class that represents the certificate.</returns>
+        private X509Certificate2 GetCertificate(string thumbprint)
         {
             if (string.IsNullOrEmpty(thumbprint))
             {
@@ -53,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </summary>
         /// <param name="thumbprint">Thumbprint of the certificate to be located.</param>
         /// <param name="storeLocation">The location of the X.509 certifcate store.</param>
-        /// <returns>An instance of the <see cref="X509Certificate2"/> class that represents the certificate.</returns>
+        /// <returns><c>true</c> if the certificate was found; otherwise <c>false</c>.</returns>
         private bool FindCertificateByThumbprint(string thumbprint, StoreLocation storeLocation, out X509Certificate2 certificate)
         {
             X509Store store = null;

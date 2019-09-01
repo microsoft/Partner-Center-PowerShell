@@ -4,8 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using Extensions;
-    using Factories;
     using Identity.Client;
+    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
 
     /// <summary>
     /// Provides the ability to authenticate using a refresh token.
@@ -21,34 +21,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            RefreshTokenParameters refreshTokenParameters = parameters as RefreshTokenParameters;
+            IClientApplicationBase app = GetClient(parameters.Account, parameters.Environment);
+            IAccount account = app.GetAccountAsync(parameters.Account.Identifier).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            if (string.IsNullOrEmpty(refreshTokenParameters.Secret))
+            if (account != null)
             {
-                IConfidentialClientApplication app = SharedTokenCacheClientFactory.CreateConfidentialClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    refreshTokenParameters.Secret,
-                    null,
-                    null,
-                    parameters.TenantId);
-
-                return app.AcquireTokenByRefreshToken(
-                    parameters.Scopes,
-                    refreshTokenParameters.RefreshToken).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                return app.AcquireTokenSilent(parameters.Scopes, account).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            else
-            {
-                IPublicClientApplication app = SharedTokenCacheClientFactory.CreatePublicClient(
-                    $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                    parameters.ApplicationId,
-                    null,
-                    parameters.TenantId);
 
-                return app.AcquireTokenByRefreshToken(
-                    parameters.Scopes,
-                    refreshTokenParameters.RefreshToken).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+            return app.AsRefreshTokenClient().AcquireTokenByRefreshToken(
+                parameters.Scopes,
+                parameters.Account.GetProperty(PartnerAccountPropertyType.RefreshToken)).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         /// <summary>

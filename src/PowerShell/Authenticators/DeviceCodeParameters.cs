@@ -14,8 +14,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceCodeParameters" /> class.
         /// </summary>
-        public DeviceCodeParameters(string applicationId, PartnerEnvironment environment, IEnumerable<string> scopes, string tenantId)
-            : base(applicationId, environment, scopes, tenantId)
+        public DeviceCodeParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
+            : base(account, environment, scopes)
         {
         }
     }

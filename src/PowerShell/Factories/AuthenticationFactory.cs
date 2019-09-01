@@ -14,22 +14,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     internal class AuthenticationFactory : IAuthenticationFactory
     {
-        private const string ApplicationId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
-
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
 
-            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, secret, scopes, tenantId), out authResult))
+            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes), out authResult))
             {
                 if (authResult != null)
                 {
                     if (authResult.Account?.HomeAccountId != null)
                     {
-                        account.Id = authResult.Account.HomeAccountId.ObjectId;
+                        account.Identifier = authResult.Account.HomeAccountId.Identifier;
+                        account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
                     }
 
                     break;
@@ -41,52 +40,42 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return authResult ?? null;
         }
 
-        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, string secret, IEnumerable<string> scopes, string tenantId)
+        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
         {
+            if (account.IsPropertySet(PartnerAccountPropertyType.AccessToken))
+            {
+                return new AccessTokenParameters(
+                    account,
+                    environment,
+                    scopes);
+            }
             if (account.IsPropertySet("UseAuthCode"))
             {
-                return new InteractiveParameters(
-                    account.Id,
-                    environment,
-                    secret,
-                    scopes,
-                    tenantId,
-                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
+                return new InteractiveParameters(account, environment, scopes);
             }
             else if (account.IsPropertySet(PartnerAccountPropertyType.RefreshToken))
             {
-                return new RefreshTokenParameters(
-                    account.Id,
-                    environment,
-                    account.GetProperty(PartnerAccountPropertyType.RefreshToken),
-                    secret,
-                    scopes,
-                    tenantId,
-                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
+                return new RefreshTokenParameters(account, environment, scopes);
             }
             else if (account.Type == AccountType.User)
             {
-                if (!string.IsNullOrEmpty(account.Id))
+                if (!string.IsNullOrEmpty(account.ObjectId))
                 {
-                    return new SilentParameters(ApplicationId, environment, scopes, tenantId, account.Id);
+                    return new SilentParameters(account, environment, scopes);
                 }
                 else if (account.IsPropertySet("UseDeviceAuth"))
                 {
-                    return new DeviceCodeParameters(ApplicationId, environment, scopes, tenantId);
+                    return new DeviceCodeParameters(
+                        account,
+                        environment,
+                        scopes);
                 }
 
-                return new InteractiveParameters(ApplicationId, environment, null, scopes, tenantId, null);
+                return new InteractiveParameters(account, environment, scopes);
             }
-            else if (account.Type == AccountType.ServicePrincipal ||
-                     account.Type == AccountType.Certificate)
+            else if (account.Type == AccountType.ServicePrincipal || account.Type == AccountType.Certificate)
             {
-                return new ServicePrincipalParameters(
-                    account.Id,
-                    environment,
-                    secret,
-                    scopes,
-                    tenantId,
-                    account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint));
+                return new ServicePrincipalParameters(account, environment, scopes);
             }
 
             return null;

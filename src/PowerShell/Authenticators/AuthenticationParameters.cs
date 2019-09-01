@@ -14,18 +14,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationParameters" /> class.
         /// </summary>
-        protected AuthenticationParameters(string applicationId, PartnerEnvironment environment, IEnumerable<string> scopes, string tenantId)
+        protected AuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
         {
-            ApplicationId = applicationId;
+            Account = account;
             Environment = environment;
             Scopes = scopes;
-            TenantId = tenantId;
         }
 
         /// <summary>
-        /// Gets the application identifier.
+        /// Gets the partner account information.
         /// </summary>
-        public string ApplicationId { get; }
+        public PartnerAccount Account { get; }
 
         /// <summary>
         /// Gets the partner environment information.
@@ -36,10 +35,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Gets the scopes.
         /// </summary>
         public IEnumerable<string> Scopes { get; }
-
-        /// <summary>
-        /// Gets the tenant identifier.
-        /// </summary>
-        public string TenantId { get; }
     }
 }

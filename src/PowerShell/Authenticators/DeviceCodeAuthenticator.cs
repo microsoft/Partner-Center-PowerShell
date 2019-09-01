@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
     using System.Threading.Tasks;
-    using Factories;
+    using Extensions;
     using Identity.Client;
     using Models;
     using Models.Authentication;
@@ -24,13 +24,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
         {
-            IPublicClientApplication client = SharedTokenCacheClientFactory.CreatePublicClient(
-                $"{parameters.Environment.ActiveDirectoryAuthority}{parameters.TenantId}",
-                parameters.ApplicationId,
-                null,
-                parameters.TenantId);
+            IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
-            return client.AcquireTokenWithDeviceCode(
+            return app.AcquireTokenWithDeviceCode(
                 parameters.Scopes, deviceCodeResult =>
                 {
                     WriteWarning(deviceCodeResult?.Message);

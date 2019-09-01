@@ -128,13 +128,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.ExtendedProperties[PartnerAccountPropertyType.AccessToken] = AccessToken;
+                account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
                 account.Type = AccountType.AccessToken;
             }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.Id = Credential.UserName;
-                account.ExtendedProperties[PartnerAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
+                account.ObjectId = Credential.UserName;
+                account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
                 account.Type = AccountType.ServicePrincipal;
             }
             else
@@ -162,9 +162,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,
                 PartnerEnvironment.PublicEnvironments[Environment],
-                account.ExtendedProperties[PartnerAccountPropertyType.ServicePrincipalSecret],
-                Scopes,
-                account.GetProperty(PartnerAccountPropertyType.Tenant));
+                Scopes);
 
             byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();
 
