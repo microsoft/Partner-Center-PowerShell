@@ -41,7 +41,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 null,
                 jwt.ValidTo,
                 jwt.ValidTo,
-                parameters.Account.GetProperty(PartnerAccountPropertyType.Tenant),
+                parameters.Account.Tenant,
                 null,
                 null,
                 parameters.Scopes);

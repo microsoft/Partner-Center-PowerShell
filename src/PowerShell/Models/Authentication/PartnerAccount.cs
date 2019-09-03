@@ -13,19 +13,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     public class PartnerAccount : IPartnerAccount
     {
         /// <summary>
-        /// Gets or sets the extended properties for the account.
+        /// Gets the extended properties.
         /// </summary>
         public IDictionary<string, string> ExtendedProperties { get; } = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets or sets the unique identifier for the account.
+        /// Gets or sets the unique identifier.
         /// </summary>
         public string Identifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// Get or sets the account object identifier.
         /// </summary>
         public string ObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name identifier or name.
+        /// </summary>
+        public string Tenant { get; set; }
 
         /// <summary>
         /// Gets or sets the account type.

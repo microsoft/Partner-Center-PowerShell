@@ -46,25 +46,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public IClientApplicationBase GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
         {
             IClientApplicationBase app;
-            string tenant = account.GetProperty(PartnerAccountPropertyType.Tenant);
 
             if (account.IsPropertySet(PartnerAccountPropertyType.CertificateThumbprint) || account.IsPropertySet(PartnerAccountPropertyType.ServicePrincipalSecret))
             {
                 app = SharedTokenCacheClientFactory.CreateConfidentialClient(
-                    $"{environment.ActiveDirectoryAuthority}{tenant}",
+                    $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
                     GetCertificate(account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint)),
                     redirectUri,
-                    tenant);
+                    account.Tenant);
             }
             else
             {
                 app = SharedTokenCacheClientFactory.CreatePublicClient(
-                    $"{environment.ActiveDirectoryAuthority}{tenant}",
+                    $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     redirectUri,
-                    tenant);
+                    account.Tenant);
             }
 
             return app;

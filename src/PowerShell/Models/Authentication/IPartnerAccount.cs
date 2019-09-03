@@ -9,9 +9,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     public interface IPartnerAccount : IExtensibleModel
     {
         /// <summary>
+        /// Gets or sets the unique identifier.
+        /// </summary>
+        string Identifier { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// Get or sets the account identifier.
         /// </summary>
         string ObjectId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name identifier or name.
+        /// </summary>
+        string Tenant { get; set; }
 
         /// <summary>
         /// Gets or sets the account type.

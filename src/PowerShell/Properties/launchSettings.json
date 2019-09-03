@@ -3,12 +3,12 @@
     "PowerShell": {
       "commandName": "Executable",
       "executablePath": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-      "commandLineArgs": "-NoProfile -NoExit -Command \"Import-Module .\\PartnerCenter.psm1\""
+      "commandLineArgs": "-NoProfile -NoExit -Command \"Import-Module .\\PartnerCenter.psd1\""
     },
     "PowerShell Core": {
       "commandName": "Executable",
       "executablePath": "C:\\Program Files\\PowerShell\\6\\pwsh.exe",
-      "commandLineArgs": "-NoProfile -NoExit -Command \"Import-Module .\\PartnerCenter.psm1\""
+      "commandLineArgs": "-NoProfile -NoExit -Command \"Import-Module .\\PartnerCenter.psd1\""
     }
   }
 }

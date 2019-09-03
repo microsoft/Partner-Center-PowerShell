@@ -1,7 +1,7 @@
 ﻿<Configuration>
   <ViewDefinitions>
     <View>
-      <Name>Microsoft.Store.PartnerCenter.PowerShell.Authentication.PartnerContext</Name>
+      <Name>Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication.PartnerContext</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication.PartnerContext</TypeName>
       </ViewSelectedBy>
@@ -34,15 +34,15 @@
               </TableColumnItem>
               <TableColumnItem>
                 <Alignment>Left</Alignment>
-                <PropertyName>$_.Account.Id</PropertyName>
+                <ScriptBlock>$_.Account.ObjectId</ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
                 <Alignment>Left</Alignment>
-                <PropertyName>Environment</PropertyName>
+                <ScriptBlock>$_.Environment.EnvironmentName</ScriptBlock>
               </TableColumnItem>
               <TableColumnItem>
                 <Alignment>Left</Alignment>
-                <ScriptBlock>$_.Tenant.ToString()</ScriptBlock>
+                <ScriptBlock>$_.Account.Tenant</ScriptBlock>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>

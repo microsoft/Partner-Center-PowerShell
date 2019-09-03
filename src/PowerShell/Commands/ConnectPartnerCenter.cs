@@ -205,7 +205,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     $"{environment.AzureAdGraphEndpoint}/.default" :
                     $"{environment.PartnerCenterEndpoint}/user_impersonation");
 
-            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(Tenant) ? "common" : Tenant);
+            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
 
             PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,

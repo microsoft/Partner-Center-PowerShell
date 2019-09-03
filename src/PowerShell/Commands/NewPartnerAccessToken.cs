@@ -157,7 +157,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
             }
 
-            account.SetProperty(PartnerAccountPropertyType.Tenant, string.IsNullOrEmpty(Tenant) ? "common" : Tenant);
+            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
 
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,

@@ -23,6 +23,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public string AzureAdGraphEndpoint { get; set; }
 
         /// <summary>
+        /// Gets or sets the partner environment name.
+        /// </summary>
+        public EnvironmentName EnvironmentName { get; set; }
+
+        /// <summary>
         /// Gets the Partner Center endpoint.
         /// </summary>
         public string PartnerCenterEndpoint { get; set; }
@@ -44,6 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphEndpoint,
+                    EnvironmentName = EnvironmentName.AzureCloud,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
                 },
 
@@ -51,6 +57,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.ChinaActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.ChinaGraphEndpoint,
+                    EnvironmentName = EnvironmentName.AzureChinaCloud,
                     PartnerCenterEndpoint = EnvironmentConstants.ChinaPartnerCenterEndpoint,
                 },
 
@@ -58,6 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.GermanActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.GermanGraphEndpoint,
+                    EnvironmentName = EnvironmentName.AzureGermanCloud,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
                 },
 
@@ -65,6 +73,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.AzureActiveDirectoryPpeEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.AzureGraphPpeEndpoint,
+                    EnvironmentName = EnvironmentName.AzurePPE,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterPpeEndpoint,
                 },
 
@@ -72,6 +81,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     ActiveDirectoryAuthority = EnvironmentConstants.USGovernmentActiveDirectoryEndpoint,
                     AzureAdGraphEndpoint = EnvironmentConstants.USGovernmentGraphEndpoint,
+                    EnvironmentName = EnvironmentName.AzureUSGovernment,
                     PartnerCenterEndpoint = EnvironmentConstants.PartnerCenterEndpoint,
                 }
             };

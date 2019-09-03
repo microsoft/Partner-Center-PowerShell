@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
     public interface IExtensibleModel
     {
         /// <summary>
-        /// Additional properties associated with the model.
+        /// Gets the extended properties.
         /// </summary>
         IDictionary<string, string> ExtendedProperties { get; }
     }
