@@ -13,6 +13,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Threading;
     using System.Threading.Tasks;
     using Identity.Client.Extensibility;
+    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
+    using Models;
 
     /// <summary>
     /// Provide a custom Web UI for public client applications to sign-in users and have them consent part of the Authorization code flow.
@@ -172,7 +174,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            Console.WriteLine(message);
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeEvent))
+            {
+                writeEvent(this, new StreamEventArgs() { Message = message });
+            }
         }
     }
 }

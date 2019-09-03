@@ -3,9 +3,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
+    using Models.Authentication;
 
     /// <summary>
     /// Provides the ability to authenticate using a refresh token.
@@ -19,19 +20,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             IClientApplicationBase app = GetClient(parameters.Account, parameters.Environment);
-            IAccount account = app.GetAccountAsync(parameters.Account.Identifier).ConfigureAwait(false).GetAwaiter().GetResult();
+            IAccount account = await app.GetAccountAsync(parameters.Account.Identifier).ConfigureAwait(false);
 
             if (account != null)
             {
-                return app.AcquireTokenSilent(parameters.Scopes, account).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                return await app.AcquireTokenSilent(parameters.Scopes, account).ExecuteAsync().ConfigureAwait(false);
             }
 
-            return app.AsRefreshTokenClient().AcquireTokenByRefreshToken(
+            return await app.AsRefreshTokenClient().AcquireTokenByRefreshToken(
                 parameters.Scopes,
-                parameters.Account.GetProperty(PartnerAccountPropertyType.RefreshToken)).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                parameters.Account.GetProperty(PartnerAccountPropertyType.RefreshToken)).ExecuteAsync().ConfigureAwait(false);
         }
 
         /// <summary>

@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="$(MSBuildThisFileDirectory)..\..\repo.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell</RootNamespace>
     <Authors>Microsoft</Authors>
     <Company>Microsoft Corporation</Company>
-    <Product>Microsoft Partner Center PowerShell</Product>
+    <Product>Partner Center PowerShell</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright © 2019</Copyright>
     <PackageLicenseUrl>https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/LICENSE</PackageLicenseUrl>
@@ -14,13 +16,10 @@
     <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
+    <PublishDir>$(OutputPath)</PublishDir>
     <Version>2.0.1908.1-preview</Version>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,10 +30,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.2-preview" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="2.0.1908.18875" />
-    <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.0-preview" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.5.0" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="2.0.1909.24553" />
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +53,9 @@
 
   <ItemGroup>
     <None Update="Microsoft.Store.PartnerCenter.PowerShell.format.ps1xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="PartnerCenter.psm1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

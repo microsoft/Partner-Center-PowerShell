@@ -4,6 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
@@ -22,16 +24,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            return app.AcquireTokenWithDeviceCode(
-                parameters.Scopes, deviceCodeResult =>
-                {
-                    WriteWarning(deviceCodeResult?.Message);
-                    return Task.CompletedTask;
-                }).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            return GetResponseAsync(app, parameters.Scopes, cancellationTokenSource.Token);
+        }
+
+        private async Task<AuthenticationResult> GetResponseAsync(IPublicClientApplication app, IEnumerable<string> scopes, CancellationToken cancellationToken)
+        {
+            return await app.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
+            {
+                WriteWarning(deviceCodeResult.Message);
+                return Task.CompletedTask;
+            }).ExecuteAsync(cancellationToken);
+
         }
 
         /// <summary>
@@ -50,9 +58,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeEvent))
             {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+                writeEvent(this, new StreamEventArgs() { Message = message });
             }
         }
     }

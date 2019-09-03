@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
 
@@ -18,11 +19,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             IConfidentialClientApplication app = GetClient(parameters.Account, parameters.Environment).AsConfidentialClient();
 
-            return app.AcquireTokenForClient(parameters.Scopes).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            return await app.AcquireTokenForClient(parameters.Scopes).ExecuteAsync().ConfigureAwait(false);
         }
 
         /// <summary>

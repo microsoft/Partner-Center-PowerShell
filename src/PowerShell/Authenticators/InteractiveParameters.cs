@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractiveParameters" /> class.
         /// </summary>
-        public InteractiveParameters(PartnerAccount account, PartnerEnvironment environment,  IEnumerable<string> scopes)
+        public InteractiveParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
             : base(account, environment, scopes)
         {
         }

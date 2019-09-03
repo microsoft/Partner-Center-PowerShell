@@ -81,6 +81,7 @@
                         'Get-PartnerAuditRecord',
                         'Get-PartnerAzureRateCard',
                         'Get-PartnerBillingProfile',
+                        'Get-PartnerContext',
                         'Get-PartnerCountryValidation',
                         'Get-PartnerCustomer',
                         'Get-PartnerCustomerAgreement',

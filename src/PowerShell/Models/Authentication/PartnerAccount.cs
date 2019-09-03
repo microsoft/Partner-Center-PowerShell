@@ -31,6 +31,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Gets or sets the account type.
         /// </summary>
         public AccountType Type { get; set; }
-
     }
 }

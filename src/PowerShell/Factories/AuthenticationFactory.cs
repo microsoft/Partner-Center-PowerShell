@@ -3,7 +3,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Authenticators;
     using Extensions;
     using Identity.Client;
@@ -20,21 +22,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
+            int retries = 5;
 
-            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes), out authResult))
+            while (retries-- > 0)
             {
-                if (authResult != null)
+                try
                 {
-                    if (authResult.Account?.HomeAccountId != null)
+                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes), out Task<AuthenticationResult> result))
                     {
-                        account.Identifier = authResult.Account.HomeAccountId.Identifier;
-                        account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
-                    }
+                        authResult = result.ConfigureAwait(true).GetAwaiter().GetResult();
 
-                    break;
+                        if (authResult != null)
+                        {
+                            if (authResult.Account?.HomeAccountId != null)
+                            {
+                                account.Identifier = authResult.Account.HomeAccountId.Identifier;
+                                account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
+                            }
+
+                            break;
+                        }
+
+                        processAuthenticator = processAuthenticator.Next;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    continue;
                 }
 
-                processAuthenticator = processAuthenticator.Next;
+                break;
             }
 
             return authResult ?? null;
@@ -44,12 +61,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             if (account.IsPropertySet(PartnerAccountPropertyType.AccessToken))
             {
-                return new AccessTokenParameters(
-                    account,
-                    environment,
-                    scopes);
+                return new AccessTokenParameters(account, environment, scopes);
             }
-            if (account.IsPropertySet("UseAuthCode"))
+            else if (account.IsPropertySet("UseAuthCode"))
             {
                 return new InteractiveParameters(account, environment, scopes);
             }
@@ -65,10 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 }
                 else if (account.IsPropertySet("UseDeviceAuth"))
                 {
-                    return new DeviceCodeParameters(
-                        account,
-                        environment,
-                        scopes);
+                    return new DeviceCodeParameters(account, environment, scopes);
                 }
 
                 return new InteractiveParameters(account, environment, scopes);

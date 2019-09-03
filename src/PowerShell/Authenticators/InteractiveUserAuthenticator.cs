@@ -8,11 +8,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Web;
     using Extensions;
     using Identity.Client;
     using Identity.Client.Extensibility;
-    using Models;
     using Models.Authentication;
     using Network;
 
@@ -28,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             AuthenticationResult authResult;
             IClientApplicationBase app;
@@ -49,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    WriteWarning(string.Format("Port {0} is taken with exception '{1}'; trying to connect to the next port.", port, ex.Message));
+                    WriteWarning($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
                     listener?.Stop();
                 }
             }
@@ -60,23 +60,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             {
                 ICustomWebUi customWebUi = new CustomWebUi();
 
-                Uri authCodeUrl = customWebUi.AcquireAuthorizationCodeAsync(
-                    app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult(),
+                Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
+                    await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false),
                     new Uri(redirectUri),
-                    CancellationToken.None).ConfigureAwait(false).GetAwaiter().GetResult();
+                    CancellationToken.None).ConfigureAwait(false);
 
                 NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
 
-                authResult = app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
+                authResult = await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
                     parameters.Scopes,
-                    queryStringParameters["code"]).ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    queryStringParameters["code"]).ExecuteAsync().ConfigureAwait(false);
             }
             else
             {
-                authResult = app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
+                authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
                     .WithCustomWebUi(new CustomWebUi())
                     .WithPrompt(Prompt.ForceLogin)
-                    .ExecuteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    .ExecuteAsync().ConfigureAwait(false);
             }
 
             return authResult;
@@ -98,9 +98,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out Action<string> writeWarningAction))
             {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+                writeWarningAction(message);
             }
         }
     }

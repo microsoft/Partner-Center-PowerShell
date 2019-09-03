@@ -4,12 +4,11 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
-    using System.Globalization;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Linq;
+    using System.Threading.Tasks;
     using Exceptions;
     using Extensions;
     using Identity.Client;
+    using IdentityModel.JsonWebTokens;
     using Models.Authentication;
 
     /// <summary>
@@ -24,31 +23,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             AccessTokenParameters accessTokenParameters = parameters as AccessTokenParameters;
+            JsonWebToken jwt = new JsonWebToken(accessTokenParameters.AccessToken);
 
-            JwtSecurityToken token;
-            JwtSecurityTokenHandler tokenHandler;
-            System.Security.Claims.Claim claim;
-
-            tokenHandler = new JwtSecurityTokenHandler();
-            token = tokenHandler.ReadJwtToken(accessTokenParameters.AccessToken);
-
-            claim = token.Claims.SingleOrDefault(c => c.Type.Equals("exp", StringComparison.InvariantCultureIgnoreCase));
-            DateTimeOffset expiration = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(claim.Value, CultureInfo.InvariantCulture));
-
-            if (DateTimeOffset.UtcNow > expiration.UtcDateTime)
+            if (DateTimeOffset.UtcNow > jwt.ValidTo)
             {
                 throw new PartnerPSException("Your access token has expired. Please generate a new access token and re-connect.");
             }
+
+            await Task.CompletedTask;
 
             return new AuthenticationResult(
                 accessTokenParameters.AccessToken,
                 false,
                 null,
-                expiration,
-                expiration,
+                jwt.ValidTo,
+                jwt.ValidTo,
                 parameters.Account.GetProperty(PartnerAccountPropertyType.Tenant),
                 null,
                 null,

@@ -4,9 +4,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Security.Cryptography.X509Certificates;
+    using System.Threading.Tasks;
     using Extensions;
+    using Factories;
     using Identity.Client;
-    using Microsoft.Store.PartnerCenter.PowerShell.Factories;
     using Models.Authentication;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public abstract AuthenticationResult Authenticate(AuthenticationParameters parameters);
+        public abstract Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters);
 
         /// <summary>
         /// Determine if this authenticator can apply to the given authentication parameters.
@@ -116,9 +117,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
             finally
             {
-                col = null;
                 store?.Close();
-                store = null;
             }
         }
 
@@ -128,13 +127,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="parameters">The complex object containing authentication specific information.</param>
         /// <param name="token">The token based authentication information.</param>
         /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-        public bool TryAuthenticate(AuthenticationParameters parameters, out AuthenticationResult token)
+        public bool TryAuthenticate(AuthenticationParameters parameters, out Task<AuthenticationResult> token)
         {
             token = null;
 
             if (CanAuthenticate(parameters))
             {
-                token = Authenticate(parameters);
+                token = AuthenticateAsync(parameters);
                 return true;
             }
 

@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PartnerContext))]
-    public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
+    public class ConnectPartnerCenter : ContextPSCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -181,7 +181,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.ObjectId = Credential.UserName;
+                account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
                 account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
                 account.Type = AccountType.ServicePrincipal;
             }

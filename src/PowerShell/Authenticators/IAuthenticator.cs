@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System.Threading.Tasks;
     using Identity.Client;
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        AuthenticationResult Authenticate(AuthenticationParameters parameters);
+        Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters);
 
         /// <summary>
         /// Determine if this authenticator can apply to the given authentication parameters.
@@ -37,6 +38,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="parameters">The complex object containing authentication specific information.</param>
         /// <param name="token">The token based authentication information.</param>
         /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-        bool TryAuthenticate(AuthenticationParameters parameters, out AuthenticationResult token);
+        bool TryAuthenticate(AuthenticationParameters parameters, out Task<AuthenticationResult> token);
     }
 }

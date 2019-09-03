@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
 
@@ -20,19 +21,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override AuthenticationResult Authenticate(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
-            IEnumerable<IAccount> accounts = app.GetAccountsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            IEnumerable<IAccount> accounts = await app.GetAccountsAsync().ConfigureAwait(false);
 
-            AuthenticationResult authResult = app.AcquireTokenSilent(
+            AuthenticationResult authResult = await app.AcquireTokenSilent(
                 parameters.Scopes,
                 accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))
                 .ExecuteAsync()
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
+                .ConfigureAwait(false);
 
             return authResult;
         }

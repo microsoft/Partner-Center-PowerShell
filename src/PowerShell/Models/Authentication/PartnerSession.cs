@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Threading;
     using Factories;
 
     /// <summary>
@@ -19,15 +20,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         private static readonly Lazy<PartnerSession> partnerSession = new Lazy<PartnerSession>();
 
         /// <summary>
+        /// Provides the ability manage access to resources.
+        /// </summary>
+        private static readonly ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
+        /// <summary>
         /// Provides a registry for various components.
         /// </summary>
         private readonly IDictionary<string, object> componentRegistry = new ConcurrentDictionary<string, object>();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PartnerSession" /> class.
-        /// </summary>
-        public PartnerSession()
-        { }
 
         /// <summary>
         /// Gets or sets an instance of the authentication factory.
@@ -47,45 +47,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// Gets an instance of the <see cref="PartnerSession" /> class.
         /// </summary>
-        public static PartnerSession Instance => partnerSession.Value;
+        public static PartnerSession Instance
+        {
+            get
+            {
+                sessionLock.EnterReadLock();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="componentName"></param>
-        /// <param name="componentInitializer"></param>
+                try
+                {
+                    return partnerSession.Value;
+                }
+                finally
+                {
+                    sessionLock.ExitReadLock();
+                }
+            }
+        }
+
         public void RegisterComponent<T>(string componentName, Func<T> componentInitializer) where T : class
         {
             RegisterComponent(componentName, componentInitializer, false); ;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="componentName"></param>
-        /// <param name="componentInitializer"></param>
-        /// <param name="overwrite"></param>
         public void RegisterComponent<T>(string componentName, Func<T> componentInitializer, bool overwrite) where T : class
         {
-            ChangeRegistry(
-                () =>
-                {
-                    if (!componentRegistry.ContainsKey(componentName) || overwrite)
-                    {
-                        componentRegistry[componentName] = componentInitializer();
-                    }
-                });
+            if (!componentRegistry.ContainsKey(componentName) || overwrite)
+            {
+                componentRegistry[componentName] = componentInitializer();
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="componentName"></param>
-        /// <param name="component"></param>
-        /// <returns></returns>
         public bool TryGetComponent<T>(string componentName, out T component) where T : class
         {
             component = null;
@@ -96,11 +87,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
             }
 
             return component != null;
-        }
-
-        private void ChangeRegistry(Action changeAction)
-        {
-            changeAction();
         }
     }
 }
