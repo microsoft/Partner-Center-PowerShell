@@ -58,9 +58,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeEvent))
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
             {
-                writeEvent(this, new StreamEventArgs() { Message = message });
+                writeWarningEvent(this, new StreamEventArgs() { Message = message });
             }
         }
     }

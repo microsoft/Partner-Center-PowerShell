@@ -7,7 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Exceptions;
     using Extensions;
-    using Microsoft.Store.PartnerCenter.Exceptions;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Users;
 

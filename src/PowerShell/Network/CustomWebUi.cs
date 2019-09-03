@@ -13,8 +13,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Threading;
     using System.Threading.Tasks;
     using Identity.Client.Extensibility;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
     using Models;
+    using Models.Authentication;
 
     /// <summary>
     /// Provide a custom Web UI for public client applications to sign-in users and have them consent part of the Authorization code flow.

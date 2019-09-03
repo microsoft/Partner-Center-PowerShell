@@ -9,8 +9,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Exceptions;
     using Extensions;
-    using Microsoft.Store.PartnerCenter.Exceptions;
     using Models.Users;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Users;
     using Properties;
 

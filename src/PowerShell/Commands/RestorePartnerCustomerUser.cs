@@ -10,8 +10,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Extensions;
-    using Microsoft.Store.PartnerCenter.Exceptions;
     using PartnerCenter.Enumerators;
+    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;

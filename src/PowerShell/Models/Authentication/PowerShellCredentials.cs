@@ -6,7 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     using System;
     using System.Threading.Tasks;
     using Extensions;
-    using Microsoft.Identity.Client;
+    using Identity.Client;
     using RequestContext;
 
     /// <summary>

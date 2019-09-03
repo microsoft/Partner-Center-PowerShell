@@ -13,6 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Extensions;
     using Identity.Client;
     using Identity.Client.Extensibility;
+    using Models;
     using Models.Authentication;
     using Network;
 
@@ -98,9 +99,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="message">The message that describes the warning.</param>
         private void WriteWarning(string message)
         {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out Action<string> writeWarningAction))
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
             {
-                writeWarningAction(message);
+                writeWarningEvent(this, new StreamEventArgs() { Message = message });
             }
         }
     }
