@@ -8,13 +8,9 @@
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
-            <Width>40</Width>
-            <Alignment>Left</Alignment>
-            <Label>Name</Label>
-          </TableColumnHeader>
-          <TableColumnHeader>
             <Alignment>Left</Alignment>
             <Label>Account</Label>
+            <Width>40</Width>
           </TableColumnHeader>
           <TableColumnHeader>
             <Alignment>Left</Alignment>
@@ -28,10 +24,6 @@
         <TableRowEntries>
           <TableRowEntry>
             <TableColumnItems>
-              <TableColumnItem>
-                <Alignment>Left</Alignment>
-                <PropertyName>Name</PropertyName>
-              </TableColumnItem>
               <TableColumnItem>
                 <Alignment>Left</Alignment>
                 <ScriptBlock>$_.Account.ObjectId</ScriptBlock>

@@ -14,11 +14,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         string Identifier { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Get or sets the account identifier.
         /// </summary>
         string ObjectId { get; set; }
