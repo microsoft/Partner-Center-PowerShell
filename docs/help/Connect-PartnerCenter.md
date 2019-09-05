@@ -16,26 +16,33 @@ Connect to Partner Center with an authenticated account for use with partner cmd
 
 ### User (Default)
 ```powershell
-Connect-PartnerCenter [-EnforceMFA] [-Environment <EnvironmentName>] [-Tenant <String>]
- [-UseDeviceAuthentication] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter [-Environment <EnvironmentName>] [-Tenant <String>] [-UseDeviceAuthentication] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### AccessToken
 ```powershell
-Connect-PartnerCenter -AccessToken <String> [-Credential <PSCredential>] [-EnforceMFA]
- [-Environment <EnvironmentName>] [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Environment <EnvironmentName>]
+ [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### RefreshToken
+```powershell
+Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] -RefreshToken <String> [-ServicePrincipal] [-Tenant <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> -CertificateThumbprint <String> [-EnforceMFA]
- [-Environment <EnvironmentName>] [-ServicePrincipal] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter [-CertificateThumbprint <String>] [-Environment <EnvironmentName>] [-Tenant <String>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
-Connect-PartnerCenter -Credential <PSCredential> [-EnforceMFA] [-Environment <EnvironmentName>]
- [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter [-Credential <PSCredential>] [-Environment <EnvironmentName>] [-ServicePrincipal]
+ [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -93,7 +100,7 @@ SPN
 
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipalCertificate
+Parameter Sets: AccessToken, RefreshToken
 Aliases:
 
 Required: True
@@ -108,10 +115,10 @@ Certificate Hash (Thumbprint)
 
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipalCertificate
+Parameter Sets: RefreshToken, ServicePrincipalCertificate
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -123,35 +130,7 @@ Application identifier and secret for service principal credentials.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: AccessToken
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: PSCredential
-Parameter Sets: ServicePrincipal
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EnforceMFA
-A flag indicating whether or not multi-factor authentication is enforced.
-The is only configurable while the Partner Center API is not requiring multi-factor authentication.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: RefreshToken, ServicePrincipal
 Aliases:
 
 Required: False
@@ -167,10 +146,25 @@ Environment containing the account to log into.
 ```yaml
 Type: EnvironmentName
 Parameter Sets: (All)
-Aliases: EnvironmentName
+Aliases:
 Accepted values: AzureCloud, AzureChinaCloud, AzureGermanCloud, AzurePPE, AzureUSGovernment
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RefreshToken
+Refresh token used to connect to Partner Center.
+
+```yaml
+Type: String
+Parameter Sets: RefreshToken
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -182,22 +176,10 @@ Indicates that this account authenticates by providing service principal credent
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ServicePrincipalCertificate
+Parameter Sets: RefreshToken, ServicePrincipal
 Aliases:
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: ServicePrincipal
-Aliases:
-
-Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -209,22 +191,10 @@ The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
-Parameter Sets: User, AccessToken
+Parameter Sets: (All)
 Aliases: Domain, TenantId
 
 Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: String
-Parameter Sets: ServicePrincipal
-Aliases: Domain, TenantId
-
-Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -237,7 +207,7 @@ Use device code authentication instead of a browser control
 ```yaml
 Type: SwitchParameter
 Parameter Sets: User
-Aliases: DeviceCode, DeviceAuth, Device
+Aliases: Device, DeviceAuth, DeviceCode
 
 Required: False
 Position: Named

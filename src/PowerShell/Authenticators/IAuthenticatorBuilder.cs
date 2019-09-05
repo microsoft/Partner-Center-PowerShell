@@ -11,15 +11,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     public interface IAuthenticatorBuilder
     {
         /// <summary>
-        /// 
+        /// Gets the first authenticator in the chain.
         /// </summary>
         IAuthenticator Authenticator { get; }
 
         /// <summary>
-        /// 
+        /// Appends the authenticator to the chain.
         /// </summary>
-        /// <param name="constructor"></param>
-        /// <returns></returns>
-        bool AppendAuthenticator(Func<IAuthenticator> constructor);
+        /// <param name="constructor">Delegate to initialize the authenticator.</param>
+        void AppendAuthenticator(Func<IAuthenticator> constructor);
     }
 }

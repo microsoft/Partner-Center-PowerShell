@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Reflection;
-    using Exceptions;
     using Models.Authentication;
     using Properties;
 
@@ -50,19 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             base.ProcessRecord();
 
-            try
-            {
-                ExecuteCmdlet();
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                if (ex.ServiceErrorPayload != null)
-                {
-                    throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
-                }
-
-                throw;
-            }
+            ExecuteCmdlet();
         }
 
         /// <summary>

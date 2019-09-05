@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Exceptions;
     using Extensions;
     using PartnerCenter.Enumerators;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Users;
     using Properties;
@@ -77,16 +76,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException("Error deleting user id: " + userId, ex);
-            }
+            Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().GetAwaiter().GetResult();
+            WriteObject(true);
         }
 
         /// <summary>

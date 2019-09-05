@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Extensions;
     using Models.Users;
     using PartnerCenter.Enumerators;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
@@ -96,15 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult()));
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- refactor this so the error is extracted from the exception.
-                throw new PartnerPSException("Error finding user:" + userId, ex);
-            }
+            WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult()));
         }
 
         /// <summary>

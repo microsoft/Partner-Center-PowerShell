@@ -7,7 +7,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Exceptions;
     using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
@@ -213,7 +212,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     if (!validator.IsValid(customer.BillingProfile.DefaultAddress, d => WriteDebug(d)))
                     {
-                        throw new PartnerPSException("The address for the customer is not valid.");
+                        // TODO - Figure out what is the best exception to throw here.
+                        // throw new PartnerPSException("The address for the customer is not valid.");
                     }
                 }
 

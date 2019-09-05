@@ -15,7 +15,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
-    using PartnerCenter.PowerShell.Exceptions;
     using Properties;
 
     /// <summary>
@@ -83,16 +82,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 State = UserState.Active
             };
 
-            try
-            {
-                Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- refactor this so the error is extracted from the exception.
-                throw new PartnerPSException("Error restoring user id: " + userId, ex);
-            }
+            Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
+            WriteObject(true);
         }
 
         /// <summary>

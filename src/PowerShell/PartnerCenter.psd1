@@ -160,6 +160,7 @@
                       'Remove-PartnerCustomerUserRoleMember',
                       'Remove-PartnerResellerRelationship',
                       'Remove-PartnerSandboxCustomer',
+                      'Resolve-PartnerError',
                       'Restore-PartnerCustomerUser',
                       'Set-PartnerBillingProfile',
                       'Set-PartnerCustomer',

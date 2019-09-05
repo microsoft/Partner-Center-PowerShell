@@ -3,7 +3,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
 {
-    using System;
     using Extensions;
     using PartnerCenter.Models.Agreements;
 
@@ -24,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
         /// <param name="agreementTemplate">The base agreement template for this instance.</param>
         public PSAgreementTemplate(AgreementTemplate agreementTemplate)
         {
-            this.CopyFrom(agreementTemplate);
+            this.CopyFrom(agreementTemplate, CloneAdditionalOperations);
         }
 
         /// <summary>
@@ -35,16 +34,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
         /// <summary>
         /// Gets or sets the link to preview the agreeement document.
         /// </summary>
-        public Uri DisplayUri { get; set; }
+        public string DisplayUri { get; set; }
 
         /// <summary>
         /// Gets or sets the link to download the agreement document.
         /// </summary>
-        public Uri DownloadUri { get; set; }
+        public string DownloadUri { get; set; }
 
         /// <summary>
         /// Gets or sets the localized langauge for the agreement document.
         /// </summary>
         public string Language { get; set; }
+
+        /// <summary>
+        /// Additional operations to be performed when cloning an instance of <see cref="AgreementTemplate" /> to an instance of <see cref="PSAgreementTemplate" />. 
+        /// </summary>
+        /// <param name="item">The item being cloned.</param>
+        private void CloneAdditionalOperations(AgreementTemplate item)
+        {
+            DisplayUri = item.DisplayUri.ToString();
+            DownloadUri = item.DownloadUri.ToString();
+        }
     }
 }

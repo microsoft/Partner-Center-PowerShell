@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Extensions;
     using Models.Authentication;
     using Models.Users;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Users;
     using Properties;
 
@@ -82,34 +81,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string country;
             CustomerId.AssertNotEmpty(nameof(CustomerId));
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
-                {
-                    country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
-                    string stringPassword = SecureStringExtensions.ConvertToString(Password);
+                country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
+                string stringPassword = SecureStringExtensions.ConvertToString(Password);
 
-                    newUser = new CustomerUser
+                newUser = new CustomerUser
+                {
+                    PasswordProfile = new PasswordProfile()
                     {
-                        PasswordProfile = new PasswordProfile()
-                        {
-                            ForceChangePassword = ForceChangePassword.IsPresent,
-                            Password = stringPassword
-                        },
-                        DisplayName = DisplayName,
-                        FirstName = FirstName,
-                        LastName = LastName,
-                        UsageLocation = country,
-                        UserPrincipalName = UserPrincipalName
-                    };
-                    CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
-                    WriteObject(new PSCustomerUser(createdUser));
-                }
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- refactor this so the error is extracted from the exception.
-                throw new PartnerPSException("Error creating user:" + UserPrincipalName, ex);
+                        ForceChangePassword = ForceChangePassword.IsPresent,
+                        Password = stringPassword
+                    },
+                    DisplayName = DisplayName,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    UsageLocation = country,
+                    UserPrincipalName = UserPrincipalName
+                };
+                CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
+                WriteObject(new PSCustomerUser(createdUser));
             }
         }
     }

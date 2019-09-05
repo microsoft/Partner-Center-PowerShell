@@ -5,9 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Exceptions;
     using Extensions;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Users;
 
@@ -48,23 +46,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             CustomerUser user = GetUserById(CustomerId, UserId);
 
-            try
+            UserMember newMember = new UserMember()
             {
-                UserMember newMember = new UserMember()
-                {
-                    UserPrincipalName = user.UserPrincipalName,
-                    DisplayName = user.DisplayName,
-                    Id = user.Id
-                };
+                UserPrincipalName = user.UserPrincipalName,
+                DisplayName = user.DisplayName,
+                Id = user.Id
+            };
 
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerException ex)
-            {
-                // TODO - Refactor this so the error is extracted from the API response.
-                throw new PartnerPSException($"Error adding user {UserId} to role {RoleId}", ex);
-            }
+            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
+            WriteObject(true);
+
         }
 
         /// <summary>
@@ -77,21 +68,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private CustomerUser GetUserById(string customerId, string userId)
         {
-            CustomerUser user;
-
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                user = Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult();
-                return user;
-            }
-            catch (PartnerException ex)
-            {
-                // TODO - Refactor this so the error is extracted from the API response.
-                throw new PartnerPSException("Error finding user:" + userId, ex);
-            }
+            return Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult(); ;
+
         }
     }
 }

@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Exceptions;
-    using PartnerCenter.Exceptions;
     using Properties;
 
     /// <summary>
@@ -43,16 +42,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            try
-            {
-                Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException("An error was encountered deleting policy id " + PolicyId, ex);
-            }
+            Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().GetAwaiter().GetResult();
+            WriteObject(true);
         }
     }
 }

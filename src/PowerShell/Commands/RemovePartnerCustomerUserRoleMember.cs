@@ -7,7 +7,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Exceptions;
     using Extensions;
-    using PartnerCenter.Exceptions;
 
     /// <summary>
     /// Removes the user from the specified role.
@@ -44,16 +43,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             UserId.AssertNotEmpty(nameof(UserId));
             RoleId.AssertNotEmpty(nameof(RoleId));
 
-            try
-            {
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException("Error removing user " + UserId + "from role " + RoleId, ex);
-            }
+            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
+            WriteObject(true);
         }
     }
 }

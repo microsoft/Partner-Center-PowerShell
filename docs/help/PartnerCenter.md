@@ -38,6 +38,9 @@ Gets real-time prices for an Azure offer.
 ### [Get-PartnerBillingProfile](Get-PartnerBillingProfile.md)
 Gets the partner's billing profile.
 
+### [Get-PartnerContext](Get-PartnerContext.md)
+Gets the metadata used to authenticate Partner Center requests.
+
 ### [Get-PartnerCountryValidation](Get-PartnerCountryValidation.md)
 Gets the rules for validating an address for a specific country.
 
@@ -265,6 +268,9 @@ Removes the reseller relationship between the specified customer and the partner
 
 ### [Remove-PartnerSandboxCustomer](Remove-PartnerSandboxCustomer.md)
 Removes the specified customer.
+
+### [Resolve-PartnerError](Resolve-PartnerError.md)
+Display detailed information about PowerShell errors, with extended details for Partner Center PowerShell errors.
 
 ### [Restore-PartnerCustomerUser](Restore-PartnerCustomerUser.md)
 Restores a previously removed customer user from the customer's tenant.

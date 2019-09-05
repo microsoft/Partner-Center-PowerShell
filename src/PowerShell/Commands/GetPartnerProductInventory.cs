@@ -11,7 +11,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Extensions;
     using Models.Authentication;
     using Models.Products;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Products;
 
     /// <summary>
@@ -87,27 +86,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             countryCode.AssertNotEmpty(nameof(countryCode));
             productId.AssertNotEmpty(nameof(productId));
 
-            try
+            request = new InventoryCheckRequest()
             {
-                request = new InventoryCheckRequest()
-                {
-                    TargetItems = string.IsNullOrEmpty(skuId) ? new InventoryItem[] { new InventoryItem { ProductId = productId } } : new InventoryItem[] { new InventoryItem { ProductId = productId, SkuId = skuId } },
-                };
+                TargetItems = string.IsNullOrEmpty(skuId) ? new InventoryItem[] { new InventoryItem { ProductId = productId } } : new InventoryItem[] { new InventoryItem { ProductId = productId, SkuId = skuId } },
+            };
 
-                foreach (KeyValuePair<string, string> kvp in context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value))
-                {
-                    request.InventoryContext.Add(kvp.Key, kvp.Value);
-                }
-
-                item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventoryAsync(request).GetAwaiter().GetResult();
-
-                WriteObject(item.Select(i => new PSInventoryItem(i)), true);
-            }
-            catch (PartnerException ex)
+            foreach (KeyValuePair<string, string> kvp in context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value))
             {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException(null, ex);
+                request.InventoryContext.Add(kvp.Key, kvp.Value);
             }
+
+            item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventoryAsync(request).GetAwaiter().GetResult();
+
+            WriteObject(item.Select(i => new PSInventoryItem(i)), true);
         }
     }
 }

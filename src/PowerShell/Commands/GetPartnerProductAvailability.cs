@@ -8,7 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Exceptions;
     using Models.Authentication;
     using Models.Products;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
 
@@ -91,30 +90,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<Availability> productAvailability;
 
-            try
+            // If segment is specified, get the information using the segment. Otherwise don't
+            if (!string.IsNullOrEmpty(segment))
             {
-                // If segment is specified, get the information using the segment. Otherwise don't
-                if (!string.IsNullOrEmpty(segment))
+                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
+
+                if (productAvailability.TotalCount > 0)
                 {
-                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
-                    if (productAvailability.TotalCount > 0)
-                    {
-                        WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
-                    }
-                }
-                else
-                {
-                    productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().GetAwaiter().GetResult();
-                    if (productAvailability.TotalCount > 0)
-                    {
-                        WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
-                    }
+                    WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
                 }
             }
-            catch (PartnerException ex)
+            else
             {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException("Error getting product id: " + productId, ex);
+                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().GetAwaiter().GetResult();
+
+                if (productAvailability.TotalCount > 0)
+                {
+                    WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
+                }
             }
         }
 
@@ -127,21 +120,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <param name="availabilityId">Identifier for the product availability.</param>
         private void GetProductAvailabilityById(string countryCode, string productId, string skuId, string availabilityId)
         {
-            Availability productAvailability;
+            Availability productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().GetAwaiter().GetResult();
 
-            try
+            if (productAvailability != null)
             {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().GetAwaiter().GetResult();
-
-                if (productAvailability != null)
-                {
-                    WriteObject(new PSProductAvailability(productAvailability));
-                }
-            }
-            catch (PartnerException ex)
-            {
-                // TODO -- Refactor this so the error is extracted from the partner exception.
-                throw new PartnerPSException("Error getting product id: " + productId, ex);
+                WriteObject(new PSProductAvailability(productAvailability));
             }
         }
     }

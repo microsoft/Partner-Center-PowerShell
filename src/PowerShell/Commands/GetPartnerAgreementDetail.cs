@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
     using System.Linq;
     using System.Management.Automation;
     using Models.Agreements;
@@ -19,7 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the agreement type. 
         /// </summary>
         [Parameter(HelpMessage = "The type of agreement of being requested.", Mandatory = false)]
-        [ValidateSet("MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
+        [ValidateSet("All", "MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
         public string AgreementType { get; set; }
 
         /// <summary>
@@ -32,6 +33,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             if (string.IsNullOrEmpty(AgreementType))
             {
                 agreements = Partner.AgreementDetails.GetAsync().GetAwaiter().GetResult();
+            }
+            else if (AgreementType.Equals("All", StringComparison.InvariantCultureIgnoreCase))
+            {
+                agreements = Partner.AgreementDetails.GetAsync("*").GetAwaiter().GetResult();
             }
             else
             {

@@ -7,7 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Identity.Client;
 
     /// <summary>
-    /// Interface for authentication with distributed responsibility
+    /// Represents an authenticator with distributed responsibility.
     /// </summary>
     public interface IAuthenticator
     {

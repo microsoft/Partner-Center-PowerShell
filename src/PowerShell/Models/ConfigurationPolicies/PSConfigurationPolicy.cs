@@ -68,10 +68,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="ConfigurationPolicy" /> to an instance of <see cref="PSConfigurationPolicy" />. 
         /// </summary>
-        /// <param name="customer">The customer being cloned.</param>
-        private void CloneAdditionalOperations(ConfigurationPolicy configurationPolicy)
+        /// <param name="item">The item being cloned.</param>
+        private void CloneAdditionalOperations(ConfigurationPolicy item)
         {
-            PolicyId = configurationPolicy.Id;
+            PolicyId = item.Id;
         }
     }
 }

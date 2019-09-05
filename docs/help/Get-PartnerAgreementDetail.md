@@ -39,7 +39,7 @@ The type of agreement of being requested.
 Type: String
 Parameter Sets: (All)
 Aliases:
-Accepted values: MicrosoftCloudAgreement, MicrosoftCustomerAgreement
+Accepted values: All, MicrosoftCloudAgreement, MicrosoftCustomerAgreement
 
 Required: False
 Position: Named

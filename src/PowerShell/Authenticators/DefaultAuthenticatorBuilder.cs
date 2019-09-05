@@ -5,6 +5,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
 
+    /// <summary>
+    /// Default builder for chaining authenticators.
+    /// </summary>
     public class DefaultAuthenticatorBuilder : IAuthenticatorBuilder
     {
         /// <summary>
@@ -20,17 +23,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             AppendAuthenticator(() => { return new RefreshTokenAuthenticator(); });
         }
 
+        /// <summary>
+        /// Gets the first authenticator in the chain.
+        /// </summary>
         public IAuthenticator Authenticator { get; set; }
 
-        public bool AppendAuthenticator(Func<IAuthenticator> constructor)
+        /// <summary>
+        /// Appends the authenticator to the chain.
+        /// </summary>
+        /// <param name="constructor">Delegate to initialize the authenticator.</param>
+        public void AppendAuthenticator(Func<IAuthenticator> constructor)
         {
             if (null == Authenticator)
             {
                 Authenticator = constructor();
-                return true;
+                return;
             }
 
             IAuthenticator current;
+
 
             for (current = Authenticator; current != null && current.Next != null; current = current.Next)
             {
@@ -38,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
 
             current.Next = constructor();
-            return true;
+            return;
         }
     }
 }
