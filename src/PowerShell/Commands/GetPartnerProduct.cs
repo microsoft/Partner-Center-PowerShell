@@ -5,7 +5,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Exceptions;
     using Extensions;
     using Models.Authentication;
     using Models.Products;

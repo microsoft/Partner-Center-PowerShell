@@ -36,11 +36,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else if (AgreementType.Equals("All", StringComparison.InvariantCultureIgnoreCase))
             {
-                agreements = Partner.AgreementDetails.GetAsync("*").GetAwaiter().GetResult();
+                agreements = Partner.AgreementDetails.ByAgreementType("*").GetAsync().GetAwaiter().GetResult();
             }
             else
             {
-                agreements = Partner.AgreementDetails.GetAsync(AgreementType).GetAwaiter().GetResult();
+                agreements = Partner.AgreementDetails.ByAgreementType(AgreementType).GetAsync().GetAwaiter().GetResult();
             }
 
             WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);

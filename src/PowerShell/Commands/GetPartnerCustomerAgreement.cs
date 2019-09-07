@@ -39,7 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else
             {
-                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync(AgreementType).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+                WriteObject(Partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
             }
         }
     }
