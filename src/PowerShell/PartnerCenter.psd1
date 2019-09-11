@@ -79,7 +79,7 @@
                       'Connect-PartnerCenter',
                       'Disconnect-PartnerCenter',
                       'Get-PartnerAgreementDetail',
-                      'Get-PartnerAgreementTemplate',
+                      'Get-PartnerAgreementDocument',
                       'Get-PartnerAuditRecord',
                       'Get-PartnerAzureRateCard',
                       'Get-PartnerBillingProfile',

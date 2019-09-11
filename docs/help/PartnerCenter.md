@@ -26,7 +26,7 @@ Disconnects the current session from Partner Center.
 ### [Get-PartnerAgreementDetail](Get-PartnerAgreementDetail.md)
 Gets the agreement metadata for the Microsoft Cloud Agreement.
 
-### [Get-PartnerAgreementTemplate](Get-PartnerAgreementTemplate.md)
+### [Get-PartnerAgreementDocument](Get-PartnerAgreementDocument.md)
 Gets the links to download or view the Microsoft Customer Agreement template.
 
 ### [Get-PartnerAuditRecord](Get-PartnerAuditRecord.md)

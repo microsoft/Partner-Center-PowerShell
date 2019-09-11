@@ -4,12 +4,27 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Agreements;
     using Models.Agreements;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerAgreementTemplate")]
-    [OutputType(typeof(PSAgreementTemplate))]
-    public class GetPartnerAgreementTemplate : PartnerPSCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerAgreementDocument")]
+    [OutputType(typeof(PSAgreementDocument))]
+    public class GetPartnerAgreementDocument : PartnerPSCmdlet
     {
+        /// <summary>
+        /// Gets or sets the country.
+        /// </summary>
+        [Parameter(HelpMessage = "The country of the agreement document.", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string Country { get; set; }
+
+        /// <summary>
+        /// Gets or sets the language and locale of the agreement document.
+        /// </summary>
+        [Parameter(HelpMessage = "The language and locale of the agreement document.", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string Language { get; set; }
+
         /// <summary>
         /// Gets or sets unique identifier of the agreement type. 
         /// </summary>
@@ -22,7 +37,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSAgreementTemplate(Partner.AgreementDetails[TemplateId].Templates.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            IAgreementDocument operation = Partner.AgreementTemplates.ById(TemplateId).Document;
+
+            if (!string.IsNullOrEmpty(Country))
+            {
+                operation = operation.ByCountry(Country);
+            }
+
+            if (!string.IsNullOrEmpty(Language))
+            {
+                operation = operation.ByLanguage(Language);
+            }
+
+            WriteObject(new PSAgreementDocument(operation.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
         }
     }
 }

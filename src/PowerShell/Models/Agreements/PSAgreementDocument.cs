@@ -7,23 +7,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
     using PartnerCenter.Models.Agreements;
 
     /// <summary>
-    /// Represents an agreement template that can be downloaded or viewed.
+    /// Represents an agreement document that contains links to the content of an agreement template.
     /// </summary>
-    public sealed class PSAgreementTemplate
+    public sealed class PSAgreementDocument
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PSAgreementTemplate" /> class.
+        /// Initializes a new instance of the <see cref="PSAgreementDocument" /> class.
         /// </summary>
-        public PSAgreementTemplate()
+        public PSAgreementDocument()
         { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PSAgreementTemplate" /> class.
+        /// Initializes a new instance of the <see cref="PSAgreementDocument" /> class.
         /// </summary>
-        /// <param name="agreementTemplate">The base agreement template for this instance.</param>
-        public PSAgreementTemplate(AgreementTemplate agreementTemplate)
+        /// <param name="agreementDocument">The base agreement document for this instance.</param>
+        public PSAgreementDocument(AgreementDocument agreementDocument)
         {
-            this.CopyFrom(agreementTemplate, CloneAdditionalOperations);
+            this.CopyFrom(agreementDocument);
         }
 
         /// <summary>
@@ -45,15 +45,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
         /// Gets or sets the localized langauge for the agreement document.
         /// </summary>
         public string Language { get; set; }
-
-        /// <summary>
-        /// Additional operations to be performed when cloning an instance of <see cref="AgreementTemplate" /> to an instance of <see cref="PSAgreementTemplate" />. 
-        /// </summary>
-        /// <param name="item">The item being cloned.</param>
-        private void CloneAdditionalOperations(AgreementTemplate item)
-        {
-            DisplayUri = item.DisplayUri.ToString();
-            DownloadUri = item.DownloadUri.ToString();
-        }
     }
 }

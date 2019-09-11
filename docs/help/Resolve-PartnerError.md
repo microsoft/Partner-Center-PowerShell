@@ -15,12 +15,12 @@ Display detailed information about PowerShell errors, with extended details for 
 ## SYNTAX
 
 ### AnyErrorParameterSet
-```
+```powershell
 Resolve-PartnerError [[-Error] <ErrorRecord[]>] [<CommonParameters>]
 ```
 
 ### LastErrorParameterSet
-```
+```powershell
 Resolve-PartnerError [-Last] [<CommonParameters>]
 ```
 
