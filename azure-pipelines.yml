@@ -24,3 +24,17 @@ steps:
 
 - pwsh: 'Test-ModuleManifest .\artifacts\$(buildConfiguration)\PartnerCenter.psd1'
   displayName: 'Validate Manifest'
+
+- task: CopyFiles@2
+  displayName: 'Copy artifacts directory to $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: 'artifacts\**'
+    TargetFolder: '$(build.artifactstagingdirectory)\'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
