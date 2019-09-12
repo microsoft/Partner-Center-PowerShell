@@ -13,14 +13,14 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build --configuration $(buildConfiguration) build.proj
   displayName: 'dotnet build $(buildConfiguration)'
 
 - pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
   displayName: 'Install platyPS'
 
-- pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\src\PowerShell\bin\Release\netstandard2.0'
+- pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\artifacts\$(buildConfiguration)'
   displayName: 'Generate MAML'
 
-- pwsh: 'Test-ModuleManifest .\src\PowerShell\bin\Release\netstandard2.0\PartnerCenter.psd1'
-  displayName: 'Validate Manifest (.NET Framework)'
+- pwsh: 'Test-ModuleManifest .\artifacts\$(buildConfiguration)\PartnerCenter.psd1'
+  displayName: 'Validate Manifest'
