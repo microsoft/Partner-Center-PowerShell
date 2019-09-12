@@ -9,8 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Reflection;
-    using Authentication;
-    using Exceptions;
+    using Models.Authentication;
     using Properties;
 
     /// <summary>
@@ -29,11 +28,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         internal IPartner Partner { get; private set; }
 
         /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public virtual AuthenticationTypes SupportedAuthentication => AuthenticationTypes.Both;
-
-        /// <summary>
         /// Operations that happen before the cmdlet is executed.
         /// </summary>
         protected override void BeginProcessing()
@@ -43,7 +37,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
             }
 
-            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
+            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
 
             ProcessBreakingChangeAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);
         }
@@ -55,31 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             base.ProcessRecord();
 
-            if (SupportedAuthentication.HasFlag(PartnerSession.Instance.Context.AuthenticationType))
-            {
-                try
-                {
-                    ExecuteCmdlet();
-                }
-                catch (PartnerCenter.Exceptions.PartnerException ex)
-                {
-                    if (ex.ServiceErrorPayload != null)
-                    {
-                        throw new PartnerPSException($"{ex.ServiceErrorPayload.ErrorCode} {ex.ServiceErrorPayload.ErrorMessage}");
-                    }
-
-                    throw;
-                }
-            }
-            else
-            {
-                throw new PSPartnerException(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        Resources.AuthenticationTypeNotSupportedException,
-                        PartnerSession.Instance.Context.AuthenticationType.ToString(),
-                        SupportedAuthentication.ToString()));
-            }
+            ExecuteCmdlet();
         }
 
         /// <summary>

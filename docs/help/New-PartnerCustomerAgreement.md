@@ -15,7 +15,7 @@ Confirms the customer acceptance of the Microsoft Cloud agreement.
 ## SYNTAX
 
 ```powershell
-New-PartnerCustomerAgreement -AgreementType <AgreementType> -ContactEmail <String> -ContactFirstName <String>
+New-PartnerCustomerAgreement -AgreementType <String> -ContactEmail <String> -ContactFirstName <String>
  -ContactLastName <String> [-ContactPhoneNumber <String>] -CustomerId <String> [-DateAgreed <DateTime>]
  -TemplateId <String> [<CommonParameters>]
 ```
@@ -38,10 +38,10 @@ Confirms the customer acceptance of the Microsoft Cloud agreement.
 The type of agreement being accepted.
 
 ```yaml
-Type: AgreementType
+Type: String
 Parameter Sets: (All)
 Aliases:
-Accepted values: MicrosoftCloudAgreement
+Accepted values: MicrosoftCloudAgreement, MicrosoftCustomerAgreement
 
 Required: True
 Position: Named

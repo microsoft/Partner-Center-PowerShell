@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Subscriptions;
 
     /// <summary>

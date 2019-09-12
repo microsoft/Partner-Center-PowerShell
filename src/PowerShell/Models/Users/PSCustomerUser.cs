@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Users
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Users;
 
     /// <summary>

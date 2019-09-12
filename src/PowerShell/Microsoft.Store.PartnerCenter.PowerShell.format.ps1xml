@@ -1,6 +1,47 @@
 ﻿<Configuration>
   <ViewDefinitions>
     <View>
+      <Name>Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication.PartnerContext</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication.PartnerContext</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Account</Label>
+            <Width>40</Width>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>Environment</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Alignment>Left</Alignment>
+            <Label>TenantId</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Account.ObjectId</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Environment.EnvironmentName</ScriptBlock>
+              </TableColumnItem>
+              <TableColumnItem>
+                <Alignment>Left</Alignment>
+                <ScriptBlock>$_.Account.Tenant</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
       <Name>Microsoft.Store.PartnerCenter.PowerShell.Models.Customers.PSCustomer</Name>
       <ViewSelectedBy>
         <TypeName>Microsoft.Store.PartnerCenter.PowerShell.Models.Customers.PSCustomer</TypeName>

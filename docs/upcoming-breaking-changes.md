@@ -23,6 +23,13 @@
 
 # Upcoming Breaking Changes
 
+## Release 2.0 - September 2019
+
+* Module
+  * The `PartnerCenter` module now supports PowerShell 5.1 and PowerShell, as a result the `PartnerCenter.NetCore` module will be retired
+* [New-PartnerAccessToken](https://github.com/microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerAccesToken.md)
+  * Replaced the `Consent` parameter with the `UseAuthorizationCode` parameter
+
 ## Release 1.5.1906.1 - June 2019
 
 * Agreements

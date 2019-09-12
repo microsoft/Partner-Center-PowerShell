@@ -1,0 +1,110 @@
+---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerSubscriptionActivation.md
+external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
+Module Name: PartnerCenter
+online version: https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerCustomerSubscriptionActivation
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/New-PartnerCustomerSubscriptionActivation.md
+schema: 2.0.0
+---
+
+# New-PartnerCustomerSubscriptionActivation
+
+## SYNOPSIS
+Activates a third-party subscription in the integration sandbox.
+
+## SYNTAX
+
+```powershell
+New-PartnerCustomerSubscriptionActivation -CustomerId <String> -SubscriptionId <String> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+## DESCRIPTION
+Activates a third-party subscription in the integration sandbox.
+
+## EXAMPLES
+
+### Example 1
+```powershell
+PS C:\> New-PartnerCustomerSubscriptionActivation -CustomerId 'xxxx-xxxx-xxxx-xxxx' -SubscriptionId 'yyyy-yyyy-yyyy-yyyy'
+```
+
+Activates a third-party subscription in the integration sandbox.
+
+## PARAMETERS
+
+### -CustomerId
+The identifier for the customer.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SubscriptionId
+The identifier for the subscription.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### None
+
+## OUTPUTS
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions.PSSubscriptionActivationResult
+
+## NOTES
+
+## RELATED LINKS

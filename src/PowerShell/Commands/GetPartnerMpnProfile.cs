@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Authentication;
     using Models.Partners;
     using PartnerCenter.Models.Partners;
 
@@ -17,11 +16,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "The partner's MPN identifier.", Mandatory = false)]
         [ValidateNotNull]
         public string MpnId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

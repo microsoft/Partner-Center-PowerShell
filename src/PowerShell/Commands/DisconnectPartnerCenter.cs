@@ -4,11 +4,11 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Authentication;
+    using Models.Authentication;
     using Properties;
 
     [Cmdlet(VerbsCommunications.Disconnect, "PartnerCenter", SupportsShouldProcess = true)]
-    public class DisconnectPartnerCenter : PSCmdlet
+    public class DisconnectPartnerCenter : ContextPSCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

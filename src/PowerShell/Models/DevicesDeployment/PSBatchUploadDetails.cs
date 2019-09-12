@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
 {
     using System;
     using System.Linq;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.DevicesDeployment;
 
     /// <summary>

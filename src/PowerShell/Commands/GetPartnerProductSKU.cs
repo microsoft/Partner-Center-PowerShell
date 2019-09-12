@@ -5,9 +5,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
-    using Exceptions;
+    using Extensions;
+    using Models.Authentication;
     using Models.Products;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
@@ -81,24 +80,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private void GetProductSku(string countryCode, string productId, string skuId)
         {
-            Sku sku;
-
             countryCode.AssertNotEmpty(nameof(countryCode));
             productId.AssertNotEmpty(nameof(productId));
 
-            try
-            {
-                sku = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).GetAsync().GetAwaiter().GetResult();
+            Sku sku = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).GetAsync().GetAwaiter().GetResult();
 
-                if (sku != null)
-                {
-                    WriteObject(new PSSku(sku));
-                }
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            if (sku != null)
             {
-                throw new PSPartnerException("Error getting sku id: " + skuId, ex);
+                WriteObject(new PSSku(sku));
             }
+
         }
 
         /// <summary>
@@ -119,27 +110,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             countryCode.AssertNotEmpty(nameof(countryCode));
             productId.AssertNotEmpty(nameof(productId));
 
-            try
+            if (string.IsNullOrEmpty(segment))
             {
-                if (string.IsNullOrEmpty(segment))
-                {
-                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.GetAsync().GetAwaiter().GetResult();
-                }
-                else
-                {
-                    skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
-                }
-
-                if (skus.TotalCount > 0)
-                {
-                    WriteObject(skus.Items.Select(s => new PSSku(s)), true);
-                }
+                skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.GetAsync().GetAwaiter().GetResult();
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            else
             {
-                throw new PSPartnerException("Error getting skus for product id: " + productId, ex);
+                skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
             }
 
+            if (skus.TotalCount > 0)
+            {
+                WriteObject(skus.Items.Select(s => new PSSku(s)), true);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Subscriptions;
 
     /// <summary>

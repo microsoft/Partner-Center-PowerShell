@@ -11,7 +11,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Removes a customer from the partner (this is only support within the integration sandbox).
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "PartnerSandboxCustomer", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true), OutputType(typeof(bool))]
+    [Cmdlet(VerbsCommon.Remove, "PartnerSandboxCustomer", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
     public class RemovePartnerSandboxCustomer : PartnerPSCmdlet
     {
         /// <summary>

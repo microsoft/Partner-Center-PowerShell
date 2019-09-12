@@ -7,11 +7,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Security;
     using System.Text.RegularExpressions;
-    using Common;
-    using Exceptions;
+    using Extensions;
     using Models.Users;
     using PartnerCenter.Models.Users;
-    using PartnerCenter.PowerShell.Authentication;
     using Properties;
 
     /// <summary>
@@ -20,11 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerUser", DefaultParameterSetName = "UserId", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
     public class SetPartnerCustomerUser : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
         /// <summary>
         /// Gets or sets the display name for the user.
         /// </summary>
@@ -104,73 +97,66 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             user = Partner.Customers[CustomerId].Users[UserId].GetAsync().GetAwaiter().GetResult();
 
-            try
+            if (user.Id == UserId)
             {
-                if (user.Id == UserId)
+                if (UserPrincipalName != null)
                 {
-                    if (UserPrincipalName != null)
-                    {
-                        user.UserPrincipalName = UserPrincipalName;
-                    }
-
-                    if (!string.IsNullOrEmpty(FirstName))
-                    {
-                        user.FirstName = FirstName;
-                    }
-
-                    if (!string.IsNullOrEmpty(LastName))
-                    {
-                        user.LastName = LastName;
-                    }
-
-                    if (!string.IsNullOrEmpty(DisplayName))
-                    {
-                        user.DisplayName = DisplayName;
-                    }
-
-                    if (!string.IsNullOrEmpty(UsageLocation))
-                    {
-                        user.UsageLocation = UsageLocation;
-                    }
-
-                    if (Password != null && Password.Length > 0)
-                    {
-                        string stringPassword = SecureStringExtensions.ConvertToString(Password);
-
-                        profile = new PasswordProfile
-                        {
-                            Password = stringPassword,
-                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
-                        };
-
-                        user.PasswordProfile = profile;
-                    }
-                    else if (ForceChangePasswordNextLogin.IsPresent)
-                    {
-                        profile = new PasswordProfile
-                        {
-                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
-                        };
-
-                        user.PasswordProfile = profile;
-                    }
-
-                    if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, UserId)))
-                    {
-                        if (InputObject == null && string.IsNullOrEmpty(UserId))
-                        {
-                            throw new PSInvalidOperationException(Resources.InvalidSetCustomerUserIdentifierException);
-                        }
-
-                        user = Partner.Customers[CustomerId].Users[UserId].PatchAsync(user).GetAwaiter().GetResult();
-
-                        WriteObject(new PSCustomerUser(user), true);
-                    }
+                    user.UserPrincipalName = UserPrincipalName;
                 }
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("An error was encountered when communicating with Partner Center.", ex);
+
+                if (!string.IsNullOrEmpty(FirstName))
+                {
+                    user.FirstName = FirstName;
+                }
+
+                if (!string.IsNullOrEmpty(LastName))
+                {
+                    user.LastName = LastName;
+                }
+
+                if (!string.IsNullOrEmpty(DisplayName))
+                {
+                    user.DisplayName = DisplayName;
+                }
+
+                if (!string.IsNullOrEmpty(UsageLocation))
+                {
+                    user.UsageLocation = UsageLocation;
+                }
+
+                if (Password != null && Password.Length > 0)
+                {
+                    string stringPassword = SecureStringExtensions.ConvertToString(Password);
+
+                    profile = new PasswordProfile
+                    {
+                        Password = stringPassword,
+                        ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
+                    };
+
+                    user.PasswordProfile = profile;
+                }
+                else if (ForceChangePasswordNextLogin.IsPresent)
+                {
+                    profile = new PasswordProfile
+                    {
+                        ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
+                    };
+
+                    user.PasswordProfile = profile;
+                }
+
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, UserId)))
+                {
+                    if (InputObject == null && string.IsNullOrEmpty(UserId))
+                    {
+                        throw new PSInvalidOperationException(Resources.InvalidSetCustomerUserIdentifierException);
+                    }
+
+                    user = Partner.Customers[CustomerId].Users[UserId].PatchAsync(user).GetAwaiter().GetResult();
+
+                    WriteObject(new PSCustomerUser(user), true);
+                }
             }
         }
     }

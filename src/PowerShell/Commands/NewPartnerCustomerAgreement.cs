@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
     using Models.Agreements;
     using PartnerCenter.Models.Agreements;
     using Properties;
@@ -21,8 +20,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the agreement type. 
         /// </summary>
         [Parameter(HelpMessage = "The type of agreement being accepted.", Mandatory = true)]
-        [ValidateSet(nameof(AgreementType.MicrosoftCloudAgreement))]
-        public AgreementType AgreementType { get; set; }
+        [ValidateSet("MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
+        public string AgreementType { get; set; }
 
         /// <summary>
         /// Gets or sets the email address of the primary contact of the customer.
@@ -64,11 +63,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The date the agreement was signed.", Mandatory = false)]
         public DateTime? DateAgreed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Gets or sets the required template identifier.

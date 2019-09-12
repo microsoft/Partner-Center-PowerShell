@@ -7,9 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
-    using Exceptions;
+    using Extensions;
+    using Models.Authentication;
     using Models.Products;
     using PartnerCenter.Models.Products;
 
@@ -58,7 +57,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
             if (Variables == null)
+            {
                 Variables = new Hashtable();
+            }
 
             GetProductInventory(countryCode, ProductId, SkuId, Variables);
         }
@@ -84,26 +85,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             countryCode.AssertNotEmpty(nameof(countryCode));
             productId.AssertNotEmpty(nameof(productId));
 
-            try
+            request = new InventoryCheckRequest()
             {
-                request = new InventoryCheckRequest()
-                {
-                    TargetItems = string.IsNullOrEmpty(skuId) ? new InventoryItem[] { new InventoryItem { ProductId = productId } } : new InventoryItem[] { new InventoryItem { ProductId = productId, SkuId = skuId } },
-                };
+                TargetItems = string.IsNullOrEmpty(skuId) ? new InventoryItem[] { new InventoryItem { ProductId = productId } } : new InventoryItem[] { new InventoryItem { ProductId = productId, SkuId = skuId } },
+            };
 
-                foreach (KeyValuePair<string, string> kvp in context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value))
-                {
-                    request.InventoryContext.Add(kvp.Key, kvp.Value);
-                }
-
-                item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventoryAsync(request).GetAwaiter().GetResult();
-
-                WriteObject(item.Select(i => new PSInventoryItem(i)), true);
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
+            foreach (KeyValuePair<string, string> kvp in context.Cast<DictionaryEntry>().ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value))
             {
-                throw new PSPartnerException(null, ex);
+                request.InventoryContext.Add(kvp.Key, kvp.Value);
             }
+
+            item = Partner.Extensions.Product.ByCountry(countryCode).CheckInventoryAsync(request).GetAwaiter().GetResult();
+
+            WriteObject(item.Select(i => new PSInventoryItem(i)), true);
         }
     }
 }

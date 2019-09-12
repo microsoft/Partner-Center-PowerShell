@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Offers
 {
     using System.Collections.Generic;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Invoices;
     using PartnerCenter.Models.Offers;
 

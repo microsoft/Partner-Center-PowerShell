@@ -7,9 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Security;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
-    using Exceptions;
+    using Extensions;
+    using Models.Authentication;
     using Models.Users;
     using PartnerCenter.Models.Users;
     using Properties;
@@ -66,11 +65,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public SwitchParameter ForceChangePassword { get; set; }
 
         /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
-        /// <summary>
         /// Gets or sets the customer user region.
         /// </summary>
         [Parameter(HelpMessage = "The location where the customer user will use software and services. Service availability varies by region.", Mandatory = false)]
@@ -86,33 +80,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             string country;
             CustomerId.AssertNotEmpty(nameof(CustomerId));
 
-            try
+            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
             {
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
-                {
-                    country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
-                    string stringPassword = SecureStringExtensions.ConvertToString(Password);
+                country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
+                string stringPassword = SecureStringExtensions.ConvertToString(Password);
 
-                    newUser = new CustomerUser
+                newUser = new CustomerUser
+                {
+                    PasswordProfile = new PasswordProfile()
                     {
-                        PasswordProfile = new PasswordProfile()
-                        {
-                            ForceChangePassword = ForceChangePassword.IsPresent,
-                            Password = stringPassword
-                        },
-                        DisplayName = DisplayName,
-                        FirstName = FirstName,
-                        LastName = LastName,
-                        UsageLocation = country,
-                        UserPrincipalName = UserPrincipalName
-                    };
-                    CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
-                    WriteObject(new PSCustomerUser(createdUser));
-                }
-            }
-            catch (PSPartnerException ex)
-            {
-                throw new PSPartnerException("Error creating user:" + UserPrincipalName, ex);
+                        ForceChangePassword = ForceChangePassword.IsPresent,
+                        Password = stringPassword
+                    },
+                    DisplayName = DisplayName,
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    UsageLocation = country,
+                    UserPrincipalName = UserPrincipalName
+                };
+                CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
+                WriteObject(new PSCustomerUser(createdUser));
             }
         }
     }

@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Offers
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Offers;
 
     /// <summary>

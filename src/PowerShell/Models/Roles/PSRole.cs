@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Roles
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Roles;
 
     /// <summary>

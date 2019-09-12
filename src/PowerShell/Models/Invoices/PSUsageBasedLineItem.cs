@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Invoices;
 
     /// <summary>

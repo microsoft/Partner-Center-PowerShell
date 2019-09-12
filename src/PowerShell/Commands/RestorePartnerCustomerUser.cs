@@ -9,13 +9,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
+    using Extensions;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
-    using PartnerCenter.PowerShell.Exceptions;
     using Properties;
 
     /// <summary>
@@ -31,11 +29,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(ParameterSetName = "ByUpn", Mandatory = true, Position = 0, HelpMessage = "The identifier for the customer.")]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string CustomerId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Gets or sets the optional user identifier.
@@ -88,15 +81,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 State = UserState.Active
             };
 
-            try
-            {
-                Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("Error restoring user id: " + userId, ex);
-            }
+            Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
+            WriteObject(true);
         }
 
         /// <summary>

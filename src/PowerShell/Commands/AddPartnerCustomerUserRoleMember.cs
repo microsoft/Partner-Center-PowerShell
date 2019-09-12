@@ -5,9 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
-    using Exceptions;
+    using Extensions;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Users;
 
@@ -39,11 +37,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string RoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
-
-        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
@@ -53,22 +46,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             CustomerUser user = GetUserById(CustomerId, UserId);
 
-            try
+            UserMember newMember = new UserMember()
             {
-                UserMember newMember = new UserMember()
-                {
-                    UserPrincipalName = user.UserPrincipalName,
-                    DisplayName = user.DisplayName,
-                    Id = user.Id
-                };
+                UserPrincipalName = user.UserPrincipalName,
+                DisplayName = user.DisplayName,
+                Id = user.Id
+            };
 
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PSPartnerException ex)
-            {
-                throw new PSPartnerException($"Error adding user {UserId} to role {RoleId}", ex);
-            }
+            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
+            WriteObject(true);
+
         }
 
         /// <summary>
@@ -81,20 +68,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private CustomerUser GetUserById(string customerId, string userId)
         {
-            CustomerUser user;
-
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                user = Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult();
-                return user;
-            }
-            catch (PSPartnerException ex)
-            {
-                throw new PSPartnerException("Error finding user:" + userId, ex);
-            }
+            return Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult(); ;
+
         }
     }
 }

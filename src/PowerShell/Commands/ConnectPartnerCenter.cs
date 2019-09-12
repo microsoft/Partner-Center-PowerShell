@@ -4,22 +4,19 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Globalization;
     using System.Management.Automation;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using Authentication;
-    using Common;
+    using Extensions;
     using Factories;
-    using PartnerCenter.Models.Partners;
-    using Properties;
+    using Models.Authentication;
 
     /// <summary>
-    /// Cmdlet to log into a Partner Center environment.
+    /// Cmdlet to login to a Partner Center environment.
     /// </summary>
-    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet)]
+    [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PartnerContext))]
-    public class ConnectPartnerCenter : PSCmdlet, IModuleAssemblyInitializer
+    public class ConnectPartnerCenter : ContextPSCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -37,9 +34,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string PartnerCenterClient = "Partner Center PowerShell";
 
         /// <summary>
+        /// The default application identifier value used when generating an access tokne.
+        /// </summary>
+        private const string PowerShellApplicationId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+
+        /// <summary>
+        /// The name of the refresh token parameter set.
+        /// </summary>
+        private const string RefreshTokenParameterSet = "RefreshToken";
+
+        /// <summary>
         /// The name of the service principal parameter set.
         /// </summary>
         private const string ServicePrincipalParameterSet = "ServicePrincipal";
+
+        /// <summary>
+        /// The name of the service principal certificate parameter set.
+        /// </summary>
+        private const string ServicePrincipalCertificateParameterSet = "ServicePrincipalCertificate";
 
         /// <summary>
         /// The name of the user parameter set.
@@ -49,49 +61,68 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the access token.
         /// </summary>
-        [Parameter(HelpMessage = "The access token for Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Access token used to connect to Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
         [ValidateNotNullOrEmpty]
         public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD application.", Mandatory = true, ParameterSetName = UserParameterSet)]
+        [Parameter(HelpMessage = "Identifier of the application used to connect to Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier of the application used to connect to Partner Center.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
         /// <summary>
+        /// Gets or sets the certificate thumbprint.
+        /// </summary>
+        [Parameter(HelpMessage = "Certificate thumbprint of a digital public key X.509 certificate.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Certificate thumbprint of a digital public key X.509 certificate.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [ValidateNotNullOrEmpty]
+        public string CertificateThumbprint { get; set; }
+
+        /// <summary>
         /// Gets or sets the service principal credential.
         /// </summary>
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Provides the application identifier and secret for service principal credentials.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Provides the application identifier and secret for service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
         [ValidateNotNull]
         public PSCredential Credential { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether or not multi-factor authentication is enforced.
+        /// Gets or sets the Partner Center environment name.
         /// </summary>
-        [Parameter(HelpMessage = "A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.", Mandatory = false)]
-        public SwitchParameter EnforceMFA { get; set; }
+        [Parameter(HelpMessage = "Environment containing the account to login to.", Mandatory = false)]
+        public EnvironmentName Environment { get; set; }
 
         /// <summary>
-        /// Gets or sets the environment used for authentication.
+        /// Gets or sets the refresh token.
         /// </summary>
-        [Parameter(HelpMessage = "The environment use for authentication.", Mandatory = false)]
-        [Alias("EnvironmentName")]
-        [ValidateNotNullOrEmpty]
-        public EnvironmentName Environment { get; set; }
+        [Parameter(HelpMessage = "Refresh token used to connect to Partner Center.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
+        [ValidateNotNull]
+        public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating that a service principal is being used.
+        /// </summary>
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
+        [Alias("Domain", "TenantId")]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
-        public string TenantId { get; set; }
+        public string Tenant { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating that device code authentication should be used.
+        /// </summary>
+        [Alias("Device", "DeviceAuth", "DeviceCode")]
+        [Parameter(HelpMessage = "Use device code authentication instead of a browser control.", Mandatory = false, ParameterSetName = UserParameterSet)]
+        public SwitchParameter UseDeviceAuthentication { get; set; }
 
         /// <summary>
         /// Performs the required operations when the module is imported.
@@ -122,24 +153,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void ProcessRecord()
         {
-            AzureAccount account = new AzureAccount();
-            IPartner partnerOperations;
-            OrganizationProfile profile;
+            PartnerAccount account = new PartnerAccount();
+            PartnerEnvironment environment = PartnerEnvironment.PublicEnvironments[Environment];
 
-            WriteDebug(string.Format(CultureInfo.CurrentCulture, Resources.ConnectPartnerCenterBeginProcess, ParameterSetName));
+            if (!string.IsNullOrEmpty(CertificateThumbprint))
+            {
+                account.SetProperty(PartnerAccountPropertyType.CertificateThumbprint, CertificateThumbprint);
+            }
 
-            PartnerService.Instance.EnforceMfa = (EnforceMFA.IsPresent && EnforceMFA.ToBool());
+            if (!string.IsNullOrEmpty(RefreshToken))
+            {
+                account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
+            }
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.Id = ApplicationId;
-                account.Properties[AzureAccountPropertyType.AccessToken] = AccessToken;
+                account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
                 account.Type = AccountType.AccessToken;
+            }
+            else if (ParameterSetName.Equals(RefreshTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (Credential != null)
+                {
+                    account.ObjectId = Credential.UserName;
+                    account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
+                }
             }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
-                account.Id = string.IsNullOrEmpty(ApplicationId) ? Credential.UserName : ApplicationId;
-                account.Properties[AzureAccountPropertyType.ServicePrincipalSecret] = Credential.Password.ConvertToString();
+                account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
+                account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
                 account.Type = AccountType.ServicePrincipal;
             }
             else
@@ -147,27 +190,33 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.Type = AccountType.User;
             }
 
-            account.Properties[AzureAccountPropertyType.Tenant] = string.IsNullOrEmpty(TenantId) ? AuthenticationConstants.CommonEndpoint : TenantId;
+            if (UseDeviceAuthentication.IsPresent)
+            {
+                account.SetProperty("UseDeviceAuth", "true");
+            }
+
+            account.SetProperty(
+                PartnerAccountPropertyType.ApplicationId,
+                string.IsNullOrEmpty(ApplicationId) ? PowerShellApplicationId : ApplicationId);
+
+            account.SetProperty(
+                PartnerAccountPropertyType.Scope,
+                ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase) ?
+                    $"{environment.AzureAdGraphEndpoint}/.default" :
+                    $"{environment.PartnerCenterEndpoint}/user_impersonation");
+
+            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
+
+            PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                account,
+                environment,
+                new[] { account.GetProperty(PartnerAccountPropertyType.Scope) });
 
             PartnerSession.Instance.Context = new PartnerContext
             {
                 Account = account,
-                ApplicationId = ApplicationId,
-                Environment = Environment
+                Environment = environment
             };
-
-            PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                PartnerSession.Instance.Context,
-                d => WriteDebug(d));
-
-            if (PartnerSession.Instance.Context.AuthenticationType == AuthenticationTypes.AppPlusUser)
-            {
-                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations(d => WriteDebug(d));
-                profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
-
-                PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
-                PartnerSession.Instance.Context.Locale = profile.Culture;
-            }
 
             WriteObject(PartnerSession.Instance.Context);
         }

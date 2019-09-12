@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ServiceCosts
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.ServiceCosts;
 
     /// <summary>

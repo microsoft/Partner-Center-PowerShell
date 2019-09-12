@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
     using Models.Agreements;
 
     /// <summary>
@@ -16,9 +15,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public class GetPartnerCustomerAgreement : PartnerPSCmdlet
     {
         /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
+        /// Gets or sets the agreement type. 
         /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
+        [Parameter(HelpMessage = "The type of agreement of being requested.", Mandatory = false)]
+        [ValidateSet("MicrosoftCloudAgreement", "MicrosoftCustomerAgreement")]
+        public string AgreementType { get; set; }
 
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -32,7 +33,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            if (string.IsNullOrEmpty(AgreementType))
+            {
+                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            }
+            else
+            {
+                WriteObject(Partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+            }
         }
     }
 }

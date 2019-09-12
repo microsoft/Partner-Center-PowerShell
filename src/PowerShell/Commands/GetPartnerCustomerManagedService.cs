@@ -6,7 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ManagedServices;
     using PartnerCenter.PowerShell.Models.ManagedServices;

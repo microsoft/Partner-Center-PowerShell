@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.ValidationCodes
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.ValidationCodes;
 
     /// <summary>

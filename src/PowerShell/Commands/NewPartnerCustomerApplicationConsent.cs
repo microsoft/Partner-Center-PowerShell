@@ -5,7 +5,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Authentication;
     using PartnerCenter.Models.ApplicationConsents;
 
     /// <summary>
@@ -40,11 +39,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Parameter(HelpMessage = "The display name for the application.", Mandatory = true)]
         public string DisplayName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the types of authentication supported by the command.
-        /// </summary>
-        public override AuthenticationTypes SupportedAuthentication => AuthenticationTypes.AppPlusUser;
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.

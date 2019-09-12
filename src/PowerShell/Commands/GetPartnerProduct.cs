@@ -5,9 +5,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Authentication;
-    using Common;
-    using Exceptions;
+    using Extensions;
+    using Models.Authentication;
     using Models.Products;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Products;
@@ -85,21 +84,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private void GetProduct(string countryCode, string productId)
         {
-            Product product;
-
             countryCode.AssertNotEmpty(nameof(countryCode));
             productId.AssertNotEmpty(nameof(productId));
 
-            try
+            Product product = Partner.Products.ByCountry(countryCode).ById(productId).GetAsync().GetAwaiter().GetResult();
+
+            if (product != null)
             {
-                product = Partner.Products.ByCountry(countryCode).ById(productId).GetAsync().GetAwaiter().GetResult();
-                if (product != null)
-                    WriteObject(new PSProduct(product));
+                WriteObject(new PSProduct(product));
             }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("Error getting product id: " + productId, ex);
-            }
+
         }
 
         /// <summary>
@@ -114,20 +108,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </exception>
         private void GetProductsByCatalog(string countryCode, string targetView)
         {
-            ResourceCollection<Product> products;
-
             countryCode.AssertNotEmpty(nameof(countryCode));
             targetView.AssertNotEmpty(nameof(targetView));
 
-            try
+            ResourceCollection<Product> products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).GetAsync().GetAwaiter().GetResult();
+
+            if (products.TotalCount > 0)
             {
-                products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).GetAsync().GetAwaiter().GetResult();
-                if (products.TotalCount > 0)
-                    WriteObject(products.Items.Select(p => new PSProduct(p)), true);
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("Error getting products for catalog: " + targetView, ex);
+                WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
         }
 

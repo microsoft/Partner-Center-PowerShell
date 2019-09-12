@@ -10,54 +10,73 @@ schema: 2.0.0
 # Connect-PartnerCenter
 
 ## SYNOPSIS
-Connects to Partner Center with an authenticated account for use with cmdlet requests.
+Connect to Partner Center with an authenticated account for use with partner cmdlet requests.
 
 ## SYNTAX
 
 ### User (Default)
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> [-EnforceMFA] [-Environment <EnvironmentName>]
- [-TenantId <String>] [<CommonParameters>]
+Connect-PartnerCenter [-Environment <EnvironmentName>] [-Tenant <String>] [-UseDeviceAuthentication] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### AccessToken
 ```powershell
-Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>] [-EnforceMFA]
- [-Environment <EnvironmentName>] [-TenantId <String>] [<CommonParameters>]
+Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Environment <EnvironmentName>]
+ [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### RefreshToken
+```powershell
+Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] -RefreshToken <String> [-ServicePrincipal] [-Tenant <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
+```
+
+### ServicePrincipalCertificate
+```powershell
+Connect-PartnerCenter [-CertificateThumbprint <String>] [-Environment <EnvironmentName>] [-Tenant <String>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
-Connect-PartnerCenter [-ApplicationId <String>] -Credential <PSCredential> [-EnforceMFA]
- [-Environment <EnvironmentName>] -TenantId <String> [<CommonParameters>]
+Connect-PartnerCenter [-Credential <PSCredential>] [-Environment <EnvironmentName>] [-ServicePrincipal]
+ [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-The Connect-PartnerCenter cmdlet connects to Partner Center with an authenticated account for use with cmdlet requests
+The Connect-PartnerCenter cmdlet connects to Partner Center with an authenticated account for use with partner cmdlet requests. After executing this cmdlet, you can disconnect from an Partner Center account using Disconnect-PartnerCenter.
 
 ## EXAMPLES
 
-### Example 1
+### Example 1: Use an interactive login to connect to a Partner Center account
+
 ```powershell
-PS C:\> Connect-PartnerCenter -ApplicationId '<AppId>'
+PS C:\> Connect-PartnerCenter
 ```
 
-Connects to Partner Center using the specified application identifier during authentication.
+This command connects to a Partner Center account. To run partner cmdlets with this account, you must provide an organizational credentials, that are associated with the Cloud Solution Provider program, at the prompt.
 
-### Example 2
+### Example 2: Connect to Partner Center using a service principal account
+
 ```powershell
 PS C:\> $credential = Get-Credential
-PS C:\> Connect-PartnerCenter -ApplicationId '<AppId>' -Credential $credential -TenantId '<TenantId>'
+PS C:\> Connect-PartnerCenter -Credential $credential -Tenant 'xxxx-xxxx-xxxx-xxxx' -ServicePrincipal
 ```
 
-Connects to Partner Center using app only authentication. Not all commands support this type of authentication.
+The first command gets the service principal credentials (application identifier and service principal secret), and then stores them in the $credential variable. The second command connects to Partner Center using the service principal credentials stored in $credential for the specified Tenant. The ServicePrincipal switch parameter indicates that the account authenticates as a service principal.
 
-### Example 3
+### Example 3: Connect to Partner using a refresh token
+
 ```powershell
-PS C:\> Connect-PartnerCenter -AccessToken '<AccessToken>' -ApplicationId '<AppId>' -TenantId '<TenantId>'
+PS C:\> $credential = Get-Credential
+PS C:\> $refreshToken = '<refreshToken>'
+PS C:\> $token = New-PartnerAccessToken -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -Credential $credential -RefreshToken $refreshToken -Scopes "https://api.partnercenter.microsoft.com/user_impersonation" -ServicePrincipal -Tenant 'xxxx-xxxx-xxxx-xxxx'
+PS C:\> Connect-PartnerCenter -AccessToken $token.AccessToken -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -Tenant 'xxxx-xxxx-xxxx-xxxx'
 ```
 
-Connects to Partner Center using an access token.
+The first command gets the service principal credentials (application identifier and service principal secret), and then stores them in the $credential variable. The third command generates a new access token using the specified refresh token. The final command connects to Partner Center using the access token stored in $token.AccessToken for authentication. The ServicePrincipal switch parameter indicates that the refresh token was generated using a confidential client.
 
 ## PARAMETERS
 
@@ -77,11 +96,11 @@ Accept wildcard characters: False
 ```
 
 ### -ApplicationId
-The identifier of the Azure AD application.
+SPN
 
 ```yaml
 Type: String
-Parameter Sets: User, AccessToken
+Parameter Sets: AccessToken, RefreshToken
 Aliases:
 
 Required: True
@@ -91,9 +110,12 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -CertificateThumbprint
+Certificate Hash (Thumbprint)
+
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipal
+Parameter Sets: RefreshToken, ServicePrincipalCertificate
 Aliases:
 
 Required: False
@@ -104,38 +126,11 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
-Credentials that represents the service principal.
+Application identifier and secret for service principal credentials.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: AccessToken
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: PSCredential
-Parameter Sets: ServicePrincipal
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EnforceMFA
-A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: RefreshToken, ServicePrincipal
 Aliases:
 
 Required: False
@@ -146,13 +141,13 @@ Accept wildcard characters: False
 ```
 
 ### -Environment
-The environment use for authentication.
+Environment containing the account to log into.
 
 ```yaml
 Type: EnvironmentName
 Parameter Sets: (All)
-Aliases: EnvironmentName
-Accepted values: GlobalCloud, ChinaCloud, GermanCloud, PPE, USGovernment
+Aliases:
+Accepted values: AzureCloud, AzureChinaCloud, AzureGermanCloud, AzurePPE, AzureUSGovernment
 
 Required: False
 Position: Named
@@ -161,13 +156,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -TenantId
+### -RefreshToken
+Refresh token used to connect to Partner Center.
+
+```yaml
+Type: String
+Parameter Sets: RefreshToken
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ServicePrincipal
+Indicates that this account authenticates by providing service principal credentials.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: RefreshToken, ServicePrincipal
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tenant
 The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
-Parameter Sets: User, AccessToken
-Aliases:
+Parameter Sets: (All)
+Aliases: Domain, TenantId
 
 Required: False
 Position: Named
@@ -176,12 +201,46 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-```yaml
-Type: String
-Parameter Sets: ServicePrincipal
-Aliases:
+### -UseDeviceAuthentication
+Use device code authentication instead of a browser control
 
-Required: True
+```yaml
+Type: SwitchParameter
+Parameter Sets: User
+Aliases: Device, DeviceAuth, DeviceCode
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -197,7 +256,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Authentication.PartnerContext
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication.PartnerContext
 
 ## NOTES
 

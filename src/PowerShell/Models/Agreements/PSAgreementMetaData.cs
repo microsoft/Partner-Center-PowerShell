@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Agreements;
 
     /// <summary>
@@ -35,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Agreements
         /// <summary>
         /// Gets or sets the agreement type.
         /// </summary>
-        public AgreementType AgreementType { get; set; }
+        public string AgreementType { get; set; }
 
         /// <summary>
         /// Gets or sets the template identifier for the agreement.

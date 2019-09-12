@@ -25,12 +25,12 @@ Register-PSRepository -Name PSGallery -SourceLocation https://www.powershellgall
 
 ### Importing your module
 
-Before you run the `platyPS` cmdlets to update your markdown help files, you will need to first import the module containing the changes that you have made to your cmdlets into your current PowerShell session. Once you have built your project (either through Visual Studio or with `msbuild`), you can locate the `PartnerCenter.psd1` module manifest in the `src\PowerShell\bin\Debug\net461` folder of your local repository.
+Before you run the `platyPS` cmdlets to update your markdown help files, you will need to first import the module containing the changes that you have made to your cmdlets into your current PowerShell session. Once you have built your project (either through Visual Studio or with `msbuild`), you can locate the `PartnerCenter.psd1` module manifest in the `artifacts\Debug` folder of your local repository.
 
 You can import it in your current PowerShell session by running the following command:
 
 ```powershell
-$PathToModuleManifest = ".\src\PowerShell\bin\Debug\net461\PartnerCenter.psd1"
+$PathToModuleManifest = ".\artifacts\Debug\PartnerCenter.psd1"
 Import-Module -Name $PathToModuleManifest
 ```
 
@@ -41,7 +41,7 @@ Import-Module -Name $PathToModuleManifest
 To create the appropriate help file for a new cmdlet, use the [`New-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/New-MarkdownHelp.md) cmdlet:
 
 ```powershell
-$PathToModuleManifest = ".\src\PowerShell\bin\Debug\net461\PartnerCenter.psd1" # Full path to the module manifest that you have updated
+$PathToModuleManifest = ".\artifacts\Debug\PartnerCenter.psd1" # Full path to the module manifest that you have updated
 Import-Module -Name $PathToModuleManifest
 
 $PathToHelpFolder = ".\docs\help\" # Full path to help folder containing markdown files to be updated
@@ -69,7 +69,7 @@ Whenever the public interface for a cmdlet has changed, the corresponding markdo
 To update all of the markdown files for a single module, use the [`Update-MarkdownHelpModule`](https://github.com/PowerShell/platyPS/blob/master/docs/Update-MarkdownHelpModule.md) cmdlet:
 
 ```powershell
-$PathToModuleManifest = ".\src\PowerShell\bin\Debug\net461\PartnerCenter.psd1" # Full path to the module manifest that you have updated
+$PathToModuleManifest = ".\artifacts\Debug\PartnerCenter.psd1" # Full path to the module manifest that you have updated
 Import-Module -Name $PathToModuleManifest
 
 $PathToHelpFolder = ".\docs\help\" # Full path to help folder containing markdown files to be updated
@@ -83,7 +83,7 @@ This will update all of the markdown files with public interface changes made to
 To update a single markdown file with the changes made to the corresponding cmdlet, use the [`Update-MarkdownHelp`](https://github.com/PowerShell/platyPS/blob/master/docs/Update-MarkdownHelp.md) cmdlet:
 
 ```powershell
-$PathToModuleManifest = ".\src\PowerShell\bin\Debug\PartnerCenter.psd1" # Full path to the module manifest that you have updated
+$PathToModuleManifest = ".\artifacts\Debug\PartnerCenter.psd1" # Full path to the module manifest that you have updated
 Import-Module -Name $PathToModuleManifest
 
 $PathToMarkdownFile = "../../<cmdlet>.md" # Full path to the markdown file to be updated
@@ -98,14 +98,14 @@ To generate the MAML help based on the contents of your markdown files, use the 
 
 ```powershell
 $PathToHelpFolder = ".\docs\help\" # Full path to help folder containing markdown files to be updated
-$PathToOutputFolder = ".\src\PowerShell\bin\Debug\" # Full path to folder where you want the MAML file to be generated
+$PathToOutputFolder = ".\artifacts\Debug\" # Full path to folder where you want the MAML file to be generated
 New-ExternalHelp -Path $PathToHelpFolder -OutputPath $PathToOutputFolder
 ```
 
 To preview the help that you just generated, use the [`Get-HelpPreview`](https://github.com/PowerShell/platyPS/blob/master/docs/Get-HelpPreview.md) cmdlet:
 
 ```powershell
-$PathToMAML = ".\src\PowerShell\bin\Debug\Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml" # Full path to the MAML file that was generated
+$PathToMAML = ".\artifacts\Debug\Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml" # Full path to the MAML file that was generated
 
 # Save the help locally
 $help = Get-HelpPreview -Path $PathToMAML

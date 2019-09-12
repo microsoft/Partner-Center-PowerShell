@@ -18,13 +18,16 @@ Adds a new line item to the specified cart.
 Adds a customer user to a specified role.
 
 ### [Connect-PartnerCenter](Connect-PartnerCenter.md)
-Connects to Partner Center with an authenticated account for use with cmdlet requests.
+Connect to Partner Center with an authenticated account for use with partner cmdlet requests.
 
 ### [Disconnect-PartnerCenter](Disconnect-PartnerCenter.md)
 Disconnects the current session from Partner Center.
 
 ### [Get-PartnerAgreementDetail](Get-PartnerAgreementDetail.md)
 Gets the agreement metadata for the Microsoft Cloud Agreement.
+
+### [Get-PartnerAgreementDocument](Get-PartnerAgreementDocument.md)
+Gets the links to download or view the Microsoft Customer Agreement template.
 
 ### [Get-PartnerAuditRecord](Get-PartnerAuditRecord.md)
 Gets audit records from Partner Center.
@@ -34,6 +37,9 @@ Gets real-time prices for an Azure offer.
 
 ### [Get-PartnerBillingProfile](Get-PartnerBillingProfile.md)
 Gets the partner's billing profile.
+
+### [Get-PartnerContext](Get-PartnerContext.md)
+Gets the metadata used to authenticate Partner Center requests.
 
 ### [Get-PartnerCountryValidation](Get-PartnerCountryValidation.md)
 Gets the rules for validating an address for a specific country.
@@ -131,6 +137,9 @@ Gets a list of licenses assigned to a user within a customer account.
 ### [Get-PartnerCustomerUserRole](Get-PartnerCustomerUserRole.md)
 Gets a list of directory roles for a customer.
 
+### [Get-PartnerEnvironment](Get-PartnerEnvironment.md)
+Get endpoints and metadata for an instance of Partner Center.
+
 ### [Get-PartnerIndirectReseller](Get-PartnerIndirectReseller.md)
 Gets a list of indirect resellers.
 
@@ -189,7 +198,7 @@ Gets the list of SKUs for a product.
 Gets a relationship request URL to send to a customer.
 
 ### [Get-PartnerRole](Get-PartnerRole.md)
-Gets a list of partner roles.
+Gets the roles at the partner level.
 
 ### [Get-PartnerRoleMember](Get-PartnerRoleMember.md)
 Gets the members of the specified partner role.
@@ -210,7 +219,7 @@ Gets the partner's support profile.
 Gets a collection of a partner's Government Community Cloud validation codes.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
-Acquires an access token from the authority.
+Acquires an access from Azure Active Directory.
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
@@ -232,6 +241,9 @@ Creates a new device batch for the specified customer.
 
 ### [New-PartnerCustomerOrder](New-PartnerCustomerOrder.md)
 Create a new order for the specified services on behalf of the customer.
+
+### [New-PartnerCustomerSubscriptionActivation](New-PartnerCustomerSubscriptionActivation.md)
+Activates a third-party subscription in the integration sandbox.
 
 ### [New-PartnerCustomerSubscriptionRegistration](New-PartnerCustomerSubscriptionRegistration.md)
 Registers the specified subscription.
@@ -256,6 +268,9 @@ Removes the reseller relationship between the specified customer and the partner
 
 ### [Remove-PartnerSandboxCustomer](Remove-PartnerSandboxCustomer.md)
 Removes the specified customer.
+
+### [Resolve-PartnerError](Resolve-PartnerError.md)
+Display detailed information about PowerShell errors, with extended details for Partner Center PowerShell errors.
 
 ### [Restore-PartnerCustomerUser](Restore-PartnerCustomerUser.md)
 Restores a previously removed customer user from the customer's tenant.
@@ -307,3 +322,4 @@ Tests whether or not the specified address is valid.
 
 ### [Test-PartnerDomainAvailability](Test-PartnerDomainAvailability.md)
 Tests if the specified domain name is available for creating a new tenant.
+

@@ -9,8 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
-    using Exceptions;
+    using Extensions;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Users;
@@ -76,15 +75,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            try
-            {
-                Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PartnerCenter.Exceptions.PartnerException ex)
-            {
-                throw new PSPartnerException("Error deleting user id: " + userId, ex);
-            }
+            Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().GetAwaiter().GetResult();
+            WriteObject(true);
         }
 
         /// <summary>

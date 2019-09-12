@@ -5,7 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions
 {
     using System;
     using System.Collections.Generic;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Invoices;
     using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Subscriptions;

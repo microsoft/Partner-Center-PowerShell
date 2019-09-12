@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
 {
     using System;
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.Invoices;
 
     public sealed class PSDailyUsageLineItem : PSBaseUsageBasedLineItem

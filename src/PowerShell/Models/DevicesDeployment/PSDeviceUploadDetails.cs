@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
 {
-    using Common;
+    using Extensions;
     using PartnerCenter.Models.DevicesDeployment;
 
     /// <summary>

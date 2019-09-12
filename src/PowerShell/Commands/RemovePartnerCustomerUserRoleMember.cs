@@ -5,11 +5,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Common;
-    using Exceptions;
+    using Extensions;
 
     /// <summary>
-    /// Gets a list of roles for the specified customer user from Partner Center.
+    /// Removes the user from the specified role.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
     public class RemovePartnerCustomerUserRoleMember : PartnerPSCmdlet
@@ -29,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the role  identifier.
+        /// Gets or sets the role identifier.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "Identifier for the role.")]
         public string RoleId { get; set; }
@@ -43,15 +42,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             UserId.AssertNotEmpty(nameof(UserId));
             RoleId.AssertNotEmpty(nameof(RoleId));
 
-            try
-            {
-                Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
-                WriteObject(true);
-            }
-            catch (PSPartnerException ex)
-            {
-                throw new PSPartnerException("Error removing user " + UserId + "from role " + RoleId, ex);
-            }
+            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
+            WriteObject(true);
         }
     }
 }

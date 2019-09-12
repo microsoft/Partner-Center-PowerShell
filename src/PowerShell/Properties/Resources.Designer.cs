@@ -588,6 +588,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activates the third-party subscription {0} owned by the customer with the identifier of {1}..
+        /// </summary>
+        internal static string SubscriptionActivationWhatIf {
+            get {
+                return ResourceManager.GetString("SubscriptionActivationWhatIf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registers the subscription {0} owned by the customer with the identifier of {1}..
         /// </summary>
         internal static string SubscriptionRegistrationWhatIf {

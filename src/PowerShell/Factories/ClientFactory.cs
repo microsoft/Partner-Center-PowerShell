@@ -5,8 +5,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using System.Net.Http;
-    using Authentication;
-    using Common;
+    using Extensions;
+    using Identity.Client;
+    using Models.Authentication;
+    using Network;
     using Rest;
 
     /// <summary>
@@ -17,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
-        private readonly static HttpClient HttpClient = new HttpClient(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+        private static readonly HttpClient HttpClient = new HttpClient(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
         {
             InnerHandler = new RetryDelegatingHandler
             {
@@ -25,26 +27,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
         });
 
-
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
-        /// <param name="debugAction">The action to write debug statements.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="debugAction" /> is null.
-        /// </exception>
-        public virtual IPartner CreatePartnerOperations(Action<string> debugAction)
+        public virtual IPartner CreatePartnerOperations()
         {
-            debugAction.AssertNotNull(nameof(debugAction));
+            PartnerService.Instance.ApiRootUrl = new Uri(PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint);
 
-            PartnerEnvironment env = PartnerEnvironment.PublicEnvironments[PartnerSession.Instance.Context.Environment];
-
-            PartnerService.Instance.ApiRootUrl = new Uri(env.PartnerCenterEndpoint);
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                PartnerSession.Instance.Context.Account,
+                PartnerSession.Instance.Context.Environment,
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) });
 
             return PartnerService.Instance.CreatePartnerOperations(
-                new PowerShellCredentials(
-                    PartnerSession.Instance.AuthenticationFactory.Authenticate(PartnerSession.Instance.Context, debugAction)),
+                new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
                 HttpClient);
         }
     }
