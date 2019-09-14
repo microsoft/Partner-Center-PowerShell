@@ -24,7 +24,8 @@ New-PartnerAccessToken -AccessToken <String> -ApplicationId <String> [-Credentia
 ### ServicePrincipalCertificate
 ```powershell
 New-PartnerAccessToken -ApplicationId <String> -CertificateThumbprint <String> [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Scopes <String[]> [-ServicePrincipal] [-UseAuthorizationCode] [<CommonParameters>]
+ [-RefreshToken <String>] -Scopes <String[]> [-ServicePrincipal] -Tenant <String> [-UseAuthorizationCode]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipal
@@ -228,7 +229,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: ServicePrincipal
+Parameter Sets: ServicePrincipalCertificate, ServicePrincipal
 Aliases: Domain, TenantId
 
 Required: True

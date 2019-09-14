@@ -20,7 +20,12 @@
 
 # Change Log
 
-## Upcoming Release
+## 2.0.1909.2
+
+* Authentication
+  * Addressed issue [#153](https://github.com/microsoft/Partner-Center-PowerShell/issues/153) that was preventing the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command from working as expected.
+
+## 2.0.1909.1
 
 * Agreements
   * Added the [Get-PartnerAgreementTemplate](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAgreementTemplate) command to provide access to the links download or view the Microsoft Customer Agreement
