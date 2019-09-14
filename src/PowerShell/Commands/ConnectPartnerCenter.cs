@@ -68,8 +68,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "Identifier of the application used to connect to Partner Center.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
         [Parameter(HelpMessage = "Identifier of the application used to connect to Partner Center.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier of the application used to connect to Partner Center.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string ApplicationId { get; set; }
 
@@ -85,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the service principal credential.
         /// </summary>
         [Parameter(HelpMessage = "Provides the application identifier and secret for service principal credentials.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
-        [Parameter(HelpMessage = "Provides the application identifier and secret for service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Provides the application identifier and secret for service principal credentials.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [ValidateNotNull]
         public PSCredential Credential { get; set; }
 
@@ -105,15 +105,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating that a service principal is being used.
         /// </summary>
-        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
-        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
         [Alias("Domain", "TenantId")]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
         [ValidateNotNullOrEmpty]
         public string Tenant { get; set; }
 
@@ -166,6 +170,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
             }
 
+            account.SetProperty(PartnerAccountPropertyType.ApplicationId, PowerShellApplicationId);
+
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
                 account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
@@ -176,14 +182,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 if (Credential != null)
                 {
                     account.ObjectId = Credential.UserName;
+                    account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
                     account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
                 }
             }
+            else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
+            {
+                account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
+            }
             else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
+                account.ObjectId = Credential.UserName;
+                account.Type = AccountType.ServicePrincipal;
+
                 account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
                 account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
-                account.Type = AccountType.ServicePrincipal;
             }
             else
             {
@@ -194,10 +207,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 account.SetProperty("UseDeviceAuth", "true");
             }
-
-            account.SetProperty(
-                PartnerAccountPropertyType.ApplicationId,
-                string.IsNullOrEmpty(ApplicationId) ? PowerShellApplicationId : ApplicationId);
 
             account.SetProperty(
                 PartnerAccountPropertyType.Scope,

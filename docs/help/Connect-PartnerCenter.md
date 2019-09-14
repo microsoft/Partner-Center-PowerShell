@@ -22,27 +22,28 @@ Connect-PartnerCenter [-Environment <EnvironmentName>] [-Tenant <String>] [-UseD
 
 ### AccessToken
 ```powershell
-Connect-PartnerCenter -AccessToken <String> -ApplicationId <String> [-Environment <EnvironmentName>]
- [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -AccessToken <String> [-Environment <EnvironmentName>] [-Tenant <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### RefreshToken
 ```powershell
 Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-Credential <PSCredential>]
- [-Environment <EnvironmentName>] -RefreshToken <String> [-ServicePrincipal] [-Tenant <String>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+ [-Environment <EnvironmentName>] -RefreshToken <String> [-Tenant <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
 ```powershell
-Connect-PartnerCenter [-CertificateThumbprint <String>] [-Environment <EnvironmentName>] [-Tenant <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>]
+ [-Environment <EnvironmentName>] [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
-Connect-PartnerCenter [-Credential <PSCredential>] [-Environment <EnvironmentName>] [-ServicePrincipal]
- [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
+ -Tenant <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -100,7 +101,7 @@ SPN
 
 ```yaml
 Type: String
-Parameter Sets: AccessToken, RefreshToken
+Parameter Sets: RefreshToken, ServicePrincipalCertificate
 Aliases:
 
 Required: True
@@ -130,10 +131,22 @@ Application identifier and secret for service principal credentials.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: RefreshToken, ServicePrincipal
+Parameter Sets: RefreshToken
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: PSCredential
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -176,10 +189,22 @@ Indicates that this account authenticates by providing service principal credent
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: RefreshToken, ServicePrincipal
+Parameter Sets: ServicePrincipalCertificate
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ServicePrincipal
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -191,10 +216,22 @@ The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: User, AccessToken, RefreshToken
 Aliases: Domain, TenantId
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ServicePrincipalCertificate, ServicePrincipal
+Aliases: Domain, TenantId
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                                 account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
                             }
 
-                            if (account.Tenant.Equals("common", StringComparison.InvariantCultureIgnoreCase))
+                            if (account.Tenant.Equals("common", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(authResult.TenantId))
                             {
                                 account.Tenant = authResult.TenantId;
                             }

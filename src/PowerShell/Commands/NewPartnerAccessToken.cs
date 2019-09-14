@@ -89,19 +89,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string[] Scopes { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether or not a service principal is being used.
+        /// Gets or sets a flag indicating that a service principal is being used.
         /// </summary>
-        [Parameter(ParameterSetName = ServicePrincipalParameterSet, Mandatory = true)]
-        [Parameter(ParameterSetName = ServicePrincipalCertificateParameterSet, Mandatory = false)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         public SwitchParameter ServicePrincipal { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant identifier.
         /// </summary>
         [Alias("Domain", "TenantId")]
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "The identifier of the Azure AD tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
         [ValidateNotNullOrEmpty]
         public string Tenant { get; set; }
 
@@ -156,6 +157,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
             }
+
+            account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
 
             account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
 
