@@ -67,7 +67,7 @@ Get-Command -Module PartnerCenter
 Get-Command -Name '*Azure*'
 
 # List all cmdlets that contain Azure in the PartnerCenter module
-Get-Command -Module Az.Compute -Name '*Azure*'
+Get-Command -Module PartnerCenter -Name '*Azure*'
 ```
 
 ### Cmdlet help and examples
