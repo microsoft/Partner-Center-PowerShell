@@ -8,8 +8,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests
     using System.IO;
     using System.Management.Automation;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
     using Factories;
     using Network;
     using PowerShell.Models.Authentication;
