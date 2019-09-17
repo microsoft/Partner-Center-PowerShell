@@ -12,6 +12,9 @@
   <Import Project="$(MSBuildThisFileDirectory)repo.props" />
 
   <PropertyGroup>
+    <!-- Flags -->
+    <SkipHelp Condition ="'$(SkipHelp)' != 'true'">false</SkipHelp>
+
     <!-- Folders -->
     <TestOutputDirectory>$(RepoArtifacts)TestResults</TestOutputDirectory>
     <StaticAnalysisOutputDirectory>$(RepoArtifacts)StaticAnalysisResults</StaticAnalysisOutputDirectory>
@@ -61,23 +64,9 @@
     <MakeDir Directories="$(StaticAnalysisOutputDirectory)" />
 
     <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Set-Variable -Name ProgressPreference -Value 'SilentlyContinue';. $(RepoTools)/GenerateHelp.ps1 -ValidateMarkdownHelp -GenerateMamlHelp -BuildConfig $(Configuration)&quot;" />
-    <Exec Command="dotnet $(RepoArtifacts)StaticAnalysis/StaticAnalysis.Netcore.dll -p $(RepoArtifacts)$(Configuration) -r $(StaticAnalysisOutputDirectory) -h -u -m @(ModulesChanged)" Condition="'$(RunStaticAnalysis)' == 'true'" />
   </Target>
 
-  <Target Name="Full" DependsOnTargets="Clean;Build;GenerateHelp;StaticAnalysis;Test" />
-
-  <Target Name="StaticAnalysis" Condition="'$(RunStaticAnalysis)' == 'true'">
-    <Message Importance="high" Text="Running static analysis..." />
-    <MakeDir Directories="$(StaticAnalysisOutputDirectory)" />
-
-    <Exec Command="dotnet $(RepoArtifacts)StaticAnalysis/StaticAnalysis.Netcore.dll -p $(RepoArtifacts)$(Configuration) -r $(StaticAnalysisOutputDirectory) -s -u -m @(ModulesChanged)" />
-    <Exec Command="$(PowerShellCoreCommandPrefix) &quot;. $(RepoTools)/CheckAssemblies.ps1 -BuildConfig $(Configuration) &quot;" />
-    <OnError ExecuteTargets="StaticAnalysisErrorMessage" />
-  </Target>
-
-  <Target Name="StaticAnalysisErrorMessage">
-    <Error Text="StaticAnalysis has failed. Please follow the instructions on this doc: https://github.com/microsoft/partner-center-powershell/blob/master/docs/Debugging-StaticAnalysis-Errors.md" />
-  </Target>
+  <Target Name="Full" DependsOnTargets="Clean;Build;GenerateHelp;Test" />
 
   <Target Name="Test">
     <Message Importance="high" Text="Running unit tests..." />

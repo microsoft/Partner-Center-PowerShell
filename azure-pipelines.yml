@@ -1,6 +1,10 @@
 strategy:
   matrix:
-    Windows:
+    linux:
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.13'
+    windows:
       imageName: 'Windows-2019'
 
 trigger:
@@ -13,14 +17,22 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration) build.proj
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: custom
+    custom: msbuild
+    arguments: 'build.proj /t:Build /p:Configuration=$(buildConfiguration)'
 
 - pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
   displayName: 'Install platyPS'
 
-- pwsh: 'New-ExternalHelp -Path .\docs\help\ -OutputPath .\artifacts\$(buildConfiguration)'
-  displayName: 'Generate MAML'
+- task: DotNetCoreCLI@2
+  displayName: 'Generate Help'
+  inputs:
+    command: custom
+    custom: msbuild
+    arguments: 'build.proj /t:GenerateHelp /p:Configuration=$(buildConfiguration)'
 
 - pwsh: 'Test-ModuleManifest .\artifacts\$(buildConfiguration)\PartnerCenter.psd1'
   displayName: 'Validate Manifest'

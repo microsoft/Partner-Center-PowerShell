@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Threading.Tasks;
     using Identity.Client;
     using IdentityModel.JsonWebTokens;
+    using PartnerCenter.Exceptions;
 
     /// <summary>
     /// Provides the ability to authenticate using an access token.
@@ -27,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             if (DateTimeOffset.UtcNow > jwt.ValidTo)
             {
-                // TODO - Determine if we need to throw an exception here.
+                throw new PartnerException("The access token has expired. Generate a new one and try again.");
             }
 
             await Task.CompletedTask;

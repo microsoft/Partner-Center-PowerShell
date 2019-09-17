@@ -4,7 +4,7 @@
 
 [![PartnerCenter](https://img.shields.io/powershellgallery/v/PartnerCenter.svg?style=flat-square&label=PartnerCenter)](https://www.powershellgallery.com/packages/PartnerCenter/) [![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
-Partner Center PowerShell is commonly used by partners to manage their Partner Center resources. It is an open source project maintained by the partner community. Since this module is maintained by the partner community, it is not officially supported by Microsoft. You can [get help from the community](https://stackoverflow.com/questions/tagged/partner+center) or open an [issue](https://github.com/microsoft/partner-center-powershell/issues) on GitHub if you encounter an issue.
+Partner Center PowerShell is commonly used by partners to manage their Partner Center resources. It is an open source project maintained by the partner community. Since this module is maintained by the partner community, it is not officially supported by Microsoft. You can [get help from the community](https://stackoverflow.com/questions/tagged/partner+center) or open an [issue](https://github.com/microsoft/partner-center-powershell/issues) on GitHub.
 
 ## Requirements
 
