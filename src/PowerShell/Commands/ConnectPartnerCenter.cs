@@ -7,9 +7,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Exceptions;
     using Extensions;
     using Factories;
-    using Microsoft.Store.PartnerCenter.Exceptions;
     using Models.Authentication;
     using PartnerCenter.Models.Partners;
 
@@ -225,6 +225,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 environment,
                 new[] { account.GetProperty(PartnerAccountPropertyType.Scope) });
 
+            PartnerSession.Instance.Context = new PartnerContext
+            {
+                Account = account,
+                Environment = environment
+            };
 
             try
             {
@@ -238,13 +243,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 /* This error can safely be ignored */
             }
-
-
-            PartnerSession.Instance.Context = new PartnerContext
-            {
-                Account = account,
-                Environment = environment
-            };
 
             WriteObject(PartnerSession.Instance.Context);
         }

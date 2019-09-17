@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  # Targets
+  /t:Build
+    Builds assemblies.
+  /t:Clean
+    Removes temporary build outputs.
+  /t:Test
+    Runs tests
+-->
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildThisFileDirectory)repo.props" />
 
   <PropertyGroup>
+    <!-- Folders -->
+    <TestOutputDirectory>$(RepoArtifacts)TestResults</TestOutputDirectory>
+    <StaticAnalysisOutputDirectory>$(RepoArtifacts)StaticAnalysisResults</StaticAnalysisOutputDirectory>
+
     <!-- General -->
     <Configuration Condition="'$(Configuration)' != 'Release'">Debug</Configuration>
-    
+
     <!-- PowerShell -->
     <PowerShellCoreCommandPrefix>pwsh -NonInteractive -NoLogo -NoProfile -Command</PowerShellCoreCommandPrefix>
   </PropertyGroup>
 
   <Target Name="Build">
 
-    <!-- Build the project -->  
+    <!-- Build the project -->
     <PropertyGroup>
       <BuildAction Condition="'$(Configuration)' != 'Release'">build</BuildAction>
       <BuildAction Condition="'$(Configuration)' == 'Release'">publish</BuildAction>
+
+      <TestOutputDirectory>$(RepoArtifacts)/TestResults</TestOutputDirectory>
     </PropertyGroup>
 
     <Exec Command="dotnet $(BuildAction) Partner-Center-PowerShell.sln -c $(Configuration)" />
 
-      <!-- Delete PowerShell runtime files -->
+    <!-- Delete PowerShell runtime files -->
     <PropertyGroup>
       <RuntimeDllsIncludeList>Microsoft.Powershell.*.dll,System*.dll,Microsoft.VisualBasic.dll,Microsoft.CSharp.dll,Microsoft.CodeAnalysis.dll,Microsoft.CodeAnalysis.CSharp.dll</RuntimeDllsIncludeList>
       <RuntimeDllsExcludeList>System.Security.Cryptography.ProtectedData.dll,System.Configuration.ConfigurationManager.dll,System.Runtime.CompilerServices.Unsafe.dll,System.IO.FileSystem.AccessControl.dll,System.Buffers.dll,System.Text.Encodings.Web.dll,System.CodeDom.dll</RuntimeDllsExcludeList>
@@ -30,7 +45,7 @@
     <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Get-ChildItem -Path $(RepoArtifacts)/$(Configuration) -Recurse -Include 'runtimes' | Remove-Item -Recurse -Force&quot;" />
   </Target>
 
-    <Target Name="Clean">
+  <Target Name="Clean">
     <Message Importance="high" Text="Cleaning Cmdlets..." />
 
     <!-- Clean out the NuGet cache -->
@@ -39,5 +54,34 @@
     <!-- Remove Package, Publish, bin, obj, and TestResults directories -->
     <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Remove-Item -Path $(RepoArtifacts) -Recurse -Force -ErrorAction Ignore&quot;" IgnoreExitCode="true" />
     <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Get-ChildItem -Path $(MSBuildThisFileDirectory) -Recurse -Include 'bin','obj','TestResults' | Remove-Item -Recurse -Force -ErrorAction Ignore&quot;" IgnoreExitCode="true" />
+  </Target>
+
+  <Target Name="GenerateHelp" Condition="'$(SkipHelp)' == 'false'">
+    <Message Importance="high" Text="Running help generation..." />
+    <MakeDir Directories="$(StaticAnalysisOutputDirectory)" />
+
+    <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Set-Variable -Name ProgressPreference -Value 'SilentlyContinue';. $(RepoTools)/GenerateHelp.ps1 -ValidateMarkdownHelp -GenerateMamlHelp -BuildConfig $(Configuration)&quot;" />
+    <Exec Command="dotnet $(RepoArtifacts)StaticAnalysis/StaticAnalysis.Netcore.dll -p $(RepoArtifacts)$(Configuration) -r $(StaticAnalysisOutputDirectory) -h -u -m @(ModulesChanged)" Condition="'$(RunStaticAnalysis)' == 'true'" />
+  </Target>
+
+  <Target Name="Full" DependsOnTargets="Clean;Build;GenerateHelp;StaticAnalysis;Test" />
+
+  <Target Name="StaticAnalysis" Condition="'$(RunStaticAnalysis)' == 'true'">
+    <Message Importance="high" Text="Running static analysis..." />
+    <MakeDir Directories="$(StaticAnalysisOutputDirectory)" />
+
+    <Exec Command="dotnet $(RepoArtifacts)StaticAnalysis/StaticAnalysis.Netcore.dll -p $(RepoArtifacts)$(Configuration) -r $(StaticAnalysisOutputDirectory) -s -u -m @(ModulesChanged)" />
+    <Exec Command="$(PowerShellCoreCommandPrefix) &quot;. $(RepoTools)/CheckAssemblies.ps1 -BuildConfig $(Configuration) &quot;" />
+    <OnError ExecuteTargets="StaticAnalysisErrorMessage" />
+  </Target>
+
+  <Target Name="StaticAnalysisErrorMessage">
+    <Error Text="StaticAnalysis has failed. Please follow the instructions on this doc: https://github.com/microsoft/partner-center-powershell/blob/master/docs/Debugging-StaticAnalysis-Errors.md" />
+  </Target>
+
+  <Target Name="Test">
+    <Message Importance="high" Text="Running unit tests..." />
+    <MakeDir Directories="$(TestOutputDirectory)" ContinueOnError="false" />
+    <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --framework netcoreapp2.2 --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
   </Target>
 </Project>

@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BE2D140E-51A4-469F-A12A-279192E0986F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShell.UnitTests", "test\PowerShell.UnitTests\PowerShell.UnitTests.csproj", "{08C08BAF-107D-43BB-9560-DA2D40B27816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerShell.UnitTests", "test\PowerShell.UnitTests\PowerShell.UnitTests.csproj", "{08C08BAF-107D-43BB-9560-DA2D40B27816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

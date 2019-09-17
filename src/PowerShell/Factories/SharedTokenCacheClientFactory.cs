@@ -12,8 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
     public static class SharedTokenCacheClientFactory
     {
-        private const string PowerShellClientId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
-
         private const string CacheFileName = "msal.cache";
 
         private static readonly string CacheFilePath =
@@ -46,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             string redirectUri = null,
             string tenantId = null)
         {
-            ConfidentialClientApplicationBuilder builder = ConfidentialClientApplicationBuilder.Create(clientId ?? PowerShellClientId);
+            ConfidentialClientApplicationBuilder builder = ConfidentialClientApplicationBuilder.Create(clientId);
 
             if (!string.IsNullOrEmpty(authority))
             {
@@ -87,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             string redirectUri = null,
             string tenantId = null)
         {
-            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId ?? PowerShellClientId);
+            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
 
             if (!string.IsNullOrEmpty(authority))
             {
