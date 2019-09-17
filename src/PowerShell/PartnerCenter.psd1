@@ -177,7 +177,8 @@
                       'Set-PartnerSupportProfile',
                       'Submit-PartnerCustomerCart',
                       'Test-PartnerAddress',
-                      'Test-PartnerDomainAvailability'
+                      'Test-PartnerDomainAvailability',
+                      'Test-PartnerSecurityRequirement'
 
     # Variables to export from this module
     # VariablesToExport = @()

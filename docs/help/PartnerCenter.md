@@ -219,7 +219,7 @@ Gets the partner's support profile.
 Gets a collection of a partner's Government Community Cloud validation codes.
 
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
-Acquires an access from Azure Active Directory.
+Acquires an access token from Azure Active Directory.
 
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
@@ -323,3 +323,5 @@ Tests whether or not the specified address is valid.
 ### [Test-PartnerDomainAvailability](Test-PartnerDomainAvailability.md)
 Tests if the specified domain name is available for creating a new tenant.
 
+### [Test-PartnerSecurityRequirement](Test-PartnerSecurityRequirement.md)
+Tests the account, used during authentication, if multi-factor authentication was enforced.
