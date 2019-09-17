@@ -24,6 +24,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string CertificateThumbprint = "CertificateThumbprint";
 
         /// <summary>
+        /// Name of the refresh token extended property.
+        /// </summary>
+        public const string RefreshToken = "RefreshToken";
+
+        /// <summary>
         /// Name of the scope extended property.
         /// </summary>
         public const string Scope = "Scope";
@@ -32,10 +37,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Name of the service principal secret extended property.
         /// </summary>
         public const string ServicePrincipalSecret = "ServicePrincipalSecret";
-
-        /// <summary>
-        /// Namme of the refresh token extended property.
-        /// </summary>
-        public const string RefreshToken = "RefreshToken";
     }
 }

@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Globalization;
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.ServiceRequests;
     using PartnerCenter.Models.ServiceRequests;
     using Properties;
@@ -49,8 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     request.NewNote = new ServiceRequestNote
                     {
-                        // TODO - Fix this...
-                        // CreatedByName = PartnerSession.Instance.Context.Account.Properties[PartnerAccountPropertyType.UserIdentifier],
+                        CreatedByName = PartnerSession.Instance.Context.Account.ObjectId,
                         CreatedDate = DateTime.UtcNow,
                         Text = NewNote
                     };
