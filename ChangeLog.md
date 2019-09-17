@@ -20,6 +20,12 @@
 
 # Change Log
 
+## 2.0.1909.3
+
+* Authentication
+  * Address issue [#156](https://github.com/microsoft/Partner-Center-PowerShell/issues/156) where the refresh token was not being returned if it had not been previously used by the module during an interactive authentication attempt
+  * After successfully authenticating the module will attempt to get country and locale based on the partner organization profile
+
 ## 2.0.1909.2
 
 * Authentication

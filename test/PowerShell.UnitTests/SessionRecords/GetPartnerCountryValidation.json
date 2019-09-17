@@ -1,0 +1,62 @@
+[
+  {
+    "EncodedReqeustAddress": "L3YxL2NvdW50cnl2YWxpZGF0aW9ucnVsZXMvVVM=",
+    "RequestBody": null,
+    "RequestHeaders": {
+      "Accept": [
+        "application/json"
+      ],
+      "MS-PartnerCenter-Client": [
+        "Partner Center PowerShell"
+      ],
+      "MS-CorrelationId": [
+        "85569ec5-7476-46bb-b336-3a99fa3a2705"
+      ],
+      "X-Locale": [
+        "en-US"
+      ],
+      "MS-RequestId": [
+        "bb845bcd-25c3-4d04-ad69-04c253425f98"
+      ],
+      "MS-SdkVersion": [
+        "1.5.1901.1"
+      ],
+      "User-Agent": [
+        "FxVersion/4.8.3710.0",
+        "OSName/Windows",
+        "OSVersion/10.0.18312.0",
+        "Microsoft.Store.PartnerCenter.Network.PartnerServiceClient/1.0.0.0"
+      ]
+    },
+    "RequestMethod": "GET",
+    "RequestUri": "https://api.partnercenter.microsoft.com/v1/countryvalidationrules/US",
+    "ResponseBody": "{\r\n  \"iso2Code\": \"US\",\r\n  \"defaultCulture\": \"en-US\",\r\n  \"isStateRequired\": true,\r\n  \"supportedStatesList\": [\r\n    \"AK\",\r\n    \"AL\",\r\n    \"AR\",\r\n    \"AZ\",\r\n    \"CA\",\r\n    \"CO\",\r\n    \"CT\",\r\n    \"DC\",\r\n    \"DE\",\r\n    \"FL\",\r\n    \"GA\",\r\n    \"HI\",\r\n    \"IA\",\r\n    \"ID\",\r\n    \"IL\",\r\n    \"IN\",\r\n    \"KS\",\r\n    \"KY\",\r\n    \"LA\",\r\n    \"MA\",\r\n    \"MD\",\r\n    \"ME\",\r\n    \"MI\",\r\n    \"MN\",\r\n    \"MO\",\r\n    \"MS\",\r\n    \"MT\",\r\n    \"NC\",\r\n    \"ND\",\r\n    \"NE\",\r\n    \"NH\",\r\n    \"NJ\",\r\n    \"NM\",\r\n    \"NV\",\r\n    \"NY\",\r\n    \"OH\",\r\n    \"OK\",\r\n    \"OR\",\r\n    \"PA\",\r\n    \"RI\",\r\n    \"SC\",\r\n    \"SD\",\r\n    \"TN\",\r\n    \"TX\",\r\n    \"UT\",\r\n    \"VA\",\r\n    \"VT\",\r\n    \"WA\",\r\n    \"WI\",\r\n    \"WV\",\r\n    \"WY\"\r\n  ],\r\n  \"supportedLanguagesList\": [\r\n    \"en\",\r\n    \"es\"\r\n  ],\r\n  \"supportedCulturesList\": [\r\n    \"en-US\",\r\n    \"es-US\"\r\n  ],\r\n  \"isPostalCodeRequired\": true,\r\n  \"postalCodeRegex\": \"^\\\\d{5}(-\\\\d{4})?$\",\r\n  \"isCityRequired\": true,\r\n  \"isVatIdSupported\": false,\r\n  \"phoneNumberRegex\": \"^(1[ \\\\-\\\\/\\\\.]?)?(\\\\((\\\\d{3})\\\\)|(\\\\d{3}))[ \\\\-\\\\/\\\\.]?(\\\\d{3})[ \\\\-\\\\/\\\\.]?(\\\\d{4})$\",\r\n  \"isTaxIdSupported\": true,\r\n  \"isTaxIdOptional\": true,\r\n  \"countryCallingCodesList\": [\r\n    \"1\"\r\n  ],\r\n  \"attributes\": {\r\n    \"objectType\": \"CountryValidationRules\"\r\n  }\r\n}",
+    "ResponseHeaders": {
+      "MS-CorrelationId": [
+        "85569ec5-7476-46bb-b336-3a99fa3a2705"
+      ],
+      "MS-RequestId": [
+        "bb845bcd-25c3-4d04-ad69-04c253425f98"
+      ],
+      "MS-CV": [
+        "xqqtn+OEVE2ridoS.0"
+      ],
+      "MS-ServerId": [
+        "0000112D"
+      ],
+      "Request-Context": [
+        "appId=cid-v1:03ce8ca8-8373-4021-8f25-d5dd45c7b12f"
+      ],
+      "Date": [
+        "Fri, 11 Jan 2019 23:26:03 GMT"
+      ],
+      "Content-Length": [
+        "780"
+      ],
+      "Content-Type": [
+        "application/json; charset=utf-8"
+      ]
+    },
+    "StatusCode": "OK"
+  }
+]

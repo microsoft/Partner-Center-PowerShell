@@ -1,0 +1,62 @@
+[
+  {
+    "EncodedReqeustAddress": "L3YxL29mZmVycy84QkRCQjYwQi1FNTI2LTQzRTktOTJFRi1BQjc2MEM4RTBCNzI/Y291bnRyeT1VUw==",
+    "RequestBody": null,
+    "RequestHeaders": {
+      "Accept": [
+        "application/json"
+      ],
+      "MS-PartnerCenter-Client": [
+        "Partner Center PowerShell"
+      ],
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "X-Locale": [
+        "en-US"
+      ],
+      "MS-RequestId": [
+        "cb8fa358-00b0-45c0-a410-35beb9ffbfd9"
+      ],
+      "MS-SdkVersion": [
+        "1.5.1901.1"
+      ],
+      "User-Agent": [
+        "FxVersion/4.8.3710.0",
+        "OSName/Windows",
+        "OSVersion/10.0.18312.0",
+        "Microsoft.Store.PartnerCenter.Network.PartnerServiceClient/1.0.0.0"
+      ]
+    },
+    "RequestMethod": "GET",
+    "RequestUri": "https://api.partnercenter.microsoft.com:443/v1/offers/8BDBB60B-E526-43E9-92EF-AB760C8E0B72?country=US",
+    "ResponseBody": "{\r\n  \"id\": \"8BDBB60B-E526-43E9-92EF-AB760C8E0B72\",\r\n  \"name\": \"Microsoft 365 E5\",\r\n  \"description\": \"Office 365 Enterprise E5, Enterprise Mobility + Security E5, and Window 10 Enterprise E5. This per-user licensed suite of products offers customers the latest, most advanced enterprise security, management, collaboration, and business analytics.\",\r\n  \"minimumQuantity\": 1,\r\n  \"maximumQuantity\": 10000000,\r\n  \"rank\": 174,\r\n  \"uri\": \"/3c95518e-8c37-41e3-9627-0ca339200f53/Offers/8BDBB60B-E526-43E9-92EF-AB760C8E0B72\",\r\n  \"locale\": \"en-US\",\r\n  \"country\": \"US\",\r\n  \"category\": {\r\n    \"id\": \"Enterprise_Key\",\r\n    \"name\": \"Enterprise\",\r\n    \"rank\": 20,\r\n    \"locale\": \"en-US\",\r\n    \"country\": \"US\",\r\n    \"attributes\": {\r\n      \"objectType\": \"OfferCategory\"\r\n    }\r\n  },\r\n  \"limitUnitOfMeasure\": \"None\",\r\n  \"limit\": 0,\r\n  \"termUnitOfMeasure\": \"Year\",\r\n  \"term\": 1,\r\n  \"prerequisiteOffers\": [],\r\n  \"isAddOn\": false,\r\n  \"hasAddOns\": true,\r\n  \"isAvailableForPurchase\": true,\r\n  \"billing\": \"license\",\r\n  \"supportedBillingCycles\": [\r\n    \"annual\",\r\n    \"monthly\"\r\n  ],\r\n  \"isAutoRenewable\": true,\r\n  \"isInternal\": false,\r\n  \"isMicrosoftProduct\": true,\r\n  \"conversionTargetOffers\": [],\r\n  \"reselleeQualifications\": [],\r\n  \"resellerQualifications\": [],\r\n  \"salesGroupId\": \"Default\",\r\n  \"isTrial\": false,\r\n  \"acquisitionType\": \"purchase\",\r\n  \"supportedCatalogTypes\": [\r\n    \"sandbox\",\r\n    \"live\"\r\n  ],\r\n  \"actions\": [\r\n    \"Cancel\",\r\n    \"Edit\"\r\n  ],\r\n  \"product\": {\r\n    \"id\": \"06EBC4EE-1BB5-47DD-8120-11324BC54E06\",\r\n    \"name\": \"Microsoft 365 E5\",\r\n    \"unit\": \"Licenses\"\r\n  },\r\n  \"unitType\": \"Licenses\",\r\n  \"links\": {\r\n    \"learnMore\": {\r\n      \"method\": \"GET\",\r\n      \"headers\": []\r\n    },\r\n    \"self\": {\r\n      \"uri\": \"/offers/8BDBB60B-E526-43E9-92EF-AB760C8E0B72?country=US\",\r\n      \"method\": \"GET\",\r\n      \"headers\": []\r\n    }\r\n  },\r\n  \"attributes\": {\r\n    \"objectType\": \"Offer\"\r\n  }\r\n}",
+    "ResponseHeaders": {
+      "MS-CorrelationId": [
+        "1465c64a-9e93-46a4-a8da-e3ab67665e64"
+      ],
+      "MS-RequestId": [
+        "cb8fa358-00b0-45c0-a410-35beb9ffbfd9"
+      ],
+      "MS-CV": [
+        "fc1RI18AXEK3Tdmj.0"
+      ],
+      "MS-ServerId": [
+        "0000112E"
+      ],
+      "Request-Context": [
+        "appId=cid-v1:03ce8ca8-8373-4021-8f25-d5dd45c7b12f"
+      ],
+      "Date": [
+        "Fri, 11 Jan 2019 23:18:28 GMT"
+      ],
+      "Content-Length": [
+        "1488"
+      ],
+      "Content-Type": [
+        "application/json; charset=utf-8"
+      ]
+    },
+    "StatusCode": "OK"
+  }
+]

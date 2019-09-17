@@ -3,10 +3,14 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Context information used for the execution of various tasks.
     /// </summary>
-    public class PartnerContext
+    public class PartnerContext : IExtensibleModel
     {
         /// <summary>
         /// Gets or sets the account.
@@ -22,6 +26,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Gets the environment used for authentication.
         /// </summary>
         public PartnerEnvironment Environment { get; set; }
+
+        /// <summary>
+        /// Gets the extended properties.
+        /// </summary>
+        public IDictionary<string, string> ExtendedProperties { get; } = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets or sets the locale.

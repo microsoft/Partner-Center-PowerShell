@@ -7,9 +7,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Reflection;
     using System.Text.RegularExpressions;
+    using Exceptions;
     using Extensions;
     using Factories;
     using Models.Authentication;
+    using PartnerCenter.Models.Partners;
 
     /// <summary>
     /// Cmdlet to login to a Partner Center environment.
@@ -157,6 +159,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void ProcessRecord()
         {
+            IPartner partnerOperations;
+            OrganizationProfile profile;
             PartnerAccount account = new PartnerAccount();
             PartnerEnvironment environment = PartnerEnvironment.PublicEnvironments[Environment];
 
@@ -226,6 +230,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Account = account,
                 Environment = environment
             };
+
+            try
+            {
+                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
+
+                PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
+                PartnerSession.Instance.Context.Locale = profile.Culture;
+            }
+            catch (PartnerException)
+            {
+                /* This error can safely be ignored */
+            }
 
             WriteObject(PartnerSession.Instance.Context);
         }

@@ -19,8 +19,9 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>2.0.1909.2</Version>
+    <Version>2.0.1909.3</Version>
     <LangVersion>latest</LangVersion>
+    <AssemblyVersion>2.0.1909.3</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
