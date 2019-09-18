@@ -17,9 +17,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// <summary>
         /// Acquires the security token from the authority.
         /// </summary>
-        /// <param name="context">Context to be used when requesting a security token.</param>
         /// <returns>The result from the authentication request.</returns>
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message)
         {
             return new AuthenticationResult(
                 "STUB_TOKEN",
