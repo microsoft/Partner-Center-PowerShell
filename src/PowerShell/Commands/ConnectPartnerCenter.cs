@@ -31,6 +31,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string ConfigurationProperty = "Configuration";
 
         /// <summary>
+        /// The message written to the console.
+        /// </summary>
+        private const string Message = "We have launched a browser for you to login.For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.";
+
+        /// <summary>
         /// The value used to identify the client connect to the partner service.
         /// </summary>
         private const string PartnerCenterClient = "Partner Center PowerShell";
@@ -231,7 +236,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PartnerSession.Instance.AuthenticationFactory.Authenticate(
                 account,
                 environment,
-                new[] { account.GetProperty(PartnerAccountPropertyType.Scope) });
+                new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
+                Message);
 
             PartnerSession.Instance.Context = new PartnerContext
             {

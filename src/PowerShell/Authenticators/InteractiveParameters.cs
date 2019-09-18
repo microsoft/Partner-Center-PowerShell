@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
-    using Extensions;
     using Models.Authentication;
 
     /// <summary>
@@ -15,19 +14,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractiveParameters" /> class.
         /// </summary>
-        public InteractiveParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
+        public InteractiveParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message)
             : base(account, environment, scopes)
         {
+            Message = message;
         }
 
         /// <summary>
-        /// Gets the certificate thumbprint.
+        /// Gets the message to be written to the console.
         /// </summary>
-        public string CertificateThumbprint => Account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint);
-
-        /// <summary>
-        /// Gets the application secret.
-        /// </summary>
-        public string Secret => Account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret);
+        public string Message { get; }
     }
 }

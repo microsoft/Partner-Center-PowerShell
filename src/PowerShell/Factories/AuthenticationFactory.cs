@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     {
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
@@ -28,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             {
                 try
                 {
-                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes), out Task<AuthenticationResult> result))
+                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes, message), out Task<AuthenticationResult> result))
                     {
                         authResult = result.ConfigureAwait(true).GetAwaiter().GetResult();
 
@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return authResult ?? null;
         }
 
-        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
+        private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null)
         {
             if (account.IsPropertySet(PartnerAccountPropertyType.AccessToken))
             {
@@ -70,7 +70,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
             else if (account.IsPropertySet("UseAuthCode"))
             {
-                return new InteractiveParameters(account, environment, scopes);
+                return new InteractiveParameters(account, environment, scopes, message);
             }
             else if (account.IsPropertySet(PartnerAccountPropertyType.RefreshToken))
             {
@@ -87,7 +87,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     return new DeviceCodeParameters(account, environment, scopes);
                 }
 
-                return new InteractiveParameters(account, environment, scopes);
+                return new InteractiveParameters(account, environment, scopes, message);
             }
             else if (account.Type == AccountType.ServicePrincipal || account.Type == AccountType.Certificate)
             {

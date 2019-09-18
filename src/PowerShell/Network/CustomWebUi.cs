@@ -32,6 +32,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 </html>";
 
         /// <summary>
+        /// The message written to the console.
+        /// </summary>
+        private readonly string message;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomWebUi" /> class.
+        /// </summary>
+        public CustomWebUi()
+        {
+            message = "We have launched a browser for you to login. For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomWebUi" /> class.
+        /// </summary>
+        /// <param name="message">The message written to the console.</param>
+        public CustomWebUi(string message)
+        {
+            message.AssertNotEmpty(nameof(message));
+
+            this.message = message;
+        }
+
+        /// <summary>
         /// Method called by MSAL.NET to delegate the authentication code Web with the Secure Token Service (STS).
         /// </summary>
         /// <param name="authorizationUri">URI computed by MSAL.NET that will let the UI extension navigate to the STS authorization endpoint in order to sign-in the user and have them consent.</param>
@@ -47,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
                 WriteWarning("Unable to launch a browser for authorization code login. Reverting to device code login.");
             }
 
-            WriteWarning("We have launched a browser for you to login. For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.");
+            WriteWarning(message);
 
             TcpListener listener = new TcpListener(IPAddress.Loopback, redirectUri.Port);
             listener.Start();

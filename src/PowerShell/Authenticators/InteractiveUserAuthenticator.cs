@@ -33,6 +33,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             AuthenticationResult authResult;
             IClientApplicationBase app;
+            InteractiveParameters interactiveParameters = parameters as InteractiveParameters;
             TcpListener listener = null;
             string redirectUri = null;
 
@@ -59,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             if (app is IConfidentialClientApplication)
             {
-                ICustomWebUi customWebUi = new CustomWebUi();
+                ICustomWebUi customWebUi = new CustomWebUi(interactiveParameters.Message);
 
                 Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
                     await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false),
@@ -75,7 +76,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             else
             {
                 authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
-                    .WithCustomWebUi(new CustomWebUi())
+                    .WithCustomWebUi(new CustomWebUi(interactiveParameters.Message))
                     .WithPrompt(Prompt.ForceLogin)
                     .ExecuteAsync().ConfigureAwait(false);
             }
