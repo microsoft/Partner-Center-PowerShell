@@ -66,11 +66,16 @@
     <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Set-Variable -Name ProgressPreference -Value 'SilentlyContinue';. $(RepoTools)/GenerateHelp.ps1 -ValidateMarkdownHelp -GenerateMamlHelp -BuildConfig $(Configuration)&quot;" />
   </Target>
 
-  <Target Name="Full" DependsOnTargets="Clean;Build;GenerateHelp;Test" />
+  <Target Name="Full" DependsOnTargets="Clean;Build;GenerateHelp;ValidateModule;Test" />
 
   <Target Name="Test">
     <Message Importance="high" Text="Running unit tests..." />
     <MakeDir Directories="$(TestOutputDirectory)" ContinueOnError="false" />
     <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --framework netcoreapp2.2 --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
+  </Target>
+
+  <Target Name="ValidateModule">
+    <Message Importance="high" Text="Validating the module definition..." />
+    <Exec Command="$(PowerShellCoreCommandPrefix) &quot;Test-ModuleManifest $(RepoArtifacts)$(Configuration)/PartnerCenter.psd1&quot;" />
   </Target>
 </Project>

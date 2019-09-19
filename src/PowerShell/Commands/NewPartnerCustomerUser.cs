@@ -59,7 +59,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public SecureString Password { get; set; }
 
         /// <summary>
-        /// Gets or sets the force password change at next login for the new customer user.
+        /// Gets or sets the force password change at next login. For the new customer user.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "Forces user to change password during next login.")]
         public SwitchParameter ForceChangePassword { get; set; }

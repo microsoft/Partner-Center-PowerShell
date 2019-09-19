@@ -22,20 +22,7 @@ steps:
   inputs:
     command: custom
     custom: msbuild
-    arguments: 'build.proj /t:Build /p:Configuration=$(buildConfiguration)'
-
-- pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
-  displayName: 'Install platyPS'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Generate Help'
-  inputs:
-    command: custom
-    custom: msbuild
-    arguments: 'build.proj /t:GenerateHelp /p:Configuration=$(buildConfiguration)'
-
-- pwsh: 'Test-ModuleManifest .\artifacts\$(buildConfiguration)\PartnerCenter.psd1'
-  displayName: 'Validate Manifest'
+    arguments: 'build.proj /t:Full /p:Configuration=$(buildConfiguration)'
 
 - task: CopyFiles@2
   displayName: 'Copy artifacts directory to $(build.artifactstagingdirectory)'
