@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// The message written to the console.
         /// </summary>
-        private const string Message = "We have launched a browser for you to login.For the old experience with device code flow, please run 'New-PartnerAccessToken -UseDeviceAuthentication'.";
+        private const string Message = "We have launched a browser for you to login. For the old experience with device code flow, please run 'New-PartnerAccessToken -UseDeviceAuthentication'.";
 
         /// <summary>
         /// The name of the service principal parameter set.

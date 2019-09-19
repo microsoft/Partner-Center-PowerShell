@@ -33,7 +33,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// The message written to the console.
         /// </summary>
-        private const string Message = "We have launched a browser for you to login.For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.";
+        private const string Message = "We have launched a browser for you to login. For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.";
 
         /// <summary>
         /// The value used to identify the client connect to the partner service.
