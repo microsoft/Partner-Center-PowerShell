@@ -45,6 +45,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public PartnerContext Context { get; set; }
 
         /// <summary>
+        /// Gets the queue of debug messages.
+        /// </summary>
+        public ConcurrentQueue<string> DebugMessages { get; } = new ConcurrentQueue<string>();
+
+        /// <summary>
         /// Gets an instance of the <see cref="PartnerSession" /> class.
         /// </summary>
         public static PartnerSession Instance

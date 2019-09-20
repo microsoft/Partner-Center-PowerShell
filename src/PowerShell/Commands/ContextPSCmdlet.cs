@@ -20,6 +20,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             PartnerSession.Instance.RegisterComponent("WriteWarning", () => WriteWarningEvent);
         }
 
+        public void FlushDebugMessages()
+        {
+            while (PartnerSession.Instance.DebugMessages.TryDequeue(out string message))
+            {
+                WriteDebug(message);
+            }
+        }
+
         private void WriteWarningSender(object sender, StreamEventArgs args)
         {
             WriteWarning(args.Message);

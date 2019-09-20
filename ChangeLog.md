@@ -20,6 +20,11 @@
 
 # Change Log
 
+## 2.0.1909.4
+
+* Authentication 
+  * Log events from the Microsoft Authentication Library (MSAL) will now be written to the console when the debug flag is set
+
 ## 2.0.1909.3
 
 * Authentication

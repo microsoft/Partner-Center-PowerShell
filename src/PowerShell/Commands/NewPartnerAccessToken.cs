@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthResult))]
-    public class NewPartnerAccessToken : PSCmdlet
+    public class NewPartnerAccessToken : ContextPSCmdlet
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -224,6 +224,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 result.RefreshToken = tokens[key].Secret;
             }
 
+            FlushDebugMessages();
             WriteObject(result);
         }
 
