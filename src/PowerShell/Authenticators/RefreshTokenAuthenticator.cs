@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
 
             return await app.AsRefreshTokenClient().AcquireTokenByRefreshToken(
-                null,
+                parameters.Scopes,
                 parameters.Account.GetProperty(PartnerAccountPropertyType.RefreshToken)).ExecuteAsync().ConfigureAwait(false);
         }
 

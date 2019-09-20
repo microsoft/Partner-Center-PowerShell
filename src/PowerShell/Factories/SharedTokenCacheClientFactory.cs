@@ -8,6 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Security.Cryptography.X509Certificates;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
+    using Models.Authentication;
     using Utilities;
 
     public static class SharedTokenCacheClientFactory
@@ -71,7 +72,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 builder = builder.WithTenantId(tenantId);
             }
 
-            IConfidentialClientApplication client = builder.Build();
+            IConfidentialClientApplication client = builder.WithLogging(
+                DebugLoggingMethod,
+                LogLevel.Info,
+                enablePiiLogging: false,
+                enableDefaultPlatformLogging: true).Build();
 
             MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
             cacheHelper.RegisterCache(client.UserTokenCache);
@@ -102,7 +107,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 builder = builder.WithTenantId(tenantId);
             }
 
-            IPublicClientApplication client = builder.Build();
+            IPublicClientApplication client = builder.WithLogging(
+                DebugLoggingMethod,
+                LogLevel.Info,
+                enablePiiLogging: false,
+                enableDefaultPlatformLogging: true).Build();
             MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
 
             cacheHelper.RegisterCache(client.UserTokenCache);
@@ -120,6 +129,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             }
 
             return tokenCache;
+        }
+
+        private static void DebugLoggingMethod(LogLevel level, string message, bool containsPii)
+        {
+            PartnerSession.Instance.DebugMessages.Enqueue($"MSAL {level} {containsPii} {message}");
         }
     }
 }
