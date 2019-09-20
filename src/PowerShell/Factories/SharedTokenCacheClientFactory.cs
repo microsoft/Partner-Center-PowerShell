@@ -3,13 +3,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Security.Cryptography.X509Certificates;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
+    using Models.Authentication;
     using Utilities;
 
     public static class SharedTokenCacheClientFactory
