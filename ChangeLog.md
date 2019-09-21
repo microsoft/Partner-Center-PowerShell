@@ -20,6 +20,11 @@
 
 # Change Log
 
+## 2.0.1909.5
+
+* Dependency
+  * Corrected an issue that was preventing a dependency from being updated after a successful build
+
 ## 2.0.1909.4
 
 * Authentication 
