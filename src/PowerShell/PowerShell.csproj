@@ -63,7 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PreLoadAssemblies Include="..\lib\System.Security.Cryptography.ProtectedData.dll" />
+    <PreLoadAssemblies Include="$(RepoSrc)lib\System.Security.Cryptography.ProtectedData.dll" />
   </ItemGroup>
 
   <Target Name="CopyFiles" AfterTargets="Build">
