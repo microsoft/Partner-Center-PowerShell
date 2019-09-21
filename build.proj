@@ -30,13 +30,10 @@
 
     <!-- Build the project -->
     <PropertyGroup>
-      <BuildAction Condition="'$(Configuration)' != 'Release'">build</BuildAction>
-      <BuildAction Condition="'$(Configuration)' == 'Release'">publish</BuildAction>
-
       <TestOutputDirectory>$(RepoArtifacts)/TestResults</TestOutputDirectory>
     </PropertyGroup>
 
-    <Exec Command="dotnet $(BuildAction) Partner-Center-PowerShell.sln -c $(Configuration)" />
+    <Exec Command="dotnet build Partner-Center-PowerShell.sln -c $(Configuration)" />
 
     <!-- Delete PowerShell runtime files -->
     <PropertyGroup>
