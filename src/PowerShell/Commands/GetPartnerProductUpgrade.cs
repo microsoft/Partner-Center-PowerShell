@@ -3,39 +3,45 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Usage;
-    using PartnerCenter.Models;
-    using PartnerCenter.Models.Usage;
+    using PartnerCenter.Models.ProductUpgrades;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUsage"), OutputType(typeof(PSResourceUsageRecord))]
-    public class GetPartnerCustomerSubscriptionUsage : PartnerPSCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerProductUpgradeStatus"), OutputType(typeof(ProductUpgradeStatus))]
+    public class GetPartnerProductUpgradeStatus : PartnerPSCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The identifier of the customer.")]
+        [Parameter(HelpMessage = "The identifier of the customer.", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the subscription.
+        /// Gets or set the product family.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The identifier of the subscription.")]
+        [Parameter(HelpMessage = "The family for the product.", Mandatory = true)]
+        [ValidateSet("Azure", IgnoreCase = true)]
+        public string ProductFamily { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the customer.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier of the product upgrade.", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
-        public string SubscriptionId { get; set; }
+        public string UpgradeId { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<ResourceUsageRecord> usageRecords;
-
-            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByResource.GetAsync().GetAwaiter().GetResult();
-            WriteObject(usageRecords.Items.Select(r => new PSResourceUsageRecord(r)), true);
+            Partner.ProductUpgrades.ById(UpgradeId).CheckStatusAsync(new ProductUpgradeRequest
+            {
+                CustomerId = CustomerId,
+                ProductFamily = ProductFamily
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

@@ -71,7 +71,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.Usage.PSAzureResourceMonthlyUsageRecord
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Usage.PSResourceUsageRecord
 
 ## NOTES
 

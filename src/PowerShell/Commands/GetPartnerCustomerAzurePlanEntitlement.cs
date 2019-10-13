@@ -3,27 +3,28 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Models.Usage;
     using PartnerCenter.Models;
-    using PartnerCenter.Models.Usage;
+    using PartnerCenter.Models.Subscriptions;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUsage"), OutputType(typeof(PSResourceUsageRecord))]
-    public class GetPartnerCustomerSubscriptionUsage : PartnerPSCmdlet
+    /// <summary>
+    /// Gets a list of Azure Plan entitlements for a customer from Partner Center.
+    /// </summary>
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement"), OutputType(typeof(AzureEntitlement))]
+    public class GetPartnerCustomerAzurePlanEntitlement : PartnerPSCmdlet
     {
         /// <summary>
-        /// Gets or sets the identifier of the customer.
+        /// Gets or sets the customer identifier.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The identifier of the customer.")]
+        [Parameter(HelpMessage = "The identifier for the customer.", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the subscription.
+        /// Gets or sets the subscription identifier.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The identifier of the subscription.")]
+        [Parameter(HelpMessage = "The identifier for the subscription.", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string SubscriptionId { get; set; }
 
@@ -32,10 +33,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<ResourceUsageRecord> usageRecords;
+            ResourceCollection<AzureEntitlement> entitlements = Partner.Customers[CustomerId]
+                .Subscriptions[SubscriptionId]
+                .GetAzurePlanSubscriptionEntitlementsAsync()
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
 
-            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByResource.GetAsync().GetAwaiter().GetResult();
-            WriteObject(usageRecords.Items.Select(r => new PSResourceUsageRecord(r)), true);
+            WriteObject(entitlements, true);
         }
     }
 }
