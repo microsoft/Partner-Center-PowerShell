@@ -128,6 +128,9 @@ Gets the utilization of a customer's Azure subscription.
 ### [Get-PartnerCustomerTrialConversion](Get-PartnerCustomerTrialConversion.md)
 Gets a list of trial conversions available for the specified subscription.
 
+### [Get-PartnerCustomerUsageRecord](Get-PartnerCustomerUsageRecord.md)
+Gets customer monthly usage records for all customers.
+
 ### [Get-PartnerCustomerUsageSummary](Get-PartnerCustomerUsageSummary.md)
 Gets the customer's usage of a specific Azure service or resource during the current billing period.
 

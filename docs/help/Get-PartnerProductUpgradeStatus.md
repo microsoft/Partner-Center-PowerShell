@@ -1,7 +1,9 @@
 ---
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerProductUpgradeStatus.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version:
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgradeStatus
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerProductUpgradeStatus.md
 schema: 2.0.0
 ---
 
@@ -12,7 +14,7 @@ Gets the product upgrade status for the specified customer and product family.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerProductUpgradeStatus -CustomerId <String> -ProductFamily <String> -UpgradeId <String>
  [<CommonParameters>]
 ```
