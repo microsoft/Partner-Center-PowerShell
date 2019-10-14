@@ -11,7 +11,7 @@
     RootModule = 'PartnerCenter.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2.0.1910.1-preview'
+    ModuleVersion = '2.0.1910.1'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -106,11 +106,12 @@
                       'Get-PartnerCustomerSubscribedSku',
                       'Get-PartnerCustomerSubscription',
                       'Get-PartnerCustomerSubscriptionAddOn',
+                      'Get-PartnerCustomerSubscriptionMeterUsage',
                       'Get-PartnerCustomerSubscriptionProvisioningStatus',
                       'Get-PartnerCustomerSubscriptionRegistrationStatus',
+                      'Get-PartnerCustomerSubscriptionResourceUsage',
                       'Get-PartnerCustomerSubscriptionSupportContact',
                       'Get-PartnerCustomerSubscriptionUpgrades',
-                      'Get-PartnerCustomerSubscriptionUsage',
                       'Get-PartnerCustomerSubscriptionUtilization',
                       'Get-PartnerCustomerTrialConversion',
                       'Get-PartnerCustomerUsageRecord',
@@ -219,7 +220,7 @@
             ReleaseNotes = ''
 
             # Prerelease string of this module
-            # Prerelease = 'preview'
+            Prerelease = 'preview'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update
             # RequireLicenseAcceptance = $false

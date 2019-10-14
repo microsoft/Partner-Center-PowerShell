@@ -3,11 +3,30 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
 {
+    using Extensions;
+    using Microsoft.Store.PartnerCenter.Models.Usage;
+
     /// <summary>
     /// Defines the estimated monetary cost of a subscription's meter level usage in the current billing cycle.
     /// </summary>
-    public class PSMeterUsageRecord : PSUsageRecordBase
+    public sealed class PSMeterUsageRecord : PSUsageRecordBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSMeterUsageRecord" /> class.
+        /// </summary>
+        public PSMeterUsageRecord()
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PSMeterUsageRecord" /> class.
+        /// </summary>
+        /// <param name="resource">The base resource for this instance.</param>
+        public PSMeterUsageRecord(MeterUsageRecord resource)
+        {
+            this.CopyFrom(resource);
+        }
+
+
         /// <summary>
         /// Gets or sets the Azure resource category.
         /// </summary>

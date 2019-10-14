@@ -10,8 +10,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using PartnerCenter.Models.Usage;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUsage"), OutputType(typeof(PSResourceUsageRecord))]
-    public class GetPartnerCustomerSubscriptionUsage : PartnerPSCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionMeterUsage"), OutputType(typeof(PSMeterUsageRecord))]
+    public class GetPartnerCustomerSubscriptionMeterUsage : PartnerPSCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -32,10 +32,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<ResourceUsageRecord> usageRecords;
+            ResourceCollection<MeterUsageRecord> usageRecords;
 
-            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByResource.GetAsync().GetAwaiter().GetResult();
-            WriteObject(usageRecords.Items.Select(r => new PSResourceUsageRecord(r)), true);
+            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByMeter.GetAsync().GetAwaiter().GetResult();
+            WriteObject(usageRecords.Items.Select(r => new PSMeterUsageRecord(r)), true);
         }
     }
 }

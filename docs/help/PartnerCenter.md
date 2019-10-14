@@ -107,20 +107,23 @@ Gets a list or a single customer subscription.
 ### [Get-PartnerCustomerSubscriptionAddOn](Get-PartnerCustomerSubscriptionAddOn.md)
 Gets the purchased add-ons for the specified subscription.
 
+### [Get-PartnerCustomerSubscriptionMeterUsage](Get-PartnerCustomerSubscriptionMeterUsage.md)
+Gets the subscription's meter usage records.
+
 ### [Get-PartnerCustomerSubscriptionProvisioningStatus](Get-PartnerCustomerSubscriptionProvisioningStatus.md)
 Gets the provisioning status for the specified subscription.
 
 ### [Get-PartnerCustomerSubscriptionRegistrationStatus](Get-PartnerCustomerSubscriptionRegistrationStatus.md)
 Gets the subscription registration status.
 
+### [Get-PartnerCustomerSubscriptionResourceUsage](Get-PartnerCustomerSubscriptionResourceUsage.md)
+Gets the subscription's resource usage records.
+
 ### [Get-PartnerCustomerSubscriptionSupportContact](Get-PartnerCustomerSubscriptionSupportContact.md)
 Gets the support contact for the specified subscription.
 
 ### [Get-PartnerCustomerSubscriptionUpgrades](Get-PartnerCustomerSubscriptionUpgrades.md)
 Gets the available upgrade offers for the specified subscription.
-
-### [Get-PartnerCustomerSubscriptionUsage](Get-PartnerCustomerSubscriptionUsage.md)
-Gets a collection resource that contains a list of services within a customer's subscription and their associated rated usage information.
 
 ### [Get-PartnerCustomerSubscriptionUtilization](Get-PartnerCustomerSubscriptionUtilization.md)
 Gets the utilization of a customer's Azure subscription.

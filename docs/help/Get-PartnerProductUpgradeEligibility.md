@@ -19,7 +19,7 @@ Get-PartnerProductUpgradeEligibility -CustomerId <String> -ProductFamily <String
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Gets the product upgrade eligibility for the specified customer and product family.
 
 ## EXAMPLES
 

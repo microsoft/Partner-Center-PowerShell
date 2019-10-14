@@ -1,34 +1,34 @@
 ---
-content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionUsage.md
+content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionResourceUsage.md
 external help file: Microsoft.Store.PartnerCenter.PowerShell.dll-Help.xml
 Module Name: PartnerCenter
-online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerSubscriptionUsage
-original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionUsage.md
+online version: https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerSubscriptionResourceUsage
+original_content_git_url: https://github.com/Microsoft/Partner-Center-PowerShell/blob/master/docs/help/Get-PartnerCustomerSubscriptionResourceUsage.md
 schema: 2.0.0
 ---
 
-# Get-PartnerCustomerSubscriptionUsage
+# Get-PartnerCustomerSubscriptionResourceUsage
 
 ## SYNOPSIS
-Gets a collection resource that contains a list of services within a customer's subscription and their associated rated usage information.
+Gets the subscription's resource usage records.
 
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerSubscriptionUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+Get-PartnerCustomerSubscriptionResourceUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets a collection resource that contains a list of services within a customer's subscription and their associated rated usage information.
+Gets the subscription's resource usage records.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerCustomerSubscriptionUsage -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -SubscriptionId '9ed730f0-882a-4c15-b4bc-7bb84da69835'
+PS C:\> Get-PartnerCustomerSubscriptionResourceUsage -CustomerId '87045e4b-ab69-4a8f-875a-af020b383bc6' -SubscriptionId 'd2a89f2d-1aa1-4f09-bc62-cefd8d0a005c'
 ```
 
-Gets a collection resource that contains a list of services within a customer's subscription and their associated rated usage information.
+Gets the subscription's resource usage records.
 
 ## PARAMETERS
 
