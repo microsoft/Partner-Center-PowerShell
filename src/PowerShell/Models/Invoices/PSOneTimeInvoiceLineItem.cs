@@ -38,6 +38,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string AvailabilityId { get; set; }
 
         /// <summary>
+        /// Gets or sets the units purchased. Per design column named as BillableQuantity.
+        /// </summary>
+        public decimal BillableQuantity { get; set; }
+
+        /// <summary>
         /// Gets the billing provider.
         /// </summary>
         public override BillingProvider BillingProvider => BillingProvider.OneTime;
@@ -107,6 +112,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string InvoiceNumber { get; set; }
 
         /// <summary>
+        /// Gets or sets the description for the meter.
+        /// </summary>
+        public string MeterDescription { get; set; }
+
+        /// <summary>
         /// Gets or sets the MPN identifier associated to this line item.
         /// </summary>
         public string MpnId { get; set; }
@@ -125,6 +135,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         /// Gets or sets the partner identifier.
         /// </summary>
         public string PartnerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exchange rate date at which the pricing currency to billing currency exchange rate was determined.
+        /// </summary>
+        public DateTime? PCToBCExchangeRateDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the pricing currency to billing currency exchange rate.
+        /// </summary>
+        public decimal PCToBCExchangeRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the price adjustment description.
+        /// </summary>
+        public string PriceAdjustmentDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the pricing currency code.
+        /// </summary>
+        public string PricingCurrency { get; set; }
 
         /// <summary>
         /// Gets or sets the product unique identifier.
@@ -172,7 +202,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string SubscriptionDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the subscription id associated with this purchase.
+        /// Gets or sets the subscription identifier associated with this purchase.
         /// </summary>
         public string SubscriptionId { get; set; }
 
@@ -202,7 +232,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public decimal UnitPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit type.
+        /// Gets or sets the type of unit.
         /// </summary>
         public string UnitType { get; set; }
     }

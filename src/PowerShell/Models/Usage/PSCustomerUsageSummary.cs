@@ -44,7 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         /// <summary>
         /// Additional operations to be performed when cloning an instance of <see cref="CustomerUsageSummary" /> to an instance of <see cref="PSCustomerUsageSummary" />. 
         /// </summary>
-        /// <param name="customerUsageSummary">The cart being cloned.</param>
+        /// <param name="summary">The reosurce being cloned.</param>
         private void CloneAdditionalOperations(CustomerUsageSummary summary)
         {
             Budget = new PSSpendingBudget(summary.Budget);

@@ -3,8 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
 {
-    using PartnerCenter.Models.Usage;
     using Extensions;
+    using PartnerCenter.Models.Usage;
 
     /// <summary>
     /// Defines the estimated monetary cost of a subscription's resource level usage in the current billing cycle.

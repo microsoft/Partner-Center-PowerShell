@@ -113,6 +113,7 @@
                       'Get-PartnerCustomerSubscriptionUsage',
                       'Get-PartnerCustomerSubscriptionUtilization',
                       'Get-PartnerCustomerTrialConversion',
+                      'Get-PartnerCustomerUsageRecord',
                       'Get-PartnerCustomerUsageSummary',
                       'Get-PartnerCustomerUser',
                       'Get-PartnerCustomerUserLicense',
