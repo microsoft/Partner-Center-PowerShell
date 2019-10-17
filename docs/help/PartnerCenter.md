@@ -50,6 +50,9 @@ Gets a specific customer or a list of available customers.
 ### [Get-PartnerCustomerAgreement](Get-PartnerCustomerAgreement.md)
 Gets confirmation of customer acceptance provided previously.
 
+### [Get-PartnerCustomerAzurePlanEntitlement](Get-PartnerCustomerAzurePlanEntitlement.md)
+Gets an Azure Plan's subscription entitlements.
+
 ### [Get-PartnerCustomerBillingProfile](Get-PartnerCustomerBillingProfile.md)
 Gets the customer's billing profile.
 
@@ -104,11 +107,17 @@ Gets a list or a single customer subscription.
 ### [Get-PartnerCustomerSubscriptionAddOn](Get-PartnerCustomerSubscriptionAddOn.md)
 Gets the purchased add-ons for the specified subscription.
 
+### [Get-PartnerCustomerSubscriptionMeterUsage](Get-PartnerCustomerSubscriptionMeterUsage.md)
+Gets the subscription's meter usage records.
+
 ### [Get-PartnerCustomerSubscriptionProvisioningStatus](Get-PartnerCustomerSubscriptionProvisioningStatus.md)
 Gets the provisioning status for the specified subscription.
 
 ### [Get-PartnerCustomerSubscriptionRegistrationStatus](Get-PartnerCustomerSubscriptionRegistrationStatus.md)
 Gets the subscription registration status.
+
+### [Get-PartnerCustomerSubscriptionResourceUsage](Get-PartnerCustomerSubscriptionResourceUsage.md)
+Gets the subscription's resource usage records.
 
 ### [Get-PartnerCustomerSubscriptionSupportContact](Get-PartnerCustomerSubscriptionSupportContact.md)
 Gets the support contact for the specified subscription.
@@ -116,14 +125,14 @@ Gets the support contact for the specified subscription.
 ### [Get-PartnerCustomerSubscriptionUpgrades](Get-PartnerCustomerSubscriptionUpgrades.md)
 Gets the available upgrade offers for the specified subscription.
 
-### [Get-PartnerCustomerSubscriptionUsage](Get-PartnerCustomerSubscriptionUsage.md)
-Gets a collection resource that contains a list of services within a customer's subscription and their associated rated usage information.
-
 ### [Get-PartnerCustomerSubscriptionUtilization](Get-PartnerCustomerSubscriptionUtilization.md)
 Gets the utilization of a customer's Azure subscription.
 
 ### [Get-PartnerCustomerTrialConversion](Get-PartnerCustomerTrialConversion.md)
 Gets a list of trial conversions available for the specified subscription.
+
+### [Get-PartnerCustomerUsageRecord](Get-PartnerCustomerUsageRecord.md)
+Gets customer monthly usage records for all customers.
 
 ### [Get-PartnerCustomerUsageSummary](Get-PartnerCustomerUsageSummary.md)
 Gets the customer's usage of a specific Azure service or resource during the current billing period.
@@ -194,6 +203,12 @@ Checks the inventory for the specified product.
 ### [Get-PartnerProductSku](Get-PartnerProductSku.md)
 Gets the list of SKUs for a product.
 
+### [Get-PartnerProductUpgradeEligibility](Get-PartnerProductUpgradeEligibility.md)
+Gets the product upgrade eligibility for the specified customer and product family.
+
+### [Get-PartnerProductUpgradeStatus](Get-PartnerProductUpgradeStatus.md)
+Gets the product upgrade status for the specified customer and product family.
+
 ### [Get-PartnerResellerRequestLink](Get-PartnerResellerRequestLink.md)
 Gets a relationship request URL to send to a customer.
 
@@ -250,6 +265,9 @@ Registers the specified subscription.
 
 ### [New-PartnerCustomerUser](New-PartnerCustomerUser.md)
 Creates a new user in the specified customer Azure Active Directory tenant.
+
+### [New-PartnerProductUpgrade](New-PartnerProductUpgrade.md)
+Creates a product upgrade request for the specified customer.
 
 ### [New-PartnerServiceRequest](New-PartnerServiceRequest.md)
 Creates a service request at the partner level.

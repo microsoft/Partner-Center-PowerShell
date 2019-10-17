@@ -22,6 +22,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         public DateTimeOffset BillingStartDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the currency code.
+        /// </summary>
+        public string CurrencyCode { get; set; }
+
+        /// <summary>
         /// Gets or sets the currency locale.
         /// </summary>
         public CultureInfo CurrencyLocale { get; set; }
@@ -45,5 +50,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         /// Gets or sets the total estimated cost based on current usage from the start of the billing period.
         /// </summary>
         public decimal TotalCost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the estimated total cost in USD.
+        /// </summary>
+        public decimal? USDTotalCost { get; set; }
     }
 }

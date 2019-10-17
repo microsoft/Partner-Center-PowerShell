@@ -39,7 +39,22 @@ PS C:\>
 PS C:\> Add-PartnerCustomerCartLineItem -CartId '65faf57b-0205-47ee-92b3-08dcf233ea73' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItem $lineItem
 ```
 
-Adds a new line item to the specified cart.
+Adds a line item to purchase a reserved instance to the specified cart.
+
+### Example 2
+
+```powershell
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
+PS C:\>
+PS C:\> $lineItem.BillingCycle = 'OneTime'
+PS C:\> $lineItem.CatalogItemId = 'DZH318Z0BPS6:0001:DZH318Z0BML6'
+PS C:\> $lineItem.FriendlyName = 'Microsoft Azure Plan'
+PS C:\> $lineItem.Quantity = 1
+PS C:\>
+PS C:\> Add-PartnerCustomerCartLineItem -CartId '65faf57b-0205-47ee-92b3-08dcf233ea73' -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItem $lineItem
+```
+
+Adds a line item to purchase the Microsoft Azure Plan to the specified cart.
 
 ## PARAMETERS
 

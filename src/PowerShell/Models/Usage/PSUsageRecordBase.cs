@@ -11,7 +11,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
     /// </summary>
     public abstract class PSUsageRecordBase
     {
-        /// <summary>Gets or sets the currency locale.</summary>
+        /// <summary>
+        /// Gets or sets the currency code.
+        /// </summary>
+        public string CurrencyCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the currency locale.
+        /// </summary>
         public CultureInfo CurrencyLocale { get; set; }
 
         /// <summary>
@@ -33,5 +40,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         /// Gets or sets the estimated total cost of usage.
         /// </summary>
         public decimal TotalCost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the estimated total cost in USD.
+        /// </summary>
+        public decimal? USDTotalCost { get; set; }
     }
 }

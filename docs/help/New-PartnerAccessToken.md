@@ -186,7 +186,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServicePrincipal
-{{ Fill ServicePrincipal Description }}
+Indicates that this account authenticates by providing service principal credentials.
 
 ```yaml
 Type: SwitchParameter
