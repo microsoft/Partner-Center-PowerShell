@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
     using PartnerCenter.Models.Invoices;
 
     /// <summary>
-    /// Represents an invoice billing line item for OneTime purchases.
+    /// Represents an invoice billing line item for one time purchases.
     /// </summary>
     public class PSOneTimeInvoiceLineItem : PSInvoiceLineItem
     {
@@ -38,7 +38,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices
         public string AvailabilityId { get; set; }
 
         /// <summary>
-        /// Gets or sets the units purchased. Per design column named as BillableQuantity.
+        /// Gets or sets the billing frequency.
+        /// </summary>
+        public string BillingFrequency { get; set; }
+
+        /// <summary>
+        /// Gets or sets the units purchased.
         /// </summary>
         public decimal BillableQuantity { get; set; }
 
