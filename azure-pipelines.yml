@@ -17,6 +17,21 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: CredScan@2
+  displayName: CredScan
+  inputs:
+    toolMajorVersion: 'V2'
+  condition: eq(variables['Agent.OS'], 'Windows_NT')
+
+- task: PoliCheck@1
+  displayName: PoliCheck
+  inputs:
+    inputType: 'Basic'
+    targetType: 'F'
+    targetArgument: '$(Build.SourcesDirectory)'
+    result: 'PoliCheck.xml'
+  condition: eq(variables['Agent.OS'], 'Windows_NT')
+  
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
