@@ -57,7 +57,7 @@ steps:
   inputs:
     InputType: 'Basic'
     Function: 'analyze'
-    AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\*.dll;'
+    AnalyzeTarget: 'artifacts\$(buildConfiguration)\*.dll;'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
 - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@1
