@@ -52,6 +52,33 @@ steps:
 - pwsh: 'Test-ModuleManifest .\artifacts\$(buildConfiguration)\PartnerCenter.psd1'
   displayName: 'Validate Manifest'
 
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: Strong name signing the assemblies
+  inputs:
+    ConnectedServiceName: esrp-partner-center-powershell
+    FolderPath: 'artifacts\$(buildConfiguration)'
+    Pattern: 'Microsoft.Store.PartnerCenter.dll,Microsoft.Store.PartnerCenter.PowerShell.dll'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+      [
+        {
+          "keyCode": "CP-235845-SN",
+          "operationSetCode": "StrongNameSign",
+          "parameters": [],
+          "toolName": "sign",
+          "toolVersion": "1.0"
+        },
+        {
+          "keyCode": "CP-235845-SN",
+          "operationSetCode": "StrongNameVerify",
+          "parameters": [],
+          "toolName": "sign",
+          "toolVersion": "1.0"
+        }
+      ]
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
+
+
 - task: CopyFiles@2
   displayName: 'Copy artifacts directory to $(build.artifactstagingdirectory)'
   inputs:
