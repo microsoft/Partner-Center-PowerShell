@@ -1,10 +1,10 @@
 strategy:
   matrix:
-    linux:
+    Linux:
       imageName: 'ubuntu-16.04'
-    mac:
+    macOS:
       imageName: 'macos-10.13'
-    windows:
+    Windows:
       imageName: 'Windows-2019'
 
 trigger:
@@ -53,50 +53,77 @@ steps:
   displayName: 'Validate Manifest'
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-  displayName: Strong name signing the assemblies
+  displayName: 'ESRP CodeSigning copy'
   inputs:
-    ConnectedServiceName: esrp-partner-center-powershell
+    ConnectedServiceName: 'esrp-partner-center-powershell'
     FolderPath: 'artifacts\$(buildConfiguration)'
-    Pattern: 'Microsoft.Store.PartnerCenter.dll,Microsoft.Store.PartnerCenter.PowerShell.dll'
+    Pattern: 'Microsoft.Store.PartnerCenter.dll,Microsoft.Store.PartnerCenter.PowerShell.dll,*.ps1xml,*.psd1, *.psm1'
     signConfigType: inlineSignParams
     inlineOperation: |
-      [
-        {
-          "keyCode": "CP-235845-SN",
-          "operationSetCode": "StrongNameSign",
-          "parameters": [],
-          "toolName": "sign",
-          "toolVersion": "1.0"
-        },
-        {
-          "keyCode": "CP-235845-SN",
-          "operationSetCode": "StrongNameVerify",
-          "parameters": [],
-          "toolName": "sign",
-          "toolVersion": "1.0"
-        }
-      ]
+     [
+         {
+             "keyCode": "CP-230012",
+             "operationSetCode": "SigntoolSign",
+             "parameters": [
+             {
+                 "parameterName": "OpusName",
+                 "parameterValue": "Microsoft"
+             },
+             {
+                 "parameterName": "OpusInfo",
+                 "parameterValue": "http://www.microsoft.com"
+             },
+             {
+                 "parameterName": "FileDigest",
+                 "parameterValue": "/fd \"SHA256\""
+             },
+             {
+                 "parameterName": "PageHash",
+                 "parameterValue": "/NPH"
+             },
+             {
+                 "parameterName": "TimeStamp",
+                 "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+             }
+             ],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         },
+         {
+             "keyCode": "CP-230012",
+             "operationSetCode": "SigntoolVerify",
+             "parameters": [ ],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         }
+     ]
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
+- task: DeleteFiles@1
+  displayName: Delete the code sign summary file
+  inputs:
+    SourceFolder: '_layout'
+    Contents: '**\CodeSignSummary-*.md'
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
 - task: CopyFiles@2
-  displayName: 'Copy artifacts directory to $(build.artifactstagingdirectory)'
+  displayName: 'Copy artifacts directory to $(build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
+    SourceFolder: '$(system.DefaultWorkingDirectory)'
     Contents: 'artifacts\**'
-    TargetFolder: '$(build.artifactstagingdirectory)\'
+    TargetFolder: '$(build.ArtifactStagingDirectory)\'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - task: CopyFiles@2
-  displayName: 'Copy build directory to $(build.artifactstagingdirectory)'
+  displayName: 'Copy build directory to $(build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
+    SourceFolder: '$(system.DefaultWorkingDirectory)'
     Contents: 'build\**'
-    TargetFolder: '$(build.artifactstagingdirectory)\'
+    TargetFolder: '$(build.ArtifactStagingDirectory)\'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    PathtoPublish: '$(build.ArtifactStagingDirectory)'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
