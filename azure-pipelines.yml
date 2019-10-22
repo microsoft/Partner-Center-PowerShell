@@ -60,7 +60,6 @@ steps:
     AnalyzeTarget: '$(Build.ArtifactStagingDirectory)\*.dll;'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
-steps:
 - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@1
   displayName: 'Post Analysis'
   inputs:
