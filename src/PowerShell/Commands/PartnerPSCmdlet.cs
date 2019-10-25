@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Reflection;
+    using Graph;
     using Models.Authentication;
     using Properties;
 
@@ -21,6 +22,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// The link that provide addtional information regarding the breaking change.
         /// </summary>
         private const string BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK = "https://aka.ms/partnercenterps-changewarnings";
+
+        internal IGraphServiceClient Graph { get; private set; }
 
         /// <summary>
         /// Gets the available Partner Center operations.
@@ -37,6 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
             }
 
+            Graph = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
             Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
 
             ProcessBreakingChangeAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);

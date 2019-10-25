@@ -9,6 +9,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     public static class EnvironmentConstants
     {
         /// <summary>
+        /// The Azure Active Directory Graph endpoint for the commercial cloud.
+        /// </summary>
+        public const string AzureAdGraphEndpoint = "https://graph.windows.net";
+
+        /// <summary>
+        /// The Azure Active Directory Graph endpoint for the pre-production environment (PPE).
+        /// </summary>
+        public const string AzureAdGraphPpeEndpoint = "https://graph.ppe.windows.net";
+
+        /// <summary>
         /// The Azure Active Directory authentication endpoint for the commercial cloud.
         /// </summary>
         public const string AzureActiveDirectoryEndpoint = "https://login.microsoftonline.com/";
@@ -24,39 +34,39 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string ChinaActiveDirectoryEndpoint = "https://login.chinacloudapi.cn/";
 
         /// <summary>
+        /// The Azure Active Directory Graph endpoint for the China cloud.
+        /// </summary>
+        public const string ChinaAzureAdGraphEndpoint = "https://graph.chinacloudapi.cn";
+
+        /// <summary>
+        /// The Microsoft Graph endpoint for the China cloud.
+        /// </summary>
+        public const string ChinaGraphEndpoint = "https://microsoftgraph.chinacloudapi.cn";
+
+        /// <summary>
+        /// The Partner Center endpoint for the China cloud.
+        /// </summary>
+        public const string ChinaPartnerCenterEndpoint = "https://partner.partnercenterapi.microsoftonline.cn";
+
+        /// <summary>
         /// The Azure Active Directory authentication endpoint for the German cloud.
         /// </summary>
         public const string GermanActiveDirectoryEndpoint = "https://login.microsoftonline.de/";
 
         /// <summary>
-        /// The Azure Active Directory authentication endpoint for the US Government cloud.
-        /// </summary>
-        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us/";
-
-        /// <summary>
-        /// The Azure Active Directory Graph endpoint for the commercial cloud.
-        /// </summary>
-        public const string AzureGraphEndpoint = "https://graph.windows.net";
-
-        /// <summary>
-        /// The Azure Active Directory Graph endpoint for the pre-production environment (PPE).
-        /// </summary>
-        public const string AzureGraphPpeEndpoint = "https://graph.ppe.windows.net";
-
-        /// <summary>
-        /// The Azure Active Directory Graph endpoint for the China cloud.
-        /// </summary>
-        public const string ChinaGraphEndpoint = "https://graph.chinacloudapi.cn";
-
-        /// <summary>
         /// The Azure Active Directory Graph endpoint for the German cloud.
         /// </summary>
-        public const string GermanGraphEndpoint = "https://graph.cloudapi.de";
+        public const string GermanAzureAdGraphEndpoint = "https://graph.cloudapi.de";
 
         /// <summary>
-        /// The Azure Active Directory Graph endpoint for the US Government cloud.
+        /// The Microsoft Graph endpoint for the German cloud.
         /// </summary>
-        public const string USGovernmentGraphEndpoint = "https://graph.windows.net";
+        public const string GermanGraphEndpoint = "https://graph.microsoft.de";
+
+        /// <summary>
+        /// The Microsoft Graph endpoint for the commerical cloud.
+        /// </summary>
+        public const string GraphEndpoint = "https://graph.microsoft.com";
 
         /// <summary>
         /// The Partner Center endpoint address.
@@ -69,8 +79,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string PartnerCenterPpeEndpoint = "https://api.partnercenter.microsoft-ppe.com";
 
         /// <summary>
-        /// The Partner Center endpoint for the China cloud.
+        /// The Microsoft Graph endpoint with the pre-production environment.
         /// </summary>
-        public const string ChinaPartnerCenterEndpoint = "https://partner.partnercenterapi.microsoftonline.cn";
+        public const string PpeGraphEndpoint = "https://graph.microsoft-ppe.com";
+
+        /// <summary>
+        /// The Azure Active Directory authentication endpoint for the US Government cloud.
+        /// </summary>
+        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us/";
+
+        /// <summary>
+        /// The Azure Active Directory Graph endpoint for the US Government cloud.
+        /// </summary>
+        public const string USGovernmentAzureAdGraphEndpoint = "https://graph.windows.net";
+
+        /// <summary>
+        /// The Microsoft Graph endpoint for the US Government cloud.
+        /// </summary>
+        public const string USGovernmentGraphEndpoint = "https://graph.microsoft.us";
     }
 }

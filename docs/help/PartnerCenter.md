@@ -230,6 +230,12 @@ Gets a list of service request topics.
 ### [Get-PartnerSupportProfile](Get-PartnerSupportProfile.md)
 Gets the partner's support profile.
 
+### [Get-PartnerUser](Get-PartnerUser.md)
+Gets a list of users from the partner tenant
+
+### [Get-PartnerUserSignInActivity](Get-PartnerUserSignInActivity.md)
+Gets the sign activities for the specified user.
+
 ### [Get-PartnerValidationCode](Get-PartnerValidationCode.md)
 Gets a collection of a partner's Government Community Cloud validation codes.
 
@@ -343,3 +349,4 @@ Tests if the specified domain name is available for creating a new tenant.
 
 ### [Test-PartnerSecurityRequirement](Test-PartnerSecurityRequirement.md)
 Tests the account, used during authentication, if multi-factor authentication was enforced.
+

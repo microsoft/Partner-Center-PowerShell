@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
     using Network;
     using PowerShell.Factories;
+    using Graph;
 
     /// <summary>
     /// Factory that provides initialized clients used to mock interactions with online services.
@@ -35,6 +36,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         {
             this.credentials = credentials;
             this.httpMockHandler = httpMockHandler;
+        }
+
+        /// <summary>
+        /// Creates a nwe instance of the Microsoft Graph service client.
+        /// </summary>
+        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
+        public IGraphServiceClient CreateGraphServiceClient()
+        {
+            return null;
         }
 
         /// <summary>

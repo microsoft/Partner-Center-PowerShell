@@ -20,7 +20,7 @@
 
 # Change Log
 
-## 2.0.1910.1-preview
+## 2.0.1910.1
 
 * Invoicing
   * [Daily Rated Usage Line Item](https://github.com/microsoft/Partner-Center-PowerShell/blob/master/src/PowerShell/Models/Invoices/PSDailyRatedUsageLineItem.cs)
@@ -28,6 +28,9 @@
     * Modified the type for the *AdditionalInfo* and *Tags* properties from string to *Dictionary<string, string>*
   * [One Time Invoice Line Item](https://github.com/microsoft/Partner-Center-PowerShell/blob/master/src/PowerShell/Models/Invoices/PSOneTimeInvoiceLineItem.cs)
     * Added the *BillableQuantity*, *MeterDescription*, *PCToBCExchangeRateDate*, *PCToBCExchangeRate*, *PriceAdjustmentDescription*, and *PricingCurrency* properties
+* Partner
+  * Added the [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgrade) command to get partner user accounts
+    * Added the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command to get sign-in activites for the specified user account
 * Product Upgrades
   * Added the [Get-PartnerProductUpgrade](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgrade) command to get information on product upgrades for the specified customer
   * Added the [Get-PartnerProductUpgradeEligibility](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgrade) command to determine if the specified customer has a product eligible for an upgrade
