@@ -3,11 +3,15 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using Graph;
+
     /// <summary>
     /// Represents a factory that provides initialized clients used to interact with online services.
     /// </summary>
     public interface IClientFactory
     {
+        IGraphServiceClient CreateGraphServiceClient();
+
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
