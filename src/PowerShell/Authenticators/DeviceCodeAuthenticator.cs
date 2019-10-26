@@ -9,8 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
-    using Models;
-    using Models.Authentication;
 
     /// <summary>
     /// Provides the ability to authenticate using the device code flow.

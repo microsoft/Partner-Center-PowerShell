@@ -23,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         private readonly TcpListener listener;
 
         /// <summary>
-        /// he port on which to listen for incoming connection attempts.
+        /// The port on which to listen for incoming connection attempts.
         /// </summary>
         private readonly int port;
 

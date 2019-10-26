@@ -13,8 +13,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Extensions;
     using Identity.Client;
     using Identity.Client.Extensibility;
-    using Models;
-    using Models.Authentication;
     using Network;
 
     /// <summary>
