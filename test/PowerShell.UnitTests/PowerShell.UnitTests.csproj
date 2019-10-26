@@ -10,6 +10,7 @@
     <Version>2.0.1911.1</Version>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
