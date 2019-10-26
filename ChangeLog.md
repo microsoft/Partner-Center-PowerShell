@@ -22,6 +22,8 @@
 
 ## 2.0.1910.1
 
+* Authentication
+  * Addressed issue preventing CTRL+C from interrupting the waiting for a repsonse during the interactive authentication scenario
 * Invoicing
   * [Daily Rated Usage Line Item](https://github.com/microsoft/Partner-Center-PowerShell/blob/master/src/PowerShell/Models/Invoices/PSDailyRatedUsageLineItem.cs)
     * Added the *EntitlementId*, *EntitlementDescription*, *PCToBCExchangeRate*, *PCToBCExchangeRateDate*, *EffectiveUnitPrice*, and *RateOfPartnerEarnedCredit* properties

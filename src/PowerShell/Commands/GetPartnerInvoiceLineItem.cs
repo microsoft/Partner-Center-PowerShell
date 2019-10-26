@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of line items for the specified invoice from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceLineItem"), OutputType(typeof(PSInvoiceLineItem))]
-    public class GetPartnerInvoiceLineItem : PartnerPSCmdlet
+    public class GetPartnerInvoiceLineItem : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the billing provider.

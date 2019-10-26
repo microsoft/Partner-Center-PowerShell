@@ -3,7 +3,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading;
     using Identity.Client;
     using Models.Authentication;
 
@@ -16,6 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <returns>The result from the authentication request.</returns>
-        AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null);
+        AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, CancellationToken cancellationToken = default);
     }
 }

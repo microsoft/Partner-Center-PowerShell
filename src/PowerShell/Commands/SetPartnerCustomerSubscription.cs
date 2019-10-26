@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscription", SupportsShouldProcess = true), OutputType(typeof(PSSubscription))]
-    public class SetPartnerCustomerSubscription : PartnerPSCmdlet
+    public class SetPartnerCustomerSubscription : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer object used to scope the request.

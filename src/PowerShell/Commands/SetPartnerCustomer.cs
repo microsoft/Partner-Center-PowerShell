@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomer", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(PSCustomer))]
-    public class SetPartnerCustomer : PartnerPSCmdlet
+    public class SetPartnerCustomer : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer being modified.

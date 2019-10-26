@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerQualification", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(CustomerQualification))]
-    public class SetPartnerCustomerQualification : PartnerPSCmdlet
+    public class SetPartnerCustomerQualification : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer being modified.

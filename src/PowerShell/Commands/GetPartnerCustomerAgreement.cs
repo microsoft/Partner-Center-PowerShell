@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of agreements the customer in place.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerAgreement"), OutputType(typeof(PSAgreement))]
-    public class GetPartnerCustomerAgreement : PartnerPSCmdlet
+    public class GetPartnerCustomerAgreement : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 

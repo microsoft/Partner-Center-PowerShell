@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Create a new agreement for the specified customer.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "PartnerCustomerAgreement"), OutputType(typeof(PSAgreement))]
-    public class NewPartnerCustomerAgreement : PartnerPSCmdlet
+    public class NewPartnerCustomerAgreement : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 

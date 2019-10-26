@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Retrieves the registration status for the specified subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionRegistrationStatus"), OutputType(typeof(PSSubscriptionRegistrationStatus))]
-    public class GetPartnerCustomerSubscriptionRegistrationStatus : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionRegistrationStatus : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

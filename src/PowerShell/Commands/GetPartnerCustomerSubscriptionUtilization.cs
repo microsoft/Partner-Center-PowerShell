@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Cmdlet used to obtain Azure utilization records for the specified subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUtilization"), OutputType(typeof(PSAzureUtilizationRecord))]
-    public class GetPartnerCustomerSubscriptionUtilization : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionUtilization : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer that owns the subscription.

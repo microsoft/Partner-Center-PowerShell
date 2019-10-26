@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerProductAvailability", DefaultParameterSetName = "BySku"), OutputType(typeof(PSProductAvailability))]
-    public class GetPartnerProductAvailability : PartnerPSCmdlet
+    public class GetPartnerProductAvailability : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the product identifier.

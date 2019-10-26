@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get partner licenses usage information aggregated to include all customers from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerLicenseUsageInfo"), OutputType(typeof(PSPartnerLicensesUsageInsight))]
-    public class GetPartnerLicenseUsageInfo : PartnerPSCmdlet
+    public class GetPartnerLicenseUsageInfo : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

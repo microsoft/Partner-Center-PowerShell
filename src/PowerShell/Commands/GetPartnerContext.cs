@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Get, "PartnerContext")]
     [OutputType(typeof(PartnerContext))]
-    public class GetPartnerContext : ContextPSCmdlet
+    public class GetPartnerContext : PartnerPSCmdlet
     {
         protected override void ProcessRecord()
         {

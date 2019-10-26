@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Verifies the specified is valid.
     /// </summary>
     [Cmdlet(VerbsDiagnostic.Test, "PartnerAddress", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class TestPartnerAddress : PartnerPSCmdlet
+    public class TestPartnerAddress : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.

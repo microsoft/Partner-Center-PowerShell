@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Adds a cart line item to the specified cart.
     /// </summary>
     [Cmdlet(VerbsCommon.Add, "PartnerCustomerCartLineItem", SupportsShouldProcess = true), OutputType(typeof(PSCart))]
-    public class AddPartnerCustomerCartLineItem : PartnerPSCmdlet
+    public class AddPartnerCustomerCartLineItem : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.

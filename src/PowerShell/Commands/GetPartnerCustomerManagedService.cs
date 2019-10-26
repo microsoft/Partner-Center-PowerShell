@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the customer's managed services from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerManagedService"), OutputType(typeof(PSManagedService))]
-    public class GetPartnerCustomerManagedService : PartnerPSCmdlet
+    public class GetPartnerCustomerManagedService : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

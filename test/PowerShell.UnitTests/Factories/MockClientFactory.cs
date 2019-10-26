@@ -3,9 +3,9 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
+    using Graph;
     using Network;
     using PowerShell.Factories;
-    using Graph;
 
     /// <summary>
     /// Factory that provides initialized clients used to mock interactions with online services.

@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Subscriptions;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionAddOn"), OutputType(typeof(PSSubscription))]
-    public class GetPartnerCustomerSubscriptionAddOn : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionAddOn : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

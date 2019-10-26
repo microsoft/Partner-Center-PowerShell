@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Customers;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerBillingProfile"), OutputType(typeof(PSCustomerBillingProfile))]
-    public class GetPartnerCustomerBillingProfile : PartnerPSCmdlet
+    public class GetPartnerCustomerBillingProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

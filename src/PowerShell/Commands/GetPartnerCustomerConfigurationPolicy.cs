@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Return a list of configuration policies or a specific configration policy for the specified customer identifier.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerConfigurationPolicy"), OutputType(typeof(PSConfigurationPolicy))]
-    public class GetPartnerCustomerConfigurationPolicy : PartnerPSCmdlet
+    public class GetPartnerCustomerConfigurationPolicy : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the partner support profile from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerSupportProfile"), OutputType(typeof(PSSupportProfile))]
-    public class GetPartnerSupportProfile : PartnerPSCmdlet
+    public class GetPartnerSupportProfile : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

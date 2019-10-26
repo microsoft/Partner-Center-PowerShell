@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a customer, or a list of customers, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrder"), OutputType(typeof(PSOrder))]
-    public class GetPartnerCustomerOrder : PartnerPSCmdlet
+    public class GetPartnerCustomerOrder : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the optional cilling cycle identifier.

@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerOrder", DefaultParameterSetName = SubscriptionParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PSOrder))]
-    public class NewPartnerCustomerOrder : PartnerPSCmdlet
+    public class NewPartnerCustomerOrder : PartnerCmdlet
     {
         /// <summary>
         /// The name for the add-on parameter set. 

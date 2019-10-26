@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerDeviceBatch", SupportsShouldProcess = true), OutputType(typeof(PSBatchUploadDetails))]
-    public class NewPartnerCustomerDeviceBatch : PartnerPSCmdlet
+    public class NewPartnerCustomerDeviceBatch : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier for the device batch.

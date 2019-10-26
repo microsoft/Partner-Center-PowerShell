@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Sets the partner organization profile in Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerOrganizationProfile", SupportsShouldProcess = true), OutputType(typeof(PSOrganizationProfile))]
-    public class SetPartnerOrganizationProfile : PartnerPSCmdlet
+    public class SetPartnerOrganizationProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the company name.

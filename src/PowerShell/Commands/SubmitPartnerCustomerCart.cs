@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Checks out the specified cart.
     /// </summary>
     [Cmdlet(VerbsLifecycle.Submit, "PartnerCustomerCart", SupportsShouldProcess = true), OutputType(typeof(PSCartCheckoutResult))]
-    public class SubmitPartnerCustomerCart : PartnerPSCmdlet
+    public class SubmitPartnerCustomerCart : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.

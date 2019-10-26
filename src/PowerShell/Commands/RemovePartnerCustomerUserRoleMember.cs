@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Removes the user from the specified role.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
-    public class RemovePartnerCustomerUserRoleMember : PartnerPSCmdlet
+    public class RemovePartnerCustomerUserRoleMember : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

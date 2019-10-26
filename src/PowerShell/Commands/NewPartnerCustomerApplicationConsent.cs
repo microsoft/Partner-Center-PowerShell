@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Create a new application consent for the specified customer.
     /// </summary>
     [Cmdlet(VerbsCommon.New, "PartnerCustomerApplicationConsent"), OutputType(typeof(ApplicationConsent))]
-    public class NewPartnerCustomerApplicationConsent : PartnerPSCmdlet
+    public class NewPartnerCustomerApplicationConsent : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the application grants.

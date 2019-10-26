@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Cmdlet that retrieves audit records from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerAuditRecord"), OutputType(typeof(PSAuditRecord))]
-    public class GetPartnerAuditRecord : PartnerPSCmdlet
+    public class GetPartnerAuditRecord : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the end date porition of the query.

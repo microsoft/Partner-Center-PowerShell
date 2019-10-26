@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Invoices;
 
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceSummary"), OutputType(typeof(PSInvoiceSummary))]
-    public class GetPartnerInvoiceSummary : PartnerPSCmdlet
+    public class GetPartnerInvoiceSummary : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

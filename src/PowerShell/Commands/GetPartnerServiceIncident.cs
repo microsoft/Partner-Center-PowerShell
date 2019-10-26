@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of service incidents from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerServiceIncident"), OutputType(typeof(ServiceIncidentDetail))]
-    public class GetPartnerServiceIncident : PartnerPSCmdlet
+    public class GetPartnerServiceIncident : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the optional status type.

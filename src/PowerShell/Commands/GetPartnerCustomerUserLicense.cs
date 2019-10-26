@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Command that gets the licenses assigned to a user from a customer.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerUserLicense"), OutputType(typeof(PSLicense))]
-    public class GetPartnerCustomerUserLicense : PartnerPSCmdlet
+    public class GetPartnerCustomerUserLicense : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

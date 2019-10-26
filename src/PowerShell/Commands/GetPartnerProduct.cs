@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerProduct", DefaultParameterSetName = "ByCatalog"), OutputType(typeof(PSProduct))]
-    public class GetPartnerProduct : PartnerPSCmdlet
+    public class GetPartnerProduct : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the country code used to obtain products.

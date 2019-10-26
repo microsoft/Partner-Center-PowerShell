@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Usage;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerUsageRecord"), OutputType(typeof(PSCustomerUsageSummary))]
-    public class GetPartnerCustomerUsageRecord : PartnerPSCmdlet
+    public class GetPartnerCustomerUsageRecord : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

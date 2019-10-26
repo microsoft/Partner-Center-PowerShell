@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Removes the relationship between the specified customer and the partner.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerResellerRelationship", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true), OutputType(typeof(PSCustomer))]
-    public class RemovePartnerResellerRelationship : PartnerPSCmdlet
+    public class RemovePartnerResellerRelationship : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

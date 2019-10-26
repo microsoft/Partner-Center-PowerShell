@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the partner billing profile from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerBillingProfile"), OutputType(typeof(PSBillingProfile))]
-    public class GetPartnerBillingProfile : PartnerPSCmdlet
+    public class GetPartnerBillingProfile : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of entitlements for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerEntitlement"), OutputType(typeof(PSEntitlement))]
-    public class GetPartnerCustomerEntitlement : PartnerPSCmdlet
+    public class GetPartnerCustomerEntitlement : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

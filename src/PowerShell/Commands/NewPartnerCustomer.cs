@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Validations;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomer", SupportsShouldProcess = true), OutputType(typeof(PSCustomer))]
-    public class NewPartnerCustomer : PartnerPSCmdlet
+    public class NewPartnerCustomer : PartnerCmdlet
     {
         /// <summary>
         /// The country code for the United States.

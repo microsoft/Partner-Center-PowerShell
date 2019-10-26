@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerSandboxCustomer", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true)]
     [OutputType(typeof(bool))]
-    public class RemovePartnerSandboxCustomer : PartnerPSCmdlet
+    public class RemovePartnerSandboxCustomer : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Subscriptions;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerTrialConversion"), OutputType(typeof(PSCustomerTrialConversion))]
-    public class GetPartnerTrialConversion : PartnerPSCmdlet
+    public class GetPartnerTrialConversion : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

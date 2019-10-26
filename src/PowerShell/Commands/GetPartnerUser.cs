@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Graph;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUser"), OutputType(typeof(User))]
-    public class GetPartnerUser : PartnerPSCmdlet
+    public class GetPartnerUser : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

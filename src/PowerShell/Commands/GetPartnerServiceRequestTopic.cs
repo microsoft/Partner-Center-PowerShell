@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a service request, or a list of service requests, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerServiceRequestTopic"), OutputType(typeof(PSSupportTopic))]
-    public class GetPartnerServiceRequestTopic : PartnerPSCmdlet
+    public class GetPartnerServiceRequestTopic : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the support topic identifier
