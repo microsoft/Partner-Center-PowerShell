@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get partner licenses usage information aggregated to include all customers from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceStatement")]
-    public class GetPartnerInvoiceStatement : PartnerPSCmdlet
+    public class GetPartnerInvoiceStatement : PartnerCmdlet
     {
         /// <summary>
         /// The invoice id of the statement to retrieve.

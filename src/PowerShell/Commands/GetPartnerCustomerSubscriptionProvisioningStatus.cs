@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Retrieves the provisioning status for the specified subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionProvisioningStatus"), OutputType(typeof(PSSubscriptionProvisioningStatus))]
-    public class GetPartnerCustomerSubscriptionProvisioningStatus : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionProvisioningStatus : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

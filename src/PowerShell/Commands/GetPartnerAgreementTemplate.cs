@@ -9,7 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Get, "PartnerAgreementDocument")]
     [OutputType(typeof(PSAgreementDocument))]
-    public class GetPartnerAgreementDocument : PartnerPSCmdlet
+    public class GetPartnerAgreementDocument : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the country.

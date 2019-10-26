@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of indirect resellers from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerIndirectReseller"), OutputType(typeof(PSPartnerRelationship))]
-    public class GetPartnerIndirectReseller : PartnerPSCmdlet
+    public class GetPartnerIndirectReseller : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

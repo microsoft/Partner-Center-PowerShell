@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Carts;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerCart"), OutputType(typeof(PSCart))]
-    public class GetPartnerCustomerCart : PartnerPSCmdlet
+    public class GetPartnerCustomerCart : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.

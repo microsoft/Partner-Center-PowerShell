@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Registers an existing Subscription so that it is enabled for ordering Azure Reserved VM Instances. 
     /// </summary>
     [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionRegistration", SupportsShouldProcess = true), OutputType(typeof(string))]
-    public class NewPartnerCustomerSubscriptionRegistration : PartnerPSCmdlet
+    public class NewPartnerCustomerSubscriptionRegistration : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

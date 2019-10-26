@@ -9,7 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Check to see if the specified domain name is available.
     /// </summary>
     [Cmdlet(VerbsDiagnostic.Test, "PartnerDomainAvailability"), OutputType(typeof(bool))]
-    public class TestPartnerDomainAvailability : PartnerPSCmdlet
+    public class TestPartnerDomainAvailability : PartnerCmdlet
     {
         /// <summary>
         /// The domain name to be checked.

@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Cmdlet that retrieves Azrue Rate Card details.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerAzureRateCard"), OutputType(typeof(PSAzureRateCard))]
-    public class GetPartnerAzureRateCard : PartnerPSCmdlet
+    public class GetPartnerAzureRateCard : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

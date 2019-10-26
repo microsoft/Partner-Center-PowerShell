@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of roles for the specified customer user from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Add, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
-    public class AddPartnerCustomerUserRoleMember : PartnerPSCmdlet
+    public class AddPartnerCustomerUserRoleMember : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

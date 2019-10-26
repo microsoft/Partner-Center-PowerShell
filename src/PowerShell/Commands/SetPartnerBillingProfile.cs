@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Sets the partner billing profile in Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerBillingProfile", SupportsShouldProcess = true), OutputType(typeof(PSBillingProfile))]
-    public class SetPartnerBillingProfile : PartnerPSCmdlet
+    public class SetPartnerBillingProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.

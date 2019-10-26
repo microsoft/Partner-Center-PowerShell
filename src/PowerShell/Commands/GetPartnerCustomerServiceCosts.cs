@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.ServiceCosts;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCosts"), OutputType(typeof(PSServiceCostLineItem))]
-    public class GetPartnerCustomerServiceCosts : PartnerPSCmdlet
+    public class GetPartnerCustomerServiceCosts : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the billing period.

@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerValidationCode")]
     [OutputType(typeof(PSValidationCode))]
-    public class GetPartnerValidationCode : PartnerPSCmdlet
+    public class GetPartnerValidationCode : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

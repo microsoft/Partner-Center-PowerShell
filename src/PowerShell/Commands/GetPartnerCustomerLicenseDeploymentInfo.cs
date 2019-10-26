@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Analytics;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerLicenseDeploymentInfo"), OutputType(typeof(PSCustomerLicensesDeploymentInsights))]
-    public class GetPartnerCustomerLicenseDeploymentInfo : PartnerPSCmdlet
+    public class GetPartnerCustomerLicenseDeploymentInfo : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

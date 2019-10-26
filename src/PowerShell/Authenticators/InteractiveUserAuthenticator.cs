@@ -26,10 +26,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="promptAction">The action used to prompt for interaction.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult;
             IClientApplicationBase app;
@@ -51,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    WriteWarning($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
+                    promptAction($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
                     listener?.Stop();
                 }
             }
@@ -60,25 +62,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             if (app is IConfidentialClientApplication)
             {
-                ICustomWebUi customWebUi = new CustomWebUi(interactiveParameters.Message);
+                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message, promptAction);
 
                 Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
-                    await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(CancellationToken.None).ConfigureAwait(false),
+                    await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
                     new Uri(redirectUri),
-                    CancellationToken.None).ConfigureAwait(false);
+                    cancellationToken).ConfigureAwait(false);
 
                 NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
 
                 authResult = await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
                     parameters.Scopes,
-                    queryStringParameters["code"]).ExecuteAsync().ConfigureAwait(false);
+                    queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
-                    .WithCustomWebUi(new CustomWebUi(interactiveParameters.Message))
+                    .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message, promptAction))
                     .WithPrompt(Prompt.ForceLogin)
-                    .ExecuteAsync().ConfigureAwait(false);
+                    .ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
 
             return authResult;
@@ -92,18 +94,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override bool CanAuthenticate(AuthenticationParameters parameters)
         {
             return parameters is InteractiveParameters;
-        }
-
-        /// <summary>
-        /// Writes a warning message to the console.
-        /// </summary>
-        /// <param name="message">The message that describes the warning.</param>
-        private void WriteWarning(string message)
-        {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
-            {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
-            }
         }
     }
 }

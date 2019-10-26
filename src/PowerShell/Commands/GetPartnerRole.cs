@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a list of partner roles.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerRole"), OutputType(typeof(PSRole))]
-    public class GetPartnerRole : PartnerPSCmdlet
+    public class GetPartnerRole : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

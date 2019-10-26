@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the available upgrade offers for the specified subscription.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUpgrades"), OutputType(typeof(PSCustomerSubscriptionUpgrades))]
-    public class GetCustomerSubscriptionUpgrades : PartnerPSCmdlet
+    public class GetCustomerSubscriptionUpgrades : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

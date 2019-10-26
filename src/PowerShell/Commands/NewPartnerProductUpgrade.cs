@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.ProductUpgrades;
 
     [Cmdlet(VerbsCommon.New, "PartnerProductUpgrade"), OutputType(typeof(ProductUpgradeRequest))]
-    public class NewPartnerProductUpgrade : PartnerPSCmdlet
+    public class NewPartnerProductUpgrade : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

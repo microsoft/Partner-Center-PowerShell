@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Usage;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerUsageSummary"), OutputType(typeof(PSCustomerUsageSummary))]
-    public class GetPartnerCustomerUsageSummary : PartnerPSCmdlet
+    public class GetPartnerCustomerUsageSummary : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get an offer, or a list offers, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerOffer"), OutputType(typeof(PSOffer))]
-    public class GetPartnerOffer : PartnerPSCmdlet
+    public class GetPartnerOffer : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the switch indicating whether or not to scope the results to add-ons.

@@ -3,6 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Identity.Client;
 
@@ -20,10 +22,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="promptAction">The action used to prompt for interaction.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters);
+        Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Determine if this authenticator can apply to the given authentication parameters.
@@ -37,7 +41,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
         /// <param name="token">The token based authentication information.</param>
+        /// <param name="promptAction">The action used to prompt for interaction.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-        bool TryAuthenticate(AuthenticationParameters parameters, out Task<AuthenticationResult> token);
+        bool TryAuthenticate(AuthenticationParameters parameters, out Task<AuthenticationResult> token, Action<string> promptAction = null, CancellationToken cancellationToken = default);
     }
 }

@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommunications.Disconnect, "PartnerCenter", SupportsShouldProcess = true)]
-    public class DisconnectPartnerCenter : ContextPSCmdlet
+    public class DisconnectPartnerCenter : PartnerPSCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

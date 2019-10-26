@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Updates the specified cart.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerCart", SupportsShouldProcess = true), OutputType(typeof(PSCart))]
-    public class SetPartnerCustomerCart : PartnerPSCmdlet
+    public class SetPartnerCustomerCart : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.

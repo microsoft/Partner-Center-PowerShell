@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthResult))]
-    public class NewPartnerAccessToken : ContextPSCmdlet
+    public class NewPartnerAccessToken : PartnerPSCmdlet
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -171,7 +171,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account,
                 PartnerEnvironment.PublicEnvironments[Environment],
                 Scopes,
-                Message);
+                Message,
+                WriteWarning,
+                CancellationToken);
 
             byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();
 
@@ -224,7 +226,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 result.RefreshToken = tokens[key].Secret;
             }
 
-            FlushDebugMessages();
             WriteObject(result);
         }
 

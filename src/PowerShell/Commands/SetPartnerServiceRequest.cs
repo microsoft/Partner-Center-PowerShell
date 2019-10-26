@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.Set, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
-    public class SetPartnerServiceRequest : PartnerPSCmdlet
+    public class SetPartnerServiceRequest : PartnerCmdlet
     {
         /// <summary>
         /// Gets or set the text of the new note that will be added to the service request.

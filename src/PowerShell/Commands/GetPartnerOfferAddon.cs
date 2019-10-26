@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Offers;
 
     [Cmdlet(VerbsCommon.Get, "PartnerOfferAddon"), OutputType(typeof(PSOffer))]
-    public class GetPartnerOfferAddon : PartnerPSCmdlet
+    public class GetPartnerOfferAddon : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the country code.

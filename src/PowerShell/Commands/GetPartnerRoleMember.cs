@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the members for the specified partner roles.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerRoleMember"), OutputType(typeof(PSUserMember))]
-    public class GetPartnerRoleMember : PartnerPSCmdlet
+    public class GetPartnerRoleMember : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the role identifier.

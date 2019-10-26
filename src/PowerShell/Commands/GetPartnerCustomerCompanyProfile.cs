@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Command to get a customer's company profile.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerCompanyProfile"), OutputType(typeof(PSCustomerCompanyProfile))]
-    public class GetPartnerCustomerCompanyProfile : PartnerPSCmdlet
+    public class GetPartnerCustomerCompanyProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

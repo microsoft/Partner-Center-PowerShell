@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Sets user information for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerUser", DefaultParameterSetName = "UserId", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
-    public class SetPartnerCustomerUser : PartnerPSCmdlet
+    public class SetPartnerCustomerUser : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the display name for the user.

@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomer", DefaultParameterSetName = "ById")]
     [OutputType(typeof(PSCustomer))]
-    public class GetPartnerCustomer : PartnerPSCmdlet
+    public class GetPartnerCustomer : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the optional customer identifier.

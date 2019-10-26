@@ -21,22 +21,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="promptAction">The action used to prompt for interaction.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
+        public override Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-            return GetResponseAsync(app, parameters.Scopes, cancellationTokenSource.Token);
+            return GetResponseAsync(app, parameters.Scopes, promptAction, cancellationToken);
         }
 
-        private async Task<AuthenticationResult> GetResponseAsync(IPublicClientApplication app, IEnumerable<string> scopes, CancellationToken cancellationToken)
+        private async Task<AuthenticationResult> GetResponseAsync(IPublicClientApplication app, IEnumerable<string> scopes, Action<string> promptAction = null, CancellationToken cancellationToken = default)
         {
             return await app.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
             {
-                WriteWarning(deviceCodeResult.Message);
+                promptAction(deviceCodeResult.Message);
                 return Task.CompletedTask;
             }).ExecuteAsync(cancellationToken);
 
@@ -50,18 +51,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override bool CanAuthenticate(AuthenticationParameters parameters)
         {
             return parameters is DeviceCodeParameters;
-        }
-
-        /// <summary>
-        /// Writes a warning message to the console.
-        /// </summary>
-        /// <param name="message">The message that describes the warning.</param>
-        private void WriteWarning(string message)
-        {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
-            {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
-            }
         }
     }
 }

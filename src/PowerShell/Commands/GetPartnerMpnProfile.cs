@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Partners;
 
     [Cmdlet(VerbsCommon.Get, "PartnerMpnProfile"), OutputType(typeof(PSMpnProfile))]
-    public class GetPartnerMpnProfile : PartnerPSCmdlet
+    public class GetPartnerMpnProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the MPN identifier.

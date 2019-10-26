@@ -9,7 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Subscriptions;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionSupportContact"), OutputType(typeof(PSSupportContact))]
-    public class GetPartnerCustomerSubscriptionSupportContact : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionSupportContact : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Sets the partner support profile in Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerSupportProfile", SupportsShouldProcess = true), OutputType(typeof(PSSupportProfile))]
-    public class SetPartnerSupportProfile : PartnerPSCmdlet
+    public class SetPartnerSupportProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the email address of the support contact.

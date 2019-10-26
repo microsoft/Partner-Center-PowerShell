@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get an offer, or a list offers, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerOfferCategory"), OutputType(typeof(PSOfferCategory))]
-    public class GetPartnerOfferCategory : PartnerPSCmdlet
+    public class GetPartnerOfferCategory : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the country code used to obtain offers.

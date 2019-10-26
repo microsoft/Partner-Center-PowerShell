@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Subscriptions;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscription", DefaultParameterSetName = "ByCustomer"), OutputType(typeof(PSSubscription))]
-    public class GetPartnerCustomerSubscription : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscription : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer object used to scope the request.

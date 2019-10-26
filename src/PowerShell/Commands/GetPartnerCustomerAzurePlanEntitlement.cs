@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of Azure Plan entitlements for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement"), OutputType(typeof(AzureEntitlement))]
-    public class GetPartnerCustomerAzurePlanEntitlement : PartnerPSCmdlet
+    public class GetPartnerCustomerAzurePlanEntitlement : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

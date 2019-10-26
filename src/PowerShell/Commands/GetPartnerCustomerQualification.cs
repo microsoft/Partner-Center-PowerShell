@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets the qualification for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerQualification"), OutputType(typeof(CustomerQualification))]
-    public class GetPartnerCustomerQualification : PartnerPSCmdlet
+    public class GetPartnerCustomerQualification : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

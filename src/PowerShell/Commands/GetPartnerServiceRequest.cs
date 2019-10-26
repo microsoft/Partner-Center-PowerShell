@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a service request, or a list of service requests, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerServiceRequest", DefaultParameterSetName = "ByStatus"), OutputType(typeof(PSServiceRequest))]
-    public class GetPartnerServiceRequest : PartnerPSCmdlet
+    public class GetPartnerServiceRequest : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the request status

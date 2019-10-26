@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Graph;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
-    public class GetPartnerUserSignInActivity : PartnerPSCmdlet
+    public class GetPartnerUserSignInActivity : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the end date porition of the query.

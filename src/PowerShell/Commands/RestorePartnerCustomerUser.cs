@@ -20,7 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of users for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsData.Restore, "PartnerCustomerUser", DefaultParameterSetName = "ByUserId", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class RestorePartnerCustomerUser : PartnerPSCmdlet
+    public class RestorePartnerCustomerUser : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

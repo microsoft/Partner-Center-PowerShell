@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of invoices from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerInvoice"), OutputType(typeof(PSInvoice))]
-    public class GetPartnerInvoice : PartnerPSCmdlet
+    public class GetPartnerInvoice : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the invoice identifier.

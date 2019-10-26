@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a list of users for a customer from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUser", DefaultParameterSetName = "ByUserId", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class RemovePartnerCustomerUser : PartnerPSCmdlet
+    public class RemovePartnerCustomerUser : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PartnerContext))]
-    public class ConnectPartnerCenter : ContextPSCmdlet, IModuleAssemblyInitializer
+    public class ConnectPartnerCenter : PartnerPSCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -237,7 +237,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account,
                 environment,
                 new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
-                Message);
+                Message,
+                WriteWarning,
+                CancellationToken);
 
             PartnerSession.Instance.Context = new PartnerContext
             {

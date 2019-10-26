@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Usage;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionResourceUsage"), OutputType(typeof(PSResourceUsageRecord))]
-    public class GetPartnerCustomerSubscriptionResourceUsage : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscriptionResourceUsage : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.

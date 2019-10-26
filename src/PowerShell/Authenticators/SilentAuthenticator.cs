@@ -3,8 +3,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
@@ -18,10 +20,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="promptAction">The action used to prompt for interaction.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
@@ -30,7 +34,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             AuthenticationResult authResult = await app.AcquireTokenSilent(
                 parameters.Scopes,
                 accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))
-                .ExecuteAsync()
+                .ExecuteAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return authResult;

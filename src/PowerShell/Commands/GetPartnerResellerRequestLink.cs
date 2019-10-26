@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get the resller relationship request link.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerResellerRequestLink"), OutputType(typeof(PSCustomerRelationshipRequest))]
-    public class GetPartnerResellerRequestLink : PartnerPSCmdlet
+    public class GetPartnerResellerRequestLink : PartnerCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.

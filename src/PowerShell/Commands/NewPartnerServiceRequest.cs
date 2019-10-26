@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
-    public class NewPartnerServiceRequest : PartnerPSCmdlet
+    public class NewPartnerServiceRequest : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the locale of the organization creating the service request.

@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a colletion of device batches from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerDeviceBatch"), OutputType(typeof(PSDeviceBatch))]
-    public class GetPartnerCustomerDeviceBatch : PartnerPSCmdlet
+    public class GetPartnerCustomerDeviceBatch : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

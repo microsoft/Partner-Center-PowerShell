@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrderProvisioningStatus")]
     [OutputType(typeof(PSOrderLineItemProvisioningStatus))]
-    public class GetPartnerCustomerOrderProvisioningStatus : PartnerPSCmdlet
+    public class GetPartnerCustomerOrderProvisioningStatus : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

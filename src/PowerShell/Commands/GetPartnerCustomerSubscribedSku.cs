@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Licenses;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscribedSku"), OutputType(typeof(PSSubscribedSku))]
-    public class GetPartnerCustomerSubscribedSku : PartnerPSCmdlet
+    public class GetPartnerCustomerSubscribedSku : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

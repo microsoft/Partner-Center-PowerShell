@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Sets the partner legal profile in Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerLegalProfile", SupportsShouldProcess = true), OutputType(typeof(PSLegalBusinessProfile))]
-    public class SetPartnerLegalProfile : PartnerPSCmdlet
+    public class SetPartnerLegalProfile : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.

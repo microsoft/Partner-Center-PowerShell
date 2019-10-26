@@ -13,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Activates a third-party subscription in the integration sandbox. 
     /// </summary>
     [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionActivation", SupportsShouldProcess = true), OutputType(typeof(PSSubscriptionActivationResult))]
-    public class NewPartnerCustomerSubscriptionActivation : PartnerPSCmdlet
+    public class NewPartnerCustomerSubscriptionActivation : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.

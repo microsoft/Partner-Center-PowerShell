@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerUserLicense", SupportsShouldProcess = true), OutputType(typeof(PSLicenseUpdate))]
-    public class SetPartnerCustomerUserLicense : PartnerPSCmdlet
+    public class SetPartnerCustomerUserLicense : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.

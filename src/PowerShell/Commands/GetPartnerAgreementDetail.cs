@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Gets a metadata for the available agreements.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerAgreementDetail"), OutputType(typeof(PSAgreementMetaData))]
-    public class GetPartnerAgreementDetail : PartnerPSCmdlet
+    public class GetPartnerAgreementDetail : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 

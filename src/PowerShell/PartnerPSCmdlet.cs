@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
+namespace Microsoft.Store.PartnerCenter.PowerShell
 {
     using System;
     using System.Collections.Generic;
@@ -9,12 +9,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Reflection;
-    using Graph;
+    using System.Threading;
     using Models.Authentication;
     using Properties;
 
     /// <summary>
-    /// Represents base class for the Partner Center cmdlets.
+    /// Represents base class for the Partner Center PowerShell cmdlets.
     /// </summary>
     public abstract class PartnerPSCmdlet : PSCmdlet
     {
@@ -23,27 +23,44 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private const string BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK = "https://aka.ms/partnercenterps-changewarnings";
 
-        internal IGraphServiceClient Graph { get; private set; }
-
         /// <summary>
-        /// Gets the available Partner Center operations.
+        /// Provides a signal to <see cref="CancellationToken" /> that it should be canceled.
         /// </summary>
-        internal IPartner Partner { get; private set; }
+        private CancellationTokenSource cancellationSource;
 
         /// <summary>
-        /// Operations that happen before the cmdlet is executed.
+        /// Gets the cancellation token used to propagate a notification that operations should be canceled.
+        /// </summary>
+        protected CancellationToken CancellationToken => cancellationSource.Token;
+
+        /// <summary>
+        /// Operations that happen before the cmdlet is invoked.
         /// </summary>
         protected override void BeginProcessing()
         {
-            if (PartnerSession.Instance.Context == null)
+            if (cancellationSource == null)
             {
-                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
+                cancellationSource = new CancellationTokenSource();
             }
 
-            Graph = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
-            Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
-
             ProcessBreakingChangeAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);
+        }
+
+        /// <summary>
+        /// Operations that happend after the cmdlet is invoked.
+        /// </summary>
+        protected override void EndProcessing()
+        {
+            if (cancellationSource != null)
+            {
+                if (!cancellationSource.IsCancellationRequested)
+                {
+                    cancellationSource.Cancel();
+                }
+
+                cancellationSource.Dispose();
+                cancellationSource = null;
+            }
         }
 
         /// <summary>
@@ -61,6 +78,56 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public virtual void ExecuteCmdlet()
         {
+        }
+
+        /// <summary>
+        /// Operations that are performed when the processing a cmdlet is stopping.
+        /// </summary>
+        protected override void StopProcessing()
+        {
+            if (cancellationSource != null)
+            {
+                if (!cancellationSource.IsCancellationRequested)
+                {
+                    cancellationSource.Cancel();
+                }
+
+                cancellationSource.Dispose();
+                cancellationSource = null;
+            }
+
+            base.StopProcessing();
+        }
+
+        /// <summary>
+        /// Writes the object the pipeline.
+        /// </summary>
+        /// <param name="sendToPipeline">The object to be written to the pipeline.</param>
+        protected new void WriteObject(object sendToPipeline)
+        {
+            FlushDebugMessages();
+            base.WriteObject(sendToPipeline);
+        }
+
+        /// <summary>
+        /// Writes the object the pipeline.
+        /// </summary>
+        /// <param name="sendToPipeline">The object to be written to the pipeline.</param>
+        /// <param name="enumerateCollection">A flag indicating whether or not to enumerate the collection.</param>
+        protected new void WriteObject(object sendToPipeline, bool enumerateCollection)
+        {
+            FlushDebugMessages();
+            base.WriteObject(sendToPipeline, enumerateCollection);
+        }
+
+        /// <summary>
+        /// Writes the warning message to the pipeline.
+        /// </summary>
+        /// <param name="text">The message to be written to the pipeline.</param>
+        protected new void WriteWarning(string text)
+        {
+            FlushDebugMessages();
+            base.WriteWarning(text);
         }
 
         /// <summary>
@@ -95,6 +162,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
+        /// Gets the name of the command from the type.
+        /// </summary>
+        /// <param name="type">The type for the command being invoked.</param>
+        /// <returns>The name of the command from the type.</returns>
+        private static string GetNameFromCmdletType(Type type)
+        {
+            string cmdletName = null;
+            CmdletAttribute cmdletAttrib = (CmdletAttribute)type.GetCustomAttributes(typeof(CmdletAttribute), false).FirstOrDefault();
+
+            if (cmdletAttrib != null)
+            {
+                cmdletName = cmdletAttrib.VerbName + "-" + cmdletAttrib.NounName;
+            }
+
+            return cmdletName;
+        }
+
+        /// <summary>
+        /// Flushes the debug messages to the console.
+        /// </summary>
+        private void FlushDebugMessages()
+        {
+            while (PartnerSession.Instance.DebugMessages.TryDequeue(out string message))
+            {
+                WriteDebug(message);
+            }
+        }
+
+        /// <summary>
         /// Processes the break changes defined for the cmdlet.
         /// </summary>
         /// <param name="type">The type for the command being invoked.</param>
@@ -124,25 +220,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         Resources.BreakingChangesAttributesFooterMessage,
                         BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK));
             }
-        }
-
-
-        /// <summary>
-        /// Gets the name of the command from the type.
-        /// </summary>
-        /// <param name="type">The type for the command being invoked.</param>
-        /// <returns>The name of the command from the type.</returns>
-        private static string GetNameFromCmdletType(Type type)
-        {
-            string cmdletName = null;
-            CmdletAttribute cmdletAttrib = (CmdletAttribute)type.GetCustomAttributes(typeof(CmdletAttribute), false).FirstOrDefault();
-
-            if (cmdletAttrib != null)
-            {
-                cmdletName = cmdletAttrib.VerbName + "-" + cmdletAttrib.NounName;
-            }
-
-            return cmdletName;
         }
     }
 }

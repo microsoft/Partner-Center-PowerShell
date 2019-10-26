@@ -16,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerProductInventory"), OutputType(typeof(PSInventoryItem))]
-    public class GetPartnerProductInventory : PartnerPSCmdlet
+    public class GetPartnerProductInventory : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the country code used to obtain product skus.

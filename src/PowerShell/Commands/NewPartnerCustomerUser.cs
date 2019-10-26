@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerUser", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
-    public class NewPartnerCustomerUser : PartnerPSCmdlet
+    public class NewPartnerCustomerUser : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
