@@ -10,27 +10,30 @@ schema: 2.0.0
 # Get-PartnerProductSku
 
 ## SYNOPSIS
-Gets the list of SKUs for a product.
+Gets the available SKUs for the specified product.
 
 ## SYNTAX
 
 ### ByProductId (Default)
 ```powershell
-Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-ReservationScope <String>]
+ [<CommonParameters>]
 ```
 
 ### BySkuId
 ```powershell
-Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> -SkuId <String> [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-ReservationScope <String>] -SkuId <String>
+ [<CommonParameters>]
 ```
 
 ### BySegment
 ```powershell
-Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-Segment <String>] [<CommonParameters>]
+Get-PartnerProductSku [-CountryCode <String>] -ProductId <String> [-ReservationScope <String>]
+ -Segment <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets the list of SKUs for a specified product.
+Gets the available SKUs for the specified product.
 
 ## EXAMPLES
 
@@ -39,12 +42,12 @@ Gets the list of SKUs for a specified product.
 PS C:\> Get-PartnerProductSku -ProductId 'DZH318Z0BQ5S'
 ```
 
-Gets the available SKUs for the product with the identifier of DZH318Z0BQ5S.
+Gets the available SKUs for the specified product.
 
 ## PARAMETERS
 
 ### -CountryCode
-The country ISO2 code.
+The country on which to base the product.
 
 ```yaml
 Type: String
@@ -59,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -ProductId
-A string that identifies the product.
+The identifier for the product.
 
 ```yaml
 Type: String
@@ -73,14 +76,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Segment
-A string that the product segment.
+### -ReservationScope
+The reservation scope used for filtering.
 
 ```yaml
 Type: String
-Parameter Sets: BySegment
+Parameter Sets: (All)
 Aliases:
-Accepted values: commercial, education, government, nonprofit
 
 Required: False
 Position: Named
@@ -89,8 +91,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Segment
+The segment used for filtering.
+
+```yaml
+Type: String
+Parameter Sets: BySegment
+Aliases:
+Accepted values: commercial, education, government, nonprofit
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -SkuId
-A string that identifies the sku.
+The identifier for the SKU.
 
 ```yaml
 Type: String

@@ -10,13 +10,13 @@ schema: 2.0.0
 # Get-PartnerProduct
 
 ## SYNOPSIS
-Gets a list or a single product.
+Gets information for the available products.
 
 ## SYNTAX
 
-### ByCatalog (Default)
+### ByTargetView (Default)
 ```powershell
-Get-PartnerProduct [-CountryCode <String>] -Catalog <String> [-Segment <String>] [<CommonParameters>]
+Get-PartnerProduct -Catalog <String> [-CountryCode <String>] [-Segment <String>] [<CommonParameters>]
 ```
 
 ### ByProductId
@@ -24,8 +24,13 @@ Get-PartnerProduct [-CountryCode <String>] -Catalog <String> [-Segment <String>]
 Get-PartnerProduct [-CountryCode <String>] -ProductId <String> [<CommonParameters>]
 ```
 
+### ByReservationScope
+```powershell
+Get-PartnerProduct [-CountryCode <String>] -ProductId <String> -ReservationScope <String> [<CommonParameters>]
+```
+
 ## DESCRIPTION
-Gets a list or a single product.
+Gets information for the available products.
 
 ## EXAMPLES
 
@@ -34,16 +39,16 @@ Gets a list or a single product.
 PS C:\> Get-PartnerProduct -Catalog 'Azure' -Segment 'commercial'
 ```
 
-Gets a list of products scoped to the Azure target view and commercial segment.
+Gets information for the available products.
 
 ## PARAMETERS
 
 ### -Catalog
-A string that the product catalog.
+The catalog used for filtering the product.
 
 ```yaml
 Type: String
-Parameter Sets: ByCatalog
+Parameter Sets: ByTargetView
 Aliases:
 Accepted values: Azure, AzureReservations, AzureReservationsVM, AzureReservationsSQL, AzureReservationsCosmosDb, OnlineServices, Software, SoftwareSUSELinux, SoftwarePerpetual, SoftwareSubscriptions
 
@@ -55,7 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### -CountryCode
-The country ISO2 code.
+The country on which to base the product.
 
 ```yaml
 Type: String
@@ -70,11 +75,26 @@ Accept wildcard characters: False
 ```
 
 ### -ProductId
-A string that identifies the product.
+The identifier for the product.
 
 ```yaml
 Type: String
-Parameter Sets: ByProductId
+Parameter Sets: ByProductId, ByReservationScope
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ReservationScope
+The reservation scope used for filtering.
+
+```yaml
+Type: String
+Parameter Sets: ByReservationScope
 Aliases:
 
 Required: True
@@ -85,11 +105,11 @@ Accept wildcard characters: False
 ```
 
 ### -Segment
-A string that the product segment.
+The segment used for filtering.
 
 ```yaml
 Type: String
-Parameter Sets: ByCatalog
+Parameter Sets: ByTargetView
 Aliases:
 Accepted values: commercial, education, government, nonprofit
 

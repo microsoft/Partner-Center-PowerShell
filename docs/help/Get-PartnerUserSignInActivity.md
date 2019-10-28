@@ -14,7 +14,7 @@ Gets the sign activities for the specified user.
 
 ## SYNTAX
 
-```
+```powershell
 Get-PartnerUserSignInActivity [-EndDate <DateTime>] [-StartDate <DateTime>] [-UserId <String>]
  [<CommonParameters>]
 ```

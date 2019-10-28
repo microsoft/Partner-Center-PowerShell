@@ -3,11 +3,11 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Linq;
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.Products;
     using Products;
-    using Models.Authentication;
-    using System.Linq;
 
     /// <summary>
     /// Get a product SKU, or a list product SKUs, from Partner Center.
