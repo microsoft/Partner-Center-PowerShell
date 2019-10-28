@@ -3,125 +3,105 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Linq;
     using System.Management.Automation;
-    using Extensions;
-    using Models.Authentication;
     using Models.Products;
-    using PartnerCenter.Models;
-    using PartnerCenter.Models.Products;
+    using Products;
+    using Models.Authentication;
+    using System.Linq;
 
     /// <summary>
-    /// Get a product, or a list products, from Partner Center.
+    /// Get a product SKU, or a list product SKUs, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerProductSku", DefaultParameterSetName = "ByProductId"), OutputType(typeof(PSSku))]
+    [Cmdlet(VerbsCommon.Get, "PartnerProductSku", DefaultParameterSetName = ByProductIdParameterSetName), OutputType(typeof(PSSku))]
     public class GetPartnerProductSku : PartnerCmdlet
     {
         /// <summary>
-        /// Gets or sets the country code used to obtain product skus.
+        /// The name of the by product identifier parameter set.
         /// </summary>
-        [Parameter(ParameterSetName = "ByProductId", Mandatory = false, HelpMessage = "The country ISO2 code.")]
-        [Parameter(ParameterSetName = "BySkuId", Mandatory = false, HelpMessage = "The country ISO2 code.")]
-        [Parameter(ParameterSetName = "BySegment", Mandatory = false, HelpMessage = "The country ISO2 code.")]
+        private const string ByProductIdParameterSetName = "ByProductId";
+
+        /// <summary>
+        /// The name of the by SKU identifier parameter set.
+        /// </summary>
+        private const string BySkuIdParameterSetName = "BySkuId";
+
+        /// <summary>
+        /// The name of the by segment parameter set.
+        /// </summary>
+        private const string BySegmentParameterSetName = "BySegment";
+
+        /// <summary>
+        /// Gets or sets the country code.
+        /// </summary>
+        [Parameter(HelpMessage = "The country on which to base the product.", Mandatory = false)]
         public string CountryCode { get; set; }
 
         /// <summary>
         /// Gets or sets the product identifier.
         /// </summary>
-        [Parameter(ParameterSetName = "ByProductId", Mandatory = true, HelpMessage = "A string that identifies the product.")]
-        [Parameter(ParameterSetName = "BySkuId", Mandatory = true, HelpMessage = "A string that identifies the product.")]
-        [Parameter(ParameterSetName = "BySegment", Mandatory = true, HelpMessage = "A string that identifies the product.")]
+        [Parameter(HelpMessage = "The identifier for the product.", Mandatory = true, ParameterSetName = ByProductIdParameterSetName)]
+        [Parameter(HelpMessage = "The identifier for the product.", Mandatory = true, ParameterSetName = BySkuIdParameterSetName)]
+        [Parameter(HelpMessage = "The identifier for the product.", Mandatory = true, ParameterSetName = BySegmentParameterSetName)]
         public string ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the sku identifier.
+        /// Gets or sets the reservation scope.
         /// </summary>
-        [Parameter(ParameterSetName = "BySkuId", Mandatory = true, HelpMessage = "A string that identifies the sku.")]
-        public string SkuId { get; set; }
+        [Parameter(HelpMessage = "The reservation scope used for filtering.", Mandatory = false)]
+        public string ReservationScope { get; set; }
 
         /// <summary>
-        /// Gets or sets the product segment.
+        /// Gets or sets the target segment.
         /// </summary>
-        [Parameter(ParameterSetName = "BySegment", Mandatory = false, HelpMessage = "A string that the product segment.")]
+        [Parameter(HelpMessage = "The segment used for filtering.", Mandatory = true, ParameterSetName = BySegmentParameterSetName)]
         [ValidateSet("commercial", "education", "government", "nonprofit")]
         public string Segment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SKU identifier.
+        /// </summary>
+        [Parameter(HelpMessage = "The identifier for the SKU.", Mandatory = true, ParameterSetName = BySkuIdParameterSetName)]
+        public string SkuId { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
+            IProductCollectionByCountry operations = Partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
 
-            ProductId.AssertNotEmpty(nameof(ProductId));
-
-            if (!string.IsNullOrEmpty(SkuId))
+            if (ParameterSetName == ByProductIdParameterSetName)
             {
-                GetProductSku(countryCode, ProductId, SkuId);
+                if (string.IsNullOrEmpty(ReservationScope))
+                {
+                    WriteObject(operations.ById(ProductId).Skus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                }
+                else
+                {
+                    WriteObject(operations.ById(ProductId).Skus.ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                }
             }
-            else
+            else if (ParameterSetName == BySkuIdParameterSetName)
             {
-                GetProductSkus(countryCode, ProductId, Segment);
+                if (string.IsNullOrEmpty(ReservationScope))
+                {
+                    WriteObject(new PSSku(operations.ById(ProductId).Skus.ById(SkuId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+                }
+                else
+                {
+                    WriteObject(new PSSku(operations.ById(ProductId).Skus.ById(SkuId).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+                }
             }
-        }
-
-        /// <summary>
-        /// Gets the specified product sku.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="productId">Identifier for the product.</param>
-        /// <param name="skuId">Identifier for the SKU.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="productId"/> is empty or null.
-        /// or
-        /// <paramref name="skuId"/> is empty or null.
-        /// </exception>
-        private void GetProductSku(string countryCode, string productId, string skuId)
-        {
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            productId.AssertNotEmpty(nameof(productId));
-
-            Sku sku = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).GetAsync().GetAwaiter().GetResult();
-
-            if (sku != null)
+            else if (ParameterSetName == BySegmentParameterSetName)
             {
-                WriteObject(new PSSku(sku));
-            }
-
-        }
-
-        /// <summary>
-        /// Gets the specified product skus.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="productId">Identifier for the product.</param>
-        /// <param name="segment">Identifier for the product.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="productId"/> is empty or null.
-        /// </exception>
-        private void GetProductSkus(string countryCode, string productId, string segment)
-        {
-            ResourceCollection<Sku> skus;
-
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            productId.AssertNotEmpty(nameof(productId));
-
-            if (string.IsNullOrEmpty(segment))
-            {
-                skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.GetAsync().GetAwaiter().GetResult();
-            }
-            else
-            {
-                skus = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
-            }
-
-            if (skus.TotalCount > 0)
-            {
-                WriteObject(skus.Items.Select(s => new PSSku(s)), true);
+                if (string.IsNullOrEmpty(ReservationScope))
+                {
+                    WriteObject(operations.ById(ProductId).Skus.ByTargetSegment(Segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                }
+                else
+                {
+                    WriteObject(operations.ById(ProductId).Skus.ByTargetSegment(Segment).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                }
             }
         }
     }
