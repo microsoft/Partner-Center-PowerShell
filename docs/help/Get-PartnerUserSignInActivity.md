@@ -36,7 +36,34 @@ Gets the sign activities for the specified user.
 PS C:\> Get-PartnerUserSignInActivity -EndDate (Get-Date) -StartDate (Get-Date).AddDays(-7) -UserId '3dd89389-b34c-4f5a-975d-516df5694d7e'
 ```
 
-Gets the sign activties from the past sever days for the specified user.
+Gets the sign activities from the past seven days for the specified user.
+
+### Example 3
+```powershell
+PS C:\> $users = Get-PartnerUser
+PS C:\> $activities = $users.ForEach({Get-PartnerUserSignInActivity -EndDate (Get-Date) -StartDate (Get-Date).AddDays(-7) -UserId $_.Id})
+PS C:\> $activities | ? {$_.AuthenticationDetails | ? {$_.Succeeded -eq $true}}
+```
+
+Gets the sign-activities from the past seven days that have successfully authenticated.
+
+### Example 4
+```powershell
+PS C:> $users = Get-PartnerUser
+PS C:> $activities = $users.ForEach({Get-PartnerUserSignInActivity -EndDate (Get-Date) -StartDate (Get-Date).AddDays(-7) -UserId $_.Id})
+PS C:> $activities | ? {$_.AuthenticationDetails | ? {$_.Succeeded -eq $true}} | ? {$_.ResourceId -eq 'fa3d9a0c-3fb0-42cc-9193-47c7ecd2edbd'}
+```
+
+Gets the sign-in activities from the past seven days where the resource being accessed was the Partner Center API.
+
+### Example 5
+```powershell
+PS C:> $users = Get-PartnerUser
+PS C:> $activities = $users.ForEach({Get-PartnerUserSignInActivity -EndDate (Get-Date) -StartDate (Get-Date).AddDays(-7) -UserId $_.Id})
+PS C:> $activities | ? {$_.AuthenticationDetails | ? {$_.Succeeded -eq $true}} | ? {$_.MfaDetail | ? {$_.AuthMethod -eq $null}} | ? {$_.ResourceId -eq 'fa3d9a0c-3fb0-42cc-9193-47c7ecd2edbd'}
+```
+
+Gets the sign-in activities from the past seven days where the resource being accessed was the Partner Center API and the sign-in activity was not challenged for multi-factor authentication.
 
 ## PARAMETERS
 
