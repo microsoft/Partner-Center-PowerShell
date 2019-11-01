@@ -5,42 +5,61 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
-    using Extensions;
     using Models.Authentication;
     using Models.Products;
-    using PartnerCenter.Models;
-    using PartnerCenter.Models.Products;
+    using Products;
 
     /// <summary>
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerProduct", DefaultParameterSetName = "ByCatalog"), OutputType(typeof(PSProduct))]
+    [Cmdlet(VerbsCommon.Get, "PartnerProduct", DefaultParameterSetName = ByTargetViewParameterSetName), OutputType(typeof(PSProduct))]
     public class GetPartnerProduct : PartnerCmdlet
     {
         /// <summary>
-        /// Gets or sets the country code used to obtain products.
+        /// The name of the by product identifier parameter set.
         /// </summary>
-        [Parameter(ParameterSetName = "ByProductId", Mandatory = false, HelpMessage = "The country ISO2 code.")]
-        [Parameter(ParameterSetName = "ByCatalog", Mandatory = false, HelpMessage = "The country ISO2 code.")]
+        private const string ByProductIdParameterSetName = "ByProductId";
+
+        /// <summary>
+        /// The name of the by reservation scope parameter set.
+        /// </summary>
+        private const string ByReservationScopeParameterSetName = "ByReservationScope";
+
+        /// <summary>
+        /// The name of the by target view parameter set.
+        /// </summary>
+        private const string ByTargetViewParameterSetName = "ByTargetView";
+
+        /// <summary>
+        /// Gets or sets the catalog view.
+        /// </summary>
+        [Parameter(HelpMessage = "The catalog used for filtering the product.", Mandatory = true, ParameterSetName = ByTargetViewParameterSetName)]
+        [ValidateSet("Azure", "AzureReservations", "AzureReservationsVM", "AzureReservationsSQL", "AzureReservationsCosmosDb", "OnlineServices", "Software", "SoftwareSUSELinux", "SoftwarePerpetual", "SoftwareSubscriptions")]
+        public string Catalog { get; set; }
+
+        /// <summary>
+        /// Gets or sets the country code.
+        /// </summary>
+        [Parameter(HelpMessage = "The country on which to base the product.", Mandatory = false)]
         public string CountryCode { get; set; }
 
         /// <summary>
         /// Gets or sets the product identifier.
         /// </summary>
-        [Parameter(ParameterSetName = "ByProductId", Mandatory = true, HelpMessage = "A string that identifies the product.")]
+        [Parameter(HelpMessage = "The identifier for the product.", Mandatory = true, ParameterSetName = ByProductIdParameterSetName)]
+        [Parameter(HelpMessage = "The identifier for the product.", Mandatory = true, ParameterSetName = ByReservationScopeParameterSetName)]
         public string ProductId { get; set; }
 
         /// <summary>
-        /// Gets or sets the product catalog.
+        /// Gets or sets the reservation scope.
         /// </summary>
-        [Parameter(ParameterSetName = "ByCatalog", Mandatory = true, HelpMessage = "A string that the product catalog.")]
-        [ValidateSet("Azure", "AzureReservations", "AzureReservationsVM", "AzureReservationsSQL", "AzureReservationsCosmosDb", "OnlineServices", "Software", "SoftwareSUSELinux", "SoftwarePerpetual", "SoftwareSubscriptions")]
-        public string Catalog { get; set; }
+        [Parameter(HelpMessage = "The reservation scope used for filtering.", Mandatory = true, ParameterSetName = ByReservationScopeParameterSetName)]
+        public string ReservationScope { get; set; }
 
         /// <summary>
-        /// Gets or sets the product segment.
+        /// Gets or sets the target segment.
         /// </summary>
-        [Parameter(ParameterSetName = "ByCatalog", Mandatory = false, HelpMessage = "A string that the product segment.")]
+        [Parameter(HelpMessage = "The segment used for filtering.", Mandatory = false, ParameterSetName = ByTargetViewParameterSetName)]
         [ValidateSet("commercial", "education", "government", "nonprofit")]
         public string Segment { get; set; }
 
@@ -49,102 +68,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
+            IProductCollectionByCountry operations = Partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
 
-            if (!string.IsNullOrEmpty(ProductId))
+            if (ParameterSetName == ByProductIdParameterSetName)
             {
-                GetProduct(countryCode, ProductId);
+                WriteObject(new PSProduct(operations.ById(ProductId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
             }
-            else if (!string.IsNullOrEmpty(Catalog))
+            else if (ParameterSetName == ByReservationScopeParameterSetName)
             {
-                if (!string.IsNullOrEmpty(Segment))
+                WriteObject(
+                    new PSProduct(
+                        operations.ById(ProductId).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            }
+            else if (ParameterSetName == ByTargetViewParameterSetName)
+            {
+                if (string.IsNullOrEmpty(Segment))
                 {
-                    GetProductsBySegment(countryCode, Catalog, Segment);
+                    WriteObject(
+                        operations.ByTargetView(Catalog).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()
+                            .Items.Select(p => new PSProduct(p)), true);
                 }
                 else
                 {
-                    GetProductsByCatalog(countryCode, Catalog);
+                    WriteObject(
+                        operations.ByTargetView(Catalog).ByTargetSegment(Segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()
+                            .Items.Select(p => new PSProduct(p)), true);
                 }
-            }
-            else
-            {
-                throw new PSInvalidOperationException("You must specify a ProductId or Catalog.");
-            }
-        }
-
-        /// <summary>
-        /// Gets the specified product.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="productId">Identifier for the product.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="productId"/> is empty or null.
-        /// </exception>
-        private void GetProduct(string countryCode, string productId)
-        {
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            productId.AssertNotEmpty(nameof(productId));
-
-            Product product = Partner.Products.ByCountry(countryCode).ById(productId).GetAsync().GetAwaiter().GetResult();
-
-            if (product != null)
-            {
-                WriteObject(new PSProduct(product));
-            }
-
-        }
-
-        /// <summary>
-        /// Gets a list of products by country and category.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offers.</param>
-        /// <param name="targetView">Identifies the target view of the catalog.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="targetView"/> is empty or null.
-        /// </exception>
-        private void GetProductsByCatalog(string countryCode, string targetView)
-        {
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            targetView.AssertNotEmpty(nameof(targetView));
-
-            ResourceCollection<Product> products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).GetAsync().GetAwaiter().GetResult();
-
-            if (products.TotalCount > 0)
-            {
-                WriteObject(products.Items.Select(p => new PSProduct(p)), true);
-            }
-        }
-
-        /// <summary>
-        /// Gets a list of products by country, category and segment.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offers.</param>
-        /// <param name="targetView">Identifies the target view of the catalog.</param>
-        /// <param name="targetSegment">Identifies the target segment.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="targetView"/> is empty or null.
-        /// or
-        /// <paramref name="targetSegment"/> is empty or null.
-        /// </exception>
-        private void GetProductsBySegment(string countryCode, string targetView, string targetSegment)
-        {
-            ResourceCollection<Product> products;
-
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            targetView.AssertNotEmpty(nameof(targetView));
-            targetSegment.AssertNotEmpty(nameof(targetSegment));
-
-            products = Partner.Products.ByCountry(countryCode).ByTargetView(targetView).ByTargetSegment(targetSegment).GetAsync().GetAwaiter().GetResult();
-
-            if (products.TotalCount > 0)
-            {
-                WriteObject(products.Items.Select(p => new PSProduct(p)), true);
             }
         }
     }

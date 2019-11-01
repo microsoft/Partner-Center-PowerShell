@@ -26,7 +26,7 @@ Gets the product upgrade status for the specified customer and product family.
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerProductUpgradeStatus -CustomerId '409fb479-1106-41a1-91be-0ae69e880a20' -ProductFamily Azure
+PS C:\> Get-PartnerProductUpgradeStatus -CustomerId '409fb479-1106-41a1-91be-0ae69e880a20' -ProductFamily Azure -UpgradeId '42d075a4-bfe7-43e7-af6d-7c68a57edcb4'
 ```
 
 Gets the product upgrade status for the specified customer and product family.

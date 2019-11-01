@@ -42,12 +42,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (StartDate != null)
             {
-                filter = AppendValue(filter, $"createdDateTime gt {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
             }
 
             if (EndDate != null)
             {
-                filter = AppendValue(filter, $"createdDateTime ls {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
             }
 
             if (!string.IsNullOrEmpty(UserId))

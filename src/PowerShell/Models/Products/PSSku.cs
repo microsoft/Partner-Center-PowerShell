@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Products
     using PartnerCenter.Models.Products;
 
     /// <summary>
-    /// Represents a form of product availability to customer.
+    /// Defines a SKU for a product.
     /// </summary>
     public sealed class PSSku
     {

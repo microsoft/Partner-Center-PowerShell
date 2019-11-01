@@ -11,8 +11,8 @@
     <Product>Partner Center PowerShell</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright © 2019</Copyright>
-    <PackageProjectUrl>https://github.com/Microsoft/Partner-Center-PowerShell</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/microsoft/Partner-Center-PowerShell</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -33,7 +33,7 @@
     <PackageReference Include="Microsoft.Graph.Beta" Version="0.8.0-preview" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.0-preview" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.6.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.0-preview" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.1" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" PrivateAssets="All" />
   </ItemGroup>
 
