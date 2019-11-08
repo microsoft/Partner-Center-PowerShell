@@ -20,6 +20,11 @@
 
 # Change Log
 
+## 2.0.1911.3
+
+* Authentication
+  * Addressed issue preventing the [Test-PartnerSecurityRequirement](https://docs.microsoft.com/powershell/module/partnercenter/test-partnersecurityrequirement) command from working as expected
+
 ## 2.0.1911.2
 
 * Dependencies
