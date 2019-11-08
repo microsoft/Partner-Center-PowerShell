@@ -4,11 +4,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
     using Models;
+    using Models.Authentication;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(MicrosoftgraphsignIn))]
     public class GetPartnerUserSignInActivity : PartnerCmdlet
@@ -37,7 +36,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<MicrosoftgraphsignIn> activities = new List<MicrosoftgraphsignIn>();
             PathsauditlogsSigninsgetresponses200contentapplicationJsonschema data;
             string filter = string.Empty;
 
