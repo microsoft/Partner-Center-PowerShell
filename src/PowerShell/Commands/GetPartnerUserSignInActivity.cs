@@ -7,9 +7,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Graph;
+    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
+    using Models;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
+    [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(MicrosoftgraphsignIn))]
     public class GetPartnerUserSignInActivity : PartnerCmdlet
     {
         /// <summary>
@@ -36,8 +37,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<SignIn> activities = new List<SignIn>();
-            List<QueryOption> queryOptions = null;
+            List<MicrosoftgraphsignIn> activities = new List<MicrosoftgraphsignIn>();
+            PathsauditlogsSigninsgetresponses200contentapplicationJsonschema data;
             string filter = string.Empty;
 
             if (StartDate != null)
@@ -55,26 +56,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filter = AppendValue(filter, $"userId eq '{UserId}'");
             }
 
+            AuditLogClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<AuditLogClient>(new[] { "https://graph.microsoft.com/.default" });
+
             if (!string.IsNullOrEmpty(filter))
             {
-                queryOptions = new List<QueryOption>
-                {
-                    new QueryOption("$filter", $"({filter})")
-                };
+                client.Filter = filter;
             }
 
-            IAuditLogRootSignInsCollectionPage data = Graph
-                .AuditLogs.SignIns.Request(queryOptions).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            data = client.AuditLogs.ListSignInsAsync(null, null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            activities.AddRange(data.CurrentPage);
-
-            while (data.NextPageRequest != null)
-            {
-                data = data.NextPageRequest.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                activities.AddRange(data.CurrentPage);
-            }
-
-            WriteObject(data.CurrentPage, true);
+            WriteObject(data.Value, true);
         }
 
         private static string AppendValue(string baseValue, string appendValue)

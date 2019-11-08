@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Models.ValidationRules;
+    using Models.CountryValidationRules;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCountryValidation"), OutputType(typeof(PSCountryValidationRules))]
     public class GetPartnerCountryValidation : PartnerCmdlet

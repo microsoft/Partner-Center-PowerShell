@@ -3,19 +3,21 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
-    using Graph;
+    using Rest;
 
     /// <summary>
     /// Represents a factory that provides initialized clients used to interact with online services.
     /// </summary>
     public interface IClientFactory
     {
-        IGraphServiceClient CreateGraphServiceClient();
-
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
         IPartner CreatePartnerOperations();
+
+        TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>;
+
+        TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
     }
 }

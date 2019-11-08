@@ -3,7 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
-    using Graph;
+    using Microsoft.Rest;
     using Network;
     using PowerShell.Factories;
 
@@ -39,15 +39,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         }
 
         /// <summary>
-        /// Creates a nwe instance of the Microsoft Graph service client.
-        /// </summary>
-        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
-        public IGraphServiceClient CreateGraphServiceClient()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
@@ -61,6 +52,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
             }
 
             return partnerOperations;
+        }
+
+        public TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

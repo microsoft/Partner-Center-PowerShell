@@ -4,9 +4,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
+    using System.Reflection;
     using Extensions;
-    using Graph;
     using Identity.Client;
     using Models.Authentication;
     using Network;
@@ -17,6 +18,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     public class ClientFactory : IClientFactory
     {
+        private static readonly CancelRetryHandler DefaultCancelRetryHandler = new CancelRetryHandler(3, TimeSpan.FromSeconds(10));
+
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
@@ -27,15 +30,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 InnerHandler = new HttpClientHandler()
             }
         });
-
-        /// <summary>
-        /// Creates a nwe instance of the Microsoft Graph service client.
-        /// </summary>
-        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
-        public IGraphServiceClient CreateGraphServiceClient()
-        {
-            return new GraphServiceClient(new GraphAuthenticationProvider());
-        }
 
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
@@ -53,6 +47,43 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
                 HttpClient);
+        }
+
+        public virtual TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>
+        {
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+                PartnerSession.Instance.Context.Account,
+                PartnerSession.Instance.Context.Environment,
+                scopes);
+
+            return CreateServiceClient<TClient>(new TokenCredentials(authResult.AccessToken, "Bearer"));
+        }
+
+        public virtual TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        {
+            List<Type> types = new List<Type>();
+            List<object> parameterList = new List<object>();
+
+            List<DelegatingHandler> handlerList = new List<DelegatingHandler> { DefaultCancelRetryHandler.Clone() as CancelRetryHandler };
+
+            foreach (object obj in parameters)
+            {
+                Type paramType = obj.GetType();
+                types.Add(paramType);
+                parameterList.Add(obj);
+            }
+
+            types.Add((Array.Empty<DelegatingHandler>()).GetType());
+            parameterList.Add(handlerList.ToArray());
+
+            ConstructorInfo constructor = typeof(TClient).GetConstructor(types.ToArray());
+
+            if (constructor == null)
+            {
+                throw new InvalidOperationException($"{typeof(TClient).Name} is an invalid management client");
+            }
+
+            return (TClient)constructor.Invoke(parameterList.ToArray());
         }
     }
 }

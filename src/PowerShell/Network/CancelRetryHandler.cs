@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     /// <summary>
     /// Delegating handler that retries any operation that was aborted due to the <see cref="TaskCanceledException" /> being thrown.
     /// </summary>
-    public class CancelRetryHandler : DelegatingHandler
+    public class CancelRetryHandler : DelegatingHandler, ICloneable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CancelRetryHandler" /> class.
@@ -33,6 +33,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// Gets or sets the interval to wait between retries.
         /// </summary>
         public TimeSpan WaitInterval { get; set; } = TimeSpan.Zero;
+
+        public object Clone()
+        {
+            return new CancelRetryHandler(MaxTries, WaitInterval);
+        }
 
         /// <summary>
         /// Sends an HTTP request to the inner handler to send to the server as an asynchronous operation.
