@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Graph;
     using Models.Authentication;
     using Properties;
 
@@ -13,11 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     public abstract class PartnerCmdlet : PartnerPSCmdlet
     {
-        /// <summary>
-        /// Gets the available Microsoft Graph operations.
-        /// </summary>
-        internal IGraphServiceClient Graph { get; private set; }
-
         /// <summary>
         /// Gets the available Partner Center operations.
         /// </summary>
@@ -33,7 +27,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
             }
 
-            Graph = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
             Partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
 
             base.BeginProcessing();

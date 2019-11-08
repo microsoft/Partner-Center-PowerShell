@@ -20,6 +20,11 @@
 
 # Change Log
 
+## 2.0.1911.2
+
+* Dependencies
+  * Addressed issues [#183](https://github.com/microsoft/Partner-Center-PowerShell/issues/181) and [#183](https://github.com/microsoft/Partner-Center-PowerShell/issues/183) caused by an assembly binding issue
+
 ## 2.0.1911.1
 
 * Authentication
