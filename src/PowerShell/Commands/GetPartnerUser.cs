@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            UserClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<UserClient>(new[] { "https://graph.microsoft.com/.default" });
+            UserClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<UserClient>(new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" });
             Pathsusersgetresponses200contentapplicationJsonschema data = client.Usersuser.ListUserAsync(null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(data.Value, true);

@@ -56,7 +56,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filter = AppendValue(filter, $"userId eq '{UserId}'");
             }
 
-            AuditLogClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<AuditLogClient>(new[] { "https://graph.microsoft.com/.default" });
+            AuditLogClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<AuditLogClient>(new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" });
 
             if (!string.IsNullOrEmpty(filter))
             {
