@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Authentication;
 
     [Cmdlet(VerbsDiagnostic.Test, "PartnerSecurityRequirement")]
-    public class TestPartnerSecurityRequirement : PSCmdlet
+    public class TestPartnerSecurityRequirement : PartnerPSCmdlet
     {
         /// <summary>
         /// The message written to the console.
@@ -68,7 +68,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account,
                 environment,
                 new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" },
-                Message);
+                Message,
+                WriteWarning, 
+                CancellationToken);
 
 
             JsonWebToken jwt = new JsonWebToken(authResult.AccessToken);
