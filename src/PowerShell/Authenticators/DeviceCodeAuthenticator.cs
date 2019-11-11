@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
@@ -28,17 +27,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
-            return GetResponseAsync(app, parameters.Scopes, promptAction, cancellationToken);
-        }
-
-        private async Task<AuthenticationResult> GetResponseAsync(IPublicClientApplication app, IEnumerable<string> scopes, Action<string> promptAction = null, CancellationToken cancellationToken = default)
-        {
-            return await app.AcquireTokenWithDeviceCode(scopes, deviceCodeResult =>
+            return app.AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
             {
-                promptAction(deviceCodeResult.Message);
+                Console.WriteLine(deviceCodeResult.Message);
                 return Task.CompletedTask;
             }).ExecuteAsync(cancellationToken);
-
         }
 
         /// <summary>

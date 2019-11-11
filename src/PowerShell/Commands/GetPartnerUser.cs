@@ -4,8 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Models.Authentication;
     using Models;
+    using Models.Authentication;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUser"), OutputType(typeof(Microsoftgraphuser))]
     public class GetPartnerUser : PartnerCmdlet
