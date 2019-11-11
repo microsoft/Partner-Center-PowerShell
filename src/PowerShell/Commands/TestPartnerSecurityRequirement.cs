@@ -69,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 environment,
                 new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" },
                 Message,
-                WriteWarning, 
+                WriteWarning,
                 CancellationToken);
 
 
