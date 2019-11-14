@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
+    using Microsoft.Graph;
     using Microsoft.Rest;
     using Network;
     using PowerShell.Factories;
@@ -52,6 +53,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
             }
 
             return partnerOperations;
+        }
+
+        public IGraphServiceClient CreateGraphServiceClient()
+        {
+            throw new System.NotImplementedException();
         }
 
         public TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>

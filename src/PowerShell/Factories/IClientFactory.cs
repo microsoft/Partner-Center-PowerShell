@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using Graph;
     using Rest;
 
     /// <summary>
@@ -10,6 +11,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     public interface IClientFactory
     {
+        /// <summary>
+        /// Creates a new instance of the Microsoft Graph service client.
+        /// </summary>
+        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
+        IGraphServiceClient CreateGraphServiceClient();
+
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>

@@ -64,6 +64,15 @@
     <PreLoadAssemblies Include="$(RepoSrc)lib\System.Security.Cryptography.ProtectedData.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Graph.Beta">
+      <HintPath>..\lib\Microsoft.Graph.Beta.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Graph.Core">
+      <HintPath>..\lib\Microsoft.Graph.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <Target Name="CopyFiles" AfterTargets="Build">
     <Copy SourceFiles="@(PreLoadAssemblies)" DestinationFolder="$(TargetDir)" />
   </Target>
