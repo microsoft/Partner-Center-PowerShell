@@ -57,7 +57,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.ValidationRules.PSCountryValidationRules
+### Microsoft.Store.PartnerCenter.PowerShell.Models.CountryValidationRules.PSCountryValidationRules
 
 ## NOTES
 

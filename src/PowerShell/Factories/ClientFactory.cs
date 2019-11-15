@@ -8,6 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Net.Http;
     using System.Reflection;
     using Extensions;
+    using Graph;
     using Identity.Client;
     using Models.Authentication;
     using Network;
@@ -30,6 +31,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 InnerHandler = new HttpClientHandler()
             }
         });
+
+        /// <summary>
+        /// Creates a new instance of the Microsoft Graph service client.
+        /// </summary>
+        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
+        public IGraphServiceClient CreateGraphServiceClient()
+        {
+            return new GraphServiceClient(new GraphAuthenticationProvider());
+        }
 
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.

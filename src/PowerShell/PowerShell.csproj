@@ -18,7 +18,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>2.0.1911.3</Version>
+    <Version>2.0.1911.4</Version>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -62,6 +62,20 @@
 
   <ItemGroup>
     <PreLoadAssemblies Include="$(RepoSrc)lib\System.Security.Cryptography.ProtectedData.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Billing\Billing.csproj" />
+    <ProjectReference Include="..\Subscription\Subscription.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Graph.Beta">
+      <HintPath>..\lib\Microsoft.Graph.Beta.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Graph.Core">
+      <HintPath>..\lib\Microsoft.Graph.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="CopyFiles" AfterTargets="Build">

@@ -32,6 +32,12 @@ Gets the links to download or view the Microsoft Customer Agreement template.
 ### [Get-PartnerAuditRecord](Get-PartnerAuditRecord.md)
 Gets audit records from Partner Center.
 
+### [Get-PartnerAzureBillingAccount](Get-PartnerAzureBillingAccount.md)
+Gets the billing accounts where the authenticated user has access.
+
+### [Get-PartnerAzureBillingProfile](Get-PartnerAzureBillingProfile.md)
+Gets the billing profiles for specified billing account.
+
 ### [Get-PartnerAzureRateCard](Get-PartnerAzureRateCard.md)
 Gets real-time prices for an Azure offer.
 
@@ -242,6 +248,9 @@ Gets a collection of a partner's Government Community Cloud validation codes.
 ### [New-PartnerAccessToken](New-PartnerAccessToken.md)
 Acquires an access token from Azure Active Directory.
 
+### [New-PartnerAzureSubscription](New-PartnerAzureSubscription.md)
+Creates a new Azure subscription for Microsoft Partner Agreement billing account.
+
 ### [New-PartnerCustomer](New-PartnerCustomer.md)
 Creates a new customer.
 
@@ -349,3 +358,4 @@ Tests if the specified domain name is available for creating a new tenant.
 
 ### [Test-PartnerSecurityRequirement](Test-PartnerSecurityRequirement.md)
 Tests the account, used during authentication, if multi-factor authentication was enforced.
+

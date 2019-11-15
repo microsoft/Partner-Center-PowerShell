@@ -3,11 +3,13 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Enumerators;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Customers;
@@ -44,40 +46,46 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public override void ExecuteCmdlet()
         {
             IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;
-            List<Customer> customers;
+            List<Customer> customers = new List<Customer>();
             SeekBasedResourceCollection<Customer> seekCustomers;
 
-            if (string.IsNullOrEmpty(CustomerId))
-            {
-                customers = new List<Customer>();
-
-                if (string.IsNullOrEmpty(Domain))
-                {
-                    seekCustomers = Partner.Customers.GetAsync().GetAwaiter().GetResult();
-                }
-                else
-                {
-                    seekCustomers = Partner.Customers.QueryAsync(
-                        QueryFactory.BuildSimpleQuery(new SimpleFieldFilter(
-                            CustomerSearchField.Domain.ToString(),
-                            FieldFilterOperation.StartsWith,
-                            Domain))).GetAwaiter().GetResult();
-                }
-
-                customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
-
-                while (customersEnumerator.HasValue)
-                {
-                    customers.AddRange(customersEnumerator.Current.Items);
-                    customersEnumerator.NextAsync().GetAwaiter().GetResult();
-                }
-
-                WriteObject(customers.Select(c => new PSCustomer(c)), true);
-            }
-            else
+            if (!string.IsNullOrEmpty(CustomerId))
             {
                 WriteObject(new PSCustomer(Partner.Customers[CustomerId].GetAsync().GetAwaiter().GetResult()));
+                return;
             }
+            if (ParameterSetName.Equals("ByDomain", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Graph.IGraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
+                Graph.IGraphServiceContractsCollectionPage data = client.Contracts.Request().Filter($"defaultDomainName eq '{Domain}'").GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                if (data.CurrentPage != null && data.CurrentPage.Any())
+                {
+                    Customer customer = Partner.Customers.ById(data.CurrentPage[0].CustomerId.ToString()).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    WriteObject(new PSCustomer(customer));
+                    return;
+                }
+
+                seekCustomers = Partner.Customers.QueryAsync(
+                    QueryFactory.BuildSimpleQuery(new SimpleFieldFilter(
+                        CustomerSearchField.Domain.ToString(),
+                        FieldFilterOperation.StartsWith,
+                        Domain))).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            else 
+            {
+                seekCustomers = Partner.Customers.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+
+            customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
+
+            while (customersEnumerator.HasValue)
+            {
+                customers.AddRange(customersEnumerator.Current.Items);
+                customersEnumerator.NextAsync().GetAwaiter().GetResult();
+            }
+
+            WriteObject(customers.Select(c => new PSCustomer(c)), true);
         }
     }
 }

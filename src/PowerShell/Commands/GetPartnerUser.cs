@@ -3,11 +3,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Collections.Generic;
     using System.Management.Automation;
-    using Models;
+    using Graph;
     using Models.Authentication;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerUser"), OutputType(typeof(Microsoftgraphuser))]
+    [Cmdlet(VerbsCommon.Get, "PartnerUser"), OutputType(typeof(User))]
     public class GetPartnerUser : PartnerCmdlet
     {
         /// <summary>
@@ -15,10 +16,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            UserClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<UserClient>(new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" });
-            Pathsusersgetresponses200contentapplicationJsonschema data = client.Usersuser.ListUserAsync(null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
+            IGraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
+            IGraphServiceUsersCollectionPage data = client.Users.Request().GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            List<User> users = new List<User>();
 
-            WriteObject(data.Value, true);
+            users.AddRange(data.CurrentPage);
+
+            while (data.NextPageRequest != null)
+            {
+                data = data.NextPageRequest.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                users.AddRange(data.CurrentPage);
+            }
+
+            WriteObject(users, true);
         }
     }
 }

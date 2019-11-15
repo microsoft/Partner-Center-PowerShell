@@ -31,6 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Graph.Beta">
+      <HintPath>..\..\src\lib\Microsoft.Graph.Beta.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="SessionRecords\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
