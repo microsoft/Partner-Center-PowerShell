@@ -39,6 +39,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to initiate the transfer.
             /// </param>
+            public static TransferDetails Initiate(this ITransfersOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, InitiateTransferRequest parameters)
+            {
+                return operations.InitiateAsync(billingAccountName, billingProfileName, invoiceSectionName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Initiates the request to transfer the legacy subscriptions or RIs.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to initiate the transfer.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -48,6 +71,29 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Gets the transfer details for given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
+            public static TransferDetails Get(this ITransfersOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string transferName)
+            {
+                return operations.GetAsync(billingAccountName, billingProfileName, invoiceSectionName, transferName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -97,6 +143,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='transferName'>
             /// Transfer Name.
             /// </param>
+            public static TransferDetails Cancel(this ITransfersOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string transferName)
+            {
+                return operations.CancelAsync(billingAccountName, billingProfileName, invoiceSectionName, transferName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Cancels the transfer for given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -123,6 +192,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='invoiceSectionName'>
             /// InvoiceSection Id.
             /// </param>
+            public static IPage<TransferDetails> List(this ITransfersOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName)
+            {
+                return operations.ListAsync(billingAccountName, billingProfileName, invoiceSectionName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all transfer's details initiated from given invoice section.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -132,6 +221,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists all transfer's details initiated from given invoice section.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<TransferDetails> ListNext(this ITransfersOperations operations, string nextPageLink)
+            {
+                return operations.ListNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

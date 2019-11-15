@@ -43,6 +43,33 @@ namespace Microsoft.Azure.Management.Billing
             /// nextLink element will include a skiptoken parameter that specifies a
             /// starting point to use for subsequent calls.
             /// </param>
+            public static IPage<Customer> ListByBillingProfile(this ICustomersOperations operations, string billingAccountName, string billingProfileName, string filter = default(string), string skiptoken = default(string))
+            {
+                return operations.ListByBillingProfileAsync(billingAccountName, billingProfileName, filter, skiptoken).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists customers by billing profile which the current user can work with
+            /// on-behalf of a partner.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='filter'>
+            /// May be used to filter the list of customers.
+            /// </param>
+            /// <param name='skiptoken'>
+            /// Skiptoken is only used if a previous operation returned a partial result.
+            /// If a previous response contains a nextLink element, the value of the
+            /// nextLink element will include a skiptoken parameter that specifies a
+            /// starting point to use for subsequent calls.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -52,6 +79,30 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists customers which the current user can work with on-behalf of a
+            /// partner.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='filter'>
+            /// May be used to filter the list of customers.
+            /// </param>
+            /// <param name='skiptoken'>
+            /// Skiptoken is only used if a previous operation returned a partial result.
+            /// If a previous response contains a nextLink element, the value of the
+            /// nextLink element will include a skiptoken parameter that specifies a
+            /// starting point to use for subsequent calls.
+            /// </param>
+            public static IPage<Customer> ListByBillingAccount(this ICustomersOperations operations, string billingAccountName, string filter = default(string), string skiptoken = default(string))
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName, filter, skiptoken).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -99,6 +150,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='expand'>
             /// May be used to expand enabledAzurePlans, resellers.
             /// </param>
+            public static Customer Get(this ICustomersOperations operations, string billingAccountName, string customerName, string expand = default(string))
+            {
+                return operations.GetAsync(billingAccountName, customerName, expand).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Gets a customer by its id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand enabledAzurePlans, resellers.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -120,6 +191,21 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='nextPageLink'>
             /// The NextLink from the previous successful call to List operation.
             /// </param>
+            public static IPage<Customer> ListByBillingProfileNext(this ICustomersOperations operations, string nextPageLink)
+            {
+                return operations.ListByBillingProfileNextAsync(nextPageLink).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists customers by billing profile which the current user can work with
+            /// on-behalf of a partner.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -129,6 +215,21 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists customers which the current user can work with on-behalf of a
+            /// partner.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<Customer> ListByBillingAccountNext(this ICustomersOperations operations, string nextPageLink)
+            {
+                return operations.ListByBillingAccountNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

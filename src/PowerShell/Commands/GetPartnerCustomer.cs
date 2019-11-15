@@ -9,11 +9,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Enumerators;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Customers;
     using PartnerCenter.Models.Query;
-    using Models.Authentication;
 
     /// <summary>
     /// Get a customer, or a list of customers, from Partner Center.

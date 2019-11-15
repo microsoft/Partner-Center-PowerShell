@@ -42,6 +42,12 @@ namespace Microsoft.Azure.Management.Billing
         ServiceClientCredentials Credentials { get; }
 
         /// <summary>
+        /// Version of the API to be used with the client request. The current
+        /// version is 2019-10-01-preview.
+        /// </summary>
+        string ApiVersion { get; }
+
+        /// <summary>
         /// Azure Subscription ID.
         /// </summary>
         string SubscriptionId { get; set; }

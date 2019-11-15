@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='customerName'>
             /// Customer name.
             /// </param>
+            public static BillingPermissionsListResult ListByCustomer(this IBillingPermissionsOperations operations, string billingAccountName, string customerName)
+            {
+                return operations.ListByCustomerAsync(billingAccountName, customerName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all billing permissions the caller has for a customer.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -42,6 +59,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists all billing permissions for the caller under a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            public static BillingPermissionsListResult ListByBillingAccount(this IBillingPermissionsOperations operations, string billingAccountName)
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -79,6 +110,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='invoiceSectionName'>
             /// InvoiceSection Id.
             /// </param>
+            public static BillingPermissionsListResult ListByInvoiceSections(this IBillingPermissionsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName)
+            {
+                return operations.ListByInvoiceSectionsAsync(billingAccountName, billingProfileName, invoiceSectionName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all billing permissions for the caller under invoice section.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -88,6 +139,23 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists all billing permissions the caller has for a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            public static BillingPermissionsListResult ListByBillingProfile(this IBillingPermissionsOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.ListByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
             }
 
             /// <summary>

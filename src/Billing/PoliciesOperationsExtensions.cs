@@ -34,6 +34,24 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingProfileName'>
             /// Billing Profile Id.
             /// </param>
+            public static Policy GetByBillingProfile(this IPoliciesOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.GetByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The policy for a given billing account name and billing profile name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -43,6 +61,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to update a policy.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the update policy operation.
+            /// </param>
+            public static Policy Update(this IPoliciesOperations operations, string billingAccountName, string billingProfileName, Policy parameters)
+            {
+                return operations.UpdateAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -84,6 +122,24 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='customerName'>
             /// Customer name.
             /// </param>
+            public static CustomerPolicy GetByCustomer(this IPoliciesOperations operations, string billingAccountName, string customerName)
+            {
+                return operations.GetByCustomerAsync(billingAccountName, customerName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The policy for a given billing account name and customer name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -93,6 +149,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to update a Customer policy.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the update customer policy operation.
+            /// </param>
+            public static CustomerPolicy UpdateCustomer(this IPoliciesOperations operations, string billingAccountName, string customerName, CustomerPolicy parameters)
+            {
+                return operations.UpdateCustomerAsync(billingAccountName, customerName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>

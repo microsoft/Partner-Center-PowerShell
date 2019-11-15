@@ -48,6 +48,12 @@ namespace Microsoft.Azure.Management.Billing
         public ServiceClientCredentials Credentials { get; private set; }
 
         /// <summary>
+        /// Version of the API to be used with the client request. The current version
+        /// is 2019-10-01-preview.
+        /// </summary>
+        public string ApiVersion { get; private set; }
+
+        /// <summary>
         /// Azure Subscription ID.
         /// </summary>
         public string SubscriptionId { get; set; }
@@ -468,6 +474,7 @@ namespace Microsoft.Azure.Management.Billing
             Agreements = new AgreementsOperations(this);
             LineOfCredits = new LineOfCreditsOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
+            ApiVersion = "2019-10-01-preview";
             AcceptLanguage = "en-US";
             LongRunningOperationRetryTimeout = 30;
             GenerateClientRequestId = true;

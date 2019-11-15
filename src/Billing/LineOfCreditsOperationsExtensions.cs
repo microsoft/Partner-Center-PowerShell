@@ -27,6 +27,17 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static LineOfCredit Get(this ILineOfCreditsOperations operations)
+            {
+                return operations.GetAsync().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get the current line of credit.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -47,6 +58,20 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to the increase line of credit operation.
             /// </param>
+            public static LineOfCredit Update(this ILineOfCreditsOperations operations, LineOfCredit parameters)
+            {
+                return operations.UpdateAsync(parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Increase the current line of credit.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the increase line of credit operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -56,6 +81,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Increase the current line of credit.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the increase line of credit operation.
+            /// </param>
+            public static LineOfCredit BeginUpdate(this ILineOfCreditsOperations operations, LineOfCredit parameters)
+            {
+                return operations.BeginUpdateAsync(parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>

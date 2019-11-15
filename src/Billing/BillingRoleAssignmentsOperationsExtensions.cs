@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleAssignmentName'>
             /// role assignment id.
             /// </param>
+            public static BillingRoleAssignment GetByBillingAccount(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingRoleAssignmentName)
+            {
+                return operations.GetByBillingAccountAsync(billingAccountName, billingRoleAssignmentName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get the role assignment for the caller
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -56,6 +73,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleAssignmentName'>
             /// role assignment id.
             /// </param>
+            public static BillingRoleAssignment DeleteByBillingAccount(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingRoleAssignmentName)
+            {
+                return operations.DeleteByBillingAccountAsync(billingAccountName, billingRoleAssignmentName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete the role assignment on this billing account
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -65,6 +99,29 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the role assignment for the caller on the invoice Section
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
+            public static BillingRoleAssignment GetByInvoiceSection(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string billingRoleAssignmentName)
+            {
+                return operations.GetByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, billingRoleAssignmentName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -114,6 +171,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleAssignmentName'>
             /// role assignment id.
             /// </param>
+            public static BillingRoleAssignment DeleteByInvoiceSection(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string billingRoleAssignmentName)
+            {
+                return operations.DeleteByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, billingRoleAssignmentName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete the role assignment on the invoice Section
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -123,6 +203,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the role assignment for the caller on the Billing Profile
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
+            public static BillingRoleAssignment GetByBillingProfile(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string billingRoleAssignmentName)
+            {
+                return operations.GetByBillingProfileAsync(billingAccountName, billingProfileName, billingRoleAssignmentName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -166,6 +266,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleAssignmentName'>
             /// role assignment id.
             /// </param>
+            public static BillingRoleAssignment DeleteByBillingProfile(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string billingRoleAssignmentName)
+            {
+                return operations.DeleteByBillingProfileAsync(billingAccountName, billingProfileName, billingRoleAssignmentName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Delete the role assignment on this Billing Profile
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='billingRoleAssignmentName'>
+            /// role assignment id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -175,6 +295,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the role assignments on the Billing Account
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            public static BillingRoleAssignmentListResult ListByBillingAccount(this IBillingRoleAssignmentsOperations operations, string billingAccountName)
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -209,6 +343,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to add a role assignment.
             /// </param>
+            public static BillingRoleAssignmentListResult AddByBillingAccount(this IBillingRoleAssignmentsOperations operations, string billingAccountName, BillingRoleAssignmentPayload parameters)
+            {
+                return operations.AddByBillingAccountAsync(billingAccountName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to add a role assignment to a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to add a role assignment.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -218,6 +369,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the role assignments on the invoice Section
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            public static BillingRoleAssignmentListResult ListByInvoiceSection(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName)
+            {
+                return operations.ListByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -264,6 +435,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to add a role assignment.
             /// </param>
+            public static BillingRoleAssignmentListResult AddByInvoiceSection(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, BillingRoleAssignmentPayload parameters)
+            {
+                return operations.AddByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to add a role assignment to a invoice Section.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to add a role assignment.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -287,6 +481,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingProfileName'>
             /// Billing Profile Id.
             /// </param>
+            public static BillingRoleAssignmentListResult ListByBillingProfile(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.ListByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get the role assignments on the Billing Profile
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -296,6 +507,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to add a role assignment to a billing profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to add a role assignment.
+            /// </param>
+            public static BillingRoleAssignmentListResult AddByBillingProfile(this IBillingRoleAssignmentsOperations operations, string billingAccountName, string billingProfileName, BillingRoleAssignmentPayload parameters)
+            {
+                return operations.AddByBillingProfileAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>

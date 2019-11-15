@@ -29,6 +29,19 @@ namespace Microsoft.Azure.Management.Billing
             /// </param>
             /// <param name='address'>
             /// </param>
+            public static ValidateAddressResponse Validate(this IAddressOperations operations, AddressDetails address)
+            {
+                return operations.ValidateAsync(address).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Validates the address.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='address'>
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>

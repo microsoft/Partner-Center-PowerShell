@@ -40,6 +40,30 @@ namespace Microsoft.Azure.Management.Billing
             /// 'not'. Tag filter is a key value pair string where key and value is
             /// separated by a colon (:).
             /// </param>
+            public static ProductsListResult ListByCustomer(this IProductsOperations operations, string billingAccountName, string customerName, string filter = default(string))
+            {
+                return operations.ListByCustomerAsync(billingAccountName, customerName, filter).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists products by customer id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='filter'>
+            /// May be used to filter by product type. The filter supports 'eq', 'lt',
+            /// 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
+            /// 'not'. Tag filter is a key value pair string where key and value is
+            /// separated by a colon (:).
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -49,6 +73,27 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get a customer's product by name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='productName'>
+            /// Invoice Id.
+            /// </param>
+            public static Product GetByCustomer(this IProductsOperations operations, string billingAccountName, string customerName, string productName)
+            {
+                return operations.GetByCustomerAsync(billingAccountName, customerName, productName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -94,6 +139,27 @@ namespace Microsoft.Azure.Management.Billing
             /// 'not'. Tag filter is a key value pair string where key and value is
             /// separated by a colon (:).
             /// </param>
+            public static IPage<Product> ListByBillingAccount(this IProductsOperations operations, string billingAccountName, string filter = default(string))
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName, filter).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists products by billing account name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='filter'>
+            /// May be used to filter by product type. The filter supports 'eq', 'lt',
+            /// 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
+            /// 'not'. Tag filter is a key value pair string where key and value is
+            /// separated by a colon (:).
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -103,6 +169,33 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists products by invoice section name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='filter'>
+            /// May be used to filter by product type. The filter supports 'eq', 'lt',
+            /// 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
+            /// 'not'. Tag filter is a key value pair string where key and value is
+            /// separated by a colon (:).
+            /// </param>
+            public static ProductsListResult ListByInvoiceSection(this IProductsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string filter = default(string))
+            {
+                return operations.ListByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, filter).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -157,6 +250,30 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='productName'>
             /// Invoice Id.
             /// </param>
+            public static Product Get(this IProductsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string productName)
+            {
+                return operations.GetAsync(billingAccountName, billingProfileName, invoiceSectionName, productName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get a single product by name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='productName'>
+            /// Invoice Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -166,6 +283,32 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to transfer a Product to another invoice section.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='productName'>
+            /// Invoice Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the Transfer Product operation.
+            /// </param>
+            public static Product Transfer(this IProductsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string productName, TransferProductRequestProperties parameters)
+            {
+                return operations.TransferAsync(billingAccountName, billingProfileName, invoiceSectionName, productName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -221,6 +364,32 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to the Transfer Products operation.
             /// </param>
+            public static ValidateProductTransferEligibilityResult ValidateTransfer(this IProductsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string productName, TransferProductRequestProperties parameters)
+            {
+                return operations.ValidateTransferAsync(billingAccountName, billingProfileName, invoiceSectionName, productName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Validates the transfer of products across invoice sections.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='productName'>
+            /// Invoice Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to the Transfer Products operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -253,6 +422,32 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='body'>
             /// Update auto renew request parameters.
             /// </param>
+            public static UpdateAutoRenewOperation UpdateAutoRenewByInvoiceSection(this IProductsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string productName, UpdateAutoRenewRequest body)
+            {
+                return operations.UpdateAutoRenewByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, productName, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Cancel auto renew for product by product id and invoice section name
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='productName'>
+            /// Invoice Id.
+            /// </param>
+            /// <param name='body'>
+            /// Update auto renew request parameters.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -262,6 +457,21 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists products by billing account name.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<Product> ListByBillingAccountNext(this IProductsOperations operations, string nextPageLink)
+            {
+                return operations.ListByBillingAccountNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

@@ -31,6 +31,21 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingAccountName'>
             /// billing Account Id.
             /// </param>
+            public static IPage<PaymentMethod> ListByBillingAccount(this IPaymentMethodsOperations operations, string billingAccountName)
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists the Payment Methods by billing account Id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/2019-10-01-preview/paymentmethods" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -40,6 +55,24 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists the Payment Methods by billing profile Id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            public static IPage<PaymentMethod> ListByBillingProfile(this IPaymentMethodsOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.ListByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -76,6 +109,21 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='nextPageLink'>
             /// The NextLink from the previous successful call to List operation.
             /// </param>
+            public static IPage<PaymentMethod> ListByBillingAccountNext(this IPaymentMethodsOperations operations, string nextPageLink)
+            {
+                return operations.ListByBillingAccountNextAsync(nextPageLink).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists the Payment Methods by billing account Id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/2019-10-01-preview/paymentmethods" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -85,6 +133,21 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists the Payment Methods by billing profile Id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<PaymentMethod> ListByBillingProfileNext(this IPaymentMethodsOperations operations, string nextPageLink)
+            {
+                return operations.ListByBillingProfileNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

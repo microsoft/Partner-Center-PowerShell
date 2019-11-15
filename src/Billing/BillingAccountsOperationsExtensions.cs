@@ -30,6 +30,20 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='expand'>
             /// May be used to expand the address, invoiceSections and billingProfiles.
             /// </param>
+            public static BillingAccountListResult List(this IBillingAccountsOperations operations, string expand = default(string))
+            {
+                return operations.ListAsync(expand).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all billing accounts for a user which he has access to.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the address, invoiceSections and billingProfiles.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -39,6 +53,23 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the billing account by id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the address, invoiceSections and billingProfiles.
+            /// </param>
+            public static BillingAccount Get(this IBillingAccountsOperations operations, string billingAccountName, string expand = default(string))
+            {
+                return operations.GetAsync(billingAccountName, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -76,6 +107,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Request parameters supplied to the update billing account operation.
             /// </param>
+            public static BillingAccount Update(this IBillingAccountsOperations operations, string billingAccountName, BillingAccountUpdateRequest parameters)
+            {
+                return operations.UpdateAsync(billingAccountName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to update a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the update billing account operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -85,6 +133,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists all invoice sections with create subscription permission for a user.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            public static IPage<InvoiceSectionWithCreateSubPermission> ListInvoiceSectionsByCreateSubscriptionPermission(this IBillingAccountsOperations operations, string billingAccountName)
+            {
+                return operations.ListInvoiceSectionsByCreateSubscriptionPermissionAsync(billingAccountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -119,6 +181,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Request parameters supplied to the update billing account operation.
             /// </param>
+            public static BillingAccount BeginUpdate(this IBillingAccountsOperations operations, string billingAccountName, BillingAccountUpdateRequest parameters)
+            {
+                return operations.BeginUpdateAsync(billingAccountName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to update a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the update billing account operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -128,6 +207,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists all invoice sections with create subscription permission for a user.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<InvoiceSectionWithCreateSubPermission> ListInvoiceSectionsByCreateSubscriptionPermissionNext(this IBillingAccountsOperations operations, string nextPageLink)
+            {
+                return operations.ListInvoiceSectionsByCreateSubscriptionPermissionNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

@@ -28,6 +28,18 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static BillingProperty Get(this IBillingPropertyOperations operations)
+            {
+                return operations.GetAsync().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get billing property by subscription Id.
+            /// <see href="https://docs.microsoft.com/en-us/rest/api/billing/" />
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>

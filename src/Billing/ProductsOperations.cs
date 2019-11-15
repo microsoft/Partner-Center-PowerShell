@@ -97,6 +97,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "customerName");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -106,6 +107,7 @@ namespace Microsoft.Azure.Management.Billing
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("billingAccountName", billingAccountName);
                 tracingParameters.Add("customerName", customerName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("filter", filter);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "ListByCustomer", tracingParameters);
@@ -116,6 +118,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{billingAccountName}", System.Uri.EscapeDataString(billingAccountName));
             _url = _url.Replace("{customerName}", System.Uri.EscapeDataString(customerName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (filter != null)
             {
                 _queryParameters.Add(string.Format("$filter={0}", System.Uri.EscapeDataString(filter)));
@@ -288,6 +294,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "productName");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -298,6 +305,7 @@ namespace Microsoft.Azure.Management.Billing
                 tracingParameters.Add("billingAccountName", billingAccountName);
                 tracingParameters.Add("customerName", customerName);
                 tracingParameters.Add("productName", productName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "GetByCustomer", tracingParameters);
             }
@@ -308,6 +316,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{customerName}", System.Uri.EscapeDataString(customerName));
             _url = _url.Replace("{productName}", System.Uri.EscapeDataString(productName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (_queryParameters.Count > 0)
             {
                 _url += (_url.Contains("?") ? "&" : "?") + string.Join("&", _queryParameters);
@@ -468,6 +480,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "billingAccountName");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -476,6 +489,7 @@ namespace Microsoft.Azure.Management.Billing
                 _invocationId = ServiceClientTracing.NextInvocationId.ToString();
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
                 tracingParameters.Add("billingAccountName", billingAccountName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("filter", filter);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "ListByBillingAccount", tracingParameters);
@@ -485,6 +499,10 @@ namespace Microsoft.Azure.Management.Billing
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products").ToString();
             _url = _url.Replace("{billingAccountName}", System.Uri.EscapeDataString(billingAccountName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (filter != null)
             {
                 _queryParameters.Add(string.Format("$filter={0}", System.Uri.EscapeDataString(filter)));
@@ -663,6 +681,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "invoiceSectionName");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -673,6 +692,7 @@ namespace Microsoft.Azure.Management.Billing
                 tracingParameters.Add("billingAccountName", billingAccountName);
                 tracingParameters.Add("billingProfileName", billingProfileName);
                 tracingParameters.Add("invoiceSectionName", invoiceSectionName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("filter", filter);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "ListByInvoiceSection", tracingParameters);
@@ -684,6 +704,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{billingProfileName}", System.Uri.EscapeDataString(billingProfileName));
             _url = _url.Replace("{invoiceSectionName}", System.Uri.EscapeDataString(invoiceSectionName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (filter != null)
             {
                 _queryParameters.Add(string.Format("$filter={0}", System.Uri.EscapeDataString(filter)));
@@ -863,6 +887,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "productName");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -874,6 +899,7 @@ namespace Microsoft.Azure.Management.Billing
                 tracingParameters.Add("billingProfileName", billingProfileName);
                 tracingParameters.Add("invoiceSectionName", invoiceSectionName);
                 tracingParameters.Add("productName", productName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Get", tracingParameters);
             }
@@ -885,6 +911,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{invoiceSectionName}", System.Uri.EscapeDataString(invoiceSectionName));
             _url = _url.Replace("{productName}", System.Uri.EscapeDataString(productName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (_queryParameters.Count > 0)
             {
                 _url += (_url.Contains("?") ? "&" : "?") + string.Join("&", _queryParameters);
@@ -1066,6 +1096,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "parameters");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -1077,6 +1108,7 @@ namespace Microsoft.Azure.Management.Billing
                 tracingParameters.Add("billingProfileName", billingProfileName);
                 tracingParameters.Add("invoiceSectionName", invoiceSectionName);
                 tracingParameters.Add("productName", productName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("parameters", parameters);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "Transfer", tracingParameters);
@@ -1089,6 +1121,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{invoiceSectionName}", System.Uri.EscapeDataString(invoiceSectionName));
             _url = _url.Replace("{productName}", System.Uri.EscapeDataString(productName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (_queryParameters.Count > 0)
             {
                 _url += (_url.Contains("?") ? "&" : "?") + string.Join("&", _queryParameters);
@@ -1499,6 +1535,7 @@ namespace Microsoft.Azure.Management.Billing
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "body");
             }
+            string apiVersion = "2019-10-01-preview";
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -1510,6 +1547,7 @@ namespace Microsoft.Azure.Management.Billing
                 tracingParameters.Add("billingProfileName", billingProfileName);
                 tracingParameters.Add("invoiceSectionName", invoiceSectionName);
                 tracingParameters.Add("productName", productName);
+                tracingParameters.Add("apiVersion", apiVersion);
                 tracingParameters.Add("body", body);
                 tracingParameters.Add("cancellationToken", cancellationToken);
                 ServiceClientTracing.Enter(_invocationId, this, "UpdateAutoRenewByInvoiceSection", tracingParameters);
@@ -1522,6 +1560,10 @@ namespace Microsoft.Azure.Management.Billing
             _url = _url.Replace("{invoiceSectionName}", System.Uri.EscapeDataString(invoiceSectionName));
             _url = _url.Replace("{productName}", System.Uri.EscapeDataString(productName));
             List<string> _queryParameters = new List<string>();
+            if (apiVersion != null)
+            {
+                _queryParameters.Add(string.Format("api-version={0}", System.Uri.EscapeDataString(apiVersion)));
+            }
             if (_queryParameters.Count > 0)
             {
                 _url += (_url.Contains("?") ? "&" : "?") + string.Join("&", _queryParameters);

@@ -34,6 +34,24 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingProfileName'>
             /// Billing Profile Id.
             /// </param>
+            public static AvailableBalance GetByBillingProfile(this IAvailableBalancesOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.GetByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The latest available credit balance for a given billingAccountName and
+            /// billingProfileName.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>

@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='expand'>
             /// May be used to expand the invoiceSections.
             /// </param>
+            public static BillingProfileListResult ListByBillingAccount(this IBillingProfilesOperations operations, string billingAccountName, string expand = default(string))
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName, expand).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all billing profiles for a user which that user has access to.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the invoiceSections.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -42,6 +59,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the billing profile by id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the invoiceSections.
+            /// </param>
+            public static BillingProfile Get(this IBillingProfilesOperations operations, string billingAccountName, string billingProfileName, string expand = default(string))
+            {
+                return operations.GetAsync(billingAccountName, billingProfileName, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -85,6 +122,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Request parameters supplied to the Create BillingProfile operation.
             /// </param>
+            public static BillingProfile Create(this IBillingProfilesOperations operations, string billingAccountName, string billingProfileName, BillingProfileCreationRequest parameters)
+            {
+                return operations.CreateAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to create a BillingProfile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the Create BillingProfile operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -94,6 +151,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to update a billing profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the update billing profile operation.
+            /// </param>
+            public static BillingProfile Update(this IBillingProfilesOperations operations, string billingAccountName, string billingProfileName, BillingProfile parameters)
+            {
+                return operations.UpdateAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -137,6 +214,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Request parameters supplied to the Create BillingProfile operation.
             /// </param>
+            public static BillingProfile BeginCreate(this IBillingProfilesOperations operations, string billingAccountName, string billingProfileName, BillingProfileCreationRequest parameters)
+            {
+                return operations.BeginCreateAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// The operation to create a BillingProfile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the Create BillingProfile operation.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -146,6 +243,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// The operation to update a billing profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='parameters'>
+            /// Request parameters supplied to the update billing profile operation.
+            /// </param>
+            public static BillingProfile BeginUpdate(this IBillingProfilesOperations operations, string billingAccountName, string billingProfileName, BillingProfile parameters)
+            {
+                return operations.BeginUpdateAsync(billingAccountName, billingProfileName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>

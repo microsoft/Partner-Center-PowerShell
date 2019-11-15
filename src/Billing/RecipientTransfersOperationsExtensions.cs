@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to accept the transfer.
             /// </param>
+            public static RecipientTransferDetails Accept(this IRecipientTransfersOperations operations, string transferName, AcceptTransferRequest parameters)
+            {
+                return operations.AcceptAsync(transferName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Accepts the transfer with given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to accept the transfer.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -42,6 +59,24 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Validates if the products can be transferred in the context of the given
+            /// transfer name.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to validate the transfer.
+            /// </param>
+            public static ValidateTransferListResponse Validate(this IRecipientTransfersOperations operations, string transferName, AcceptTransferRequest parameters)
+            {
+                return operations.ValidateAsync(transferName, parameters).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -77,6 +112,20 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='transferName'>
             /// Transfer Name.
             /// </param>
+            public static RecipientTransferDetails Decline(this IRecipientTransfersOperations operations, string transferName)
+            {
+                return operations.DeclineAsync(transferName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Declines the transfer with given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -86,6 +135,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Gets the transfer with given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
+            public static RecipientTransferDetails Get(this IRecipientTransfersOperations operations, string transferName)
+            {
+                return operations.GetAsync(transferName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -114,6 +177,17 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static IPage<RecipientTransferDetails> List(this IRecipientTransfersOperations operations)
+            {
+                return operations.ListAsync().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists the transfers received by caller.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -123,6 +197,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists the transfers received by caller.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='nextPageLink'>
+            /// The NextLink from the previous successful call to List operation.
+            /// </param>
+            public static IPage<RecipientTransferDetails> ListNext(this IRecipientTransfersOperations operations, string nextPageLink)
+            {
+                return operations.ListNextAsync(nextPageLink).GetAwaiter().GetResult();
             }
 
             /// <summary>

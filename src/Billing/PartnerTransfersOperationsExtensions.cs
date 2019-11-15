@@ -39,6 +39,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='parameters'>
             /// Parameters supplied to initiate the transfer.
             /// </param>
+            public static TransferDetails Initiate(this IPartnerTransfersOperations operations, string billingAccountName, string billingProfileName, string customerName, InitiateTransferRequest parameters)
+            {
+                return operations.InitiateAsync(billingAccountName, billingProfileName, customerName, parameters).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Initiates the request to transfer the legacy subscriptions or RIs.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='parameters'>
+            /// Parameters supplied to initiate the transfer.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -68,6 +91,29 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='transferName'>
             /// Transfer Name.
             /// </param>
+            public static TransferDetails Get(this IPartnerTransfersOperations operations, string billingAccountName, string billingProfileName, string customerName, string transferName)
+            {
+                return operations.GetAsync(billingAccountName, billingProfileName, customerName, transferName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Gets the transfer details for given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -77,6 +123,29 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Cancels the transfer for given transfer Id.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='customerName'>
+            /// Customer name.
+            /// </param>
+            /// <param name='transferName'>
+            /// Transfer Name.
+            /// </param>
+            public static TransferDetails Cancel(this IPartnerTransfersOperations operations, string billingAccountName, string billingProfileName, string customerName, string transferName)
+            {
+                return operations.CancelAsync(billingAccountName, billingProfileName, customerName, transferName).GetAwaiter().GetResult();
             }
 
             /// <summary>

@@ -36,6 +36,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='invoiceName'>
             /// Invoice Id.
             /// </param>
+            public static DownloadUrl Download(this IPriceSheetOperations operations, string billingAccountName, string billingProfileName, string invoiceName)
+            {
+                return operations.DownloadAsync(billingAccountName, billingProfileName, invoiceName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Download price sheet for an invoice.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceName'>
+            /// Invoice Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -45,6 +65,23 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Download price sheet for a billing profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            public static DownloadUrl DownloadByBillingProfile(this IPriceSheetOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.DownloadByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -85,6 +122,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='invoiceName'>
             /// Invoice Id.
             /// </param>
+            public static DownloadUrl BeginDownload(this IPriceSheetOperations operations, string billingAccountName, string billingProfileName, string invoiceName)
+            {
+                return operations.BeginDownloadAsync(billingAccountName, billingProfileName, invoiceName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Download price sheet for an invoice.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceName'>
+            /// Invoice Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -94,6 +151,23 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Download price sheet for a billing profile.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            public static DownloadUrl BeginDownloadByBillingProfile(this IPriceSheetOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.BeginDownloadByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
             }
 
             /// <summary>

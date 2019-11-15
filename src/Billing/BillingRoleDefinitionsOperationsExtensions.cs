@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleDefinitionName'>
             /// role definition id.
             /// </param>
+            public static BillingRoleDefinition GetByBillingAccount(this IBillingRoleDefinitionsOperations operations, string billingAccountName, string billingRoleDefinitionName)
+            {
+                return operations.GetByBillingAccountAsync(billingAccountName, billingRoleDefinitionName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Gets the role definition for a role
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingRoleDefinitionName'>
+            /// role definition id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -42,6 +59,29 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Gets the role definition for a role
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
+            /// <param name='billingRoleDefinitionName'>
+            /// role definition id.
+            /// </param>
+            public static BillingRoleDefinition GetByInvoiceSection(this IBillingRoleDefinitionsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName, string billingRoleDefinitionName)
+            {
+                return operations.GetByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName, billingRoleDefinitionName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -88,6 +128,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='billingRoleDefinitionName'>
             /// role definition id.
             /// </param>
+            public static BillingRoleDefinition GetByBillingProfile(this IBillingRoleDefinitionsOperations operations, string billingAccountName, string billingProfileName, string billingRoleDefinitionName)
+            {
+                return operations.GetByBillingProfileAsync(billingAccountName, billingProfileName, billingRoleDefinitionName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Gets the role definition for a role
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='billingRoleDefinitionName'>
+            /// role definition id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -97,6 +157,20 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists the role definition for a billing account
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            public static BillingRoleDefinitionListResult ListByBillingAccount(this IBillingRoleDefinitionsOperations operations, string billingAccountName)
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -134,6 +208,26 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='invoiceSectionName'>
             /// InvoiceSection Id.
             /// </param>
+            public static BillingRoleDefinitionListResult ListByInvoiceSection(this IBillingRoleDefinitionsOperations operations, string billingAccountName, string billingProfileName, string invoiceSectionName)
+            {
+                return operations.ListByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists the role definition for an invoice Section
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            /// <param name='invoiceSectionName'>
+            /// InvoiceSection Id.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -143,6 +237,23 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Lists the role definition for a Billing Profile
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='billingProfileName'>
+            /// Billing Profile Id.
+            /// </param>
+            public static BillingRoleDefinitionListResult ListByBillingProfile(this IBillingRoleDefinitionsOperations operations, string billingAccountName, string billingProfileName)
+            {
+                return operations.ListByBillingProfileAsync(billingAccountName, billingProfileName).GetAwaiter().GetResult();
             }
 
             /// <summary>

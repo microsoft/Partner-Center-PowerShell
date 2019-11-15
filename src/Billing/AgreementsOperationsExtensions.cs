@@ -33,6 +33,23 @@ namespace Microsoft.Azure.Management.Billing
             /// <param name='expand'>
             /// May be used to expand the participants.
             /// </param>
+            public static AgreementListResult ListByBillingAccount(this IAgreementsOperations operations, string billingAccountName, string expand = default(string))
+            {
+                return operations.ListByBillingAccountAsync(billingAccountName, expand).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Lists all agreements for a billing account.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the participants.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -42,6 +59,26 @@ namespace Microsoft.Azure.Management.Billing
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Get the agreement by name.
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='billingAccountName'>
+            /// billing Account Id.
+            /// </param>
+            /// <param name='agreementName'>
+            /// Agreement Id.
+            /// </param>
+            /// <param name='expand'>
+            /// May be used to expand the participants.
+            /// </param>
+            public static Agreement Get(this IAgreementsOperations operations, string billingAccountName, string agreementName, string expand = default(string))
+            {
+                return operations.GetAsync(billingAccountName, agreementName, expand).GetAwaiter().GetResult();
             }
 
             /// <summary>

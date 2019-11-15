@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerShell.UnitTests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Billing", "src\Billing\Billing.csproj", "{C445D44E-EEB2-4B49-A862-0F0E292F9843}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscription", "src\Subscription\Subscription.csproj", "{74A40D93-A16E-4823-A8A9-25EDFDF9886A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{C445D44E-EEB2-4B49-A862-0F0E292F9843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C445D44E-EEB2-4B49-A862-0F0E292F9843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C445D44E-EEB2-4B49-A862-0F0E292F9843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74A40D93-A16E-4823-A8A9-25EDFDF9886A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A40D93-A16E-4823-A8A9-25EDFDF9886A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A40D93-A16E-4823-A8A9-25EDFDF9886A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A40D93-A16E-4823-A8A9-25EDFDF9886A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{0DAC3162-7D38-40EC-A412-496ECAFDDC8B} = {D88E76D6-773B-4691-B6AB-3323E46D486F}
 		{08C08BAF-107D-43BB-9560-DA2D40B27816} = {BE2D140E-51A4-469F-A12A-279192E0986F}
 		{C445D44E-EEB2-4B49-A862-0F0E292F9843} = {D88E76D6-773B-4691-B6AB-3323E46D486F}
+		{74A40D93-A16E-4823-A8A9-25EDFDF9886A} = {D88E76D6-773B-4691-B6AB-3323E46D486F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BE398BA5-A85F-43C4-9317-C08C61C2DB8B}
