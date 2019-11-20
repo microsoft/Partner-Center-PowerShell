@@ -18,6 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <returns>The result from the authentication request.</returns>
-        AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, CancellationToken cancellationToken = default);
+        AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default);
     }
 }

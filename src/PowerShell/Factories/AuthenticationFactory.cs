@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     {
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
@@ -52,8 +52,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         processAuthenticator = processAuthenticator.Next;
                     }
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ex)
                 {
+                    debugAction($"Encountered {ex.Message} when trying to authenticate.");
                     continue;
                 }
 
