@@ -19,45 +19,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     {
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
-            int retries = 5;
 
-            while (retries-- > 0)
+            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes, message), out Task<AuthenticationResult> result, promptAction, cancellationToken))
             {
-                try
+                authResult = result.ConfigureAwait(true).GetAwaiter().GetResult();
+
+                if (authResult != null)
                 {
-                    while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes, message), out Task<AuthenticationResult> result, promptAction, cancellationToken))
+                    if (authResult.Account?.HomeAccountId != null)
                     {
-                        authResult = result.ConfigureAwait(true).GetAwaiter().GetResult();
-
-                        if (authResult != null)
-                        {
-                            if (authResult.Account?.HomeAccountId != null)
-                            {
-                                account.Identifier = authResult.Account.HomeAccountId.Identifier;
-                                account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
-                            }
-
-                            if (account.Tenant.Equals("common", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(authResult.TenantId))
-                            {
-                                account.Tenant = authResult.TenantId;
-                            }
-
-                            break;
-                        }
-
-                        processAuthenticator = processAuthenticator.Next;
+                        account.Identifier = authResult.Account.HomeAccountId.Identifier;
+                        account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
                     }
-                }
-                catch (InvalidOperationException)
-                {
-                    continue;
+
+                    if (account.Tenant.Equals("common", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(authResult.TenantId))
+                    {
+                        account.Tenant = authResult.TenantId;
+                    }
+
+                    break;
                 }
 
-                break;
+                processAuthenticator = processAuthenticator.Next;
             }
 
             return authResult ?? null;

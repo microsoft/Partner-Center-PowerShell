@@ -72,7 +72,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         FieldFilterOperation.StartsWith,
                         Domain))).ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            else 
+            else
             {
                 seekCustomers = Partner.Customers.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }

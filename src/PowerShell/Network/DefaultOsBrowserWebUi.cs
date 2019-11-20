@@ -42,11 +42,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 </html>";
 
         /// <summary>
-        /// The action used to prompt for interaction.
-        /// </summary>
-        private readonly Action<string> promptAction;
-
-        /// <summary>
         /// The message written to the console.
         /// </summary>
         private readonly string message;
@@ -55,14 +50,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// Initializes a new instance of the <see cref="DefaultOsBrowserWebUi" /> class.
         /// </summary>
         /// <param name="message">The message written to the console.</param>
-        /// <param name="promptAction">The action used to prompt for interaction.</param>
-        public DefaultOsBrowserWebUi(string message, Action<string> promptAction)
+        public DefaultOsBrowserWebUi(string message)
         {
             message.AssertNotEmpty(nameof(message));
-            promptAction.AssertNotNull(nameof(promptAction));
 
             this.message = message;
-            this.promptAction = promptAction;
         }
 
         /// <summary>
@@ -74,14 +66,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <returns>The URI returned back from the STS authorization endpoint. This URI contains a code=CODE parameter that MSAL.NET will extract and redeem.</returns>
         public async Task<Uri> AcquireAuthorizationCodeAsync(Uri authorizationUri, Uri redirectUri, CancellationToken cancellationToken)
         {
-            promptAction("Attempting to launch a browser for authorization code login.");
+            Console.WriteLine("Attempting to launch a browser for authorization code login.");
 
             if (!OpenBrowser(authorizationUri.ToString()))
             {
-                promptAction("Unable to launch a browser for authorization code login. Reverting to device code login.");
+                Console.WriteLine("Unable to launch a browser for authorization code login. Reverting to device code login.");
             }
 
-            promptAction(message);
+            Console.WriteLine(message);
 
             using (SingleMessageTcpListener listener = new SingleMessageTcpListener(redirectUri.Port))
             {

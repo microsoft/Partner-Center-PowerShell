@@ -173,6 +173,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Scopes,
                 Message,
                 WriteWarning,
+                WriteDebug,
                 CancellationToken);
 
             byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();

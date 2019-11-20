@@ -84,7 +84,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

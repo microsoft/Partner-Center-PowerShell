@@ -239,6 +239,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
                 Message,
                 WriteWarning,
+                WriteDebug,
                 CancellationToken);
 
             PartnerSession.Instance.Context = new PartnerContext

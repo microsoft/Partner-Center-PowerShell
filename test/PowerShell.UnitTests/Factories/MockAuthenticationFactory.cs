@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// Acquires the security token from the authority.
         /// </summary>
         /// <returns>The result from the authentication request.</returns>
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default)
         {
             return new AuthenticationResult(
                 "STUB_TOKEN",
