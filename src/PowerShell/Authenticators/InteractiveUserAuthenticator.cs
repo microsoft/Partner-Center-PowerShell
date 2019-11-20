@@ -51,7 +51,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    promptAction($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
+                    Console.WriteLine($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
                     listener?.Stop();
                 }
             }
@@ -60,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             if (app is IConfidentialClientApplication)
             {
-                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message, promptAction);
+                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message);
 
                 Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
                     await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
@@ -76,7 +76,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             else
             {
                 authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
-                    .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message, promptAction))
+                    .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message))
                     .WithPrompt(Prompt.ForceLogin)
                     .ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
