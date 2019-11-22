@@ -20,6 +20,12 @@
 
 # Change Log
 
+## 2.0.1911.5
+
+* Security
+  * Optimized the [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgrade) command
+  * Optimized the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command
+
 ## 2.0.1911.4
 
 * Azure
