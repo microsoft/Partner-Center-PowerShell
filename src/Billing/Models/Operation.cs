@@ -11,7 +11,6 @@
 namespace Microsoft.Azure.Management.Billing.Models
 {
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// A Billing REST API operation.

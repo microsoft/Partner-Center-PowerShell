@@ -5,8 +5,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Collections.Generic;
     using System.Management.Automation;
+    using System.Threading.Tasks;
     using Graph;
     using Models.Authentication;
+    using Network;
 
     /// <summary>
     /// Command that gets partner level user accounts.
@@ -32,27 +34,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IGraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
+            GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+            client.AuthenticationProvider = new GraphAuthenticationProvider();
 
             if (string.IsNullOrEmpty(UserId) && string.IsNullOrEmpty(UserPrincipalName))
             {
-                IGraphServiceUsersCollectionPage data = client.Users.Request().GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                List<User> users = new List<User>(data.CurrentPage);
-
-                while (data.NextPageRequest != null)
-                {
-                    data = data.NextPageRequest.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                    users.AddRange(data.CurrentPage);
-                }
-
-                WriteObject(users, true);
+                WriteObject(GetUsersAsync(client).ConfigureAwait(false).GetAwaiter().GetResult(), true);
             }
             else
             {
-                User user = client.Users[string.IsNullOrEmpty(UserPrincipalName) ? UserId : UserPrincipalName].Request().GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                WriteObject(user);
+                WriteObject(client.Users[string.IsNullOrEmpty(UserPrincipalName) ? UserId : UserPrincipalName].Request().GetAsync().ConfigureAwait(false).GetAwaiter().GetResult());
             }
+        }
+
+        private async Task<List<User>> GetUsersAsync(IGraphServiceClient client)
+        {
+            IGraphServiceUsersCollectionPage data = await client.Users.Request().GetAsync().ConfigureAwait(false);
+            List<User> users = new List<User>(data.CurrentPage);
+
+            while (data.NextPageRequest != null)
+            {
+                data = await data.NextPageRequest.GetAsync().ConfigureAwait(false);
+                users.AddRange(data.CurrentPage);
+            }
+
+            return users;
         }
     }
 }

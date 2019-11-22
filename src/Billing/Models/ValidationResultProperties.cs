@@ -11,7 +11,6 @@
 namespace Microsoft.Azure.Management.Billing.Models
 {
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// The properties of the validation result.

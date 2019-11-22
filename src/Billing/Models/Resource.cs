@@ -10,10 +10,8 @@
 
 namespace Microsoft.Azure.Management.Billing.Models
 {
-    using Microsoft.Rest;
     using Microsoft.Rest.Azure;
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// The Resource model definition.

@@ -10,10 +10,7 @@
 
 namespace Microsoft.Azure.Management.Billing.Models
 {
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// A product resource.

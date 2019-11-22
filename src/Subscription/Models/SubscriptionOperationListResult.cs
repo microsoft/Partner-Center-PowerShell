@@ -10,10 +10,8 @@
 
 namespace Microsoft.Azure.Management.Subscription.Models
 {
-    using Newtonsoft.Json;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A list of pending subscription operations.

@@ -7,11 +7,11 @@
 
 namespace Microsoft.Azure.Management.Subscription
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
-  internal static partial class SdkInfo
+    internal static partial class SdkInfo
   {
       public static IEnumerable<Tuple<string, string, string>> ApiInfo_SubscriptionClient
       {

@@ -12,7 +12,6 @@ namespace Microsoft.Azure.Management.Subscription.Models
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// The parameters required to create a new CSP subscription.

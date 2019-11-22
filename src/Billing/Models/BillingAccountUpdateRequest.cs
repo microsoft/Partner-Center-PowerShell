@@ -10,12 +10,8 @@
 
 namespace Microsoft.Azure.Management.Billing.Models
 {
-    using Microsoft.Rest;
-    using Microsoft.Rest.Serialization;
-    using Newtonsoft.Json;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The request properties of the billing account that can be updated.

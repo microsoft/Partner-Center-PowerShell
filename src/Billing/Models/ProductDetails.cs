@@ -11,7 +11,6 @@
 namespace Microsoft.Azure.Management.Billing.Models
 {
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// Details of the product to be transferred.
