@@ -10,11 +10,9 @@
 
 namespace Microsoft.Azure.Management.Subscription.Models
 {
+    using System.Collections.Generic;
     using Microsoft.Rest;
     using Newtonsoft.Json;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// The parameters required to create a new subscription.

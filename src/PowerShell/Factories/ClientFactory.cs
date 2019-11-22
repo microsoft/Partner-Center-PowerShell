@@ -22,6 +22,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         private static readonly CancelRetryHandler DefaultCancelRetryHandler = new CancelRetryHandler(3, TimeSpan.FromSeconds(10));
 
         /// <summary>
+        /// The service client used to communicate with Microsoft Graph.
+        /// </summary>
+        private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+        {
+            InnerHandler = new RetryDelegatingHandler
+            {
+                InnerHandler = new HttpClientHandler()
+            }
+        }, false, null));
+
+        /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
         private static readonly HttpClient HttpClient = new HttpClient(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
@@ -35,10 +46,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// Creates a new instance of the Microsoft Graph service client.
         /// </summary>
-        /// <returns>An instance of the <see cref="GraphServiceClient"/> class.</returns>
+        /// <returns>An instance of the <see cref="Graph.GraphServiceClient"/> class.</returns>
         public IGraphServiceClient CreateGraphServiceClient()
         {
-            return new GraphServiceClient(new GraphAuthenticationProvider());
+            return GraphServiceClient;
         }
 
         /// <summary>

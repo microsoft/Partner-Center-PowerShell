@@ -10,11 +10,10 @@
 
 namespace Microsoft.Azure.Management.Billing
 {
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Models;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Rest.Azure;
+    using Models;
 
     /// <summary>
     /// Extension methods for RecipientTransfersOperations.

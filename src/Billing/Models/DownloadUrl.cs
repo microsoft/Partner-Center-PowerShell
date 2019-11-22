@@ -11,7 +11,6 @@
 namespace Microsoft.Azure.Management.Billing.Models
 {
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// A secure URL that can be used to download a an entity until the URL

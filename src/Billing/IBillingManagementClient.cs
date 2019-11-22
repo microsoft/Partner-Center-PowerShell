@@ -11,8 +11,6 @@
 namespace Microsoft.Azure.Management.Billing
 {
     using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Models;
     using Newtonsoft.Json;
 
     /// <summary>

@@ -11,7 +11,6 @@
 namespace Microsoft.Azure.Management.Subscription.Models
 {
     using Newtonsoft.Json;
-    using System.Linq;
 
     /// <summary>
     /// status of the subscription POST operation.

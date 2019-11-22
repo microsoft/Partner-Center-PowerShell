@@ -7,8 +7,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using Graph;
     using Models.Authentication;
+    using Network;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
     public class GetPartnerUserSignInActivity : PartnerCmdlet
@@ -37,8 +39,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<SignIn> activities = new List<SignIn>();
-            List<QueryOption> queryOptions = null;
+            List<SignIn> activities;
             string filter = string.Empty;
 
             if (StartDate != null)
@@ -56,6 +57,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filter = AppendValue(filter, $"userId eq '{UserId}'");
             }
 
+            activities = GetSignInActivitiesAsync(filter).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            WriteObject(activities, true);
+        }
+
+        private async Task<List<SignIn>> GetSignInActivitiesAsync(string filter)
+        {
+            List<SignIn> activities;
+            List<QueryOption> queryOptions = null;
+
             if (!string.IsNullOrEmpty(filter))
             {
                 queryOptions = new List<QueryOption>
@@ -64,20 +75,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 };
             }
 
-            IGraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
+            GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+            client.AuthenticationProvider = new GraphAuthenticationProvider();
 
-            IAuditLogRootSignInsCollectionPage data = client
-                .AuditLogs.SignIns.Request(queryOptions).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            IAuditLogRootSignInsCollectionPage data = await client
+                .AuditLogs.SignIns.Request(queryOptions).GetAsync().ConfigureAwait(false);
 
-            activities.AddRange(data.CurrentPage);
+            activities = new List<SignIn>(data.CurrentPage);
 
             while (data.NextPageRequest != null)
             {
-                data = data.NextPageRequest.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                data = await data.NextPageRequest.GetAsync().ConfigureAwait(false);
                 activities.AddRange(data.CurrentPage);
             }
 
-            WriteObject(data.CurrentPage, true);
+            return activities;
         }
 
         private static string AppendValue(string baseValue, string appendValue)

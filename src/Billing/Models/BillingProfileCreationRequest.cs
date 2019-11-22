@@ -10,10 +10,8 @@
 
 namespace Microsoft.Azure.Management.Billing.Models
 {
-    using Newtonsoft.Json;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// The request parameters for creating a new billing profile.

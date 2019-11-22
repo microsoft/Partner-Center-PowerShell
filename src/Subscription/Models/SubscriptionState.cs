@@ -10,10 +10,9 @@
 
 namespace Microsoft.Azure.Management.Subscription.Models
 {
+    using System.Runtime.Serialization;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
-    using System.Runtime;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// Defines values for SubscriptionState.

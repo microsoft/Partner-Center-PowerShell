@@ -10,11 +10,10 @@
 
 namespace Microsoft.Azure.Management.Subscription.Models
 {
-    using Microsoft.Rest;
-    using Microsoft.Rest.Azure;
-    using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
+    using Microsoft.Rest.Azure;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Defines a page in Azure responses.

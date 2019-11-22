@@ -11,7 +11,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Reflection;
     using System.Threading;
     using Models.Authentication;
+    using Network;
     using Properties;
+    using Rest;
 
     /// <summary>
     /// Represents base class for the Partner Center PowerShell cmdlets.
@@ -24,9 +26,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK = "https://aka.ms/partnercenterps-changewarnings";
 
         /// <summary>
-        /// Provides a signal to <see cref="CancellationToken" /> that it should be canceled.
+        /// Provides a signal to <see cref="System.Threading.CancellationToken" /> that it should be canceled.
         /// </summary>
         private CancellationTokenSource cancellationSource;
+
+        /// <summary>
+        /// Provides the ability to log HTTP operations when the debug parameter is present.
+        /// </summary>
+        private RecordingTracingInterceptor httpTracingInterceptor;
 
         /// <summary>
         /// Gets the cancellation token used to propagate a notification that operations should be canceled.
@@ -42,6 +49,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 cancellationSource = new CancellationTokenSource();
             }
+
+            httpTracingInterceptor = httpTracingInterceptor ?? new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
+
+            ServiceClientTracing.IsEnabled = true;
+            ServiceClientTracing.AddTracingInterceptor(httpTracingInterceptor);
 
             ProcessBreakingChangeAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);
         }
@@ -61,6 +73,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource.Dispose();
                 cancellationSource = null;
             }
+
+            ServiceClientTracing.RemoveTracingInterceptor(httpTracingInterceptor);
         }
 
         /// <summary>
