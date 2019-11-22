@@ -11,6 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Enumerators;
     using Models.Authentication;
     using Models.Customers;
+    using Network;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Customers;
     using PartnerCenter.Models.Query;
@@ -56,7 +57,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             if (ParameterSetName.Equals("ByDomain", StringComparison.InvariantCultureIgnoreCase))
             {
-                Graph.IGraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient();
+                Graph.GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as Graph.GraphServiceClient;
+                client.AuthenticationProvider = new GraphAuthenticationProvider();
+
                 Graph.IGraphServiceContractsCollectionPage data = client.Contracts.Request().Filter($"defaultDomainName eq '{Domain}'").GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 if (data.CurrentPage != null && data.CurrentPage.Any())
