@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private CancellationTokenSource cancellationSource;
 
         /// <summary>
-        /// 
+        /// Provides the ability to log HTTP operations when the debug parameter is present.
         /// </summary>
         private RecordingTracingInterceptor httpTracingInterceptor;
 
@@ -50,7 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource = new CancellationTokenSource();
             }
 
-            httpTracingInterceptor ??= new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
+            httpTracingInterceptor = httpTracingInterceptor ?? new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
 
             ServiceClientTracing.IsEnabled = true;
             ServiceClientTracing.AddTracingInterceptor(httpTracingInterceptor);
