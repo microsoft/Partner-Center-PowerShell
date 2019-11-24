@@ -15,7 +15,8 @@ Updates an Azure subscription that is part of an Azure Plan.
 ## SYNTAX
 
 ```powershell
-Set-PartnerAzureSubscription -SubscriptionId <String> -SubscriptionName <String> [<CommonParameters>]
+Set-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> -SubscriptionName <String>
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,6 +32,21 @@ PS C:\> Set-PartnerAzureSubscription -SubscriptionId 'fcfa52d0-c092-42e1-af3f-eb
 Updates the display name for the specified Azure subscription.
 
 ## PARAMETERS
+
+### -CustomerId
+The identifier of the customer.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -SubscriptionId
 The identifier of the subscription.

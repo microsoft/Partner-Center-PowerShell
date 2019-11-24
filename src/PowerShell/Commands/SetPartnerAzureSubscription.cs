@@ -15,6 +15,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the subscription identifier.
         /// </summary>
+        [Parameter(HelpMessage = "The identifier of the customer.", Mandatory = true)]
+        [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+        public string CustomerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the subscription identifier.
+        /// </summary>
         [Parameter(HelpMessage = "The identifier of the subscription.", Mandatory = true)]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string SubscriptionId { get; set; }
@@ -30,7 +37,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" });
+            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(
+                new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
+                CustomerId);
 
             RenamedSubscriptionId value = client.Subscriptions.RenameAsync(
                 SubscriptionId,

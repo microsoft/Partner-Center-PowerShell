@@ -60,12 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
             throw new System.NotImplementedException();
         }
 
-        public TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        public TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
             throw new System.NotImplementedException();
         }

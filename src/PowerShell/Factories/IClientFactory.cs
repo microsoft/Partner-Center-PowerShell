@@ -23,8 +23,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
         IPartner CreatePartnerOperations();
 
-        TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>;
-
-        TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>;
+        /// <summary>
+        /// Creates a new service client used interact with a specific service.
+        /// </summary>
+        /// <typeparam name="TClient">Type of service client being created.</typeparam>
+        /// <param name="scopes">Scopes requested to access a protected service.</param>
+        /// <param name="tenantId">The identifier for the tenant.</param>
+        /// <returns>An instance of a service client that is connected to a specific service.</returns>
+        TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>;
     }
 }
