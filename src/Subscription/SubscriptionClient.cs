@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -61,6 +61,11 @@ namespace Microsoft.Azure.Management.Subscription
         public bool? GenerateClientRequestId { get; set; }
 
         /// <summary>
+        /// Gets the ISubscriptionsOperations.
+        /// </summary>
+        public virtual ISubscriptionsOperations Subscriptions { get; private set; }
+
+        /// <summary>
         /// Gets the ISubscriptionOperationOperations.
         /// </summary>
         public virtual ISubscriptionOperationOperations SubscriptionOperation { get; private set; }
@@ -71,9 +76,14 @@ namespace Microsoft.Azure.Management.Subscription
         public virtual ISubscriptionFactoryOperations SubscriptionFactory { get; private set; }
 
         /// <summary>
-        /// Gets the ISubscriptionsOperations.
+        /// Gets the ISubscriptionOperations.
         /// </summary>
-        public virtual ISubscriptionsOperations Subscriptions { get; private set; }
+        public virtual ISubscriptionOperations SubscriptionOperations { get; private set; }
+
+        /// <summary>
+        /// Gets the IOperations.
+        /// </summary>
+        public virtual IOperations Operations { get; private set; }
 
         /// <summary>
         /// Gets the ITenantsOperations.
@@ -321,9 +331,11 @@ namespace Microsoft.Azure.Management.Subscription
         /// </summary>
         private void Initialize()
         {
+            Subscriptions = new SubscriptionsOperations(this);
             SubscriptionOperation = new SubscriptionOperationOperations(this);
             SubscriptionFactory = new SubscriptionFactoryOperations(this);
-            Subscriptions = new SubscriptionsOperations(this);
+            SubscriptionOperations = new SubscriptionOperations(this);
+            Operations = new Operations(this);
             Tenants = new TenantsOperations(this);
             BaseUri = new System.Uri("https://management.azure.com");
             AcceptLanguage = "en-US";

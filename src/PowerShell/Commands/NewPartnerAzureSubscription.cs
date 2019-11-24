@@ -4,8 +4,8 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
-    using Azure.Management.Subscription;
-    using Azure.Management.Subscription.Models;
+    using Azure.Management.Profiles.Subscription;
+    using Azure.Management.Profiles.Subscription.Models;
     using Models.Authentication;
 
     [Cmdlet(VerbsCommon.New, "PartnerAzureSubscription"), OutputType(typeof(SubscriptionCreationResult))]
@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(new[] { "https://management.azure.com//user_impersonation" });
+            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
             ModernCspSubscriptionCreationParameters parameters = new ModernCspSubscriptionCreationParameters
             {
                 DisplayName = DisplayName,

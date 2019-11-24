@@ -23,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { "https://management.azure.com//user_impersonation" });
+            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" });
             IPage<Customer> data = client.Customers.ListByBillingAccountAsync(BillingAccountName, null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(data, true);

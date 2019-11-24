@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using Microsoft.Rest;
     using Newtonsoft.Json;
@@ -58,6 +58,11 @@ namespace Microsoft.Azure.Management.Subscription
 
 
         /// <summary>
+        /// Gets the ISubscriptionsOperations.
+        /// </summary>
+        ISubscriptionsOperations Subscriptions { get; }
+
+        /// <summary>
         /// Gets the ISubscriptionOperationOperations.
         /// </summary>
         ISubscriptionOperationOperations SubscriptionOperation { get; }
@@ -68,9 +73,14 @@ namespace Microsoft.Azure.Management.Subscription
         ISubscriptionFactoryOperations SubscriptionFactory { get; }
 
         /// <summary>
-        /// Gets the ISubscriptionsOperations.
+        /// Gets the ISubscriptionOperations.
         /// </summary>
-        ISubscriptionsOperations Subscriptions { get; }
+        ISubscriptionOperations SubscriptionOperations { get; }
+
+        /// <summary>
+        /// Gets the IOperations.
+        /// </summary>
+        IOperations Operations { get; }
 
         /// <summary>
         /// Gets the ITenantsOperations.

@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using System.Collections.Generic;
     using System.Threading;
@@ -85,6 +85,32 @@ namespace Microsoft.Azure.Management.Subscription
         /// </exception>
         Task<AzureOperationResponse<SubscriptionCreationResult,SubscriptionFactoryCreateCspSubscriptionHeaders>> CreateCspSubscriptionWithHttpMessagesAsync(string billingAccountName, string customerName, ModernCspSubscriptionCreationParameters body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
+        /// Creates an Azure subscription
+        /// </summary>
+        /// <param name='enrollmentAccountName'>
+        /// The name of the enrollment account to which the subscription will
+        /// be billed.
+        /// </param>
+        /// <param name='body'>
+        /// The subscription creation parameters.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ErrorResponseException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<SubscriptionCreationResult,SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders>> CreateSubscriptionInEnrollmentAccountWithHttpMessagesAsync(string enrollmentAccountName, SubscriptionCreationParameters body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
         /// The operation to create a new WebDirect or EA Azure subscription.
         /// </summary>
         /// <param name='billingAccountName'>
@@ -147,5 +173,31 @@ namespace Microsoft.Azure.Management.Subscription
         /// Thrown when a required parameter is null
         /// </exception>
         Task<AzureOperationResponse<SubscriptionCreationResult,SubscriptionFactoryCreateCspSubscriptionHeaders>> BeginCreateCspSubscriptionWithHttpMessagesAsync(string billingAccountName, string customerName, ModernCspSubscriptionCreationParameters body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Creates an Azure subscription
+        /// </summary>
+        /// <param name='enrollmentAccountName'>
+        /// The name of the enrollment account to which the subscription will
+        /// be billed.
+        /// </param>
+        /// <param name='body'>
+        /// The subscription creation parameters.
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="ErrorResponseException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        Task<AzureOperationResponse<SubscriptionCreationResult,SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders>> BeginCreateSubscriptionInEnrollmentAccountWithHttpMessagesAsync(string enrollmentAccountName, SubscriptionCreationParameters body, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

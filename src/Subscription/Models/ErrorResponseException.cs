@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription.Models
+namespace Microsoft.Azure.Management.Profiles.Subscription.Models
 {
     using Microsoft.Rest;
 

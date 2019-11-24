@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -126,6 +126,48 @@ namespace Microsoft.Azure.Management.Subscription
             }
 
             /// <summary>
+            /// Creates an Azure subscription
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='enrollmentAccountName'>
+            /// The name of the enrollment account to which the subscription will be
+            /// billed.
+            /// </param>
+            /// <param name='body'>
+            /// The subscription creation parameters.
+            /// </param>
+            public static SubscriptionCreationResult CreateSubscriptionInEnrollmentAccount(this ISubscriptionFactoryOperations operations, string enrollmentAccountName, SubscriptionCreationParameters body)
+            {
+                return operations.CreateSubscriptionInEnrollmentAccountAsync(enrollmentAccountName, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Creates an Azure subscription
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='enrollmentAccountName'>
+            /// The name of the enrollment account to which the subscription will be
+            /// billed.
+            /// </param>
+            /// <param name='body'>
+            /// The subscription creation parameters.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<SubscriptionCreationResult> CreateSubscriptionInEnrollmentAccountAsync(this ISubscriptionFactoryOperations operations, string enrollmentAccountName, SubscriptionCreationParameters body, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.CreateSubscriptionInEnrollmentAccountWithHttpMessagesAsync(enrollmentAccountName, body, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
             /// The operation to create a new WebDirect or EA Azure subscription.
             /// </summary>
             /// <param name='operations'>
@@ -226,6 +268,48 @@ namespace Microsoft.Azure.Management.Subscription
             public static async Task<SubscriptionCreationResult> BeginCreateCspSubscriptionAsync(this ISubscriptionFactoryOperations operations, string billingAccountName, string customerName, ModernCspSubscriptionCreationParameters body, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.BeginCreateCspSubscriptionWithHttpMessagesAsync(billingAccountName, customerName, body, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Creates an Azure subscription
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='enrollmentAccountName'>
+            /// The name of the enrollment account to which the subscription will be
+            /// billed.
+            /// </param>
+            /// <param name='body'>
+            /// The subscription creation parameters.
+            /// </param>
+            public static SubscriptionCreationResult BeginCreateSubscriptionInEnrollmentAccount(this ISubscriptionFactoryOperations operations, string enrollmentAccountName, SubscriptionCreationParameters body)
+            {
+                return operations.BeginCreateSubscriptionInEnrollmentAccountAsync(enrollmentAccountName, body).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Creates an Azure subscription
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='enrollmentAccountName'>
+            /// The name of the enrollment account to which the subscription will be
+            /// billed.
+            /// </param>
+            /// <param name='body'>
+            /// The subscription creation parameters.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<SubscriptionCreationResult> BeginCreateSubscriptionInEnrollmentAccountAsync(this ISubscriptionFactoryOperations operations, string enrollmentAccountName, SubscriptionCreationParameters body, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.BeginCreateSubscriptionInEnrollmentAccountWithHttpMessagesAsync(enrollmentAccountName, body, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }

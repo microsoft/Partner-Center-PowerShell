@@ -5,7 +5,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using System;
     using System.Collections.Generic;
@@ -19,8 +19,12 @@ namespace Microsoft.Azure.Management.Subscription
           {
               return new Tuple<string, string, string>[]
               {
+                new Tuple<string, string, string>("Billing", "SubscriptionFactory", "2018-03-01-preview"),
                 new Tuple<string, string, string>("Billing", "SubscriptionFactory", "2018-11-01-preview"),
+                new Tuple<string, string, string>("Subscription", "Operations", "2018-03-01-preview"),
                 new Tuple<string, string, string>("Subscription", "SubscriptionOperation", "2018-11-01-preview"),
+                new Tuple<string, string, string>("Subscription", "SubscriptionOperations", "2018-03-01-preview"),
+                new Tuple<string, string, string>("Subscription", "Subscriptions", "2019-03-01-preview"),
                 new Tuple<string, string, string>("SubscriptionClient", "Subscriptions", "2016-06-01"),
                 new Tuple<string, string, string>("SubscriptionClient", "Tenants", "2016-06-01"),
               }.AsEnumerable();
