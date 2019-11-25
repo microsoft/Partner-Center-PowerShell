@@ -28,11 +28,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         }
 
         /// <summary>
-        /// Gets or sets the client request identifier.
-        /// </summary>
-        public string ClientRequestId { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the command.
         /// </summary>
         public string CommandName { get; set; }
@@ -51,11 +46,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         /// Gets or sets the host version.
         /// </summary>
         public string HostVersion { get; set; }
-
-        /// <summary>
-        /// Gets or sets the invocation name.
-        /// </summary>
-        public string InvocationName { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the event was successful or not.
