@@ -70,17 +70,31 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 HttpClient);
         }
 
-        public virtual TClient CreateServiceClient<TClient>(string[] scopes) where TClient : ServiceClient<TClient>
+        /// <summary>
+        /// Creates a new service client used interact with a specific service.
+        /// </summary>
+        /// <typeparam name="TClient">Type of service client being created.</typeparam>
+        /// <param name="scopes">Scopes requested to access a protected service.</param>
+        /// <param name="tenantId">The identifier for the tenant.</param>
+        /// <returns>An instance of a service client that is connected to a specific service.</returns>
+        public virtual TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
+            PartnerAccount account = PartnerSession.Instance.Context.Account;
+
+            if (!string.IsNullOrEmpty(tenantId))
+            {
+                account.Tenant = tenantId;
+            }
+
             AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                PartnerSession.Instance.Context.Account,
+                account,
                 PartnerSession.Instance.Context.Environment,
                 scopes);
 
             return CreateServiceClient<TClient>(new TokenCredentials(authResult.AccessToken, "Bearer"));
         }
 
-        public virtual TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
+        private TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
         {
             List<Type> types = new List<Type>();
             List<object> parameterList = new List<object>();

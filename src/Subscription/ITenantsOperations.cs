@@ -8,7 +8,7 @@
 // regenerated.
 // </auto-generated>
 
-namespace Microsoft.Azure.Management.Subscription
+namespace Microsoft.Azure.Management.Profiles.Subscription
 {
     using System.Collections.Generic;
     using System.Threading;

@@ -15,6 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Threading;
     using ApplicationInsights;
     using ApplicationInsights.DataContracts;
+    using Exceptions;
     using Models;
     using Models.Authentication;
     using Network;
@@ -114,17 +115,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             qosEvent = new PartnerQosEvent
             {
-                // ClientRequestId = this._clientRequestId,
                 CommandName = commandAlias,
                 IsSuccess = true,
                 ModuleVersion = GetType().Assembly.GetName().Version.ToString(),
                 ParameterSetName = ParameterSetName
             };
-
-            if (MyInvocation != null && !string.IsNullOrWhiteSpace(MyInvocation.InvocationName))
-            {
-                qosEvent.InvocationName = MyInvocation.InvocationName;
-            }
 
             if (MyInvocation != null && MyInvocation.BoundParameters != null && MyInvocation.BoundParameters.Keys != null)
             {
@@ -140,25 +135,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void EndProcessing()
         {
-            qosEvent.FinishQosEvent();
-
-            PageViewTelemetry pageViewTelemetry = new PageViewTelemetry
-            {
-                Name = EventName,
-                Duration = qosEvent.Duration,
-                Timestamp = qosEvent.StartTime
-            };
-
-            pageViewTelemetry.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-
-            PopulatePropertiesFromQos(pageViewTelemetry.Properties);
-
-            telemetryClient.TrackPageView(pageViewTelemetry);
-
-            if (qosEvent.Exception != null)
-            {
-                LogExceptionEvent();
-            }
+            LogQosEvent();
 
             if (cancellationSource != null)
             {
@@ -172,6 +149,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
 
             ServiceClientTracing.RemoveTracingInterceptor(httpTracingInterceptor);
+            base.EndProcessing();
         }
 
         /// <summary>
@@ -179,9 +157,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void ProcessRecord()
         {
-            base.ProcessRecord();
-
-            ExecuteCmdlet();
+            try
+            {
+                ExecuteCmdlet();
+                base.ProcessRecord();
+            }
+            catch (Exception ex) when (!IsTerminatingError(ex))
+            {
+                WriteExceptionError(ex);
+            }
         }
 
         /// <summary>
@@ -207,7 +191,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource = null;
             }
 
+            LogQosEvent();
             base.StopProcessing();
+        }
+
+
+        /// <summary>
+        /// Terminate the command and report an error.
+        /// </summary>
+        /// <param name="errorRecord">The error which caused the command to be terminated.</param>
+        protected new void ThrowTerminatingError(ErrorRecord errorRecord)
+        {
+            FlushDebugMessages();
+
+            if (qosEvent != null && errorRecord != null)
+            {
+                qosEvent.Exception = errorRecord.Exception;
+                qosEvent.IsSuccess = false;
+            }
+
+            base.ThrowTerminatingError(errorRecord);
         }
 
         /// <summary>
@@ -225,6 +228,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
 
             base.WriteError(errorRecord);
+        }
+
+        /// <summary>
+        /// Write an error message for a given exception.
+        /// </summary>
+        /// <param name="ex">The exception resulting from the error.</param>
+        protected virtual void WriteExceptionError(Exception ex)
+        {
+            WriteError(new ErrorRecord(ex, string.Empty, ErrorCategory.CloseError, null));
         }
 
         /// <summary>
@@ -349,6 +361,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
+        /// Gets a flag indicating whether or not the error is a terminating error.
+        /// </summary>
+        /// <param name="ex">The exception that was thrown.</param>
+        /// <returns><c>true</c> if the error is a terminating error; otherwise <c>false</c></returns>
+        private bool IsTerminatingError(Exception ex)
+        {
+            if (ex is PipelineStoppedException pipelineStoppedEx && pipelineStoppedEx.InnerException == null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Logs the execption event.
         /// </summary>
         private void LogExceptionEvent()
@@ -358,29 +385,62 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            Dictionary<string, double> eventMetrics = new Dictionary<string, double>
+            ExceptionTelemetry exceptionTelemetry = new ExceptionTelemetry(qosEvent.Exception)
             {
-                { "Duration", qosEvent.Duration.TotalMilliseconds }
+                Message = "The message has been removed due to PII"
             };
 
-            Dictionary<string, string> eventProperties = new Dictionary<string, string>();
-
-            PopulatePropertiesFromQos(eventProperties);
-
-            eventProperties.Add("Message", "Message removed due to PII.");
-            eventProperties.Add("StackTrace", qosEvent.Exception.StackTrace);
-            eventProperties.Add("ExceptionType", qosEvent.Exception.GetType().ToString());
-
-            Exception innerEx = qosEvent.Exception.InnerException;
-            int exceptionCount = 0;
-
-            while (innerEx != null)
+            if (qosEvent.Exception is PartnerException)
             {
-                eventProperties.Add("InnerExceptionType-" + exceptionCount++, innerEx.GetType().ToString());
-                innerEx = innerEx.InnerException;
+                PartnerException ex = qosEvent.Exception as PartnerException;
+
+                exceptionTelemetry.Properties.Add("ErrorCategory", ex.ErrorCategory.ToString());
+
+                PopulatePropertiesFromResponse(exceptionTelemetry.Properties, ex.Response);
+
+                if (ex.ServiceErrorPayload != null)
+                {
+                    exceptionTelemetry.Properties.Add("ErrorCode", ex.ServiceErrorPayload.ErrorCode);
+                }
+            }
+            else if (qosEvent.Exception is RestException)
+            {
+                object ex = qosEvent.Exception as object;
+                HttpResponseMessageWrapper response = ex.GetType().GetProperty("Response").GetValue(ex, null) as HttpResponseMessageWrapper;
+
+                PopulatePropertiesFromResponse(exceptionTelemetry.Properties, response);
             }
 
-            telemetryClient.TrackException(null, eventProperties, eventMetrics);
+            exceptionTelemetry.Metrics.Add("Duration", qosEvent.Duration.TotalMilliseconds);
+            PopulatePropertiesFromQos(exceptionTelemetry.Properties);
+
+            telemetryClient.TrackException(exceptionTelemetry);
+        }
+
+        /// <summary>
+        /// Logs the quality of srevice event.
+        /// </summary>
+        private void LogQosEvent()
+        {
+            qosEvent.FinishQosEvent();
+
+            PageViewTelemetry pageViewTelemetry = new PageViewTelemetry
+            {
+                Name = EventName,
+                Duration = qosEvent.Duration,
+                Timestamp = qosEvent.StartTime
+            };
+
+            pageViewTelemetry.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
+
+            PopulatePropertiesFromQos(pageViewTelemetry.Properties);
+
+            telemetryClient.TrackPageView(pageViewTelemetry);
+
+            if (qosEvent.Exception != null)
+            {
+                LogExceptionEvent();
+            }
         }
 
         /// <summary>
@@ -395,7 +455,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
 
             eventProperties.Add("Command", qosEvent.CommandName);
-            eventProperties.Add("CommandInvocationName", qosEvent.InvocationName);
             eventProperties.Add("CommandParameterSetName", qosEvent.ParameterSetName);
             eventProperties.Add("CommandParameters", qosEvent.Parameters);
             eventProperties.Add("HashMacAddress", HashMacAddress);
@@ -403,7 +462,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString());
             eventProperties.Add("ModuleVersion", qosEvent.ModuleVersion);
             eventProperties.Add("PowerShellVersion", Host.Version.ToString());
-            eventProperties.Add("Version", typeof(PartnerPSCmdlet).Assembly.GetName().Version.ToString());
+        }
+
+        /// <summary>
+        /// Populates the telemetry event properties based on the HTTP response message.
+        /// </summary>
+        /// <param name="eventProperties">The telemetry event properties to be populated.</param>
+        /// <param name="response">The HTTP response used to populate the event properties.</param>
+        private void PopulatePropertiesFromResponse(IDictionary<string, string> eventProperties, HttpResponseMessageWrapper response)
+        {
+            if (response == null)
+            {
+                return;
+            }
+
+            eventProperties.Add("ReasonPhrase", response.ReasonPhrase);
+            eventProperties.Add("StatusCode", response.StatusCode.ToString());
         }
 
         /// <summary>

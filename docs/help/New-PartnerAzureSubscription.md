@@ -102,7 +102,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Azure.Management.Subscription.Models.SubscriptionCreationResult
+### Microsoft.Azure.Management.Profiles.Subscription.Models.SubscriptionCreationResult
 
 ## NOTES
 

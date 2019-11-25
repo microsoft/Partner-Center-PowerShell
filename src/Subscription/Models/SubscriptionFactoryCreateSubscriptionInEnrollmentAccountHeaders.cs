@@ -13,29 +13,31 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Defines headers for CreateSubscription operation.
+    /// Defines headers for CreateSubscriptionInEnrollmentAccount operation.
     /// </summary>
-    public partial class SubscriptionFactoryCreateSubscriptionHeaders
+    public partial class SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// SubscriptionFactoryCreateSubscriptionHeaders class.
+        /// SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders
+        /// class.
         /// </summary>
-        public SubscriptionFactoryCreateSubscriptionHeaders()
+        public SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders()
         {
             CustomInit();
         }
 
         /// <summary>
         /// Initializes a new instance of the
-        /// SubscriptionFactoryCreateSubscriptionHeaders class.
+        /// SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders
+        /// class.
         /// </summary>
         /// <param name="location">GET this URL to retrieve the status of the
         /// asynchronous operation.</param>
         /// <param name="retryAfter">The amount of delay to use while the
         /// status of the operation is checked. The value is expressed in
         /// seconds.</param>
-        public SubscriptionFactoryCreateSubscriptionHeaders(string location = default(string), int? retryAfter = default(int?))
+        public SubscriptionFactoryCreateSubscriptionInEnrollmentAccountHeaders(string location = default(string), string retryAfter = default(string))
         {
             Location = location;
             RetryAfter = retryAfter;
@@ -59,7 +61,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
         /// operation is checked. The value is expressed in seconds.
         /// </summary>
         [JsonProperty(PropertyName = "Retry-After")]
-        public int? RetryAfter { get; set; }
+        public string RetryAfter { get; set; }
 
     }
 }

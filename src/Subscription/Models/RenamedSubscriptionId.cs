@@ -13,28 +13,26 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Describes the format of Error response.
+    /// The ID of the subscriptions that is being renamed
     /// </summary>
-    public partial class ErrorResponse
+    public partial class RenamedSubscriptionId
     {
         /// <summary>
-        /// Initializes a new instance of the ErrorResponse class.
+        /// Initializes a new instance of the RenamedSubscriptionId class.
         /// </summary>
-        public ErrorResponse()
+        public RenamedSubscriptionId()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ErrorResponse class.
+        /// Initializes a new instance of the RenamedSubscriptionId class.
         /// </summary>
-        /// <param name="code">Error code</param>
-        /// <param name="message">Error message indicating why the operation
-        /// failed.</param>
-        public ErrorResponse(string code = default(string), string message = default(string))
+        /// <param name="value">The ID of the subscriptions that is being
+        /// renamed</param>
+        public RenamedSubscriptionId(string value = default(string))
         {
-            Code = code;
-            Message = message;
+            Value = value;
             CustomInit();
         }
 
@@ -44,16 +42,10 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets error code
+        /// Gets the ID of the subscriptions that is being renamed
         /// </summary>
-        [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets error message indicating why the operation failed.
-        /// </summary>
-        [JsonProperty(PropertyName = "message")]
-        public string Message { get; set; }
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; private set; }
 
     }
 }

@@ -13,28 +13,26 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Describes the format of Error response.
+    /// The new name of the subscription.
     /// </summary>
-    public partial class ErrorResponse
+    public partial class SubscriptionName
     {
         /// <summary>
-        /// Initializes a new instance of the ErrorResponse class.
+        /// Initializes a new instance of the SubscriptionName class.
         /// </summary>
-        public ErrorResponse()
+        public SubscriptionName()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the ErrorResponse class.
+        /// Initializes a new instance of the SubscriptionName class.
         /// </summary>
-        /// <param name="code">Error code</param>
-        /// <param name="message">Error message indicating why the operation
-        /// failed.</param>
-        public ErrorResponse(string code = default(string), string message = default(string))
+        /// <param name="subscriptionNameProperty">New subscription
+        /// name</param>
+        public SubscriptionName(string subscriptionNameProperty = default(string))
         {
-            Code = code;
-            Message = message;
+            SubscriptionNameProperty = subscriptionNameProperty;
             CustomInit();
         }
 
@@ -44,16 +42,10 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets error code
+        /// Gets or sets new subscription name
         /// </summary>
-        [JsonProperty(PropertyName = "code")]
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets error message indicating why the operation failed.
-        /// </summary>
-        [JsonProperty(PropertyName = "message")]
-        public string Message { get; set; }
+        [JsonProperty(PropertyName = "subscriptionName")]
+        public string SubscriptionNameProperty { get; set; }
 
     }
 }

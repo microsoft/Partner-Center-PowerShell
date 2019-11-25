@@ -308,6 +308,9 @@ Display detailed information about PowerShell errors, with extended details for 
 ### [Restore-PartnerCustomerUser](Restore-PartnerCustomerUser.md)
 Restores a previously removed customer user from the customer's tenant.
 
+### [Set-PartnerAzureSubscription](Set-PartnerAzureSubscription.md)
+Updates an Azure subscription that is part of an Azure Plan.
+
 ### [Set-PartnerBillingProfile](Set-PartnerBillingProfile.md)
 Updates the partner's billing profile.
 
