@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private static readonly TelemetryClient telemetryClient = new TelemetryClient
         {
-            InstrumentationKey = "9c39d644-2b44-494e-bf1f-e8235d14575b"
+            InstrumentationKey = "cb2ea3c9-88e5-4139-bd48-f506319944fa"
         };
 
         /// <summary>
@@ -414,7 +414,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             exceptionTelemetry.Metrics.Add("Duration", qosEvent.Duration.TotalMilliseconds);
             PopulatePropertiesFromQos(exceptionTelemetry.Properties);
 
-            telemetryClient.TrackException(exceptionTelemetry);
+            try
+            {
+                telemetryClient.TrackException(exceptionTelemetry);
+            }
+            catch
+            {
+                // Ignore any error with capturing the telemetry
+            }
         }
 
         /// <summary>
@@ -432,10 +439,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             };
 
             pageViewTelemetry.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-
             PopulatePropertiesFromQos(pageViewTelemetry.Properties);
 
-            telemetryClient.TrackPageView(pageViewTelemetry);
+            try
+            {
+                telemetryClient.TrackPageView(pageViewTelemetry);
+            }
+            catch
+            {
+                // Ignore any error with capturing the telemetry
+            }
 
             if (qosEvent.Exception != null)
             {
