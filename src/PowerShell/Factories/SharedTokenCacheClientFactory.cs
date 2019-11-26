@@ -112,8 +112,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 LogLevel.Info,
                 enablePiiLogging: false,
                 enableDefaultPlatformLogging: true).Build();
-            MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
 
+            MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
             cacheHelper.RegisterCache(client.UserTokenCache);
 
             return client;
@@ -123,7 +123,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             if (tokenCache == null)
             {
-                IPublicClientApplication client = CreatePublicClient(null, clientId);
+                PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
+
+                IPublicClientApplication client = builder.WithLogging(
+                    DebugLoggingMethod,
+                    LogLevel.Info,
+                    enablePiiLogging: false,
+                    enableDefaultPlatformLogging: true).Build();
+
+                MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
+                cacheHelper.RegisterCache(client.UserTokenCache);
 
                 tokenCache = client.UserTokenCache;
             }

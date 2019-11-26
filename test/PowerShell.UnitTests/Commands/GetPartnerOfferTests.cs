@@ -6,10 +6,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Commands
     using VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    /// Unit tests for the commands related to offers.
+    /// Unit tests for the Get-PartnerOffer cmdlet.
     /// </summary>
     [TestClass]
-    public class OfferTests : TestBase
+    public class GetPartnerOfferTests : TestBase
     {
         /// <summary>
         /// Unit test for the Get-PartnerOffer cmdlet.

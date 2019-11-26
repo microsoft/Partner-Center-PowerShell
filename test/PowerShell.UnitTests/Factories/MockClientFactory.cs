@@ -3,10 +3,12 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
-    using Microsoft.Graph;
-    using Microsoft.Rest;
+    using System;
+    using Graph;
     using Network;
     using PowerShell.Factories;
+    using PowerShell.Network;
+    using Rest;
 
     /// <summary>
     /// Factory that provides initialized clients used to mock interactions with online services.
@@ -22,6 +24,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// Credentials used when communicating with the partner service.
         /// </summary>
         private readonly IPartnerCredentials credentials;
+
+        /// <summary>
+        /// Provides the ability to interact with Microsoft Graph.
+        /// </summary>
+        private static IGraphServiceClient graphServiceClient;
 
         /// <summary>
         /// Provides the ability to interact with the partner service.
@@ -40,6 +47,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         }
 
         /// <summary>
+        /// Creates a new instance of the Microsoft Graph service client.
+        /// </summary>
+        /// <returns>An instance of the <see cref="Graph.GraphServiceClient"/> class.</returns>
+        public IGraphServiceClient CreateGraphServiceClient()
+        {
+            if (graphServiceClient == null)
+            {
+                graphServiceClient = new GraphServiceClient(null, new HttpProvider(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+                {
+                    InnerHandler = httpMockHandler
+                }, false, null));
+            }
+
+            return graphServiceClient;
+        }
+
+        /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
@@ -55,14 +79,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
             return partnerOperations;
         }
 
-        public IGraphServiceClient CreateGraphServiceClient()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        /// <summary>
+        /// Creates a new service client used interact with a specific service.
+        /// </summary>
+        /// <typeparam name="TClient">Type of service client being created.</typeparam>
+        /// <param name="scopes">Scopes requested to access a protected service.</param>
+        /// <param name="tenantId">The identifier for the tenant.</param>
+        /// <returns>An instance of a service client that is connected to a specific service.</returns>
         public TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

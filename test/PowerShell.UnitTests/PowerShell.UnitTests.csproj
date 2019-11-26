@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\repo.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</RootNamespace>
@@ -33,6 +33,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.Graph.Beta">
       <HintPath>..\..\src\lib\Microsoft.Graph.Beta.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Graph.Core">
+      <HintPath>..\..\src\lib\Microsoft.Graph.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

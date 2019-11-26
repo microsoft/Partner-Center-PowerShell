@@ -36,7 +36,7 @@
 * Azure
   * Added the [Get-PartnerAzureBillingAccount](https://docs.microsoft.com/powershell/module/partnercenter/get-partnerazurebillingaccount) command to get billing accounts where the authenticated user has access
   * Added the [Get-PartnerAzureBillingProfile](https://docs.microsoft.com/powershell/module/partnercenter/get-partnerazurebillingprofile) to get billing profiles for specified billing account
-  * Added the [New-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/new-partnerazuresubscription) to create a new Azure subscription for Microsoft Partner Agreement billing account.
+  * Added the [New-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/new-partnerazuresubscription) to create a new Azure subscription for Microsoft Partner Agreement billing account
 * Security
   * Updated the [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerProductUpgrade) command to ensure all user accounts are returned
   * Updated the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command to ensure all user sign-in activities are returned
