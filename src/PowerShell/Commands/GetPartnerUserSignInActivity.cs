@@ -79,13 +79,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             client.AuthenticationProvider = new GraphAuthenticationProvider();
 
             IAuditLogRootSignInsCollectionPage data = await client
-                .AuditLogs.SignIns.Request(queryOptions).GetAsync().ConfigureAwait(false);
+                .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
 
             activities = new List<SignIn>(data.CurrentPage);
 
             while (data.NextPageRequest != null)
             {
-                data = await data.NextPageRequest.GetAsync().ConfigureAwait(false);
+                data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
                 activities.AddRange(data.CurrentPage);
             }
 

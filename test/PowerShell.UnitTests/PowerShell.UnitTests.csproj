@@ -34,6 +34,9 @@
     <Reference Include="Microsoft.Graph.Beta">
       <HintPath>..\..\src\lib\Microsoft.Graph.Beta.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Graph.Core">
+      <HintPath>..\..\src\lib\Microsoft.Graph.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

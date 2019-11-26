@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Management.Automation;
+    using System.Net.Http;
     using System.Reflection;
     using Factories;
     using Network;
@@ -20,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests
         /// <summary>
         /// Delegating handler used to intercept partner service client operations.
         /// </summary>
-        private static readonly HttpMockHandler httpMockHandler = new HttpMockHandler(HttpMockHandlerMode.Playback);
+        private static readonly HttpMockHandler httpMockHandler = new HttpMockHandler(HttpMockHandlerMode.Playback) { InnerHandler = new HttpClientHandler() };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestBase" /> class.

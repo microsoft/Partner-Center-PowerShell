@@ -187,7 +187,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
             }
 
-            account.SetProperty(PartnerAccountPropertyType.ApplicationId, PowerShellApplicationId);
+            account.SetProperty(PartnerAccountPropertyType.ApplicationId, string.IsNullOrEmpty(ApplicationId) ? PowerShellApplicationId : ApplicationId);
 
             if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
             {
