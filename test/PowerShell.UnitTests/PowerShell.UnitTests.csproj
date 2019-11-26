@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\repo.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</RootNamespace>
