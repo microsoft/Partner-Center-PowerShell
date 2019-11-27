@@ -20,8 +20,11 @@
 
 # Change Log
 
-## 2.0.1912.1
+## 2.0.1911.6
 
+* Authentication
+  * Updated how [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) writes warnings during an authentication attempt
+  * Updated how [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) prompts for interaction
 * Azure
   * Added the [Set-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerAzureSubscription) command to update the display name of an Azure subscription provided through an Azure Plan
 

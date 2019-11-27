@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             while (data.NextPageRequest != null)
             {
-                data = await data.NextPageRequest.GetAsync().ConfigureAwait(false);
+                data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
                 users.AddRange(data.CurrentPage);
             }
 
