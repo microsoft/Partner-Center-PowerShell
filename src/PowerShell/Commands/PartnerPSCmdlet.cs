@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private static readonly TelemetryClient telemetryClient = new TelemetryClient
         {
-            InstrumentationKey = "cb2ea3c9-88e5-4139-bd48-f506319944fa"
+            InstrumentationKey = "786d393c-be8e-46a8-b2b2-a3b6d5b417fc"
         };
 
         /// <summary>
