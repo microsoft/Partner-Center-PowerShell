@@ -15,6 +15,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     internal class DeviceCodeAuthenticator : DelegatingAuthenticator
     {
         /// <summary>
+        /// The message that will be written utilizing the prompt action.
+        /// </summary>
+        private string message;
+
+        /// <summary>
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
@@ -23,15 +28,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
-            return app.AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
+            Task<AuthenticationResult> task = Task<AuthenticationResult>.Factory.StartNew(() =>
+                app.AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
+                {
+                    message = deviceCodeResult.Message;
+                    return Task.CompletedTask;
+                }).ExecuteAsync(cancellationToken).GetAwaiter().GetResult());
+
+            while (true)
             {
-                Console.WriteLine(deviceCodeResult.Message);
-                return Task.CompletedTask;
-            }).ExecuteAsync(cancellationToken);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    promptAction(message);
+                    break;
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+                Thread.Sleep(1000);
+            }
+
+            await Task.CompletedTask;
+
+            return task.Result;
         }
 
         /// <summary>
