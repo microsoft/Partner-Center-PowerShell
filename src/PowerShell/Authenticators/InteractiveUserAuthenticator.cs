@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Net;
     using System.Net.Sockets;
@@ -34,8 +35,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             AuthenticationResult authResult;
             IClientApplicationBase app;
             InteractiveParameters interactiveParameters = parameters as InteractiveParameters;
+            Task<Task<AuthenticationResult>> task;
             TcpListener listener = null;
+            int count = 0;
             string redirectUri = null;
+
+            Queue<string> messages;
 
             int port = 8399;
 
@@ -51,35 +56,61 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
+                    promptAction($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
                     listener?.Stop();
                 }
             }
 
             app = GetClient(parameters.Account, parameters.Environment, redirectUri);
+            messages = new Queue<string>();
 
             if (app is IConfidentialClientApplication)
             {
-                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message);
+                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(messages, interactiveParameters.Message);
 
-                Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
-                    await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
-                    new Uri(redirectUri),
-                    cancellationToken).ConfigureAwait(false);
+                task = Task<Task<AuthenticationResult>>.Factory.StartNew(async () =>
+                {
+                    Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
+                        await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
+                        new Uri(redirectUri),
+                        cancellationToken).ConfigureAwait(false);
 
-                NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
+                    NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
 
-                authResult = await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
-                    parameters.Scopes,
-                    queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
+                    return await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
+                        parameters.Scopes,
+                        queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
+                });
             }
             else
             {
-                authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
-                    .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message))
-                    .WithPrompt(Prompt.ForceLogin)
-                    .ExecuteAsync(cancellationToken).ConfigureAwait(false);
+                task = Task<Task<AuthenticationResult>>.Factory.StartNew(async () =>
+                {
+                    return await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
+                        .WithCustomWebUi(new DefaultOsBrowserWebUi(messages, interactiveParameters.Message))
+                        .WithPrompt(Prompt.ForceLogin)
+                        .ExecuteAsync(cancellationToken).ConfigureAwait(false);
+                });
             }
+
+            while (true)
+            {
+                while (messages.Count > 0)
+                {
+                    promptAction(messages.Dequeue());
+                    count++;
+                }
+
+                if (count >= 2)
+                {
+                    break;
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+                Thread.Sleep(1000);
+            }
+
+            authResult = await task.Result.ConfigureAwait(false);
 
             return authResult;
         }
