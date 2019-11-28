@@ -5,23 +5,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Management.Automation;
     using System.Text;
     using Extensions;
-    using Factories;
     using Identity.Client;
+    using Identity.Client.Extensions.Msal;
     using Models.Authentication;
     using Newtonsoft.Json.Linq;
+    using Utilities;
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthResult))]
-    public class NewPartnerAccessToken : PartnerPSCmdlet
+    public class NewPartnerAccessToken : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name of the access token parameter set.
         /// </summary>
         private const string AccessTokenParameterSet = "AccessToken";
+
+        /// <summary>
+        /// The name of the token cache file.
+        /// </summary>
+        private const string CacheFileName = "msal.cache";
+
+        /// <summary>
+        /// The path for the token cache file.
+        /// </summary>
+        private static readonly string CacheFilePath = Path.Combine(SharedUtilities.GetUserRootDirectory(), ".IdentityService", CacheFileName);
 
         /// <summary>
         /// The message written to the console.
@@ -165,69 +177,87 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
 
-            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
+            account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                account,
-                PartnerEnvironment.PublicEnvironments[Environment],
-                Scopes,
-                Message,
-                WriteWarning,
-                WriteDebug,
-                CancellationToken);
-
-            byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();
-
-            IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
-
-            JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
-
-            IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
-                .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
-
-            if (known.ContainsKey("RefreshToken"))
+            Scheduler.RunTask(async (taskId) =>
             {
-                foreach (JToken token in root["RefreshToken"].Values())
-                {
-                    if (token is JObject j)
-                    {
-                        TokenCacheItem item = new TokenCacheItem
-                        {
-                            ClientId = ExtractExistingOrEmptyString(j, "client_id"),
-                            CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
-                            Environment = ExtractExistingOrEmptyString(j, "environment"),
-                            HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
-                            RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
-                            Secret = ExtractExistingOrEmptyString(j, "secret")
-                        };
+                AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
+                    account,
+                    PartnerEnvironment.PublicEnvironments[Environment],
+                    Scopes,
+                    Message,
+                    CancellationToken);
 
-                        tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                byte[] cacheData = GetMsalCacheStorage(ApplicationId).ReadData();
+
+                IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
+
+                JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
+
+                IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
+                    .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
+
+                if (known.ContainsKey("RefreshToken"))
+                {
+                    foreach (JToken token in root["RefreshToken"].Values())
+                    {
+                        if (token is JObject j)
+                        {
+                            TokenCacheItem item = new TokenCacheItem
+                            {
+                                ClientId = ExtractExistingOrEmptyString(j, "client_id"),
+                                CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
+                                Environment = ExtractExistingOrEmptyString(j, "environment"),
+                                HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
+                                RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
+                                Secret = ExtractExistingOrEmptyString(j, "secret")
+                            };
+
+                            tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                        }
                     }
                 }
-            }
 
-            string key = GetTokenCacheKey(authResult);
+                string key = GetTokenCacheKey(authResult);
 
-            AuthResult result = new AuthResult(
-                authResult.AccessToken,
-                authResult.IsExtendedLifeTimeToken,
-                authResult.UniqueId,
-                authResult.ExpiresOn,
-                authResult.ExtendedExpiresOn,
-                authResult.TenantId,
-                authResult.Account,
-                authResult.IdToken,
-                authResult.Scopes);
+                AuthResult result = new AuthResult(
+                    authResult.AccessToken,
+                    authResult.IsExtendedLifeTimeToken,
+                    authResult.UniqueId,
+                    authResult.ExpiresOn,
+                    authResult.ExtendedExpiresOn,
+                    authResult.TenantId,
+                    authResult.Account,
+                    authResult.IdToken,
+                    authResult.Scopes,
+                    authResult.CorrelationId);
 
-            if (tokens.ContainsKey(key))
-            {
-                result.RefreshToken = tokens[key].Secret;
-            }
+                if (tokens.ContainsKey(key))
+                {
+                    result.RefreshToken = tokens[key].Secret;
+                }
 
-            WriteObject(result);
+                WriteObject(result);
+            });
+
+        }
+
+        private static MsalCacheStorage GetMsalCacheStorage(string clientId)
+        {
+            StorageCreationPropertiesBuilder builder = new StorageCreationPropertiesBuilder(Path.GetFileName(CacheFilePath), Path.GetDirectoryName(CacheFilePath), clientId);
+
+            builder = builder.WithMacKeyChain(serviceName: "Microsoft.Developer.IdentityService", accountName: "MSALCache");
+            builder = builder.WithLinuxKeyring(
+                schemaName: "msal.cache",
+                collection: "default",
+                secretLabel: "MSALCache",
+                attribute1: new KeyValuePair<string, string>("MsalClientID", "Microsoft.Developer.IdentityService"),
+                attribute2: new KeyValuePair<string, string>("MsalClientVersion", "1.0.0.0"));
+
+            return new MsalCacheStorage(builder.Build());
         }
 
         private string GetTokenCacheKey(AuthenticationResult authResult)

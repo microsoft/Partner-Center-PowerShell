@@ -7,13 +7,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using Graph;
     using Models.Authentication;
     using Network;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
-    public class GetPartnerUserSignInActivity : PartnerCmdlet
+    public class GetPartnerUserSignInActivity : PartnerPSCmdlet
     {
         /// <summary>
         /// Gets or sets the end date porition of the query.
@@ -39,7 +38,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<SignIn> activities;
             string filter = string.Empty;
 
             if (StartDate != null)
@@ -57,39 +55,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filter = AppendValue(filter, $"userId eq '{UserId}'");
             }
 
-            activities = GetSignInActivitiesAsync(filter).ConfigureAwait(false).GetAwaiter().GetResult();
+            //Scheduler.RunTask(async (taskId) =>
+            //{
+            //    List<SignIn> activities;
+            //    List<QueryOption> queryOptions = null;
 
-            WriteObject(activities, true);
-        }
+            //    if (!string.IsNullOrEmpty(filter))
+            //    {
+            //        queryOptions = new List<QueryOption>
+            //        {
+            //            new QueryOption("$filter", $"({filter})")
+            //        };
+            //    }
 
-        private async Task<List<SignIn>> GetSignInActivitiesAsync(string filter)
-        {
-            List<SignIn> activities;
-            List<QueryOption> queryOptions = null;
+            //    GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+            //    client.AuthenticationProvider = new GraphAuthenticationProvider();
 
-            if (!string.IsNullOrEmpty(filter))
-            {
-                queryOptions = new List<QueryOption>
-                {
-                    new QueryOption("$filter", $"({filter})")
-                };
-            }
+            //    IAuditLogRootSignInsCollectionPage data = await client
+            //        .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
 
-            GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
-            client.AuthenticationProvider = new GraphAuthenticationProvider();
+            //    activities = new List<SignIn>(data.CurrentPage);
 
-            IAuditLogRootSignInsCollectionPage data = await client
-                .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
+            //    while (data.NextPageRequest != null)
+            //    {
+            //        data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
+            //        activities.AddRange(data.CurrentPage);
+            //    }
 
-            activities = new List<SignIn>(data.CurrentPage);
-
-            while (data.NextPageRequest != null)
-            {
-                data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
-                activities.AddRange(data.CurrentPage);
-            }
-
-            return activities;
+            //    // activities = await GetSignInActivitiesAsync(filter).ConfigureAwait(false);
+            //});
         }
 
         private static string AppendValue(string baseValue, string appendValue)

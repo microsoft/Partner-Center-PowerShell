@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Authentication;
 
     [Cmdlet(VerbsDiagnostic.Test, "PartnerSecurityRequirement")]
-    public class TestPartnerSecurityRequirement : PartnerPSCmdlet
+    public class TestPartnerSecurityRequirement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The message written to the console.
@@ -47,7 +47,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             PartnerAccount account = new PartnerAccount
             {
-                Tenant = "common",
+                Tenant = "organizations",
                 Type = AccountType.User
             };
 
@@ -64,40 +64,41 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.SetProperty(PartnerAccountPropertyType.ApplicationId, PowerShellApplicationId);
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                account,
-                environment,
-                new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" },
-                Message,
-                WriteWarning,
-                WriteDebug,
-                CancellationToken);
-
-
-            JsonWebToken jwt = new JsonWebToken(authResult.AccessToken);
-
-            WriteDebug("Checking if the access token contains the MFA claim...");
-
-            /*
-             * Obtain the authentication method reference (AMR) claim. This claim contains the methods used
-             * during authenitcation. See https://tools.ietf.org/html/rfc8176 for more information.
-             */
-
-            if (jwt.TryGetClaim("amr", out Claim claim))
+            Scheduler.RunTask(async (taskId) => 
             {
-                if (!claim.Value.Contains("mfa"))
+                AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
+                    account,
+                    environment,
+                    new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" },
+                    Message,
+                    CancellationToken);
+
+
+                JsonWebToken jwt = new JsonWebToken(authResult.AccessToken);
+
+                WriteDebug("Checking if the access token contains the MFA claim...");
+
+                /*
+                 * Obtain the authentication method reference (AMR) claim. This claim contains the methods used
+                 * during authenitcation. See https://tools.ietf.org/html/rfc8176 for more information.
+                 */
+
+                if (jwt.TryGetClaim("amr", out Claim claim))
                 {
-                    WriteWarning("Unable to determine if the account authenticated using MFA. See https://aka.ms/partnercenterps-psr-warning for more information.");
+                    if (!claim.Value.Contains("mfa"))
+                    {
+                        WriteWarning("Unable to determine if the account authenticated using MFA. See https://aka.ms/partnercenterps-psr-warning for more information.");
+                        result = "fail";
+                    }
+                }
+                else
+                {
+                    WriteWarning("Unable to find the AMR claim, which means the ability to verify the MFA challenge happened will not be possible. See https://aka.ms/partnercenterps-psr-warning for more information.");
                     result = "fail";
                 }
-            }
-            else
-            {
-                WriteWarning("Unable to find the AMR claim, which means the ability to verify the MFA challenge happened will not be possible. See https://aka.ms/partnercenterps-psr-warning for more information.");
-                result = "fail";
-            }
 
-            WriteObject(result);
+                WriteObject(result);
+            });
         }
     }
 }

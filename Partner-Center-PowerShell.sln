@@ -20,9 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BE2D140E-5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerShell.UnitTests", "test\PowerShell.UnitTests\PowerShell.UnitTests.csproj", "{08C08BAF-107D-43BB-9560-DA2D40B27816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Billing", "src\Billing\Billing.csproj", "{C445D44E-EEB2-4B49-A862-0F0E292F9843}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Billing", "src\Billing\Billing.csproj", "{C445D44E-EEB2-4B49-A862-0F0E292F9843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscription", "src\Subscription\Subscription.csproj", "{74A40D93-A16E-4823-A8A9-25EDFDF9886A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Subscription", "src\Subscription\Subscription.csproj", "{74A40D93-A16E-4823-A8A9-25EDFDF9886A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

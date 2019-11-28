@@ -163,12 +163,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Network
                 };
 
                 processed = new List<HttpResponseRecord>();
-
-#if FullNetFx
-                location = Path.Combine(Assembly.GetCallingAssembly().Location, SessionsDirectory); 
-#else
                 location = Path.Combine(AppContext.BaseDirectory, SessionsDirectory);
-#endif
 
                 foreach (string fileName in Directory.GetFiles(location))
                 {

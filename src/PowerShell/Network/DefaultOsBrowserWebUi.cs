@@ -14,6 +14,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Web;
     using Extensions;
     using Identity.Client.Extensibility;
+    using Microsoft.Store.PartnerCenter.PowerShell.Models;
+    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
 
     /// <summary>
     /// Provide a custom Web UI for public client applications to sign-in users and have them consent part of the Authorization code flow.
@@ -47,19 +49,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// </summary>
         private readonly string message;
 
-        private readonly Queue<string> messages;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOsBrowserWebUi" /> class.
         /// </summary>
         /// <param name="message">The message written to the console.</param>
-        public DefaultOsBrowserWebUi(Queue<string> messages, string message)
+        public DefaultOsBrowserWebUi(string message)
         {
             message.AssertNotEmpty(nameof(message));
-            messages.AssertNotNull(nameof(messages));
-
+ 
             this.message = message;
-            this.messages = messages;
         }
 
         /// <summary>
@@ -71,14 +69,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <returns>The URI returned back from the STS authorization endpoint. This URI contains a code=CODE parameter that MSAL.NET will extract and redeem.</returns>
         public async Task<Uri> AcquireAuthorizationCodeAsync(Uri authorizationUri, Uri redirectUri, CancellationToken cancellationToken)
         {
-            messages.Enqueue("Attempting to launch a browser for authorization code login.");
+            WriteWarning("Attempting to launch a browser for authorization code login.");
 
             if (!OpenBrowser(authorizationUri.ToString()))
             {
-                messages.Enqueue("Unable to launch a browser for authorization code login. Reverting to device code login.");
+                WriteWarning("Unable to launch a browser for authorization code login. Reverting to device code login.");
             }
 
-            messages.Enqueue(message);
+            WriteWarning(message);
 
             using (SingleMessageTcpListener listener = new SingleMessageTcpListener(redirectUri.Port))
             {
@@ -153,6 +151,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             }
 
             return CloseWindowSuccessHtml;
+        }
+
+        private void WriteWarning(string message)
+        {
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            {
+                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+            }
         }
     }
 }

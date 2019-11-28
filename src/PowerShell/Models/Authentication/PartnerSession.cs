@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Threading;
     using Factories;
 
@@ -13,6 +14,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
     /// </summary>
     public class PartnerSession
     {
+        /// <summary>
+        /// Provides a registry for various components.
+        /// </summary>
+        private readonly IDictionary<string, object> componentRegistry = new ConcurrentDictionary<string, object>();
+
         /// <summary>
         /// Singleton instance of the <see cref="PartnerSession" /> class.
         /// </summary>
@@ -60,6 +66,39 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
                 {
                     sessionLock.ExitReadLock();
                 }
+            }
+        }
+
+        public void RegisterComponent<T>(string componentName, Func<T> componentInitializer) where T : class
+        {
+            RegisterComponent(componentName, componentInitializer, false); ;
+        }
+
+        public void RegisterComponent<T>(string componentName, Func<T> componentInitializer, bool overwrite) where T : class
+        {
+            if (!componentRegistry.ContainsKey(componentName) || overwrite)
+            {
+                componentRegistry[componentName] = componentInitializer();
+            }
+        }
+
+        public bool TryGetComponent<T>(string componentName, out T component) where T : class
+        {
+            component = null;
+
+            if (componentRegistry.ContainsKey(componentName))
+            {
+                component = componentRegistry[componentName] as T;
+            }
+
+            return component != null;
+        }
+
+        public void UnregisterComponent<T>(string componentName) where T : class
+        {
+            if (componentRegistry.ContainsKey(componentName))
+            {
+                componentRegistry.Remove(componentName);
             }
         }
     }

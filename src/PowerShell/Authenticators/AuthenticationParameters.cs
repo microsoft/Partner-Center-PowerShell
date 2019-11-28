@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
+    using Extensions;
     using Models.Authentication;
 
     /// <summary>
@@ -16,6 +17,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </summary>
         protected AuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes)
         {
+            account.AssertNotNull(nameof(account));
+            environment.AssertNotNull(nameof(environment));
+            scopes.AssertNotNull(nameof(scopes));
+
             Account = account;
             Environment = environment;
             Scopes = scopes;

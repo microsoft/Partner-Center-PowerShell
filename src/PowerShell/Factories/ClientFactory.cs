@@ -60,10 +60,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         {
             PartnerService.Instance.ApiRootUrl = new Uri(PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint);
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) });
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) }).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
@@ -86,10 +86,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 account.Tenant = tenantId;
             }
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 account,
                 PartnerSession.Instance.Context.Environment,
-                scopes);
+                scopes).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return CreateServiceClient<TClient>(new TokenCredentials(authResult.AccessToken, "Bearer"));
         }

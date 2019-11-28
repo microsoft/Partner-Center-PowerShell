@@ -22,10 +22,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <returns>An instance of the <see cref="Task"/> class that represents the asynchronous operation.</returns>
         public async Task AuthenticateRequestAsync(HttpRequestMessage request)
         {
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" });
+                new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" }).ConfigureAwait(false);
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
 
