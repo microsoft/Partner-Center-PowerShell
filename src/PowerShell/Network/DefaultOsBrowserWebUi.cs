@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Globalization;
@@ -56,7 +55,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         public DefaultOsBrowserWebUi(string message)
         {
             message.AssertNotEmpty(nameof(message));
- 
+
             this.message = message;
         }
 
@@ -157,7 +156,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         {
             if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
             {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+                writeWarningEvent(this, new StreamEventArgs { Resource = message });
             }
         }
     }

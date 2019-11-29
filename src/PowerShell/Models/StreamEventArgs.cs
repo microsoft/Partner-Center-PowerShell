@@ -3,15 +3,21 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models
 {
-    using System; 
+    using System;
 
+    /// <summary>
+    /// Represents the stream event arguments.
+    /// </summary>
     public class StreamEventArgs : EventArgs
     {
-        public StreamEventArgs()
-        { }
+        /// <summary>
+        /// Gets or sets a flag indiciating whether or not the collection should be enumerated.
+        /// </summary>
+        public bool EnumerateCollection { get; set; }
 
-        public string Message { get; set; }
-
+        /// <summary>
+        /// Gets or sets the resource to be sent to the pipeline.
+        /// </summary>
         public object Resource { get; set; }
     }
 }

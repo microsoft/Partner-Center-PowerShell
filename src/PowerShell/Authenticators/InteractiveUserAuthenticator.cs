@@ -98,7 +98,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
             {
-                writeWarningEvent(this, new StreamEventArgs() { Message = message });
+                writeWarningEvent(this, new StreamEventArgs { Resource = message });
             }
         }
     }

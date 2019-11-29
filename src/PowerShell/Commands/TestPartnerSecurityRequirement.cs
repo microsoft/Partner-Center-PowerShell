@@ -64,7 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.SetProperty(PartnerAccountPropertyType.ApplicationId, PowerShellApplicationId);
 
-            Scheduler.RunTask(async (taskId) => 
+            Scheduler.RunTask(async () =>
             {
                 AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                     account,

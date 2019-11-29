@@ -7,8 +7,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Exceptions;
     using Extensions;
     using Factories;
@@ -235,7 +233,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            Scheduler.RunTask(async(taskId) =>
+            Scheduler.RunTask(async () =>
             {
                 await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                     account,

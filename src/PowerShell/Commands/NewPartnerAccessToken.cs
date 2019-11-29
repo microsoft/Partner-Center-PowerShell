@@ -179,7 +179,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            Scheduler.RunTask(async (taskId) =>
+            Scheduler.RunTask(async () =>
             {
                 AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                     account,

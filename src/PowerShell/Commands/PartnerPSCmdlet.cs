@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -14,9 +13,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Security.Cryptography;
     using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
     using ApplicationInsights;
     using ApplicationInsights.DataContracts;
+    using ApplicationInsights.Extensibility;
     using Exceptions;
     using Models;
     using Models.Authentication;
@@ -25,7 +24,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Rest;
 
     /// <summary>
-    /// Represents base class for the Partner Center PowerShell cmdlets.
+    /// The base class for Partner Center PowerShell cmdlets.
     /// </summary>
     public abstract class PartnerPSCmdlet : PSCmdlet
     {
@@ -42,11 +41,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Client that provides the ability to interact with the Application Insights service.
         /// </summary>
-        private static readonly TelemetryClient telemetryClient = new TelemetryClient
+        private static readonly TelemetryClient telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault())
         {
             InstrumentationKey = "786d393c-be8e-46a8-b2b2-a3b6d5b417fc"
         };
-
 
         /// <summary>
         /// Provides a signal to <see cref="System.Threading.CancellationToken" /> that it should be canceled.
