@@ -71,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     environment,
                     new[] { $"{environment.PartnerCenterEndpoint}/user_impersonation" },
                     Message,
-                    CancellationToken);
+                    CancellationToken).ConfigureAwait(false);
 
 
                 JsonWebToken jwt = new JsonWebToken(authResult.AccessToken);

@@ -186,7 +186,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     PartnerEnvironment.PublicEnvironments[Environment],
                     Scopes,
                     Message,
-                    CancellationToken);
+                    CancellationToken).ConfigureAwait(false);
 
                 byte[] cacheData = GetMsalCacheStorage(ApplicationId).ReadData();
 
@@ -242,7 +242,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 WriteObject(result);
             });
-
         }
 
         private static MsalCacheStorage GetMsalCacheStorage(string clientId)
