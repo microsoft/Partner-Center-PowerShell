@@ -20,6 +20,23 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Authentication
+  * Updated how [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) writes warnings during an authentication attempt
+  * Updated how [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) prompts for interaction
+* Dependency
+  * Updated to the latest version of the Partner Center SDK for .NET
+* Azure
+  * Added the [Get-PartnerAzureBillingPolicy](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAzureBillingPolicy) to get the billing policy for the specified customer
+  * Added the [Set-PartnerAzureBillingPolicy](https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerAzureBillingPolicy) to update the billing policy for the specified customer
+* Security
+  * Modified the [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUser) command to leverage a task scheduler for requesting from Microsoft Graph
+  * Modified the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command to leverage a task scheduler for requesting from Microsoft Graph
+  * Updated how [Test-PartnerSecurityRequirement](https://docs.microsoft.com/powershell/module/partnercenter/Test-PartnerSecurityRequirement) prompts for interaction
+* Subscription
+  * Corrected the output for the [Get-PartnerCustomerAzurePlanEntitlement](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerAzurePlanEntitlement) command
+
 ## 2.0.1911.6
 
 * Authentication

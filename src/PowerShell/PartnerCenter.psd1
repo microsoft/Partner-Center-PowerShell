@@ -11,7 +11,7 @@
     RootModule = 'PartnerCenter.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2.0.1911.6'
+    ModuleVersion = '3.0.0'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -82,6 +82,7 @@
                       'Get-PartnerAgreementDocument',
                       'Get-PartnerAuditRecord',
                       'Get-PartnerAzureBillingAccount',
+                      'Get-PartnerAzureBillingPolicy',
                       'Get-PartnerAzureBillingProfile',
                       'Get-PartnerAzureRateCard',
                       'Get-PartnerBillingProfile',
@@ -173,6 +174,7 @@
                       'Remove-PartnerSandboxCustomer',
                       'Resolve-PartnerError',
                       'Restore-PartnerCustomerUser',
+                      'Set-PartnerAzureBillingPolicy',
                       'Set-PartnerAzureSubscription',
                       'Set-PartnerBillingProfile',
                       'Set-PartnerCustomer',
@@ -226,7 +228,7 @@
             ReleaseNotes = ''
 
             # Prerelease string of this module
-            # Prerelease = 'preview'
+            Prerelease = 'preview'
 
             # Flag to indicate whether the module requires explicit user acceptance for install/update
             # RequireLicenseAcceptance = $false

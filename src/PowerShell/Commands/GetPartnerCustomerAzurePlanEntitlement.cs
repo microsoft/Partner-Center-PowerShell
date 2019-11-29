@@ -3,15 +3,17 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
+    using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
 
     /// <summary>
     /// Gets a list of Azure Plan entitlements for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement"), OutputType(typeof(AzureEntitlement))]
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement"), OutputType(typeof(PSAzureEntitlement))]
     public class GetPartnerCustomerAzurePlanEntitlement : PartnerCmdlet
     {
         /// <summary>
@@ -40,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 .GetAwaiter()
                 .GetResult();
 
-            WriteObject(entitlements, true);
+            WriteObject(entitlements.Items.Select(e => new PSAzureEntitlement(e)), true);
         }
     }
 }

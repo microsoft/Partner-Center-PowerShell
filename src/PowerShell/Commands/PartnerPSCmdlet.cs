@@ -430,6 +430,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private void LogQosEvent()
         {
+            if (qosEvent == null)
+            {
+                return;
+            }
+
             qosEvent.FinishQosEvent();
 
             PageViewTelemetry pageViewTelemetry = new PageViewTelemetry
