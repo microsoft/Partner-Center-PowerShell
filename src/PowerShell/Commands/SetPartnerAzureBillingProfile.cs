@@ -37,9 +37,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag that indicates whether or not the customer can view charges in the Azure portal.
+        /// Gets or sets a flag that indicates whether or not the customer can view charges for Azure services.
         /// </summary>
-        [Parameter(HelpMessage = "A flag that indicates whether or not the customer can view charges in the Azure portal..", Mandatory = true)]
+        [Parameter(HelpMessage = "A flag that indicates whether or not the customer can view charges for Azure services.", Mandatory = true)]
         public SwitchParameter ViewCharges { get; set; }
 
         /// <summary>

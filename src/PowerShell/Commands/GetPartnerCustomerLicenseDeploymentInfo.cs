@@ -27,7 +27,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<CustomerLicensesDeploymentInsights> insights;
 
-            insights = Partner.Customers[CustomerId].Analytics.Licenses.Deployment.GetAsync().GetAwaiter().GetResult();
+            insights = Partner.Customers[CustomerId].Analytics.Licenses.Deployment.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(insights.Items.Select(i => new PSCustomerLicensesDeploymentInsights(i)), true);
         }

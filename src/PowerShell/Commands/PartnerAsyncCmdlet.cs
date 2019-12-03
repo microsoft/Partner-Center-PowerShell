@@ -90,11 +90,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             OnWriteWarning += Cmdlet_OnWriteWarning;
 
             PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteDebugKey);
+            PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteErrorKey);
             PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteObjectKey);
             PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteWarningKey);
 
             PartnerSession.Instance.RegisterComponent(WriteDebugKey, () => OnWriteDebug);
-            PartnerSession.Instance.RegisterComponent(WriteDebugKey, () => OnWriteError);
+            PartnerSession.Instance.RegisterComponent(WriteErrorKey, () => OnWriteError);
             PartnerSession.Instance.RegisterComponent(WriteObjectKey, () => OnWriteObject);
             PartnerSession.Instance.RegisterComponent(WriteWarningKey, () => OnWriteWarning);
         }

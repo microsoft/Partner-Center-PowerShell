@@ -29,11 +29,17 @@ Gets the agreement metadata for the Microsoft Cloud Agreement.
 ### [Get-PartnerAgreementDocument](Get-PartnerAgreementDocument.md)
 Gets the links to download or view the Microsoft Customer Agreement template.
 
+### [Get-PartnerAgreementStatus](Get-PartnerAgreementStatus.md)
+Gets the status of acceptance of the Microsoft Partner Agreement for the specified partner.
+
 ### [Get-PartnerAuditRecord](Get-PartnerAuditRecord.md)
 Gets audit records from Partner Center.
 
 ### [Get-PartnerAzureBillingAccount](Get-PartnerAzureBillingAccount.md)
 Gets the billing accounts where the authenticated user has access.
+
+### [Get-PartnerAzureBillingPolicy](Get-PartnerAzureBillingPolicy.md)
+Gets the billing policy for the specified customer.
 
 ### [Get-PartnerAzureBillingProfile](Get-PartnerAzureBillingProfile.md)
 Gets the billing profiles for specified billing account.
@@ -308,6 +314,9 @@ Display detailed information about PowerShell errors, with extended details for 
 ### [Restore-PartnerCustomerUser](Restore-PartnerCustomerUser.md)
 Restores a previously removed customer user from the customer's tenant.
 
+### [Set-PartnerAzureBillingPolicy](Set-PartnerAzureBillingPolicy.md)
+Updates the billing policy for the specified customer.
+
 ### [Set-PartnerAzureSubscription](Set-PartnerAzureSubscription.md)
 Updates an Azure subscription that is part of an Azure Plan.
 
@@ -361,4 +370,3 @@ Tests if the specified domain name is available for creating a new tenant.
 
 ### [Test-PartnerSecurityRequirement](Test-PartnerSecurityRequirement.md)
 Tests the account, used during authentication, if multi-factor authentication was enforced.
-

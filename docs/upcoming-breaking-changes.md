@@ -23,7 +23,7 @@
 
 # Upcoming Breaking Changes
 
-## Release 3.0.0
+## Release 3.0.0 - December 2019
 
 * Subscription
   * [Get-PartnerCustomerAzurePlanEntitlement](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerAzurePlanEntitlement) output has changed
@@ -48,7 +48,7 @@
     # Old
     New-PartnerAzureSubscription -BillingAccountName '99a13315-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx' -CustomerName 'Contoso' -DisplayName 'Microsoft Azure'
 
-    # New 
+    # New
     New-PartnerAzureSubscription -BillingAccountName '99a13315-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx' -CustomerId '1e5a6ab0-e5ef-4f4e-a208-399e792b5ed4' -DisplayName 'Microsoft Azure'
     ```
 

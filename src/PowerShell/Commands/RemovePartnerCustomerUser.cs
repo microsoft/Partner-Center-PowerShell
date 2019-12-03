@@ -75,7 +75,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().GetAwaiter().GetResult();
+            Partner.Customers.ById(customerId).Users.ById(userId).DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(true);
         }
 
@@ -132,13 +132,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             users = new List<CustomerUser>();
 
-            seekUsers = Partner.Customers[customerId].Users.GetAsync().GetAwaiter().GetResult();
+            seekUsers = Partner.Customers[customerId].Users.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
 
             while (usersEnumerator.HasValue)
             {
                 users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.NextAsync().GetAwaiter().GetResult();
+                usersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             return users;

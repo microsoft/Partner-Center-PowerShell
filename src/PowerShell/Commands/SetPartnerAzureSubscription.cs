@@ -9,7 +9,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Azure.Management.Profiles.Subscription.Models;
     using Models.Authentication;
 
-    [Cmdlet(VerbsCommon.Set, "PartnerAzureSubscription"), OutputType(typeof(string))]
+    [Cmdlet(VerbsCommon.Set, "PartnerAzureSubscription")]
+    [OutputType(typeof(string))]
     public class SetPartnerAzureSubscription : PartnerPSCmdlet
     {
         /// <summary>
@@ -29,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the subscription name.
         /// </summary>
-        [Parameter(HelpMessage = "The display name for the subscription..", Mandatory = true)]
+        [Parameter(HelpMessage = "The display name for the subscription.", Mandatory = true)]
         public string SubscriptionName { get; set; }
 
         /// <summary>

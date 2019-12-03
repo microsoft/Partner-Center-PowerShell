@@ -111,7 +111,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
             {
-                profile = Partner.Profiles.LegalBusinessProfile.GetAsync().GetAwaiter().GetResult();
+                profile = Partner.Profiles.LegalBusinessProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
                 profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);

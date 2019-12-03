@@ -143,7 +143,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (usersEnumerator.HasValue)
             {
                 users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.NextAsync().GetAwaiter().GetResult();
+                usersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             return users;

@@ -99,7 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             requestId.AssertNotEmpty(nameof(requestId));
 
 
-            request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).GetAsync().GetAwaiter().GetResult();
+            request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (request != null)
             {
@@ -123,7 +123,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            requests = Partner.Customers.ById(customerId).ServiceRequests.GetAsync().GetAwaiter().GetResult();
+            requests = Partner.Customers.ById(customerId).ServiceRequests.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (requests.TotalCount > 0)
             {
@@ -144,7 +144,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             requestId.AssertNotEmpty(nameof(requestId));
 
-            request = Partner.ServiceRequests.ById(requestId).GetAsync().GetAwaiter().GetResult();
+            request = Partner.ServiceRequests.ById(requestId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (request != null)
             {
@@ -162,7 +162,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<ServiceRequest> requests;
 
-            requests = Partner.ServiceRequests.GetAsync().GetAwaiter().GetResult();
+            requests = Partner.ServiceRequests.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (requests.TotalCount > 0)
             {
@@ -181,7 +181,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (enumerator.HasValue)
             {
                 serviceRequests.AddRange(enumerator.Current.Items);
-                enumerator.NextAsync().GetAwaiter().GetResult();
+                enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             if (severity.HasValue && status.HasValue)

@@ -178,7 +178,7 @@ namespace Microsoft.Azure.Management.Billing
             /// </param>
             public static IPage<RecipientTransferDetails> List(this IRecipientTransfersOperations operations)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

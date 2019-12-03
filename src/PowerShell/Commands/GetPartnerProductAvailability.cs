@@ -92,7 +92,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             // If segment is specified, get the information using the segment. Otherwise don't
             if (!string.IsNullOrEmpty(segment))
             {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().GetAwaiter().GetResult();
+                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 if (productAvailability.TotalCount > 0)
                 {
@@ -101,7 +101,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else
             {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().GetAwaiter().GetResult();
+                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 if (productAvailability.TotalCount > 0)
                 {
@@ -119,7 +119,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <param name="availabilityId">Identifier for the product availability.</param>
         private void GetProductAvailabilityById(string countryCode, string productId, string skuId, string availabilityId)
         {
-            Availability productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().GetAwaiter().GetResult();
+            Availability productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (productAvailability != null)
             {

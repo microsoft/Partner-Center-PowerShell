@@ -71,7 +71,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.Models.Subscriptions.AzureEntitlement
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Subscriptions.PSAzureEntitlement
 
 ## NOTES
 

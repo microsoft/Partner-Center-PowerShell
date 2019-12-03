@@ -215,7 +215,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription
             /// </param>
             public static IPage<SubscriptionModel> List(this ISubscriptionsOperations operations)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

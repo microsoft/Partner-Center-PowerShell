@@ -10,7 +10,7 @@ schema: 2.0.0
 # New-PartnerCustomerCart
 
 ## SYNOPSIS
-Creates an order for a customer.
+Creates a cart for a customer.
 
 ## SYNTAX
 
@@ -20,11 +20,31 @@ New-PartnerCustomerCart -CustomerId <String> -LineItems <PSCartLineItem[]> [-Wha
 ```
 
 ## DESCRIPTION
-Creates an order for a customer.
+Creates a cart for a customer.
 
 ## EXAMPLES
 
 ### Example 1
+```powershell
+PS C:\> # Get the product information for the Azure Plan
+PS C:\> $product = Get-PartnerProduct -ProductId 'DZH318Z0BPS6'
+PS C:\> # Get the SKU information for the Azure Plan
+PS C:\> $sku = Get-PartnerProductSku -ProductId $product.ProductId
+PS C:\> # Get the availability information required for purchasing an Azure Plan
+PS C:\> $availability = Get-PartnerProductAvailability -ProductId $product.ProductId -SkuId $sku.SkuId
+PS C:\>
+PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
+PS C:\>
+PS C:\> $lineItem.BillingCycle = 'OneTime'
+PS C:\> $lineItem.CatalogItemId = $availability.CatalogItemId
+PS C:\> $lineItem.Quantity = 1
+PS C:\>
+PS C:\> New-PartnerCustomerCart -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItem
+```
+
+Creates a cart for the specified with a line item to purchase an Azure Plan
+
+### Example 2
 ```powershell
 PS C:\> $lineItem = New-Object -TypeName Microsoft.Store.PartnerCenter.PowerShell.Models.Carts.PSCartLineItem
 PS C:\>
@@ -39,7 +59,7 @@ PS C:\>
 PS C:\> New-PartnerCustomerCart -CustomerId '46a62ece-10ad-42e5-b3f1-b2ed53e6fc08' -LineItems $lineItem
 ```
 
-Creates an order for a customer.
+Creates an cart for a customer.
 
 ## PARAMETERS
 

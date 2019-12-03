@@ -34,6 +34,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// </summary>
         public TimeSpan WaitInterval { get; set; } = TimeSpan.Zero;
 
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A new object that is a copy of this instance.</returns>
         public object Clone()
         {
             return new CancelRetryHandler(MaxTries, WaitInterval);
@@ -51,16 +55,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 
             do
             {
-                using (CancellationTokenSource source = new CancellationTokenSource())
+                try
                 {
-                    try
-                    {
-                        return await base.SendAsync(request, source.Token).ConfigureAwait(false);
-                    }
-                    catch (TaskCanceledException) when (tries++ < MaxTries)
-                    {
-                        Thread.Sleep(WaitInterval);
-                    }
+                    return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException) when (tries++ < MaxTries)
+                {
+                    Thread.Sleep(WaitInterval);
                 }
             }
             while (true);

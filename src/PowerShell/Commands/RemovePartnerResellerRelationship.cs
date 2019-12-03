@@ -35,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerResellerRelationshipWhatIf, CustomerId)))
             {
-                subscriptions = Partner.Customers[CustomerId].Subscriptions.GetAsync().GetAwaiter().GetResult();
+                subscriptions = Partner.Customers[CustomerId].Subscriptions.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 foreach (Subscription subscription in subscriptions.Items.Where(s => s.Status == SubscriptionStatus.Active))
                 {

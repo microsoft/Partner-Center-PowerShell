@@ -20,7 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SeekBasedResourceCollection<Role> roles = Partner.Roles.GetAsync().GetAwaiter().GetResult();
+            SeekBasedResourceCollection<Role> roles = Partner.Roles.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(roles.Items.Select(r => new PSRole(r)), true);
         }

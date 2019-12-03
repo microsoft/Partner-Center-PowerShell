@@ -52,7 +52,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (!string.IsNullOrEmpty(CustomerId))
             {
-                WriteObject(new PSCustomer(Partner.Customers[CustomerId].GetAsync().GetAwaiter().GetResult()));
+                WriteObject(new PSCustomer(Partner.Customers[CustomerId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
                 return;
             }
             if (ParameterSetName.Equals("ByDomain", StringComparison.InvariantCultureIgnoreCase))
@@ -85,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (customersEnumerator.HasValue)
             {
                 customers.AddRange(customersEnumerator.Current.Items);
-                customersEnumerator.NextAsync().GetAwaiter().GetResult();
+                customersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             WriteObject(customers.Select(c => new PSCustomer(c)), true);

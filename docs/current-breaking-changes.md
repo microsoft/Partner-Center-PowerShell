@@ -23,6 +23,35 @@
 
 # Current Breaking Changes
 
+## Release 3.0.0 - December 2019
+
+* Subscription
+  * [Get-PartnerCustomerAzurePlanEntitlement](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerAzurePlanEntitlement) output has changed
+
+    ```output
+    # Old
+    ContinuationToken :
+    Items             : {9681cddd-4b96-4d67-96e5-399a827d5375}
+    TotalCount        : 1
+    Links             : Microsoft.Store.PartnerCenter.Models.StandardResourceCollectionLinks
+    Attributes        : Microsoft.Store.PartnerCenter.Models.ResourceAttributes
+
+    # New
+    FriendlyName    Id                                   Status SubscriptionId
+    ------------    --                                   ------ --------------
+    Microsoft Azure 9681cddd-4b96-4d67-96e5-399a827d5375 active 0d066578-66b7-40f6-afad-6e179df3ad80
+    ```
+
+  * [New-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/Neew-PartnerAzureSubscription) the `CustomerName` parameter will be replaced by the `CustomerId` parameter starting wth version 3.0.1
+
+    ```powershell
+    # Old
+    New-PartnerAzureSubscription -BillingAccountName '99a13315-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx' -CustomerName 'Contoso' -DisplayName 'Microsoft Azure'
+
+    # New
+    New-PartnerAzureSubscription -BillingAccountName '99a13315-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx' -CustomerId '1e5a6ab0-e5ef-4f4e-a208-399e792b5ed4' -DisplayName 'Microsoft Azure'
+    ```
+
 ## Release 2.0.1910.1 - October 2019
 
 * Usage

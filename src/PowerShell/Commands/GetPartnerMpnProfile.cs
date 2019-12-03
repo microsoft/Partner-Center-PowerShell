@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (string.IsNullOrEmpty(MpnId))
             {
-                profile = Partner.Profiles.MpnProfile.GetAsync().GetAwaiter().GetResult();
+                profile = Partner.Profiles.MpnProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
             else
             {

@@ -59,7 +59,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 while (enumerator.HasValue)
                 {
                     records.AddRange(enumerator.Current.Items.Select(r => new PSAuditRecord(r)));
-                    enumerator.NextAsync().GetAwaiter().GetResult();
+                    enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 }
             }
 

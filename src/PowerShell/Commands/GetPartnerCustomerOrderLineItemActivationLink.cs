@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].OrderLineItems[OrderLineItemNumber].ActivationLink.GetAsync().GetAwaiter().GetResult().Items, true);
+            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].OrderLineItems[OrderLineItemNumber].ActivationLink.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items, true);
         }
     }
 }

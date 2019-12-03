@@ -140,7 +140,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
                 }
 
-                customer = Partner.Customers[customerId].GetAsync().GetAwaiter().GetResult();
+                customer = Partner.Customers[customerId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
                 customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);

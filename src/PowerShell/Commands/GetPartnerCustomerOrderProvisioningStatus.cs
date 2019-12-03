@@ -31,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].ProvisioningStatus.GetAsync().GetAwaiter().GetResult().Items.Select(s => new PSOrderLineItemProvisioningStatus(s)));
+            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].ProvisioningStatus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSOrderLineItemProvisioningStatus(s)));
         }
     }
 }

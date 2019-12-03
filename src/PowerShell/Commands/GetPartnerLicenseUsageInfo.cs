@@ -20,7 +20,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<PartnerLicensesUsageInsights> insights = Partner.Analytics.Licenses.Usage.GetAsync().GetAwaiter().GetResult();
+            ResourceCollection<PartnerLicensesUsageInsights> insights = Partner.Analytics.Licenses.Usage.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(insights.Items.Select(l => new PSPartnerLicensesUsageInsight(l)), true);
         }
     }

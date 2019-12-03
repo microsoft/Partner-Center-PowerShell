@@ -16,6 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Models;
     using Models.Authentication;
     using Network;
+    using Rest;
 
     /// <summary>
     /// Provides the ability to authenticate using an interactive interface.
@@ -62,6 +63,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             {
                 ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message);
 
+                ServiceClientTracing.Information($"[InteractiveUserAuthenticator] Calling AcquireAuthorizationCodeAsync - Scopes: '{string.Join(",", parameters.Scopes)}'");
+
                 Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
                     await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
                     new Uri(redirectUri),
@@ -69,12 +72,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
                 NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
 
+                ServiceClientTracing.Information($"[InteractiveUserAuthenticator] Calling AcquireTokenByAuthorizationCode - Scopes: '{string.Join(",", parameters.Scopes)}'");
+
                 authResult = await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
                     parameters.Scopes,
                     queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
             else
             {
+                ServiceClientTracing.Information(string.Format("[InteractiveUserAuthenticator] Calling AcquireTokenInteractive - Scopes: '{0}'", string.Join(",", parameters.Scopes)));
+
                 authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
                     .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message))
                     .WithPrompt(Prompt.ForceLogin)

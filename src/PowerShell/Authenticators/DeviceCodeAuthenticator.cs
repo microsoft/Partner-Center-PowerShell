@@ -10,6 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Identity.Client;
     using Models;
     using Models.Authentication;
+    using Rest;
 
     /// <summary>
     /// Provides the ability to authenticate using the device code flow.
@@ -28,6 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
+            ServiceClientTracing.Information($"[DeviceCodeAuthenticator] Calling AcquireTokenWithDeviceCode - Scopes: '{string.Join(", ", parameters.Scopes)}'");
             return await app.AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
             {
                 WriteWarning(deviceCodeResult.Message);

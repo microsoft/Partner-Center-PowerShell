@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<InvoiceSummary> summaries = Partner.Invoices.Summaries.GetAsync().GetAwaiter().GetResult();
+            ResourceCollection<InvoiceSummary> summaries = Partner.Invoices.Summaries.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(summaries.Items.Select(s => new PSInvoiceSummary(s)), true);
         }

@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Management.Billing
             /// </param>
             public static BillingProperty Get(this IBillingPropertyOperations operations)
             {
-                return operations.GetAsync().GetAwaiter().GetResult();
+                return operations.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

@@ -221,8 +221,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 }
 
-                string key = GetTokenCacheKey(authResult);
-
                 AuthResult result = new AuthResult(
                     authResult.AccessToken,
                     authResult.IsExtendedLifeTimeToken,
@@ -235,9 +233,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     authResult.Scopes,
                     authResult.CorrelationId);
 
-                if (tokens.ContainsKey(key))
+                if (authResult.Account != null)
                 {
-                    result.RefreshToken = tokens[key].Secret;
+                    string key = GetTokenCacheKey(authResult);
+
+                    if (tokens.ContainsKey(key))
+                    {
+                        result.RefreshToken = tokens[key].Secret;
+                    }
                 }
 
                 WriteObject(result);

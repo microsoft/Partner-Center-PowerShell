@@ -37,7 +37,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<Upgrade> upgrades;
 
-            upgrades = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.GetAsync().GetAwaiter().GetResult();
+            upgrades = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(upgrades.Items.Select(c => new PSCustomerSubscriptionUpgrades(c)), true);
         }
     }

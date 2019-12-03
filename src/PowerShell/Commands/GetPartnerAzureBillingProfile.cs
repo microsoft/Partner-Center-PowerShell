@@ -16,6 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or set the name for the billing account.
         /// </summary>
         [Parameter(HelpMessage = "The name for the billing account", Mandatory = true)]
+        [ValidateNotNullOrEmpty]
         public string BillingAccountName { get; set; }
 
         /// <summary>

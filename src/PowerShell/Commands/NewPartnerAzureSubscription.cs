@@ -10,7 +10,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Azure.Management.Profiles.Subscription.Models;
     using Models.Authentication;
 
-    [Cmdlet(VerbsCommon.New, "PartnerAzureSubscription", DefaultParameterSetName = ByCustomerNameParameterSet), OutputType(typeof(SubscriptionCreationResult))]
+    [Cmdlet(VerbsCommon.New, "PartnerAzureSubscription", DefaultParameterSetName = ByCustomerNameParameterSet)]
+    [OutputType(typeof(SubscriptionCreationResult))]
     public class NewPartnerAzureSubscription : PartnerPSCmdlet
     {
         /// <summary>

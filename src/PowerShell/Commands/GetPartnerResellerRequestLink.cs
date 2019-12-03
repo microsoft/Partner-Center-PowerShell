@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCustomerRelationshipRequest(Partner.Customers.RelationshipRequest.GetAsync().GetAwaiter().GetResult()));
+            WriteObject(new PSCustomerRelationshipRequest(Partner.Customers.RelationshipRequest.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ServiceCostsSummary summary = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.GetAsync().GetAwaiter().GetResult();
+            ServiceCostsSummary summary = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(new PSServiceCostsSummary(summary));
         }

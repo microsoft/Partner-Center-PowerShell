@@ -26,9 +26,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// </summary>
         private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
         {
-            InnerHandler = new RetryDelegatingHandler
+            InnerHandler = new ClientTracingHandler
             {
-                InnerHandler = new HttpClientHandler()
+                InnerHandler = new RetryDelegatingHandler
+                {
+                    InnerHandler = new HttpClientHandler()
+                }
             }
         }, false, null));
 
@@ -108,7 +111,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 parameterList.Add(obj);
             }
 
-            types.Add((Array.Empty<DelegatingHandler>()).GetType());
+            types.Add(Array.Empty<DelegatingHandler>().GetType());
             parameterList.Add(handlerList.ToArray());
 
             ConstructorInfo constructor = typeof(TClient).GetConstructor(types.ToArray());

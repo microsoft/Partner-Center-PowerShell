@@ -47,6 +47,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         };
 
         /// <summary>
+        /// Lock used to synchronize mutation of the tracing interceptors.
+        /// </summary>
+        private readonly object resourceLock = new object();
+
+        /// <summary>
         /// Provides a signal to <see cref="System.Threading.CancellationToken" /> that it should be canceled.
         /// </summary>
         private CancellationTokenSource cancellationSource;
@@ -78,14 +83,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             get
             {
-                if (string.IsNullOrEmpty(hashMacAddress))
+                lock (resourceLock)
                 {
-                    string value = NetworkInterface.GetAllNetworkInterfaces()?
-                         .FirstOrDefault(nic => nic != null &&
-                             nic.OperationalStatus == OperationalStatus.Up &&
-                             !string.IsNullOrWhiteSpace(nic.GetPhysicalAddress()?.ToString()))?.GetPhysicalAddress()?.ToString();
+                    try
+                    {
+                        hashMacAddress = null;
 
-                    hashMacAddress = string.IsNullOrWhiteSpace(value) ? null : GenerateSha256HashString(value)?.Replace("-", string.Empty)?.ToLowerInvariant();
+                        if (string.IsNullOrEmpty(hashMacAddress))
+                        {
+                            string value = NetworkInterface.GetAllNetworkInterfaces()?
+                                 .FirstOrDefault(nic => nic != null &&
+                                     nic.OperationalStatus == OperationalStatus.Up &&
+                                     !string.IsNullOrWhiteSpace(nic.GetPhysicalAddress()?.ToString()))?.GetPhysicalAddress()?.ToString();
+
+                            hashMacAddress = string.IsNullOrWhiteSpace(value) ? null : GenerateSha256HashString(value)?.Replace("-", string.Empty)?.ToLowerInvariant();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore errors with obtaining the MAC address
+                    }
                 }
 
                 return hashMacAddress;
@@ -104,7 +121,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource = new CancellationTokenSource();
             }
 
-            httpTracingInterceptor = httpTracingInterceptor ?? new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
+            httpTracingInterceptor ??= new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
 
             ServiceClientTracing.IsEnabled = true;
             ServiceClientTracing.AddTracingInterceptor(httpTracingInterceptor);
@@ -481,6 +498,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString());
             eventProperties.Add("ModuleVersion", qosEvent.ModuleVersion);
             eventProperties.Add("PowerShellVersion", Host.Version.ToString());
+
+            if (!string.IsNullOrEmpty(PartnerSession.Instance.Context?.Account?.Tenant))
+            {
+                eventProperties.Add("TenantId", PartnerSession.Instance.Context.Account.Tenant);
+            }
         }
 
         /// <summary>

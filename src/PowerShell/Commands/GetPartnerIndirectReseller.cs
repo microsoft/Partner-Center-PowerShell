@@ -36,7 +36,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else
             {
-                resellers = Partner.Customers[CustomerId].Relationships.GetAsync().GetAwaiter().GetResult();
+                resellers = Partner.Customers[CustomerId].Relationships.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);

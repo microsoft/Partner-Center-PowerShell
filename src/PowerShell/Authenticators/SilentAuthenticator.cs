@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
+    using Rest;
 
     /// <summary>
     /// Provides the ability to authenticate non-interactively.
@@ -27,8 +28,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
+            ServiceClientTracing.Information(string.Format("[SilentAuthenticator] Calling GetAccountsAsync"));
             IEnumerable<IAccount> accounts = await app.GetAccountsAsync().ConfigureAwait(false);
 
+            ServiceClientTracing.Information($"[SilentAuthenticator] Calling AcquireTokenSilent - Scopes: '{string.Join(",", parameters.Scopes)}', UserId: '{((SilentParameters)parameters).UserId}', Number of accounts: '{accounts.Count()}'");
             AuthenticationResult authResult = await app.AcquireTokenSilent(
                 parameters.Scopes,
                 accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))

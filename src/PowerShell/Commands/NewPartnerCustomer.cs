@@ -200,7 +200,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (!DisableValidation.ToBool())
                 {
-                    if (Partner.Domains.ByDomain(Domain).ExistsAsync().GetAwaiter().GetResult())
+                    if (Partner.Domains.ByDomain(Domain).ExistsAsync().ConfigureAwait(false).GetAwaiter().GetResult())
                     {
                         throw new PSInvalidOperationException(
                             string.Format(

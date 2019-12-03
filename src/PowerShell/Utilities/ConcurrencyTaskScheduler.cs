@@ -207,9 +207,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             }
 
             Interlocked.Decrement(ref activeTaskCount);
-            taskCounter.Signal();
 
-            RunRemainingTask();
+            if (disposed == false)
+            {
+                taskCounter?.Signal();
+                RunRemainingTask();
+            }
         }
 
         private void RunRemainingTask()

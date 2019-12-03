@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().GetAwaiter().GetResult();
+            cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             cartLineItems = new List<CartLineItem>();
 

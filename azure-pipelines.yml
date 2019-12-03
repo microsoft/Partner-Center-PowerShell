@@ -1,11 +1,11 @@
 strategy:
   matrix:
     Linux:
-      imageName: 'ubuntu-16.04'
+      imageName: 'ubuntu-latest'
     macOS:
-      imageName: 'macos-10.13'
+      imageName: 'macOS-latest'
     Windows:
-      imageName: 'Windows-2019'
+      imageName: 'windows-latest'
 
 trigger:
 - master
@@ -31,7 +31,14 @@ steps:
     targetArgument: '$(Build.SourcesDirectory)'
     result: 'PoliCheck.xml'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
-  
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core 3.0'
+  inputs:
+    packageType: sdk
+    version: 3.0.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -118,7 +125,7 @@ steps:
 - task: DeleteFiles@1
   displayName: Delete the code sign summary file
   inputs:
-    SourceFolder: '_layout'
+    SourceFolder: '$(system.DefaultWorkingDirectory)'
     Contents: '**\CodeSignSummary-*.md'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 

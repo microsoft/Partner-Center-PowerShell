@@ -80,6 +80,7 @@
                       'Disconnect-PartnerCenter',
                       'Get-PartnerAgreementDetail',
                       'Get-PartnerAgreementDocument',
+                      'Get-PartnerAgreementStatus',
                       'Get-PartnerAuditRecord',
                       'Get-PartnerAzureBillingAccount',
                       'Get-PartnerAzureBillingPolicy',
