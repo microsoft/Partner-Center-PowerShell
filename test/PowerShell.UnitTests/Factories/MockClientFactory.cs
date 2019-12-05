@@ -67,7 +67,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations()
+        public virtual IPartner CreatePartnerOperations()
+        {
+            return CreatePartnerOperationsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        public virtual async Task<IPartner> CreatePartnerOperationsAsync()
         {
             if (partnerOperations == null)
             {
@@ -75,6 +84,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
                     credentials,
                     httpMockHandler);
             }
+
+            await Task.CompletedTask.ConfigureAwait(false);
 
             return partnerOperations;
         }
