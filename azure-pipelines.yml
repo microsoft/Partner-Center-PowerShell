@@ -75,6 +75,14 @@ steps:
     PoliCheck: true
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core 2.2'
+  inputs:
+    packageType: sdk
+    version: 2.2.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP code signing'
   inputs:

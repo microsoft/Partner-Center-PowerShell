@@ -267,7 +267,7 @@ Confirms the customer acceptance of the Microsoft Cloud agreement.
 Creates a new application consent for the specified customer.
 
 ### [New-PartnerCustomerCart](New-PartnerCustomerCart.md)
-Creates an order for a customer.
+Creates a cart for a customer.
 
 ### [New-PartnerCustomerConfigurationPolicy](New-PartnerCustomerConfigurationPolicy.md)
 Creates a new configuration policy for the specified customer.
