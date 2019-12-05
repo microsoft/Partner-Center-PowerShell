@@ -4,9 +4,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
+    using System.Linq;
+    using System.Management.Automation;
     using System.Security.Claims;
     using System.Threading;
     using System.Threading.Tasks;
+    using Extensions;
     using Identity.Client;
     using IdentityModel.JsonWebTokens;
     using Models.Authentication;
@@ -28,12 +31,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
-            AccessTokenParameters accessTokenParameters = parameters as AccessTokenParameters;
-            JsonWebToken jwt = new JsonWebToken(accessTokenParameters.AccessToken);
+            JsonWebToken token;
+            string value;
 
-            ServiceClientTracing.Information($"[AccessTokenAuthenticator] The specified access token expires at {jwt.ValidTo}");
+            if (parameters.Scopes.Contains($"{parameters.Environment.PartnerCenterEndpoint}/user_impersonation"))
+            {
+                value = parameters.Account.GetProperty(PartnerAccountPropertyType.AccessToken);
+            }
+            else
+            {
+                throw new PSInvalidOperationException("This operation is not supported when you connect using an access token. Please connect interactively or using a refresh token.");
+            }
 
-            if (DateTimeOffset.UtcNow > jwt.ValidTo)
+            token = new JsonWebToken(value);
+
+            ServiceClientTracing.Information($"[AccessTokenAuthenticator] The specified access token expires at {token.ValidTo}");
+
+            if (DateTimeOffset.UtcNow > token.ValidTo)
             {
                 throw new PartnerException("The access token has expired. Generate a new one and try again.");
             }
@@ -43,13 +57,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             ServiceClientTracing.Information("[AccessTokenAuthenticator] Constructing the authentication result based on the specified access token");
 
             return new AuthenticationResult(
-                accessTokenParameters.AccessToken,
+                value,
                 false,
                 null,
-                jwt.ValidTo,
-                jwt.ValidTo,
-                jwt.GetClaim("tid").Value,
-                GetAccount(jwt),
+                token.ValidTo,
+                token.ValidTo,
+                token.GetClaim("tid").Value,
+                GetAccount(token),
                 null,
                 parameters.Scopes,
                 Guid.Empty);

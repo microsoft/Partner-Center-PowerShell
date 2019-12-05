@@ -21,7 +21,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomer", DefaultParameterSetName = "ById")]
     [OutputType(typeof(PSCustomer))]
-    public class GetPartnerCustomer : PartnerCmdlet
+    public class GetPartnerCustomer : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the optional customer identifier.
@@ -46,49 +46,53 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;
-            List<Customer> customers = new List<Customer>();
-            SeekBasedResourceCollection<Customer> seekCustomers;
-
-            if (!string.IsNullOrEmpty(CustomerId))
+            Scheduler.RunTask(async () => 
             {
-                WriteObject(new PSCustomer(Partner.Customers[CustomerId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-                return;
-            }
-            if (ParameterSetName.Equals("ByDomain", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Graph.GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as Graph.GraphServiceClient;
-                client.AuthenticationProvider = new GraphAuthenticationProvider();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
+                IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;
+                List<Customer> customers = new List<Customer>();
+                SeekBasedResourceCollection<Customer> seekCustomers;
 
-                Graph.IGraphServiceContractsCollectionPage data = client.Contracts.Request().Filter($"defaultDomainName eq '{Domain}'").GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                if (data.CurrentPage != null && data.CurrentPage.Any())
+                if (!string.IsNullOrEmpty(CustomerId))
                 {
-                    Customer customer = Partner.Customers.ById(data.CurrentPage[0].CustomerId.ToString()).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                    WriteObject(new PSCustomer(customer));
+                    WriteObject(new PSCustomer(await partner.Customers[CustomerId].GetAsync().ConfigureAwait(false)));
                     return;
                 }
+                if (ParameterSetName.Equals("ByDomain", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Graph.GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as Graph.GraphServiceClient;
+                    client.AuthenticationProvider = new GraphAuthenticationProvider();
 
-                seekCustomers = Partner.Customers.QueryAsync(
-                    QueryFactory.BuildSimpleQuery(new SimpleFieldFilter(
-                        CustomerSearchField.Domain.ToString(),
-                        FieldFilterOperation.StartsWith,
-                        Domain))).ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else
-            {
-                seekCustomers = Partner.Customers.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                    Graph.IGraphServiceContractsCollectionPage data = await client.Contracts.Request().Filter($"defaultDomainName eq '{Domain}'").GetAsync().ConfigureAwait(false);
 
-            customersEnumerator = Partner.Enumerators.Customers.Create(seekCustomers);
+                    if (data.CurrentPage != null && data.CurrentPage.Any())
+                    {
+                        Customer customer = await partner.Customers.ById(data.CurrentPage[0].CustomerId.ToString()).GetAsync().ConfigureAwait(false);
+                        WriteObject(new PSCustomer(customer));
+                        return;
+                    }
 
-            while (customersEnumerator.HasValue)
-            {
-                customers.AddRange(customersEnumerator.Current.Items);
-                customersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                    seekCustomers = await partner.Customers.QueryAsync(
+                        QueryFactory.BuildSimpleQuery(new SimpleFieldFilter(
+                            CustomerSearchField.Domain.ToString(),
+                            FieldFilterOperation.StartsWith,
+                            Domain))).ConfigureAwait(false);
+                }
+                else
+                {
+                    seekCustomers = await partner.Customers.GetAsync().ConfigureAwait(false);
+                }
 
-            WriteObject(customers.Select(c => new PSCustomer(c)), true);
+                customersEnumerator = partner.Enumerators.Customers.Create(seekCustomers);
+
+                while (customersEnumerator.HasValue)
+                {
+                    customers.AddRange(customersEnumerator.Current.Items);
+                    await customersEnumerator.NextAsync().ConfigureAwait(false);
+                }
+
+                WriteObject(customers.Select(c => new PSCustomer(c)), true);
+            }, true);
         }
     }
 }

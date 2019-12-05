@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Set, "PartnerAzureSubscription")]
     [OutputType(typeof(string))]
-    public class SetPartnerAzureSubscription : PartnerPSCmdlet
+    public class SetPartnerAzureSubscription : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the subscription identifier.
@@ -38,19 +38,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(
-                new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
-                CustomerId);
+            Scheduler.RunTask(async () =>
+            {
+                ISubscriptionClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<SubscriptionClient>(
+                    new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
+                    CustomerId);
 
-            RenamedSubscriptionId value = client.Subscriptions.RenameAsync(
-                SubscriptionId,
-                new SubscriptionName
-                {
-                    SubscriptionNameProperty = SubscriptionName
-                },
-                CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
+                RenamedSubscriptionId value = client.Subscriptions.RenameAsync(
+                    SubscriptionId,
+                    new SubscriptionName
+                    {
+                        SubscriptionNameProperty = SubscriptionName
+                    },
+                    CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            WriteObject(value.Value);
+                WriteObject(value.Value);
+            }, true);
         }
     }
 }

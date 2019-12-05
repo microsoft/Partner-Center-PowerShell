@@ -166,9 +166,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Performs the operations associated with the command.
+        /// Executes the operations associated with the cmdlet.
         /// </summary>
-        protected override void ProcessRecord()
+        public override void ExecuteCmdlet()
         {
             IPartner partnerOperations;
             OrganizationProfile profile;

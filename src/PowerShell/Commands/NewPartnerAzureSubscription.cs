@@ -12,7 +12,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.New, "PartnerAzureSubscription", DefaultParameterSetName = ByCustomerNameParameterSet)]
     [OutputType(typeof(SubscriptionCreationResult))]
-    public class NewPartnerAzureSubscription : PartnerPSCmdlet
+    public class NewPartnerAzureSubscription : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Name of the by customer identifier parameter set.
@@ -61,22 +61,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ISubscriptionClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
-            ModernCspSubscriptionCreationParameters parameters = new ModernCspSubscriptionCreationParameters
+            Scheduler.RunTask(async () =>
             {
-                DisplayName = DisplayName,
-                ResellerId = ResellerId ?? null,
-                SkuId = "0001"
-            };
+                ISubscriptionClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+                ModernCspSubscriptionCreationParameters parameters = new ModernCspSubscriptionCreationParameters
+                {
+                    DisplayName = DisplayName,
+                    ResellerId = ResellerId ?? null,
+                    SkuId = "0001"
+                };
 
-            if (ParameterSetName.Equals(ByCustomerIdParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                WriteObject(client.SubscriptionFactory.CreateCspSubscriptionAsync(BillingAccountName, CustomerId, parameters, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
-            }
-            else
-            {
-                WriteObject(client.SubscriptionFactory.CreateCspSubscriptionAsync(BillingAccountName, CustomerName, parameters, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
-            }
+                if (ParameterSetName.Equals(ByCustomerIdParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    WriteObject(await client.SubscriptionFactory.CreateCspSubscriptionAsync(BillingAccountName, CustomerId, parameters, CancellationToken).ConfigureAwait(false));
+                }
+                else
+                {
+                    WriteObject(await client.SubscriptionFactory.CreateCspSubscriptionAsync(BillingAccountName, CustomerName, parameters, CancellationToken).ConfigureAwait(false));
+                }
+            }, true);
         }
     }
 }

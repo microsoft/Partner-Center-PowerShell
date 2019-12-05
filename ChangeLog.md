@@ -25,6 +25,7 @@
 * Agreement
   * Added the [Get-PartnerAgreementStatus](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAgreementStatus) command to get the status of acceptance of the Microsoft Partner Agreement for the specified partner
 * Authentication
+  * Added the `AzureAccessToken` parameter to the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) command, this value will be used to interact with Azure when using commands that leverage the Azure Resource Manager API
   * Updated how [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) writes warnings during an authentication attempt
   * Updated how [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) prompts for interaction
   * When using [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) with an access token the account and tenant information are now extracted from the access token
@@ -40,12 +41,14 @@
   * Addressed issue [#202](https://github.com/microsoft/Partner-Center-PowerShell/issues/202) that was returning request for invoice line items with no errors
 * Module
   * Addressed issue [#217](https://github.com/microsoft/Partner-Center-PowerShell/issues/217) that was impacting executing commands through Azure Automation
+  * Updated the transient error strategy for network operations
   * When running any command with with the `Debug` parameter the request and response from the API will be written to the console in addition to any operation specific debug information
 * Security
   * Modified the [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUser) command to leverage a task scheduler for requesting from Microsoft Graph
   * Modified the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command to leverage a task scheduler for requesting from Microsoft Graph
   * Updated how [Test-PartnerSecurityRequirement](https://docs.microsoft.com/powershell/module/partnercenter/Test-PartnerSecurityRequirement) prompts for interaction
 * Subscription
+  * Addressed an issue where the request for subscriptions by partner was causing an `InvalidCastException` to be thrown
   * Corrected the output for the [Get-PartnerCustomerAzurePlanEntitlement](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerAzurePlanEntitlement) command
 * Validation
   * Addressed a scenario where a `NullReferenceException` could be thrown when running the [Test-PartnerAddress](https://docs.microsoft.com/powershell/module/partnercenter/Test-PartnerAddress) command

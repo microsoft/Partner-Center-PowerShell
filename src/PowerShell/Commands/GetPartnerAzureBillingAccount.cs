@@ -9,16 +9,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Authentication;
 
     [Cmdlet(VerbsCommon.Get, "PartnerAzureBillingAccount"), OutputType(typeof(BillingAccount))]
-    public class GetPartnerAzureBillingAccount : PartnerPSCmdlet
+    public class GetPartnerAzureBillingAccount : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+            Scheduler.RunTask(async () =>
+            {
+                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+                BillingAccountListResult data = await client.BillingAccounts.ListAsync(null, CancellationToken).ConfigureAwait(false);
 
-            WriteObject(client.BillingAccounts.ListAsync(null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult().Value, true);
+                WriteObject(data.Value, true);
+            }, true);
         }
     }
 }

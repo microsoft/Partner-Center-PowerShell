@@ -11,9 +11,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
+    using System.Threading.Tasks;
+    using Models.Authentication;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscription", DefaultParameterSetName = "ByCustomer"), OutputType(typeof(PSSubscription))]
-    public class GetPartnerCustomerSubscription : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscription", DefaultParameterSetName = "ByCustomer")]
+    [OutputType(typeof(PSSubscription))]
+    public class GetPartnerCustomerSubscription : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer object used to scope the request.
@@ -62,48 +65,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-
-
-            if (string.IsNullOrEmpty(SubscriptionId))
+            Scheduler.RunTask(async () =>
             {
-                GetSubscriptions(customerId, MpnId, OrderId);
-            }
-            else
-            {
-                GetSubscription(customerId, SubscriptionId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
+                string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
-        private void GetSubscription(string customerId, string subscriptionId)
-        {
-            Subscription subscription;
+                if (string.IsNullOrEmpty(SubscriptionId))
+                {
+                    ResourceCollection<Subscription> subscriptions;
 
-            customerId.AssertNotEmpty(nameof(customerId));
-            subscriptionId.AssertNotEmpty(nameof(subscriptionId));
+                    if (!string.IsNullOrWhiteSpace(MpnId))
+                    {
+                        subscriptions = await partner.Customers[customerId].Subscriptions.ByPartner(MpnId).GetAsync().ConfigureAwait(false);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(OrderId))
+                    {
+                        subscriptions = await partner.Customers[customerId].Subscriptions.ByOrder(OrderId).GetAsync().ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        subscriptions = await partner.Customers[customerId].Subscriptions.GetAsync().ConfigureAwait(false);
+                    }
 
-            subscription = Partner.Customers[customerId].Subscriptions[subscriptionId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(new PSSubscription(subscription));
-        }
-
-        private void GetSubscriptions(string customerId, string mpnId = null, string orderId = null)
-        {
-            ResourceCollection<Subscription> subscriptions;
-
-            if (!string.IsNullOrWhiteSpace(mpnId))
-            {
-                subscriptions = Partner.Customers[customerId].Subscriptions.ByPartner(mpnId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else if (!string.IsNullOrWhiteSpace(orderId))
-            {
-                subscriptions = Partner.Customers[customerId].Subscriptions.ByOrder(orderId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else
-            {
-                subscriptions = Partner.Customers[customerId].Subscriptions.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-
-            WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
+                    WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
+                }
+                else
+                {
+                    WriteObject(new PSSubscription(await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false)));
+                }
+            }, true);
         }
     }
 }

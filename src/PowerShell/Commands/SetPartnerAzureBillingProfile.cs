@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Set, "PartnerAzureBillingPolicy")]
     [OutputType(typeof(CustomerPolicy))]
-    public class SetPartnerAzureBillingPolicy : PartnerCmdlet
+    public class SetPartnerAzureBillingPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The value that indiciates the customer is able to see charges in the Azure portal.
@@ -47,16 +47,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+            Scheduler.RunTask(async () =>
+            {
+                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
 
-            WriteObject(client.Policies.UpdateCustomerAsync(
-                BillingAccountName,
-                CustomerId,
-                new CustomerPolicy
-                {
-                    ViewCharges = ViewCharges.ToBool() ? AllowedValue : NotAllowedValue
-                },
-                CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
+                WriteObject(await client.Policies.UpdateCustomerAsync(
+                    BillingAccountName,
+                    CustomerId,
+                    new CustomerPolicy
+                    {
+                        ViewCharges = ViewCharges.ToBool() ? AllowedValue : NotAllowedValue
+                    },
+                    CancellationToken).ConfigureAwait(false));
+            }, true);
         }
     }
 }

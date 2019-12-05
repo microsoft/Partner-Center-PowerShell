@@ -35,6 +35,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             return MsalCacheHelper.CreateAsync(storageCreationProperties).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
+        public static MsalCacheStorage GetMsalCacheStorage(string clientId)
+        {
+            StorageCreationPropertiesBuilder builder = new StorageCreationPropertiesBuilder(Path.GetFileName(CacheFilePath), Path.GetDirectoryName(CacheFilePath), clientId);
+
+            builder = builder.WithMacKeyChain(serviceName: "Microsoft.Developer.IdentityService", accountName: "MSALCache");
+            builder = builder.WithLinuxKeyring(
+                schemaName: "msal.cache",
+                collection: "default",
+                secretLabel: "MSALCache",
+                attribute1: new KeyValuePair<string, string>("MsalClientID", "Microsoft.Developer.IdentityService"),
+                attribute2: new KeyValuePair<string, string>("MsalClientVersion", "1.0.0.0"));
+
+            return new MsalCacheStorage(builder.Build());
+        }
+
+        public static string GetTokenCacheKey(AuthenticationResult authResult, string applicationId)
+        {
+            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{applicationId}--";
+        }
+
         public static IConfidentialClientApplication CreateConfidentialClient(
             string authority = null,
             string clientId = null,

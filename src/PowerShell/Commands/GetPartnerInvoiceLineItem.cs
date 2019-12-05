@@ -12,7 +12,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
     using PartnerCenter.PowerShell.Models.Invoices;
-    using Properties;
 
     /// <summary>
     /// Gets a list of line items for the specified invoice from Partner Center.
@@ -71,26 +70,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public BillingPeriod Period { get; set; }
 
         /// <summary>
-        /// Operations that happen before the cmdlet is executed.
-        /// </summary>
-        protected override void BeginProcessing()
-        {
-            if (PartnerSession.Instance.Context == null)
-            {
-                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
-            }
-
-            base.BeginProcessing();
-        }
-
-        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
             Scheduler.RunTask(async () =>
             {
-                IPartner partner = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
                 IResourceCollectionEnumerator<ResourceCollection<InvoiceLineItem>> enumerator;
                 List<InvoiceLineItem> items;
                 ResourceCollection<InvoiceLineItem> lineItems;
@@ -143,7 +129,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         WriteObject(items.Select(i => new PSDailyRatedUsageLineItem((DailyRatedUsageLineItem)i)), true);
                     }
                 }
-            });
+            }, true);
         }
     }
 }

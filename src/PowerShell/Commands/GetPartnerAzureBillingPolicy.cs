@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Get, "PartnerAzureBillingPolicy")]
     [OutputType(typeof(CustomerPolicy))]
-    public class GetPartnerAzureBillingPolicy : PartnerCmdlet
+    public class GetPartnerAzureBillingPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the name for the billing account.
@@ -31,9 +31,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+            Scheduler.RunTask(async () =>
+            {
+                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
 
-            WriteObject(client.Policies.GetByCustomerAsync(BillingAccountName, CustomerId, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
+                WriteObject(client.Policies.GetByCustomerAsync(BillingAccountName, CustomerId, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
+            }, true);
         }
     }
 }

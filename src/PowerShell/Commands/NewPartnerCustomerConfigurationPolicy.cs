@@ -13,7 +13,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Creates a new configuration policies for the specified customer identifier.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerConfigurationPolicy", SupportsShouldProcess = true), OutputType(typeof(PSConfigurationPolicy))]
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerConfigurationPolicy", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSConfigurationPolicy))]
     public class NewPartnerCustomerConfigurationPolicy : PartnerCmdlet
     {
         /// <summary>

@@ -10,7 +10,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Rest.Azure;
 
     [Cmdlet(VerbsCommon.Get, "PartnerAzureBillingProfile"), OutputType(typeof(BillingAccount))]
-    public class GetPartnerAzureBillingProfile : PartnerPSCmdlet
+    public class GetPartnerAzureBillingProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or set the name for the billing account.
@@ -24,10 +24,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IBillingManagementClient client = PartnerSession.Instance.ClientFactory.CreateServiceClient<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" });
-            IPage<Customer> data = client.Customers.ListByBillingAccountAsync(BillingAccountName, null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" });
+                IPage<Customer> data = client.Customers.ListByBillingAccountAsync(BillingAccountName, null, null, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            WriteObject(data, true);
+                WriteObject(data, true);
+            }, true);
         }
     }
 }

@@ -6,10 +6,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using System;
     using System.Collections.Concurrent;
     using System.Diagnostics;
+    using System.Management.Automation;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
+    using Models.Authentication;
+    using Properties;
 
+    /// <summary>
+    /// Provides the ability to schedule task and limit the concurrency.
+    /// </summary>
     public class ConcurrencyTaskScheduler : IDisposable
     {
         /// <summary>
@@ -35,7 +41,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         /// <summary>
         /// The maxium number of tasks that can be running at once.
         /// </summary>
-        private readonly int maxConcurrency = 0;
+        private readonly int maxConcurrency;
 
         /// <summary>
         /// A flag that indicates whether or not this object has been disposed.
@@ -145,17 +151,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         /// <summary>
         /// Queues the specified work to run on the thread pool.
         /// </summary>
-        /// <param name="fucntion">The work to execute asynchronously</param>
-        public void RunTask(Func<Task> fucntion)
+        /// <param name="function">The work to execute asynchronously</param>
+        public void RunTask(Func<Task> function)
+        {
+            RunTask(function, false);
+        }
+
+        /// <summary>
+        /// Queues the specified work to run on the thread pool.
+        /// </summary>
+        /// <param name="function">The work to execute asynchronously</param>
+        public void RunTask(Func<Task> function, bool validateConnected)
         {
             long taskId;
+
+            function.AssertNotNull(nameof(function));
 
             if (cancellationToken.IsCancellationRequested)
             {
                 return;
             }
 
-            fucntion.AssertNotNull(nameof(fucntion));
+            if (validateConnected)
+            {
+                if (PartnerSession.Instance.Context == null)
+                {
+                    throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
+                }
+            }
 
             taskId = totalTaskCount;
             Interlocked.Increment(ref totalTaskCount);
@@ -164,11 +187,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
 
             if (Interlocked.Read(ref activeTaskCount) < maxConcurrency)
             {
-                RunConcurrentTaskAsync(taskId, fucntion());
+                RunConcurrentTaskAsync(taskId, function());
             }
             else
             {
-                taskQueue.Enqueue(new Tuple<long, Func<Task>>(taskId, fucntion));
+                taskQueue.Enqueue(new Tuple<long, Func<Task>>(taskId, function));
             }
         }
 
