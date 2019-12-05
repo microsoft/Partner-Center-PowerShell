@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription
             /// </param>
             public static OperationListResult List(this IOperations operations)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

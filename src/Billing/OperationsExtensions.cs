@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Management.Billing
             /// </param>
             public static IPage<Operation> List(this IOperations operations)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

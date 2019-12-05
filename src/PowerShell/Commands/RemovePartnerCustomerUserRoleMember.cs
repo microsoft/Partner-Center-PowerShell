@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             UserId.AssertNotEmpty(nameof(UserId));
             RoleId.AssertNotEmpty(nameof(RoleId));
 
-            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().GetAwaiter().GetResult();
+            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(true);
         }
     }

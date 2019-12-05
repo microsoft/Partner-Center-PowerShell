@@ -9,19 +9,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text;
     using Extensions;
-    using Factories;
     using Identity.Client;
+    using Microsoft.Store.PartnerCenter.PowerShell.Factories;
     using Models.Authentication;
     using Newtonsoft.Json.Linq;
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthResult))]
-    public class NewPartnerAccessToken : PartnerPSCmdlet
+    public class NewPartnerAccessToken : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name of the access token parameter set.
         /// </summary>
         private const string AccessTokenParameterSet = "AccessToken";
+
+        /// <summary>
+        /// The name of the by module parameter set.
+        /// </summary>
+        private const string ByModuleParameterSet = "ByModule";
 
         /// <summary>
         /// The message written to the console.
@@ -53,7 +58,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the application identifier.
         /// </summary>
-        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true)]
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = UserParameterSet)]
         [Alias("ClientId")]
         [ValidateNotNullOrEmpty]
         public string ApplicationId { get; set; }
@@ -61,7 +69,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the certificate thumbprint.
         /// </summary>
-        [Parameter(ParameterSetName = ServicePrincipalCertificateParameterSet, Mandatory = true, HelpMessage = "Certificate Hash (Thumbprint)")]
+        [Parameter(HelpMessage = "Certificate Hash (Thumbprint)", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         public string CertificateThumbprint { get; set; }
 
         /// <summary>
@@ -81,6 +89,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public EnvironmentName Environment { get; set; }
 
         /// <summary>
+        /// Gets or sets the module that an access token is being generated.
+        /// </summary>
+        [Parameter(HelpMessage = "The module that an access token is being generated.", Mandatory = true, ParameterSetName = ByModuleParameterSet)]
+        [Alias("ModuleName")]
+        [ValidateSet(nameof(ModuleName.ExchangeOnline))]
+        public ModuleName Module { get; set; }
+
+        /// <summary>
         /// Gets or sets the refresh token to use during authentication.
         /// </summary>
         [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = false)]
@@ -90,7 +106,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the scopes used for authentication.
         /// </summary>
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = false, ParameterSetName = UserParameterSet)]
         public string[] Scopes { get; set; }
 
         /// <summary>
@@ -105,6 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         [Alias("Domain", "TenantId")]
         [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = ByModuleParameterSet)]
         [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
@@ -122,126 +142,139 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets a flag indicating if the device code flow should be used.
         /// </summary>
         [Alias("DeviceCode", "DeviceAuth", "Device")]
-        [Parameter(ParameterSetName = UserParameterSet, Mandatory = false, HelpMessage = "Use device code authentication instead of a browser control")]
+        [Parameter(ParameterSetName = UserParameterSet, Mandatory = false, HelpMessage = "Use device code authentication instead of a browser control.")]
         public SwitchParameter UseDeviceAuthentication { get; set; }
 
         /// <summary>
-        /// Performs the execution of the command.
+        /// Executes the operations associated with the cmdlet.
         /// </summary>
-        protected override void ProcessRecord()
+        public override void ExecuteCmdlet()
         {
-            PartnerAccount account = new PartnerAccount();
-
-            if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
+            Scheduler.RunTask(async () =>
             {
-                account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
-                account.Type = AccountType.AccessToken;
-            }
-            else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                account.ObjectId = Credential.UserName;
-                account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
-                account.Type = AccountType.ServicePrincipal;
-            }
-            else
-            {
-                account.Type = AccountType.User;
-            }
+                PartnerAccount account = new PartnerAccount();
+                string applicationId;
 
-            if (UseAuthorizationCode.IsPresent)
-            {
-                account.SetProperty("UseAuthCode", "true");
-            }
-
-            if (UseDeviceAuthentication.IsPresent)
-            {
-                account.SetProperty("UseDeviceAuth", "true");
-            }
-
-            if (!string.IsNullOrEmpty(RefreshToken))
-            {
-                account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
-            }
-
-            account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
-
-            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
-
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                account,
-                PartnerEnvironment.PublicEnvironments[Environment],
-                Scopes,
-                Message,
-                WriteWarning,
-                WriteDebug,
-                CancellationToken);
-
-            byte[] cacheData = SharedTokenCacheClientFactory.GetTokenCache(ApplicationId).SerializeMsalV3();
-
-            IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
-
-            JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
-
-            IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
-                .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
-                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
-
-            if (known.ContainsKey("RefreshToken"))
-            {
-                foreach (JToken token in root["RefreshToken"].Values())
+                if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (token is JObject j)
-                    {
-                        TokenCacheItem item = new TokenCacheItem
-                        {
-                            ClientId = ExtractExistingOrEmptyString(j, "client_id"),
-                            CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
-                            Environment = ExtractExistingOrEmptyString(j, "environment"),
-                            HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
-                            RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
-                            Secret = ExtractExistingOrEmptyString(j, "secret")
-                        };
+                    account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
+                    account.Type = AccountType.AccessToken;
+                    applicationId = ApplicationId;
+                }
+                else if (ParameterSetName.Equals(ByModuleParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.UseDeviceAuth, "true");
+                    account.Type = AccountType.User;
+                    applicationId = PowerShellModule.KnownModules[Module].ApplicationId;
 
-                        tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                    Scopes = PowerShellModule.KnownModules[Module].Scopes.ToArray();
+                }
+                else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    account.ObjectId = Credential.UserName;
+                    account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
+                    account.Type = AccountType.ServicePrincipal;
+                    applicationId = ApplicationId;
+                }
+                else
+                {
+                    account.Type = AccountType.User;
+                    applicationId = ApplicationId;
+                }
+
+                if (!ParameterSetName.Equals(ByModuleParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (UseAuthorizationCode.IsPresent)
+                    {
+                        account.SetProperty(PartnerAccountPropertyType.UseAuthCode, "true");
+                    }
+
+                    if (UseDeviceAuthentication.IsPresent)
+                    {
+                        account.SetProperty(PartnerAccountPropertyType.UseDeviceAuth, "true");
                     }
                 }
-            }
 
-            string key = GetTokenCacheKey(authResult);
+                if (!string.IsNullOrEmpty(RefreshToken))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
+                }
 
-            AuthResult result = new AuthResult(
-                authResult.AccessToken,
-                authResult.IsExtendedLifeTimeToken,
-                authResult.UniqueId,
-                authResult.ExpiresOn,
-                authResult.ExtendedExpiresOn,
-                authResult.TenantId,
-                authResult.Account,
-                authResult.IdToken,
-                authResult.Scopes);
+                account.SetProperty(PartnerAccountPropertyType.ApplicationId, applicationId);
+                account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            if (tokens.ContainsKey(key))
-            {
-                result.RefreshToken = tokens[key].Secret;
-            }
+                AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
+                    account,
+                    PartnerEnvironment.PublicEnvironments[Environment],
+                    Scopes,
+                    Message,
+                    CancellationToken).ConfigureAwait(false);
 
-            WriteObject(result);
-        }
+                byte[] cacheData = SharedTokenCacheClientFactory.GetMsalCacheStorage(ApplicationId).ReadData();
 
-        private string GetTokenCacheKey(AuthenticationResult authResult)
-        {
-            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{ApplicationId}--";
+                IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
+
+                JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
+
+                IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
+                    .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
+
+                if (known.ContainsKey("RefreshToken"))
+                {
+                    foreach (JToken token in root["RefreshToken"].Values())
+                    {
+                        if (token is JObject j)
+                        {
+                            TokenCacheItem item = new TokenCacheItem
+                            {
+                                ClientId = ExtractExistingOrEmptyString(j, "client_id"),
+                                CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
+                                Environment = ExtractExistingOrEmptyString(j, "environment"),
+                                HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
+                                RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
+                                Secret = ExtractExistingOrEmptyString(j, "secret")
+                            };
+
+                            tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                        }
+                    }
+                }
+
+                AuthResult result = new AuthResult(
+                    authResult.AccessToken,
+                    authResult.IsExtendedLifeTimeToken,
+                    authResult.UniqueId,
+                    authResult.ExpiresOn,
+                    authResult.ExtendedExpiresOn,
+                    authResult.TenantId,
+                    authResult.Account,
+                    authResult.IdToken,
+                    authResult.Scopes,
+                    authResult.CorrelationId);
+
+                if (authResult.Account != null)
+                {
+                    string key = SharedTokenCacheClientFactory.GetTokenCacheKey(authResult, applicationId);
+
+                    if (tokens.ContainsKey(key))
+                    {
+                        result.RefreshToken = tokens[key].Secret;
+                    }
+                }
+
+                WriteObject(result);
+            });
         }
 
         private static string ExtractExistingOrEmptyString(JObject json, string key)
         {
             if (json.TryGetValue(key, out JToken val))
             {
-                string strVal = val.ToObject<string>();
                 json.Remove(key);
-                return strVal;
+                return val.ToObject<string>(); ;
             }
 
             return string.Empty;

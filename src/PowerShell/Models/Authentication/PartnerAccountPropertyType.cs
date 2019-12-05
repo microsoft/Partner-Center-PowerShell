@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         public const string AccessToken = "AccessToken";
 
         /// <summary>
-        /// Name of the application identifier extended property0.
+        /// Name of the application identifier extended property.
         /// </summary>
         public const string ApplicationId = "ApplicationId";
 
@@ -37,5 +37,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Name of the service principal secret extended property.
         /// </summary>
         public const string ServicePrincipalSecret = "ServicePrincipalSecret";
+
+        /// <summary>
+        /// Name of the use authorization code extended property.
+        /// </summary>
+        public const string UseAuthCode = "UseAuthCode";
+
+        /// <summary>
+        /// Name of the use device authentication extended property.
+        /// </summary>
+        public const string UseDeviceAuth = "UseDeviceAuth";
     }
 }

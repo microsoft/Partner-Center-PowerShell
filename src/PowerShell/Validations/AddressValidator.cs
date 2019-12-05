@@ -58,24 +58,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 
             resource.AssertNotNull(nameof(resource));
 
-            if (resource.Country.Equals(ChinaCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
-                resource.Country.Equals(MexicoCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
-                resource.Country.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase))
+            debugAction("Requesting country validation services from the partner service.");
+            validationRules = partner.CountryValidationRules.ByCountry(resource.Country).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
             {
-                debugAction("Requesting country validation services from the partner service.");
-                validationRules = partner.CountryValidationRules.ByCountry(resource.Country).GetAsync().GetAwaiter().GetResult();
+                throw new ValidationException(Resources.CityRequiredError);
+            }
 
-                if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
-                {
-                    throw new ValidationException(Resources.CityRequiredError);
-                }
+            if (validationRules.IsPostalCodeRequired && string.IsNullOrEmpty(resource.PostalCode))
+            {
+                throw new ValidationException(Resources.PostalCoderequiredError);
+            }
 
-                if (validationRules.IsPostalCodeRequired && string.IsNullOrEmpty(resource.PostalCode))
-                {
-                    throw new ValidationException(Resources.PostalCoderequiredError);
-                }
-
-                if (validationRules.IsStateRequired && string.IsNullOrEmpty(resource.State))
+            if (validationRules.IsStateRequired)
+            {
+                if (string.IsNullOrEmpty(resource.State))
                 {
                     throw new ValidationException(Resources.StateRequiredError);
                 }
@@ -91,21 +89,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                                 string.Join(",", validationRules.SupportedStatesList)));
                     }
                 }
-
-                if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex)
-                    && !string.IsNullOrEmpty(resource.PhoneNumber) &&
-                    !Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
-                {
-                    throw new ValidationException(
-                        string.Format(
-                            CultureInfo.CurrentCulture,
-                            Resources.InvalidPhoneFormatError,
-                            resource.PhoneNumber));
-                }
             }
 
+            if (!string.IsNullOrEmpty(validationRules.PhoneNumberRegex)
+                && !string.IsNullOrEmpty(resource.PhoneNumber) &&
+                !Regex.Match(resource.PhoneNumber, validationRules.PhoneNumberRegex).Success)
+            {
+                throw new ValidationException(
+                    string.Format(
+                        CultureInfo.CurrentCulture,
+                        Resources.InvalidPhoneFormatError,
+                        resource.PhoneNumber));
+            }
+
+            //if (string.IsNullOrEmpty(resource.Country) && !string.IsNullOrEmpty(resource.Region))
+            //{
+            //    debugAction("The country parameter must be specified to perform address validation. Since it was not provided this operation will not be performed a default value of true will be returned.");
+            //    return true;
+            //}
+
+            //if (string.IsNullOrEmpty(resource.Country))
+            //{
+            //    debugAction("The country parameter must be specifed to perform address validation. Since it was not provided this operation will be performed and a value of false will be returned.");
+            //    return false;
+            //}
+
+            //if (resource.Country.Equals(ChinaCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
+            //    resource.Country.Equals(MexicoCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
+            //    resource.Country.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase))
+            //{
             debugAction("Checking if the address is valid using the partner service.");
-            return partner.Validations.IsAddressValidAsync(resource).GetAwaiter().GetResult();
+            return partner.Validations.IsAddressValidAsync(resource).ConfigureAwait(false).GetAwaiter().GetResult();
+            // }
         }
     }
 }

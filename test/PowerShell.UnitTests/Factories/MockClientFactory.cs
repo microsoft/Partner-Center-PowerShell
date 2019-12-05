@@ -4,10 +4,10 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
     using System;
+    using System.Threading.Tasks;
     using Graph;
     using Network;
     using PowerShell.Factories;
-    using PowerShell.Network;
     using Rest;
 
     /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         {
             if (graphServiceClient == null)
             {
-                graphServiceClient = new GraphServiceClient(null, new HttpProvider(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+                graphServiceClient = new GraphServiceClient(null, new HttpProvider(new RetryDelegatingHandler
                 {
                     InnerHandler = httpMockHandler
                 }, false, null));
@@ -67,7 +67,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public IPartner CreatePartnerOperations()
+        public virtual IPartner CreatePartnerOperations()
+        {
+            return CreatePartnerOperationsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        public virtual async Task<IPartner> CreatePartnerOperationsAsync()
         {
             if (partnerOperations == null)
             {
@@ -75,6 +84,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
                     credentials,
                     httpMockHandler);
             }
+
+            await Task.CompletedTask.ConfigureAwait(false);
 
             return partnerOperations;
         }
@@ -86,7 +97,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// <param name="scopes">Scopes requested to access a protected service.</param>
         /// <param name="tenantId">The identifier for the tenant.</param>
         /// <returns>An instance of a service client that is connected to a specific service.</returns>
-        public TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
+        public Task<TClient> CreateServiceClientAsync<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
             throw new NotImplementedException();
         }

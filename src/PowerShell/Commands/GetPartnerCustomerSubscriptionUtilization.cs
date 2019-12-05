@@ -8,8 +8,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using Enumerators;
+    using Models.Authentication;
     using Models.Utilizations;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Utilizations;
@@ -17,8 +17,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Cmdlet used to obtain Azure utilization records for the specified subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUtilization"), OutputType(typeof(PSAzureUtilizationRecord))]
-    public class GetPartnerCustomerSubscriptionUtilization : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUtilization")]
+    [OutputType(typeof(PSAzureUtilizationRecord))]
+    public class GetPartnerCustomerSubscriptionUtilization : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer that owns the subscription.
@@ -75,38 +76,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<PSAzureUtilizationRecord> records = Task.Run(() => RunAsync()).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            WriteObject(records, true);
-        }
-
-        public async Task<List<PSAzureUtilizationRecord>> RunAsync()
-        {
-            IResourceCollectionEnumerator<ResourceCollection<AzureUtilizationRecord>> enumerator;
-            List<PSAzureUtilizationRecord> records = new List<PSAzureUtilizationRecord>();
-            ResourceCollection<AzureUtilizationRecord> utilizationRecords;
-
-            utilizationRecords = await Partner.Customers[CustomerId]
-                .Subscriptions[SubscriptionId]
-                .Utilization.Azure.QueryAsync(
-                    StartDate,
-                    EndDate ?? DateTimeOffset.UtcNow,
-                    Granularity ?? AzureUtilizationGranularity.Daily,
-                    !ShowDetails.IsPresent || ShowDetails.ToBool(),
-                    PageSize == null ? 1000 : PageSize.Value).ConfigureAwait(false);
-
-            if (utilizationRecords?.TotalCount > 0)
+            Scheduler.RunTask(async () =>
             {
-                enumerator = Partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
 
-                while (enumerator.HasValue)
+                IResourceCollectionEnumerator<ResourceCollection<AzureUtilizationRecord>> enumerator;
+                List<PSAzureUtilizationRecord> records = new List<PSAzureUtilizationRecord>();
+                ResourceCollection<AzureUtilizationRecord> utilizationRecords;
+
+                utilizationRecords = await partner.Customers[CustomerId]
+                    .Subscriptions[SubscriptionId]
+                    .Utilization.Azure.QueryAsync(
+                        StartDate,
+                        EndDate ?? DateTimeOffset.UtcNow,
+                        Granularity ?? AzureUtilizationGranularity.Daily,
+                        !ShowDetails.IsPresent || ShowDetails.ToBool(),
+                        PageSize == null ? 1000 : PageSize.Value).ConfigureAwait(false);
+
+                if (utilizationRecords?.TotalCount > 0)
                 {
-                    records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
-                    await enumerator.NextAsync().ConfigureAwait(false);
-                }
-            }
+                    enumerator = partner.Enumerators.Utilization.Azure.Create(utilizationRecords);
 
-            return records;
+                    while (enumerator.HasValue)
+                    {
+                        records.AddRange(enumerator.Current.Items.Select(r => new PSAzureUtilizationRecord(r)));
+                        await enumerator.NextAsync().ConfigureAwait(false);
+                    }
+                }
+
+                WriteObject(records, true);
+
+            }, true);
         }
+
     }
 }

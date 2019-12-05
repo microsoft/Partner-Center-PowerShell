@@ -117,7 +117,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess("Updates the partner's billing profile"))
             {
-                profile = Partner.Profiles.BillingProfile.GetAsync().GetAwaiter().GetResult();
+                profile = Partner.Profiles.BillingProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
                 profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);

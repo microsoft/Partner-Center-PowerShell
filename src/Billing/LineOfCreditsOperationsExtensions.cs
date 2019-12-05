@@ -27,7 +27,7 @@ namespace Microsoft.Azure.Management.Billing
             /// </param>
             public static LineOfCredit Get(this ILineOfCreditsOperations operations)
             {
-                return operations.GetAsync().GetAwaiter().GetResult();
+                return operations.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

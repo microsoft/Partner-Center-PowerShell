@@ -85,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().GetAwaiter().GetResult();
+            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
 
             if (BillingCycle.HasValue)

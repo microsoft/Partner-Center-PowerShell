@@ -35,11 +35,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             if (string.IsNullOrEmpty(AgreementType))
             {
-                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
             }
             else
             {
-                WriteObject(Partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync().GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
+                WriteObject(Partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
             }
         }
     }

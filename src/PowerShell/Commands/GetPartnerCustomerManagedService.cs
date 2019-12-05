@@ -59,7 +59,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().GetAwaiter().GetResult();
+            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (managedServices.TotalCount > 0)
             {
@@ -84,7 +84,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             managedServiceId.AssertNotEmpty(nameof(managedServiceId));
 
-            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().GetAwaiter().GetResult();
+            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (managedServices.TotalCount > 0)
             {

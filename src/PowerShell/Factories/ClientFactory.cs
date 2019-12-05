@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Extensions;
     using Graph;
     using Identity.Client;
@@ -19,14 +20,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     public class ClientFactory : IClientFactory
     {
-        private static readonly CancelRetryHandler DefaultCancelRetryHandler = new CancelRetryHandler(3, TimeSpan.FromSeconds(10));
-
         /// <summary>
         /// The service client used to communicate with Microsoft Graph.
         /// </summary>
-        private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+        private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new RetryDelegatingHandler
         {
-            InnerHandler = new RetryDelegatingHandler
+            InnerHandler = new ClientTracingHandler
             {
                 InnerHandler = new HttpClientHandler()
             }
@@ -35,12 +34,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
-        private static readonly HttpClient HttpClient = new HttpClient(new CancelRetryHandler(3, TimeSpan.FromSeconds(10))
+        private static readonly HttpClient HttpClient = new HttpClient(new RetryDelegatingHandler
         {
-            InnerHandler = new RetryDelegatingHandler
-            {
-                InnerHandler = new HttpClientHandler()
-            }
+            InnerHandler = new HttpClientHandler()
         });
 
         /// <summary>
@@ -58,12 +54,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
         public virtual IPartner CreatePartnerOperations()
         {
+            return CreatePartnerOperationsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Creates a new instance of the object used to interface with Partner Center.
+        /// </summary>
+        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
+        public virtual async Task<IPartner> CreatePartnerOperationsAsync()
+        {
             PartnerService.Instance.ApiRootUrl = new Uri(PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint);
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) });
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) }).ConfigureAwait(false);
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
@@ -77,7 +82,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <param name="scopes">Scopes requested to access a protected service.</param>
         /// <param name="tenantId">The identifier for the tenant.</param>
         /// <returns>An instance of a service client that is connected to a specific service.</returns>
-        public virtual TClient CreateServiceClient<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
+        public virtual async Task<TClient> CreateServiceClientAsync<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
             PartnerAccount account = PartnerSession.Instance.Context.Account;
 
@@ -86,12 +91,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 account.Tenant = tenantId;
             }
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 account,
                 PartnerSession.Instance.Context.Environment,
-                scopes);
+                scopes).ConfigureAwait(false);
 
-            return CreateServiceClient<TClient>(new TokenCredentials(authResult.AccessToken, "Bearer"));
+            return CreateServiceClient<TClient>(new TokenCredentials(authResult.AccessToken, "Bearer"), HttpClient, false);
         }
 
         private TClient CreateServiceClient<TClient>(params object[] parameters) where TClient : ServiceClient<TClient>
@@ -99,17 +104,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             List<Type> types = new List<Type>();
             List<object> parameterList = new List<object>();
 
-            List<DelegatingHandler> handlerList = new List<DelegatingHandler> { DefaultCancelRetryHandler.Clone() as CancelRetryHandler };
-
             foreach (object obj in parameters)
             {
-                Type paramType = obj.GetType();
-                types.Add(paramType);
+                types.Add(obj.GetType());
                 parameterList.Add(obj);
             }
-
-            types.Add((Array.Empty<DelegatingHandler>()).GetType());
-            parameterList.Add(handlerList.ToArray());
 
             ConstructorInfo constructor = typeof(TClient).GetConstructor(types.ToArray());
 

@@ -86,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             countryCode.AssertNotEmpty(nameof(countryCode));
             offerId.AssertNotEmpty(nameof(offerId));
 
-            offer = Partner.Offers.ByCountry(countryCode).ById(offerId).GetAsync().GetAwaiter().GetResult();
+            offer = Partner.Offers.ByCountry(countryCode).ById(offerId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(new PSOffer(offer));
         }
 
@@ -103,7 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             countryCode.AssertNotEmpty(nameof(countryCode));
 
-            offers = Partner.Offers.ByCountry(countryCode).GetAsync().GetAwaiter().GetResult();
+            offers = Partner.Offers.ByCountry(countryCode).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteOutput(offers.Items);
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             countryCode.AssertNotEmpty(nameof(countryCode));
             category.AssertNotEmpty(nameof(category));
 
-            offers = Partner.Offers.ByCountry(countryCode).ByCategory(category).GetAsync().GetAwaiter().GetResult();
+            offers = Partner.Offers.ByCountry(countryCode).ByCategory(category).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteOutput(offers.Items);
         }
 

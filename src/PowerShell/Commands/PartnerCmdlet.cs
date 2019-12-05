@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     /// <summary>
-    /// Represents base class for the Partner Center cmdlets.
+    /// The base class for the partner cmdlets.
     /// </summary>
     public abstract class PartnerCmdlet : PartnerPSCmdlet
     {

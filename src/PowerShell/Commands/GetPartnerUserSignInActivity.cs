@@ -7,13 +7,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using Graph;
     using Models.Authentication;
     using Network;
+    using Properties;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
-    public class GetPartnerUserSignInActivity : PartnerCmdlet
+    public class GetPartnerUserSignInActivity : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the end date porition of the query.
@@ -35,11 +35,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserId { get; set; }
 
         /// <summary>
+        /// Operations that happen before the cmdlet is executed.
+        /// </summary>
+        protected override void BeginProcessing()
+        {
+            if (PartnerSession.Instance.Context == null)
+            {
+                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
+            }
+
+            base.BeginProcessing();
+        }
+
+        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<SignIn> activities;
             string filter = string.Empty;
 
             if (StartDate != null)
@@ -57,39 +69,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 filter = AppendValue(filter, $"userId eq '{UserId}'");
             }
 
-            activities = GetSignInActivitiesAsync(filter).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            WriteObject(activities, true);
-        }
-
-        private async Task<List<SignIn>> GetSignInActivitiesAsync(string filter)
-        {
-            List<SignIn> activities;
-            List<QueryOption> queryOptions = null;
-
-            if (!string.IsNullOrEmpty(filter))
+            Scheduler.RunTask(async () =>
             {
-                queryOptions = new List<QueryOption>
+                List<SignIn> activities;
+                List<QueryOption> queryOptions = null;
+
+                if (!string.IsNullOrEmpty(filter))
                 {
-                    new QueryOption("$filter", $"({filter})")
-                };
-            }
+                    queryOptions = new List<QueryOption>
+                    {
+                        new QueryOption("$filter", $"({filter})")
+                    };
+                }
 
-            GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
-            client.AuthenticationProvider = new GraphAuthenticationProvider();
+                GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+                client.AuthenticationProvider = new GraphAuthenticationProvider();
 
-            IAuditLogRootSignInsCollectionPage data = await client
-                .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
+                IAuditLogRootSignInsCollectionPage data = await client
+                    .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
 
-            activities = new List<SignIn>(data.CurrentPage);
+                activities = new List<SignIn>(data.CurrentPage);
 
-            while (data.NextPageRequest != null)
-            {
-                data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
-                activities.AddRange(data.CurrentPage);
-            }
+                while (data.NextPageRequest != null)
+                {
+                    data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
+                    activities.AddRange(data.CurrentPage);
+                }
 
-            return activities;
+                WriteObject(activities, true);
+            });
         }
 
         private static string AppendValue(string baseValue, string appendValue)

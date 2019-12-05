@@ -90,13 +90,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 location = Partner.Customers[CustomerId].DeviceBatches.CreateAsync(request).GetAwaiter().GetResult();
             }
 
-            status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().GetAwaiter().GetResult();
+            status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             while (status.Status == DeviceUploadStatusType.Processing || status.Status == DeviceUploadStatusType.Queued)
             {
                 Thread.Sleep(5000);
 
-                status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().GetAwaiter().GetResult();
+                status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             WriteObject(new PSBatchUploadDetails(status));

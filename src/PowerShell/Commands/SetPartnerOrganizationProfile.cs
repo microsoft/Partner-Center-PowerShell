@@ -124,7 +124,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess("Updates the partner's organization profile"))
             {
-                profile = Partner.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
+                profile = Partner.Profiles.OrganizationProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
                 profile.CompanyName = UpdateValue(CompanyName, profile.CompanyName);
                 profile.Email = UpdateValue(Email, profile.Email);

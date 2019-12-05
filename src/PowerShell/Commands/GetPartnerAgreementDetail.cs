@@ -32,15 +32,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (string.IsNullOrEmpty(AgreementType))
             {
-                agreements = Partner.AgreementDetails.GetAsync().GetAwaiter().GetResult();
+                agreements = Partner.AgreementDetails.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
             else if (AgreementType.Equals("All", StringComparison.InvariantCultureIgnoreCase))
             {
-                agreements = Partner.AgreementDetails.ByAgreementType("*").GetAsync().GetAwaiter().GetResult();
+                agreements = Partner.AgreementDetails.ByAgreementType("*").GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
             else
             {
-                agreements = Partner.AgreementDetails.ByAgreementType(AgreementType).GetAsync().GetAwaiter().GetResult();
+                agreements = Partner.AgreementDetails.ByAgreementType(AgreementType).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);

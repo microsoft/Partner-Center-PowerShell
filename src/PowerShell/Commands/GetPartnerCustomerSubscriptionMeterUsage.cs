@@ -34,7 +34,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<MeterUsageRecord> usageRecords;
 
-            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByMeter.GetAsync().GetAwaiter().GetResult();
+            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByMeter.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(usageRecords.Items.Select(r => new PSMeterUsageRecord(r)), true);
         }
     }

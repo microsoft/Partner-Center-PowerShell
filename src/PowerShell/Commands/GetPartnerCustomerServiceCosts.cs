@@ -34,7 +34,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             ResourceCollection<ServiceCostLineItem> lineItems;
 
-            lineItems = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.GetAsync().GetAwaiter().GetResult();
+            lineItems = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(lineItems.Items.Select(i => new PSServiceCostLineItem(i)), true);
         }

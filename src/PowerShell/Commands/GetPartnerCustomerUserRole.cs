@@ -63,7 +63,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            roles = Partner.Customers[customerId].Users[userId].DirectoryRoles.GetAsync().GetAwaiter().GetResult().Items;
+            roles = Partner.Customers[customerId].Users[userId].DirectoryRoles.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
             WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             customerId.AssertNotEmpty(nameof(customerId));
 
-            roles = Partner.Customers[customerId].DirectoryRoles.GetAsync().GetAwaiter().GetResult().Items;
+            roles = Partner.Customers[customerId].DirectoryRoles.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
             WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
         }
     }

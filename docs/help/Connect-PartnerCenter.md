@@ -68,16 +68,14 @@ PS C:\> Connect-PartnerCenter -Credential $credential -Tenant 'xxxx-xxxx-xxxx-xx
 
 The first command gets the service principal credentials (application identifier and service principal secret), and then stores them in the $credential variable. The second command connects to Partner Center using the service principal credentials stored in $credential for the specified Tenant. The ServicePrincipal switch parameter indicates that the account authenticates as a service principal.
 
-### Example 3: Connect to Partner using an access token
+### Example 3: Connect to Partner using a refresh token
 
 ```powershell
-PS C:\> $credential = Get-Credential
 PS C:\> $refreshToken = '<refreshToken>'
-PS C:\> $token = New-PartnerAccessToken -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -Credential $credential -RefreshToken $refreshToken -Scopes "https://api.partnercenter.microsoft.com/user_impersonation" -Tenant 'xxxx-xxxx-xxxx-xxxx'
-PS C:\> Connect-PartnerCenter -AccessToken $token.AccessToken
+PS C:\> Connect-PartnerCenter -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -RefreshToken $refreshToken
 ```
 
-The first command gets the service principal credentials (application identifier and service principal secret), and then stores them in the $credential variable. The third command generates a new access token using the specified refresh token. The final command connects to Partner Center using the access token stored in $token.AccessToken for authentication. The ServicePrincipal switch parameter indicates that the refresh token was generated using a confidential client.
+Connects to Partner Center using a refresh token.
 
 ## PARAMETERS
 

@@ -18,7 +18,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>2.0.1911.6</Version>
+    <Version>3.0.0</Version>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -30,10 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="1.1.0-preview" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.4.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.2.0-preview" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.6.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.2" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.3" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" PrivateAssets="All" />
   </ItemGroup>
 

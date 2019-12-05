@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription
             /// </param>
             public static IPage<TenantIdDescription> List(this ITenantsOperations operations)
             {
-                return operations.ListAsync().GetAwaiter().GetResult();
+                return operations.ListAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             /// <summary>

@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Licenses;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Licenses;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Command that gets the licenses assigned to a user from a customer.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUserLicense"), OutputType(typeof(PSLicense))]
-    public class GetPartnerCustomerUserLicense : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUserLicense")]
+    [OutputType(typeof(PSLicense))]
+    public class GetPartnerCustomerUserLicense : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -42,10 +44,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<License> licenses = Partner.Customers[CustomerId]
-                .Users[UserId].Licenses.GetAsync(LicenseGroup?.Select(item => item).ToList()).GetAwaiter().GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
 
-            WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
+                ResourceCollection<License> licenses = await partner.Customers[CustomerId]
+                    .Users[UserId].Licenses.GetAsync(LicenseGroup?.Select(item => item).ToList());
+
+                WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
+            }, true);
+
         }
     }
 }

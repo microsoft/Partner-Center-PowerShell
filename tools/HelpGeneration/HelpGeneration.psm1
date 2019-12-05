@@ -10,11 +10,11 @@ function New-PartnerCenterMarkdownHelp
     )
 
     $HelpFolder = Get-Item $HelpFolderPath
-    $ModuleFolder = $HelpFolder.Parent
-    $ModuleFolderPath = $ModuleFolder.FullName
+    $ModuleFolder = $HelpFolder.Parent.Parent
+    $ModuleFolderPath = "$($ModuleFolder.FullName)\src\PowerShell\"
 
     $NewHelpFolderPath = "$ModuleFolderPath\temp_help"
-    $psd1 = Get-ChildItem $ModuleFolderPath | where { $_.Name -eq "$($ModuleFolder.Name).psd1" }
+    $psd1 = Get-ChildItem $ModuleFolderPath | where { $_.Name -eq "PartnerCenter.psd1" }
 
     Import-Module $psd1.FullName -Scope Global
 

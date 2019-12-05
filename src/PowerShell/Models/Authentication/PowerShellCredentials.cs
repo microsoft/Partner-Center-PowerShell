@@ -64,14 +64,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         {
             context.AssertNotNull(nameof(context));
 
-            AuthenticationResult authResult = PartnerSession.Instance.AuthenticationFactory.Authenticate(
+            AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" });
+                new[] { $"{PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint}/user_impersonation" }).ConfigureAwait(false);
 
             authToken = new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn);
-
-            await Task.CompletedTask.ConfigureAwait(false);
         }
 
         /// <summary>

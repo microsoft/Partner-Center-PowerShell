@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerSandboxCustomerWhatIf, CustomerId)))
             {
-                Partner.Customers[CustomerId].DeleteAsync().GetAwaiter().GetResult();
+                Partner.Customers[CustomerId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 WriteObject(true);
             }
         }

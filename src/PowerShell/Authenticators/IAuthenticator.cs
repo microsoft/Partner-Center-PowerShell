@@ -3,7 +3,6 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Identity.Client;
@@ -22,28 +21,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <param name="promptAction">The action used to prompt for interaction.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction, CancellationToken cancellationToken = default);
+        Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Determine if this authenticator can apply to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <returns><c>true</c> if this authenticator can apply; otherwise <c>false</c>.</returns>
+        /// <returns>
+        /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
+        /// </returns>
         bool CanAuthenticate(AuthenticationParameters parameters);
 
         /// <summary>
         /// Determine if this request can be authenticated using the given authenticator, and authenticate if it can.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <param name="token">The token based authentication information.</param>
-        /// <param name="promptAction">The action used to prompt for interaction.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-        bool TryAuthenticate(AuthenticationParameters parameters, out Task<AuthenticationResult> token, Action<string> promptAction = null, CancellationToken cancellationToken = default);
+        /// <returns>
+        /// An instance of <see cref="AuthenticationToken" /> that represents the access token generated as result of a successful authenication. 
+        /// </returns>
+        Task<AuthenticationResult> TryAuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default);
     }
 }

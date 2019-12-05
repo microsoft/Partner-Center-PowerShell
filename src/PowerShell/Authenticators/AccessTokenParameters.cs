@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System.Collections.Generic;
-    using Extensions;
     using Models.Authentication;
 
     /// <summary>
@@ -19,10 +18,5 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             : base(account, environment, scopes)
         {
         }
-
-        /// <summary>
-        /// Gets the access token.
-        /// </summary>
-        public string AccessToken => Account.GetProperty(PartnerAccountPropertyType.AccessToken);
     }
 }

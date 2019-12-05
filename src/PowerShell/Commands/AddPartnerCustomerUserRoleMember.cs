@@ -71,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             userId.AssertNotEmpty(nameof(userId));
 
-            return Partner.Customers[customerId].Users[userId].GetAsync().GetAwaiter().GetResult(); ;
+            return Partner.Customers[customerId].Users[userId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult(); ;
 
         }
     }

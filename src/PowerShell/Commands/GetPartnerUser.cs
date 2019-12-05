@@ -9,12 +9,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Graph;
     using Models.Authentication;
     using Network;
+    using Properties;
 
     /// <summary>
     /// Command that gets partner level user accounts.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerUser"), OutputType(typeof(User))]
-    public class GetPartnerUser : PartnerCmdlet
+    public class GetPartnerUser : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the user identifier.
@@ -30,21 +31,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserPrincipalName { get; set; }
 
         /// <summary>
+        /// Operations that happen before the cmdlet is executed.
+        /// </summary>
+        protected override void BeginProcessing()
+        {
+            if (PartnerSession.Instance.Context == null)
+            {
+                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
+            }
+
+            base.BeginProcessing();
+        }
+
+        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
-            client.AuthenticationProvider = new GraphAuthenticationProvider();
+            Scheduler.RunTask(async () =>
+            {
+                GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+                client.AuthenticationProvider = new GraphAuthenticationProvider();
 
-            if (string.IsNullOrEmpty(UserId) && string.IsNullOrEmpty(UserPrincipalName))
-            {
-                WriteObject(GetUsersAsync(client).ConfigureAwait(false).GetAwaiter().GetResult(), true);
-            }
-            else
-            {
-                WriteObject(client.Users[string.IsNullOrEmpty(UserPrincipalName) ? UserId : UserPrincipalName].Request().GetAsync().ConfigureAwait(false).GetAwaiter().GetResult());
-            }
+                if (string.IsNullOrEmpty(UserId) && string.IsNullOrEmpty(UserPrincipalName))
+                {
+                    WriteObject(await GetUsersAsync(client).ConfigureAwait(false), true);
+                }
+                else
+                {
+                    WriteObject(await client.Users[string.IsNullOrEmpty(UserPrincipalName) ? UserId : UserPrincipalName].Request().GetAsync().ConfigureAwait(false));
+                }
+            });
         }
 
         private async Task<List<User>> GetUsersAsync(IGraphServiceClient client)

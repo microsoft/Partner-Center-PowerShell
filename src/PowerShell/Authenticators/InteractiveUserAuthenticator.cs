@@ -4,7 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Net;
     using System.Net.Sockets;
@@ -14,7 +13,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using Extensions;
     using Identity.Client;
     using Identity.Client.Extensibility;
+    using Models;
+    using Models.Authentication;
     using Network;
+    using Rest;
 
     /// <summary>
     /// Provides the ability to authenticate using an interactive interface.
@@ -25,23 +27,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <param name="promptAction">The action used to prompt for interaction.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult;
             IClientApplicationBase app;
             InteractiveParameters interactiveParameters = parameters as InteractiveParameters;
-            Task<Task<AuthenticationResult>> task;
             TcpListener listener = null;
-            int count = 0;
             string redirectUri = null;
-
-            Queue<string> messages;
-
             int port = 8399;
 
             while (++port < 9000)
@@ -56,61 +52,41 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
                 catch (Exception ex)
                 {
-                    promptAction($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
+                    WriteWarning($"Port {port} is taken with exception '{ex.Message}'; trying to connect to the next port.");
                     listener?.Stop();
                 }
             }
 
             app = GetClient(parameters.Account, parameters.Environment, redirectUri);
-            messages = new Queue<string>();
 
             if (app is IConfidentialClientApplication)
             {
-                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(messages, interactiveParameters.Message);
+                ICustomWebUi customWebUi = new DefaultOsBrowserWebUi(interactiveParameters.Message);
 
-                task = Task<Task<AuthenticationResult>>.Factory.StartNew(async () =>
-                {
-                    Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
-                        await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
-                        new Uri(redirectUri),
-                        cancellationToken).ConfigureAwait(false);
+                ServiceClientTracing.Information($"[InteractiveUserAuthenticator] Calling AcquireAuthorizationCodeAsync - Scopes: '{string.Join(",", parameters.Scopes)}'");
 
-                    NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
+                Uri authCodeUrl = await customWebUi.AcquireAuthorizationCodeAsync(
+                    await app.AsConfidentialClient().GetAuthorizationRequestUrl(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false),
+                    new Uri(redirectUri),
+                    cancellationToken).ConfigureAwait(false);
 
-                    return await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
-                        parameters.Scopes,
-                        queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
-                });
+                NameValueCollection queryStringParameters = HttpUtility.ParseQueryString(authCodeUrl.Query);
+
+                ServiceClientTracing.Information($"[InteractiveUserAuthenticator] Calling AcquireTokenByAuthorizationCode - Scopes: '{string.Join(",", parameters.Scopes)}'");
+
+                authResult = await app.AsConfidentialClient().AcquireTokenByAuthorizationCode(
+                    parameters.Scopes,
+                    queryStringParameters["code"]).ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                task = Task<Task<AuthenticationResult>>.Factory.StartNew(async () =>
-                {
-                    return await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
-                        .WithCustomWebUi(new DefaultOsBrowserWebUi(messages, interactiveParameters.Message))
-                        .WithPrompt(Prompt.ForceLogin)
-                        .ExecuteAsync(cancellationToken).ConfigureAwait(false);
-                });
+                ServiceClientTracing.Information(string.Format("[InteractiveUserAuthenticator] Calling AcquireTokenInteractive - Scopes: '{0}'", string.Join(",", parameters.Scopes)));
+
+                authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
+                    .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message))
+                    .WithPrompt(Prompt.ForceLogin)
+                    .ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
-
-            while (true)
-            {
-                while (messages.Count > 0)
-                {
-                    promptAction(messages.Dequeue());
-                    count++;
-                }
-
-                if (count >= 2)
-                {
-                    break;
-                }
-
-                cancellationToken.ThrowIfCancellationRequested();
-                Thread.Sleep(1000);
-            }
-
-            authResult = await task.Result.ConfigureAwait(false);
 
             return authResult;
         }
@@ -123,6 +99,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override bool CanAuthenticate(AuthenticationParameters parameters)
         {
             return parameters is InteractiveParameters;
+        }
+
+        private void WriteWarning(string message)
+        {
+            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            {
+                writeWarningEvent(this, new StreamEventArgs { Resource = message });
+            }
         }
     }
 }

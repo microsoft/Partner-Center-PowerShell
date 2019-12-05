@@ -43,7 +43,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             SupportProfile profile;
 
-            profile = Partner.Profiles.SupportProfile.GetAsync().GetAwaiter().GetResult();
+            profile = Partner.Profiles.SupportProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             profile.Email = UpdateValue(SupportEmail, profile.Email);
             profile.Telephone = UpdateValue(SupportPhoneNumber, profile.Telephone);

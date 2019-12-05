@@ -3,13 +3,13 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
     using Identity.Client;
+    using Rest;
 
     /// <summary>
     /// Provides the ability to authenticate non-interactively.
@@ -20,17 +20,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// Apply this authenticator to the given authentication parameters.
         /// </summary>
         /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <param name="promptAction">The action used to prompt for interaction.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// An instance of <see cref="AuthenticationResult" /> that represents the access token generated as result of a successful authenication. 
         /// </returns>
-        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, Action<string> promptAction = null, CancellationToken cancellationToken = default)
+        public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
             IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
 
+            ServiceClientTracing.Information(string.Format("[SilentAuthenticator] Calling GetAccountsAsync"));
             IEnumerable<IAccount> accounts = await app.GetAccountsAsync().ConfigureAwait(false);
 
+            ServiceClientTracing.Information($"[SilentAuthenticator] Calling AcquireTokenSilent - Scopes: '{string.Join(",", parameters.Scopes)}', UserId: '{((SilentParameters)parameters).UserId}', Number of accounts: '{accounts.Count()}'");
             AuthenticationResult authResult = await app.AcquireTokenSilent(
                 parameters.Scopes,
                 accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))

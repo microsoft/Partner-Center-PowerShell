@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PartnerContext))]
-    public class ConnectPartnerCenter : PartnerPSCmdlet, IModuleAssemblyInitializer
+    public class ConnectPartnerCenter : PartnerAsyncCmdlet, IModuleAssemblyInitializer
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -166,9 +166,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Performs the operations associated with the command.
+        /// Executes the operations associated with the cmdlet.
         /// </summary>
-        protected override void ProcessRecord()
+        public override void ExecuteCmdlet()
         {
             IPartner partnerOperations;
             OrganizationProfile profile;
@@ -231,37 +231,38 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     $"{environment.AzureAdGraphEndpoint}/.default" :
                     $"{environment.PartnerCenterEndpoint}/user_impersonation");
 
-            account.Tenant = string.IsNullOrEmpty(Tenant) ? "common" : Tenant;
+            account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            PartnerSession.Instance.AuthenticationFactory.Authenticate(
-                account,
-                environment,
-                new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
-                Message,
-                WriteWarning,
-                WriteDebug,
-                CancellationToken);
-
-            PartnerSession.Instance.Context = new PartnerContext
+            Scheduler.RunTask(async () =>
             {
-                Account = account,
-                Environment = environment
-            };
+                await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
+                    account,
+                    environment,
+                    new[] { account.GetProperty(PartnerAccountPropertyType.Scope) },
+                    Message,
+                    CancellationToken).ConfigureAwait(false);
 
-            try
-            {
-                partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
-                profile = partnerOperations.Profiles.OrganizationProfile.GetAsync().GetAwaiter().GetResult();
+                PartnerSession.Instance.Context = new PartnerContext
+                {
+                    Account = account,
+                    Environment = environment
+                };
 
-                PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
-                PartnerSession.Instance.Context.Locale = profile.Culture;
-            }
-            catch (PartnerException)
-            {
-                /* This error can safely be ignored */
-            }
+                try
+                {
+                    partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                    profile = await partnerOperations.Profiles.OrganizationProfile.GetAsync().ConfigureAwait(false);
 
-            WriteObject(PartnerSession.Instance.Context);
+                    PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;
+                    PartnerSession.Instance.Context.Locale = profile.Culture;
+                }
+                catch (PartnerException)
+                {
+                    /* This error can safely be ignored */
+                }
+
+                WriteObject(PartnerSession.Instance.Context);
+            });
         }
     }
 }

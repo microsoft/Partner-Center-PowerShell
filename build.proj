@@ -68,7 +68,7 @@
   <Target Name="Test">
     <Message Importance="high" Text="Running unit tests..." />
     <MakeDir Directories="$(TestOutputDirectory)" ContinueOnError="false" />
-    <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --framework netcoreapp2.2 --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
+    <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --framework netcoreapp3.0 --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
   </Target>
 
   <Target Name="ValidateModule">

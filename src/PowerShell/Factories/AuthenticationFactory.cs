@@ -19,14 +19,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     {
         internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationResult> AuthenticateAsync(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult = null;
             IAuthenticator processAuthenticator = Builder.Authenticator;
 
-            while (processAuthenticator != null && processAuthenticator.TryAuthenticate(GetAuthenticationParameters(account, environment, scopes, message), out Task<AuthenticationResult> result, promptAction, cancellationToken))
+            while (processAuthenticator != null && authResult == null)
             {
-                authResult = result.ConfigureAwait(true).GetAwaiter().GetResult();
+                authResult = await processAuthenticator.TryAuthenticateAsync(GetAuthenticationParameters(account, environment, scopes, message), cancellationToken);
 
                 if (authResult != null)
                 {
@@ -36,7 +36,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                         account.ObjectId = authResult.Account.HomeAccountId.ObjectId;
                     }
 
-                    if (account.Tenant.Equals("common", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(authResult.TenantId))
+                    if (account.Tenant.Equals("organizations", StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(authResult.TenantId))
                     {
                         account.Tenant = authResult.TenantId;
                     }
@@ -47,7 +47,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 processAuthenticator = processAuthenticator.Next;
             }
 
-            return authResult ?? null;
+            return authResult;
         }
 
         private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null)

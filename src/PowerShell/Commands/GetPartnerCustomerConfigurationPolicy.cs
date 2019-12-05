@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             IEnumerable<ConfigurationPolicy> devicePolicy;
             customerId.AssertNotEmpty(nameof(customerId));
 
-            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies.GetAsync().GetAwaiter().GetResult().Items;
+            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
             WriteObject(devicePolicy.Select(d => new PSConfigurationPolicy(d)), true);
         }
 
@@ -83,7 +83,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             policyId.AssertNotEmpty(nameof(policyId));
 
-            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().GetAwaiter().GetResult();
+            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(new PSConfigurationPolicy(devicePolicy), true);
         }
     }

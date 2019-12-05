@@ -33,7 +33,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SubscriptionRegistrationStatus status = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].RegistrationStatus.GetAsync().GetAwaiter().GetResult();
+            SubscriptionRegistrationStatus status = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].RegistrationStatus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(new PSSubscriptionRegistrationStatus(status));
         }

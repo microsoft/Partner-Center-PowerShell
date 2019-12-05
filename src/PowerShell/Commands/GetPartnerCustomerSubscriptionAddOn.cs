@@ -35,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Subscription> subscripions = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync().GetAwaiter().GetResult();
+            ResourceCollection<Subscription> subscripions = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(subscripions.Items.Select(s => new PSSubscription(s)), true);
         }
     }

@@ -51,7 +51,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
             {
-                cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().GetAwaiter().GetResult();
+                cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                 lineItems = cart.LineItems.ToList();
 
                 cartLineItem = new CartLineItem();

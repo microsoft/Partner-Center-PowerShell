@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Validations.GetValidationCodesAsync().GetAwaiter().GetResult().Select(c => new PSValidationCode(c)), true);
+            WriteObject(Partner.Validations.GetValidationCodesAsync().ConfigureAwait(false).GetAwaiter().GetResult().Select(c => new PSValidationCode(c)), true);
         }
     }
 }

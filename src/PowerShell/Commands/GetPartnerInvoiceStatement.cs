@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 throw new PSInvalidOperationException($"The path already exists: {filePath}. Specify the -Overwrite switch to overwrite the file");
             }
 
-            using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().GetAwaiter().GetResult())
+            using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult())
             {
                 FileStream file = File.Create(filePath);
                 stream.Seek(0, SeekOrigin.Begin);

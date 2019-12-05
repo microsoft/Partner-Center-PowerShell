@@ -72,7 +72,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             try
             {
-                using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().GetAwaiter().GetResult())
+                using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult())
                 {
                     fileStream = File.Create(filePath);
                     stream.Seek(0, SeekOrigin.Begin);

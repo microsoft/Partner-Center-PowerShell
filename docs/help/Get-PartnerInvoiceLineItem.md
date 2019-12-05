@@ -14,9 +14,16 @@ Gets the line items for the specified invoice.
 
 ## SYNTAX
 
+### ByInvoice (Default)
 ```powershell
 Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> [-CurrencyCode <String>] -InvoiceId <String>
  -LineItemType <InvoiceLineItemType> [<CommonParameters>]
+```
+
+### ByBillingPeriod
+```powershell
+Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> [-CurrencyCode <String>] -InvoiceId <String>
+ -LineItemType <InvoiceLineItemType> -Period <BillingPeriod> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -40,7 +47,7 @@ The billing provide for the line items.
 Type: BillingProvider
 Parameter Sets: (All)
 Aliases:
-Accepted values: Azure, Office, OneTime, Marketplace
+Accepted values: All, Azure, Office, OneTime, Marketplace
 
 Required: True
 Position: Named
@@ -87,6 +94,22 @@ Type: InvoiceLineItemType
 Parameter Sets: (All)
 Aliases:
 Accepted values: BillingLineItems, UsageLineItems
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Period
+The billing period for the line items.
+
+```yaml
+Type: BillingPeriod
+Parameter Sets: ByBillingPeriod
+Aliases:
+Accepted values: Current, Previous
 
 Required: True
 Position: Named

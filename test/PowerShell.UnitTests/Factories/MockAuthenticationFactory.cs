@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using System.Threading.Tasks;
     using Identity.Client;
     using PowerShell.Factories;
     using PowerShell.Models.Authentication;
@@ -15,23 +16,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
     /// </summary>
     public class MockAuthenticationFactory : IAuthenticationFactory
     {
-        /// <summary>
-        /// Acquires the security token from the authority.
-        /// </summary>
-        /// <returns>The result from the authentication request.</returns>
-        public AuthenticationResult Authenticate(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message, Action<string> promptAction = null, Action<string> debugAction = null, CancellationToken cancellationToken = default)
+        public async Task<AuthenticationResult> AuthenticateAsync(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, CancellationToken cancellationToken = default)
         {
-            return new AuthenticationResult(
-                "STUB_TOKEN",
-                true,
-                "uniquedId",
-                DateTimeOffset.UtcNow.AddHours(1),
-                DateTimeOffset.UtcNow.AddHours(1),
-                "xxxx-xxxx-xxxx-xxxx",
-                null,
-                "STUB_TOKEN",
-                scopes);
-        }
+            await Task.CompletedTask;
 
+            return new AuthenticationResult(
+              "STUB_TOKEN",
+              true,
+              "uniquedId",
+              DateTimeOffset.UtcNow.AddHours(1),
+              DateTimeOffset.UtcNow.AddHours(1),
+              "xxxx-xxxx-xxxx-xxxx",
+              null,
+              "STUB_TOKEN",
+              scopes,
+              Guid.Empty);
+        }
     }
 }

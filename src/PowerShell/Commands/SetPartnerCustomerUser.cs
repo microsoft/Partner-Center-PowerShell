@@ -95,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             UserId = (InputObject == null) ? UserId : InputObject.UserId;
 
-            user = Partner.Customers[CustomerId].Users[UserId].GetAsync().GetAwaiter().GetResult();
+            user = Partner.Customers[CustomerId].Users[UserId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             if (user.Id == UserId)
             {

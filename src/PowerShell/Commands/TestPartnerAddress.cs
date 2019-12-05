@@ -8,57 +8,58 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Validations;
 
     /// <summary>
-    /// Verifies the specified is valid.
+    /// Verifies the specified address is valid.
     /// </summary>
-    [Cmdlet(VerbsDiagnostic.Test, "PartnerAddress", SupportsShouldProcess = true), OutputType(typeof(bool))]
+    [Cmdlet(VerbsDiagnostic.Test, "PartnerAddress")]
+    [OutputType(typeof(bool))]
     public class TestPartnerAddress : PartnerCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The first line of the address.")]
+        [Parameter(HelpMessage = "The first line of the address.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string AddressLine1 { get; set; }
 
         /// <summary>
         /// Gets or sets the second line of the address.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "The second line of the adress.")]
+        [Parameter(HelpMessage = "The second line of the adress.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string AddressLine2 { get; set; }
 
         /// <summary>
         /// Gets or sets the city portion of the address.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "The city portion of the address.")]
+        [Parameter(HelpMessage = "The city portion of the address.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string City { get; set; }
 
         /// <summary>
         /// Gets or sets the country portion of the address.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "The country portion of the address.")]
+        [Parameter(HelpMessage = "The country portion of the address.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string Country { get; set; }
 
         /// <summary>
         /// Gets or sets the postal code portion of the address.
         /// </summary>
-        [Parameter(Mandatory = true, HelpMessage = "The postal code portion of the address.")]
+        [Parameter(HelpMessage = "The postal code portion of the address.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string PostalCode { get; set; }
 
         /// <summary>
         /// Gets or sets the region portion of the address.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "The region portion of the address.")]
+        [Parameter(HelpMessage = "The region portion of the address.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string Region { get; set; }
 
         /// <summary>
         /// Gets or sets the state portion of the address.
         /// </summary>
-        [Parameter(Mandatory = false, HelpMessage = "The state portion of the address.")]
+        [Parameter(HelpMessage = "The state portion of the address.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string State { get; set; }
 

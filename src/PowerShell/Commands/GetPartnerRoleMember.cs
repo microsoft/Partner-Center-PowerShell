@@ -28,7 +28,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SeekBasedResourceCollection<UserMember> members = Partner.Roles[RoleId].Members.GetAsync().GetAwaiter().GetResult();
+            SeekBasedResourceCollection<UserMember> members = Partner.Roles[RoleId].Members.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             WriteObject(members.Items.Select(m => new PSUserMember(m)), true);
         }

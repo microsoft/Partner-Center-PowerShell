@@ -18,8 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         private static readonly string CacheFilePath =
             Path.Combine(SharedUtilities.GetUserRootDirectory(), ".IdentityService", CacheFileName);
 
-        private static ITokenCache tokenCache;
-
         private static MsalCacheHelper InitializeCacheHelper(string clientId)
         {
             StorageCreationPropertiesBuilder builder = new StorageCreationPropertiesBuilder(Path.GetFileName(CacheFilePath), Path.GetDirectoryName(CacheFilePath), clientId);
@@ -35,6 +33,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
             StorageCreationProperties storageCreationProperties = builder.Build();
 
             return MsalCacheHelper.CreateAsync(storageCreationProperties).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        public static MsalCacheStorage GetMsalCacheStorage(string clientId)
+        {
+            StorageCreationPropertiesBuilder builder = new StorageCreationPropertiesBuilder(Path.GetFileName(CacheFilePath), Path.GetDirectoryName(CacheFilePath), clientId);
+
+            builder = builder.WithMacKeyChain(serviceName: "Microsoft.Developer.IdentityService", accountName: "MSALCache");
+            builder = builder.WithLinuxKeyring(
+                schemaName: "msal.cache",
+                collection: "default",
+                secretLabel: "MSALCache",
+                attribute1: new KeyValuePair<string, string>("MsalClientID", "Microsoft.Developer.IdentityService"),
+                attribute2: new KeyValuePair<string, string>("MsalClientVersion", "1.0.0.0"));
+
+            return new MsalCacheStorage(builder.Build());
+        }
+
+        public static string GetTokenCacheKey(AuthenticationResult authResult, string applicationId)
+        {
+            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{applicationId}--";
         }
 
         public static IConfidentialClientApplication CreateConfidentialClient(
@@ -113,31 +131,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                 enablePiiLogging: false,
                 enableDefaultPlatformLogging: true).Build();
 
+
             MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
             cacheHelper.RegisterCache(client.UserTokenCache);
 
             return client;
-        }
-
-        public static ITokenCache GetTokenCache(string clientId)
-        {
-            if (tokenCache == null)
-            {
-                PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
-
-                IPublicClientApplication client = builder.WithLogging(
-                    DebugLoggingMethod,
-                    LogLevel.Info,
-                    enablePiiLogging: false,
-                    enableDefaultPlatformLogging: true).Build();
-
-                MsalCacheHelper cacheHelper = InitializeCacheHelper(clientId);
-                cacheHelper.RegisterCache(client.UserTokenCache);
-
-                tokenCache = client.UserTokenCache;
-            }
-
-            return tokenCache;
         }
 
         private static void DebugLoggingMethod(LogLevel level, string message, bool containsPii)

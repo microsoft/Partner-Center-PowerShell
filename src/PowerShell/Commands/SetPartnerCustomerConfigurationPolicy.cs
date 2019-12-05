@@ -142,7 +142,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             customerId.AssertNotEmpty(nameof(customerId));
             policyId.AssertNotEmpty(nameof(policyId));
 
-            return Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().GetAwaiter().GetResult();
+            return Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }

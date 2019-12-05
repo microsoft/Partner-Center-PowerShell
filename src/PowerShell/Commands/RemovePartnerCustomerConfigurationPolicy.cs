@@ -41,7 +41,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 return;
             }
 
-            Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().GetAwaiter().GetResult();
+            Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             WriteObject(true);
         }
     }

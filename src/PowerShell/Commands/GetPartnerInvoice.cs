@@ -35,7 +35,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
             else
             {
-                WriteObject(new PSInvoice(Partner.Invoices[InvoiceId].GetAsync().GetAwaiter().GetResult()));
+                WriteObject(new PSInvoice(Partner.Invoices[InvoiceId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
             }
         }
 
@@ -45,7 +45,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             List<PSInvoice> invoices;
             ResourceCollection<Invoice> resources;
 
-            resources = Partner.Invoices.GetAsync().GetAwaiter().GetResult();
+            resources = Partner.Invoices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             enumerator = Partner.Enumerators.Invoices.Create(resources);
 
             invoices = new List<PSInvoice>();
@@ -53,7 +53,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (enumerator.HasValue)
             {
                 invoices.AddRange(enumerator.Current.Items.Select(i => new PSInvoice(i)));
-                enumerator.NextAsync().GetAwaiter().GetResult();
+                enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
             WriteObject(invoices, true);

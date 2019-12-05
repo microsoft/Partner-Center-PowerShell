@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</RootNamespace>
-    <Version>2.0.1911.6</Version>
+    <Version>3.0.0</Version>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <LangVersion>latest</LangVersion>
