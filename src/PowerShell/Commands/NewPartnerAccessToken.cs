@@ -109,7 +109,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
         [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = false, ParameterSetName = UserParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = UserParameterSet)]
         public string[] Scopes { get; set; }
 
         /// <summary>
