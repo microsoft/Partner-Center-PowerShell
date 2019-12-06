@@ -88,7 +88,7 @@ steps:
   inputs:
     ConnectedServiceName: 'esrp-partner-center-powershell'
     FolderPath: 'artifacts\$(buildConfiguration)'
-    Pattern: 'Microsoft.Store.PartnerCenter.dll,Microsoft.Store.PartnerCenter.PowerShell.dll,*.ps1xml,*.psd1, *.psm1'
+    Pattern: 'Microsoft.Store.PartnerCenter.dll,Microsoft.Store.PartnerCenter.PowerShell.dll,Microsoft.Azure.Management.*.dll,Microsoft.Graph.*.dll,*.ps1xml,*.psd1, *.psm1'
     signConfigType: inlineSignParams
     inlineOperation: |
      [
