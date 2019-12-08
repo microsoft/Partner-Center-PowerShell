@@ -23,6 +23,9 @@ Connect to Partner Center with an authenticated account for use with partner cmd
 ### [Disconnect-PartnerCenter](Disconnect-PartnerCenter.md)
 Disconnects the current session from Partner Center.
 
+### [Enable-PartnerAzureSubscription](Enable-PartnerAzureSubscription.md)
+Enables an Azure subscription that is part of an Azure Plan.
+
 ### [Get-PartnerAgreementDetail](Get-PartnerAgreementDetail.md)
 Gets the agreement metadata for the Microsoft Cloud Agreement.
 
@@ -361,6 +364,9 @@ Updates the partner's support profile.
 
 ### [Submit-PartnerCustomerCart](Submit-PartnerCustomerCart.md)
 Checks out the specified cart.
+
+### [Suspend-PartnerAzureSubscription](Suspend-PartnerAzureSubscription.md)
+Suspends an Azure subscription that is part of an Azure Plan.
 
 ### [Test-PartnerAddress](Test-PartnerAddress.md)
 Tests whether or not the specified address is valid.
