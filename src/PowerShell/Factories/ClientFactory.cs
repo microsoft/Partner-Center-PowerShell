@@ -23,7 +23,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// The service client used to communicate with Microsoft Graph.
         /// </summary>
-        private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new RetryDelegatingHandler
+        private static readonly IGraphServiceClient GraphServiceClient = new GraphServiceClient(null, new HttpProvider(new RetryAfterDelegatingHandler
         {
             InnerHandler = new ClientTracingHandler
             {
