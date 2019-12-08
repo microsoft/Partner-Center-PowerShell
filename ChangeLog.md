@@ -20,6 +20,17 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Authentication
+  * Updating the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) command to make the `CertificateThumbprint` parameter required for the `ServicePrincipalCertificate` parameter set
+* Security
+  * Addressed issue [#194](https://github.com/microsoft/Partner-Center-PowerShell/issues/194) that was preventing the [Get-PartnerUserSignActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignActivity) command from executing as expected in all scenarios
+* Subscription
+  * Added [Enable-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/Enable-PartnerAzureSubscription) command to enable a suspend Azure subscription that is part of an Azure Plan
+  * Added [Suspend-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/Suspend-PartnerAzureSubscription) command to suspend an Azure subscription that is part of an Azure Plan
+  * Removed the `CustomerName` parameter from the [New-PartnerAzureSubscription](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAzureSubscription)
+
 ## 3.0.0 - December 2019
 
 * Agreement

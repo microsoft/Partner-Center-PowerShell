@@ -35,7 +35,7 @@ Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] 
 
 ### ServicePrincipalCertificate
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-EnforceMFA]
+Connect-PartnerCenter -ApplicationId <String> -CertificateThumbprint <String> [-EnforceMFA]
  [-Environment <EnvironmentName>] [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
@@ -114,10 +114,22 @@ Certificate Hash (Thumbprint)
 
 ```yaml
 Type: String
-Parameter Sets: RefreshToken, ServicePrincipalCertificate
+Parameter Sets: RefreshToken
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ServicePrincipalCertificate
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

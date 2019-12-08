@@ -14,13 +14,6 @@ Creates a new Azure subscription for Microsoft Partner Agreement billing account
 
 ## SYNTAX
 
-### ByCustomerName (Default)
-```powershell
-New-PartnerAzureSubscription -BillingAccountName <String> -CustomerName <String> -DisplayName <String>
- [-ResellerId <String>] [<CommonParameters>]
-```
-
-### ByCustomerId
 ```powershell
 New-PartnerAzureSubscription -BillingAccountName <String> -CustomerId <String> -DisplayName <String>
  [-ResellerId <String>] [<CommonParameters>]
@@ -60,22 +53,7 @@ The identifier for the customer.
 
 ```yaml
 Type: String
-Parameter Sets: ByCustomerId
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -CustomerName
-The name for the customer.
-
-```yaml
-Type: String
-Parameter Sets: ByCustomerName
+Parameter Sets: (All)
 Aliases:
 
 Required: True

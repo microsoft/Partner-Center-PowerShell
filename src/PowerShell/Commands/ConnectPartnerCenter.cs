@@ -84,7 +84,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the certificate thumbprint.
         /// </summary>
         [Parameter(HelpMessage = "Certificate thumbprint of a digital public key X.509 certificate.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
-        [Parameter(HelpMessage = "Certificate thumbprint of a digital public key X.509 certificate.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Certificate thumbprint of a digital public key X.509 certificate.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         [ValidateNotNullOrEmpty]
         public string CertificateThumbprint { get; set; }
 
@@ -99,6 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets a flag indicating whether or not multi-factor authentication is enforced.
         /// </summary>
+        [BreakingChange("This parameter will be removed in an upcoming release.", "3.0.2")]
         [Parameter(HelpMessage = "A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.", Mandatory = false)]
         public SwitchParameter EnforceMFA { get; set; }
 

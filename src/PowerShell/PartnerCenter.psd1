@@ -78,6 +78,7 @@
                       'Add-PartnerCustomerUserRoleMember',
                       'Connect-PartnerCenter',
                       'Disconnect-PartnerCenter',
+                      'Enable-PartnerAzureSubscription',
                       'Get-PartnerAgreementDetail',
                       'Get-PartnerAgreementDocument',
                       'Get-PartnerAgreementStatus',
@@ -191,6 +192,7 @@
                       'Set-PartnerServiceRequest',
                       'Set-PartnerSupportProfile',
                       'Submit-PartnerCustomerCart',
+                      'Suspend-PartnerAzureSubscription',
                       'Test-PartnerAddress',
                       'Test-PartnerDomainAvailability',
                       'Test-PartnerSecurityRequirement'

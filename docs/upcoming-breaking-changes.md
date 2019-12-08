@@ -23,6 +23,11 @@
 
 # Upcoming Breaking Changes
 
+## Upcoming Release
+
+* Authentication
+  * [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerCustomerAzurePlanEntitlement) the `EnforceMfa` parameter will be removed starting with version 3.0.2
+
 ## Release 3.0.0 - December 2019
 
 * Subscription
