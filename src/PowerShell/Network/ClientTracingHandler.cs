@@ -49,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             if (ServiceClientTracing.IsEnabled)
             {
                 ServiceClientTracing.ReceiveResponse(invocationId, response);
-                //ServiceClientTracing.Exit(invocationId, null);
+                ServiceClientTracing.Exit(invocationId, null);
             }
 
             return response;

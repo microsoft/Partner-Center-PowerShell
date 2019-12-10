@@ -46,7 +46,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Scheduler.RunTask(async () => 
+            Scheduler.RunTask(async () =>
             {
                 IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
                 IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;

@@ -4,25 +4,30 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Graph;
     using Models.Authentication;
+    using System.Collections.Generic;
     using Network;
-    using Properties;
+    using System.Threading.Tasks;
 
     [Cmdlet(VerbsCommon.Get, "PartnerUserSignInActivity"), OutputType(typeof(SignIn))]
     public class GetPartnerUserSignInActivity : PartnerAsyncCmdlet
     {
         /// <summary>
-        /// Gets or sets the end date porition of the query.
+        /// The error code thrown when attempting to request sign activites at the tenant level from a tenant that does not have Azure AD Premium.
+        /// </summary>
+        private const string RequestFromNonPremiumTenant = "Authentication_RequestFromNonPremiumTenantOrB2CTenant";
+
+        /// <summary>
+        /// Gets or sets the end date portion of the query.
         /// </summary>
         [Parameter(HelpMessage = "The end date of the activity logs.", Mandatory = false)]
         public DateTime? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the start date porition of the query.
+        /// Gets or sets the start date portion of the query.
         /// </summary>
         [Parameter(HelpMessage = "The start date of the activity logs.", Mandatory = false)]
         public DateTime? StartDate { get; set; }
@@ -35,70 +40,57 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserId { get; set; }
 
         /// <summary>
-        /// Operations that happen before the cmdlet is executed.
-        /// </summary>
-        protected override void BeginProcessing()
-        {
-            if (PartnerSession.Instance.Context == null)
-            {
-                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
-            }
-
-            base.BeginProcessing();
-        }
-
-        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string filter = string.Empty;
-
-            if (StartDate != null)
-            {
-                filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
-            }
-
-            if (EndDate != null)
-            {
-                filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
-            }
-
-            if (!string.IsNullOrEmpty(UserId))
-            {
-                filter = AppendValue(filter, $"userId eq '{UserId}'");
-            }
-
             Scheduler.RunTask(async () =>
             {
-                List<SignIn> activities;
+                GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+                IAuditLogRootSignInsCollectionPage collection;
                 List<QueryOption> queryOptions = null;
+                List<SignIn> signIns;
+                string filter = string.Empty;
+
+                client.AuthenticationProvider = new GraphAuthenticationProvider();
+
+                if (StartDate != null)
+                {
+                    filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                }
+
+                if (EndDate != null)
+                {
+                    filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                }
+
+                if (!string.IsNullOrEmpty(UserId))
+                {
+                    filter = AppendValue(filter, $"userId eq '{UserId}'");
+                }
 
                 if (!string.IsNullOrEmpty(filter))
                 {
                     queryOptions = new List<QueryOption>
-                    {
-                        new QueryOption("$filter", $"({filter})")
-                    };
+                        {
+                            new QueryOption("$filter", $"({filter})")
+                        };
                 }
 
-                GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
-                client.AuthenticationProvider = new GraphAuthenticationProvider();
+                collection = await client.AuditLogs.SignIns.Request(queryOptions).Top(500).GetAsync(CancellationToken).ConfigureAwait(false);
+                signIns = new List<SignIn>(collection.CurrentPage);
 
-                IAuditLogRootSignInsCollectionPage data = await client
-                    .AuditLogs.SignIns.Request(queryOptions).GetAsync(CancellationToken).ConfigureAwait(false);
-
-                activities = new List<SignIn>(data.CurrentPage);
-
-                while (data.NextPageRequest != null)
+                while (collection.NextPageRequest != null)
                 {
-                    data = await data.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
-                    activities.AddRange(data.CurrentPage);
+                    collection = await collection.NextPageRequest.GetAsync(CancellationToken).ConfigureAwait(false);
+                    signIns.AddRange(collection.CurrentPage);
                 }
 
-                WriteObject(activities, true);
-            });
+
+                WriteObject(signIns, true);
+            }, true);
         }
+
 
         private static string AppendValue(string baseValue, string appendValue)
         {

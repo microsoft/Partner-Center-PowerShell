@@ -9,7 +9,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Graph;
     using Models.Authentication;
     using Network;
-    using Properties;
 
     /// <summary>
     /// Command that gets partner level user accounts.
@@ -31,19 +30,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string UserPrincipalName { get; set; }
 
         /// <summary>
-        /// Operations that happen before the cmdlet is executed.
-        /// </summary>
-        protected override void BeginProcessing()
-        {
-            if (PartnerSession.Instance.Context == null)
-            {
-                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
-            }
-
-            base.BeginProcessing();
-        }
-
-        /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
@@ -61,12 +47,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     WriteObject(await client.Users[string.IsNullOrEmpty(UserPrincipalName) ? UserId : UserPrincipalName].Request().GetAsync().ConfigureAwait(false));
                 }
-            });
+            }, true);
         }
 
         private async Task<List<User>> GetUsersAsync(IGraphServiceClient client)
         {
-            IGraphServiceUsersCollectionPage data = await client.Users.Request().GetAsync().ConfigureAwait(false);
+            IGraphServiceUsersCollectionPage data = await client.Users.Request().Top(500).GetAsync().ConfigureAwait(false);
             List<User> users = new List<User>(data.CurrentPage);
 
             while (data.NextPageRequest != null)

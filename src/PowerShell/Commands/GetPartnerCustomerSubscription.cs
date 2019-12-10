@@ -6,13 +6,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using Models.Customers;
     using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
-    using System.Threading.Tasks;
-    using Models.Authentication;
 
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscription", DefaultParameterSetName = "ByCustomer")]
     [OutputType(typeof(PSSubscription))]
