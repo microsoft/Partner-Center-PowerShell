@@ -39,6 +39,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private static readonly TimeSpan DefaultMinBackoff = TimeSpan.FromSeconds(1.0);
 
         /// <summary>
+        /// The queue of paged Microsoft Graph request operations.
+        /// </summary>
+        private static readonly Queue<IBaseRequest> PagedRequests = new Queue<IBaseRequest>();
+
+        /// <summary>
         /// Gets or sets the end date portion of the query.
         /// </summary>
         [Parameter(HelpMessage = "The end date of the activity logs.", Mandatory = false)]
@@ -152,19 +157,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             foreach (IEnumerable<User> batch in Batch(users, 5))
             {
-                List<string> requests = new List<string>();
                 batchRequestContent = new BatchRequestContent();
 
                 foreach (User user in batch)
                 {
-                    requests.Add(batchRequestContent.AddBatchRequestStep(client.AuditLogs.SignIns.Request(new List<QueryOption>
+                    batchRequestContent.AddBatchRequestStep(client.AuditLogs.SignIns.Request(new List<QueryOption>
                     {
                         new QueryOption("$filter", $"({AppendValue(filter, $"userId eq '{user.Id}'")})")
-                    }).Top(250)));
+                    }).Top(200));
                 }
 
                 batchResponseContent = await client.Batch.Request().PostAsync(batchRequestContent, CancellationToken).ConfigureAwait(false);
                 await ParseBatchResponseAsync(client, batchRequestContent, batchResponseContent, signIns).ConfigureAwait(false);
+            }
+
+            while (PagedRequests.Count != 0)
+            {
+                await ProcessPagedRequestsAsync(client, signIns).ConfigureAwait(false);
             }
 
             return signIns;
@@ -208,10 +217,55 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 collection = await batchResponseContent
                     .GetResponseByIdAsync<AuditLogRootRestrictedSignInsCollectionResponse>(item.Key).ConfigureAwait(false);
 
+                collection.AdditionalData.TryGetValue("@odata.nextLink", out object nextPageLink);
+                string nextPageLinkString = nextPageLink as string;
+
+                if (!string.IsNullOrEmpty(nextPageLinkString))
+                {
+                    collection.Value.InitializeNextPageRequest(client, nextPageLinkString);
+                }
+
+                if (collection.Value.NextPageRequest != null)
+                {
+                    PagedRequests.Enqueue(collection.Value.NextPageRequest);
+                }
+
                 signIns.AddRange(collection.Value);
             }
 
+            if (PagedRequests.Count >= 5)
+            {
+                await ProcessPagedRequestsAsync(client, signIns).ConfigureAwait(false);
+            }
+
             await RetryRequestWithTransientFaultAsync(client, batchRequestContent, responses, signIns, ++retryCount).ConfigureAwait(false);
+        }
+
+        private async Task ProcessPagedRequestsAsync(IGraphServiceClient client, List<SignIn> signIns)
+        {
+            BatchRequestContent batchRequestContent;
+            BatchResponseContent batchResponseContent;
+            int numberOfRequests; 
+
+            client.AssertNotNull(nameof(client));
+            signIns.AssertNotNull(nameof(signIns));
+
+            if (PagedRequests.Count == 0)
+            {
+                return;
+            }
+
+            batchRequestContent = new BatchRequestContent();
+
+            numberOfRequests = PagedRequests.Count > 5 ? 5 : PagedRequests.Count;
+
+            for (int i = 0; i < numberOfRequests; i++)
+            {
+                batchRequestContent.AddBatchRequestStep(PagedRequests.Dequeue());
+            }
+
+            batchResponseContent = await client.Batch.Request().PostAsync(batchRequestContent, CancellationToken).ConfigureAwait(false);
+            await ParseBatchResponseAsync(client, batchRequestContent, batchResponseContent, signIns).ConfigureAwait(false);
         }
 
         private async Task RetryRequestWithTransientFaultAsync(IGraphServiceClient client, BatchRequestContent batchRequestContent, Dictionary<string, HttpResponseMessage> responses, List<SignIn> signIns, int retryCount)
@@ -221,8 +275,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             Random random;
             double delta;
 
-            batchRequestContent.AssertNotNull(nameof(batchRequestContent));
             client.AssertNotNull(nameof(client));
+            batchRequestContent.AssertNotNull(nameof(batchRequestContent));
             responses.AssertNotNull(nameof(responses));
 
             if (retryCount <= 3 && responses.Where(item => item.Value.StatusCode == (HttpStatusCode)429).Any())
