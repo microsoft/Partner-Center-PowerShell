@@ -164,7 +164,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     batchRequestContent.AddBatchRequestStep(client.AuditLogs.SignIns.Request(new List<QueryOption>
                     {
                         new QueryOption("$filter", $"({AppendValue(filter, $"userId eq '{user.Id}'")})")
-                    }).Top(200));
+                    }));
                 }
 
                 batchResponseContent = await client.Batch.Request().PostAsync(batchRequestContent, CancellationToken).ConfigureAwait(false);
@@ -198,6 +198,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 yield return entities.Skip(size).Take(batchSize);
                 size += batchSize;
             }
+        }
+
+        private bool IsTransient(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.RequestTimeout ||
+                response.StatusCode == (HttpStatusCode)429 ||
+                (response.StatusCode >= HttpStatusCode.InternalServerError &&
+                    response.StatusCode != HttpStatusCode.NotImplemented &&
+                    response.StatusCode != HttpStatusCode.HttpVersionNotSupported))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private async Task ParseBatchResponseAsync(IGraphServiceClient client, BatchRequestContent batchRequestContent, BatchResponseContent batchResponseContent, List<SignIn> signIns, int retryCount = 0)
@@ -245,7 +259,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             BatchRequestContent batchRequestContent;
             BatchResponseContent batchResponseContent;
-            int numberOfRequests; 
+            int numberOfRequests;
 
             client.AssertNotNull(nameof(client));
             signIns.AssertNotNull(nameof(signIns));
@@ -279,22 +293,48 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             batchRequestContent.AssertNotNull(nameof(batchRequestContent));
             responses.AssertNotNull(nameof(responses));
 
-            if (retryCount <= 3 && responses.Where(item => item.Value.StatusCode == (HttpStatusCode)429).Any())
+
+            if (responses.Any(r => IsTransient(r.Value)))
             {
-                foreach (KeyValuePair<string, HttpResponseMessage> item in responses.Where(item => item.Value.StatusCode == (HttpStatusCode)429))
+                if (retryCount <= 3)
                 {
-                    retryBatchRequestContent.AddBatchRequestStep(batchRequestContent.BatchRequestSteps[item.Key]);
+                    foreach (KeyValuePair<string, HttpResponseMessage> item in responses.Where(r => IsTransient(r.Value)))
+                    {
+                        retryBatchRequestContent.AddBatchRequestStep(batchRequestContent.BatchRequestSteps[item.Key]);
+                    }
+
+                    random = new Random();
+                    delta = (Math.Pow(2.0, retryCount) - 1.0) *
+                        random.Next((int)(DefaultClientBackoff.TotalMilliseconds * 0.8), (int)(DefaultClientBackoff.TotalMilliseconds * 1.2));
+
+                    await Task.Delay((int)Math.Min(DefaultMinBackoff.TotalMilliseconds + delta, DefaultMaxBackoff.TotalMilliseconds), CancellationToken).ConfigureAwait(false);
+
+                    batchResponseContent = await client.Batch.Request().PostAsync(retryBatchRequestContent, CancellationToken).ConfigureAwait(false);
+
+                    await ParseBatchResponseAsync(client, retryBatchRequestContent, batchResponseContent, signIns, retryCount).ConfigureAwait(false);
                 }
+                else
+                {
+                    ErrorResponse errorResponse;
+                    List<ServiceException> exceptions = new List<ServiceException>();
+                    ResponseHandler responseHandler = new ResponseHandler(new Serializer());
+                    string rawResponseBody;
 
-                random = new Random();
-                delta = (Math.Pow(2.0, retryCount) - 1.0) *
-                    random.Next((int)(DefaultClientBackoff.TotalMilliseconds * 0.8), (int)(DefaultClientBackoff.TotalMilliseconds * 1.2));
+                    foreach (KeyValuePair<string, HttpResponseMessage> item in responses.Where(item => !item.Value.IsSuccessStatusCode))
+                    {
+                        rawResponseBody = null;
 
-                await Task.Delay((int)Math.Min(DefaultMinBackoff.TotalMilliseconds + delta, DefaultMaxBackoff.TotalMilliseconds), CancellationToken).ConfigureAwait(false);
+                        if (item.Value.Content?.Headers.ContentType.MediaType == "application/json")
+                        {
+                            rawResponseBody = await item.Value.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        }
 
-                batchResponseContent = await client.Batch.Request().PostAsync(retryBatchRequestContent, CancellationToken).ConfigureAwait(false);
+                        errorResponse = await responseHandler.HandleResponse<ErrorResponse>(item.Value).ConfigureAwait(false);
+                        exceptions.Add(new ServiceException(errorResponse.Error, item.Value.Headers, item.Value.StatusCode, rawResponseBody));
+                    }
 
-                await ParseBatchResponseAsync(client, retryBatchRequestContent, batchResponseContent, signIns, retryCount).ConfigureAwait(false);
+                    throw new AggregateException(exceptions);
+                }
             }
         }
     }
