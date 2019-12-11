@@ -143,7 +143,7 @@ steps:
     SourceFolder: '$(system.DefaultWorkingDirectory)'
     Contents: 'artifacts\**'
     TargetFolder: '$(build.ArtifactStagingDirectory)\'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - task: CopyFiles@2
   displayName: 'Copy build directory to $(build.ArtifactStagingDirectory)'
@@ -151,10 +151,11 @@ steps:
     SourceFolder: '$(system.DefaultWorkingDirectory)'
     Contents: 'build\**'
     TargetFolder: '$(build.ArtifactStagingDirectory)\'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: '$(build.ArtifactStagingDirectory)'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  
