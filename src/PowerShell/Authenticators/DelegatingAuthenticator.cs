@@ -7,9 +7,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
-    using Factories;
     using Identity.Client;
     using Models.Authentication;
+    using Utilities;
 
     /// <summary>
     /// Provides a chain of responsibility pattern for authenticators.
@@ -38,37 +38,119 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns><c>true</c> if this authenticator can apply; otherwise <c>false</c>.</returns>
         public abstract bool CanAuthenticate(AuthenticationParameters parameters);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="account"></param>
-        /// <param name="environment"></param>
-        /// <param name="redirectUri"></param>
-        /// <returns></returns>
-        public IClientApplicationBase GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
+        public async Task<IClientApplicationBase> GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
         {
             IClientApplicationBase app;
 
             if (account.IsPropertySet(PartnerAccountPropertyType.CertificateThumbprint) || account.IsPropertySet(PartnerAccountPropertyType.ServicePrincipalSecret))
             {
-                app = SharedTokenCacheClientFactory.CreateConfidentialClient(
+                app = await CreateConfidentialClientAsync(
                     $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
                     GetCertificate(account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint)),
                     redirectUri,
-                    account.Tenant);
+                    account.Tenant).ConfigureAwait(false);
             }
             else
             {
-                app = SharedTokenCacheClientFactory.CreatePublicClient(
+                app = await CreatePublicClient(
                     $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     redirectUri,
-                    account.Tenant);
+                    account.Tenant).ConfigureAwait(false);
             }
 
             return app;
+        }
+
+        private static async Task<IConfidentialClientApplication> CreateConfidentialClientAsync(
+            string authority = null,
+            string clientId = null,
+            string clientSecret = null,
+            X509Certificate2 certificate = null,
+            string redirectUri = null,
+            string tenantId = null)
+        {
+            ConfidentialClientApplicationBuilder builder = ConfidentialClientApplicationBuilder.Create(clientId);
+
+            if (!string.IsNullOrEmpty(authority))
+            {
+                builder = builder.WithAuthority(authority);
+            }
+
+            if (!string.IsNullOrEmpty(clientSecret))
+            {
+                builder = builder.WithClientSecret(clientSecret);
+            }
+
+            if (certificate != null)
+            {
+                builder = builder.WithCertificate(certificate);
+            }
+
+            if (!string.IsNullOrEmpty(redirectUri))
+            {
+                builder = builder.WithRedirectUri(redirectUri);
+            }
+
+            if (!string.IsNullOrEmpty(tenantId))
+            {
+                builder = builder.WithTenantId(tenantId);
+            }
+
+            IConfidentialClientApplication client = builder.WithLogging((level, message, pii) =>
+            {
+                PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
+            }).Build();
+
+
+            PartnerTokenCache tokenCache = new PartnerTokenCache(clientId);
+
+            client.UserTokenCache.SetAfterAccess(tokenCache.AfterAccessNotification);
+            client.UserTokenCache.SetBeforeAccess(tokenCache.BeforeAccessNotification);
+
+            await Task.CompletedTask.ConfigureAwait(false);
+
+            return client;
+        }
+
+        private static async Task<IPublicClientApplication> CreatePublicClient(
+            string authority = null,
+            string clientId = null,
+            string redirectUri = null,
+            string tenantId = null)
+        {
+            PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
+
+            if (!string.IsNullOrEmpty(authority))
+            {
+                builder = builder.WithAuthority(authority);
+            }
+
+            if (!string.IsNullOrEmpty(redirectUri))
+            {
+                builder = builder.WithRedirectUri(redirectUri);
+            }
+
+            if (!string.IsNullOrEmpty(tenantId))
+            {
+                builder = builder.WithTenantId(tenantId);
+            }
+
+            IPublicClientApplication client = builder.WithLogging((level, message, pii) =>
+            {
+                PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
+            }).Build();
+
+            PartnerTokenCache tokenCache = new PartnerTokenCache(clientId);
+
+            client.UserTokenCache.SetAfterAccess(tokenCache.AfterAccessNotification);
+            client.UserTokenCache.SetBeforeAccess(tokenCache.BeforeAccessNotification);
+
+            await Task.CompletedTask.ConfigureAwait(false);
+
+            return client;
         }
 
         /// <summary>

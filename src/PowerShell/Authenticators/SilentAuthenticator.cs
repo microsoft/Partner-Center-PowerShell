@@ -26,17 +26,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
-            IPublicClientApplication app = GetClient(parameters.Account, parameters.Environment).AsPublicClient();
+            IClientApplicationBase app = await GetClient(parameters.Account, parameters.Environment).ConfigureAwait(false);
 
             ServiceClientTracing.Information(string.Format("[SilentAuthenticator] Calling GetAccountsAsync"));
-            IEnumerable<IAccount> accounts = await app.GetAccountsAsync().ConfigureAwait(false);
+            IEnumerable<IAccount> accounts = await app.AsPublicClient().GetAccountsAsync().ConfigureAwait(false);
 
             ServiceClientTracing.Information($"[SilentAuthenticator] Calling AcquireTokenSilent - Scopes: '{string.Join(",", parameters.Scopes)}', UserId: '{((SilentParameters)parameters).UserId}', Number of accounts: '{accounts.Count()}'");
-            AuthenticationResult authResult = await app.AcquireTokenSilent(
+            AuthenticationResult authResult = await app.AsPublicClient().AcquireTokenSilent(
                 parameters.Scopes,
                 accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))
-                .ExecuteAsync(cancellationToken)
-                .ConfigureAwait(false);
+                .ExecuteAsync(cancellationToken).ConfigureAwait(false);
 
             return authResult;
         }

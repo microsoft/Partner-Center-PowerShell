@@ -23,9 +23,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
-            IConfidentialClientApplication app = GetClient(parameters.Account, parameters.Environment).AsConfidentialClient();
+            IClientApplicationBase app = await GetClient(parameters.Account, parameters.Environment).ConfigureAwait(false);
 
-            return await app.AcquireTokenForClient(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            return await app.AsConfidentialClient().AcquireTokenForClient(parameters.Scopes).ExecuteAsync(cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

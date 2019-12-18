@@ -61,6 +61,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private readonly ConcurrentQueue<Task> outputTasks = new ConcurrentQueue<Task>();
 
+        public event EventHandler OnTaskCompleted;
+
         /// <summary>
         /// Gets the scheduler used for task execution.
         /// </summary>
@@ -73,7 +75,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             base.BeginProcessing();
 
-            Scheduler = new ConcurrencyTaskScheduler(1000, CancellationToken);
+            Scheduler = new ConcurrencyTaskScheduler(100, CancellationToken);
 
             Scheduler.OnError += Scheduler_OnError;
 
@@ -115,6 +117,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
                 }
                 while (!Scheduler.CheckForComplete(500, CancellationToken));
+
+                OnTaskCompleted?.Invoke(this, null);
 
                 if (!outputTasks.IsEmpty)
                 {
