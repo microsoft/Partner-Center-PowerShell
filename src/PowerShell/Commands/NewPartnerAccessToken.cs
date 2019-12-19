@@ -10,9 +10,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text;
     using Extensions;
     using Identity.Client;
-    using Microsoft.Store.PartnerCenter.PowerShell.Factories;
     using Models.Authentication;
     using Newtonsoft.Json.Linq;
+    using Utilities;
 
     [Cmdlet(VerbsCommon.New, "PartnerAccessToken")]
     [OutputType(typeof(AuthResult))]
@@ -210,7 +210,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     Message,
                     CancellationToken).ConfigureAwait(false);
 
-                byte[] cacheData = SharedTokenCacheClientFactory.GetMsalCacheStorage(ApplicationId).ReadData();
+                byte[] cacheData = PartnerTokenCache.GetMsalCacheStorage(ApplicationId).ReadData();
 
                 IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
 
@@ -257,7 +257,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (authResult.Account != null)
                 {
-                    string key = SharedTokenCacheClientFactory.GetTokenCacheKey(authResult, applicationId);
+                    string key = PartnerTokenCache.GetTokenCacheKey(authResult, applicationId);
 
                     if (tokens.ContainsKey(key))
                     {
