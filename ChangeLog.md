@@ -20,7 +20,12 @@
 
 # Change Log
 
-## Upcoming Release
+## 3.0.2 - December 2019
+
+* Authentication
+  * Addressed issue [#230](https://github.com/microsoft/Partner-Center-PowerShell/issues/230) that was caused by a deadlock
+
+## 3.0.1 - December 2019
 
 * Authentication
   * Updating the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) command to make the `CertificateThumbprint` parameter required for the `ServicePrincipalCertificate` parameter set

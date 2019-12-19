@@ -38,7 +38,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <returns><c>true</c> if this authenticator can apply; otherwise <c>false</c>.</returns>
         public abstract bool CanAuthenticate(AuthenticationParameters parameters);
 
-        public async Task<IClientApplicationBase> GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
+        /// <summary>
+        /// Gets an aptly configured client.
+        /// </summary>
+        /// <param name="account">The account information to be used when generating the client.</param>
+        /// <param name="environment">The environment where the client is connecting.</param>
+        /// <param name="redirectUri">The redirect URI for the client.</param>
+        /// <returns>An aptly configured client.</returns>
+        public async Task<IClientApplicationBase> GetClientAsync(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
         {
             IClientApplicationBase app;
 
@@ -64,6 +71,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             return app;
         }
 
+        /// <summary>
+        /// Determine if this request can be authenticated using the given authenticator, and authenticate if it can.
+        /// </summary>
+        /// <param name="parameters">The complex object containing authentication specific information.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
+        public async Task<AuthenticationResult> TryAuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
+        {
+            if (CanAuthenticate(parameters))
+            {
+                return await AuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
+            }
+
+            if (Next != null)
+            {
+                return await Next.TryAuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Creates a confidential client used for generating tokens.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="certificate">Certificate used by the client requesting the token.</param>
+        /// <param name="clientSecret">Secret of the client requesting the token.</param>
+        /// <param name="redirectUri">The redirect URI for the client.</param>
+        /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
+        /// <returns>An aptly configured confidential client.</returns>
         private static async Task<IConfidentialClientApplication> CreateConfidentialClientAsync(
             string authority = null,
             string clientId = null,
@@ -115,6 +153,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             return client;
         }
 
+        /// <summary>
+        /// Creates a public client used for generating tokens.
+        /// </summary>
+        /// <param name="authority">Address of the authority to issue the token</param>
+        /// <param name="clientId">Identifier of the client requesting the token.</param>
+        /// <param name="redirectUri">The redirect URI for the client.</param>
+        /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
+        /// <returns>An aptly configured public client.</returns>
         private static async Task<IPublicClientApplication> CreatePublicClient(
             string authority = null,
             string clientId = null,
@@ -202,28 +248,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             {
                 store?.Close();
             }
-        }
-
-        /// <summary>
-        /// Determine if this request can be authenticated using the given authenticator, and authenticate if it can.
-        /// </summary>
-        /// <param name="parameters">The complex object containing authentication specific information.</param>
-        /// <param name="token">The token based authentication information.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns><c>true</c> if the request can be authenticated; otherwise <c>false</c>.</returns>
-        public async Task<AuthenticationResult> TryAuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
-        {
-            if (CanAuthenticate(parameters))
-            {
-                return await AuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
-            }
-
-            if (Next != null)
-            {
-                return await Next.TryAuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
-            }
-
-            return null;
         }
     }
 }

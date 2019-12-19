@@ -8,24 +8,48 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using System.IO;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
-    using Utilities;
+    using Extensions;
 
+    /// <summary>
+    /// Provides the ability to interact with the token cache file.
+    /// </summary>
     internal class PartnerTokenCache
     {
+        /// <summary>
+        /// The file name for the token cache.
+        /// </summary>
         private const string CacheFileName = "msal.cache";
 
+        /// <summary>
+        /// The file path for the token cache file.
+        /// </summary>
         private static readonly string CacheFilePath =
             Path.Combine(SharedUtilities.GetUserRootDirectory(), ".IdentityService", CacheFileName);
 
-        private CrossPlatformLock cacheLock;
-
+        /// <summary>
+        /// The client identifier used to request a token.
+        /// </summary>
         private readonly string clientId;
 
+        /// <summary>
+        /// The cross platform lock for the token cache.
+        /// </summary>
+        private CrossPlatformLock cacheLock;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PartnerTokenCache" /> class.
+        /// </summary>
+        /// <param name="clientId">The client identifier used to request a token.</param>
         public PartnerTokenCache(string clientId)
         {
+            clientId.AssertNotEmpty(nameof(clientId));
             this.clientId = clientId;
         }
 
+        /// <summary>
+        /// Notification that is triggered after token acquisition.
+        /// </summary>
+        /// <param name="args">Arguments related to the cache item impacted</param>
         public void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             MsalCacheStorage cacheStorage = GetMsalCacheStorage(clientId);
@@ -50,6 +74,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             }
         }
 
+        /// <summary>
+        /// Notification that is triggered before token acquisition.
+        /// </summary>
+        /// <param name="args">Arguments related to the cache item impacted</param>
         public void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
             MsalCacheStorage cacheStorage = GetMsalCacheStorage(clientId);
@@ -68,6 +96,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             }
         }
 
+        /// <summary>
+        /// Gets an aptly configured instance of the <see cref="MsalCacheStorage" /> class.
+        /// </summary>
+        /// <param name="clientId">The client identifier used to request a token.</param>
+        /// <returns>An aptly configured instance of the <see cref="MsalCacheStorage" /> class.</returns>
         public static MsalCacheStorage GetMsalCacheStorage(string clientId)
         {
             StorageCreationPropertiesBuilder builder = new StorageCreationPropertiesBuilder(Path.GetFileName(CacheFilePath), Path.GetDirectoryName(CacheFilePath), clientId);
@@ -83,9 +116,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             return new MsalCacheStorage(builder.Build());
         }
 
-        public static string GetTokenCacheKey(AuthenticationResult authResult, string applicationId)
+        /// <summary>
+        /// Gets the key for the item in the token cache.
+        /// </summary>
+        /// <param name="authResult">The authentication result that represents the token retrieved.</param>
+        /// <param name="clientId">The client identifier used to request a token.</param>
+        /// <returns>The key for the item in the token cache.</returns>
+        public static string GetTokenCacheKey(AuthenticationResult authResult, string clientId)
         {
-            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{applicationId}--";
+            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{clientId}--";
         }
     }
 }

@@ -6,6 +6,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using System;
     using System.IO;
 
+    /// <summary>
+    /// Provides share utility operations.
+    /// </summary>
     internal static class SharedUtilities
     {
         private static readonly string s_homeEnvVar = Environment.GetEnvironmentVariable("HOME");
@@ -26,27 +29,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         }
 
         /// <summary>
-        /// Is this a linux platform
+        /// Gets a flag indicating whether the platform is running Linux or not.
         /// </summary>
-        /// <returns>A  value indicating if we are running on linux or not</returns>
+        /// <returns>A value indicating the platform is running Linux or not.</returns>
         public static bool IsLinuxPlatform()
         {
             return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux);
         }
 
         /// <summary>
-        /// Is this a MAC platform
+        /// Gets a flag indicating whether the platform is running OSX or not.
         /// </summary>
-        /// <returns>A value indicating if we are running on mac or not</returns>
+        /// <returns>A value indicating the platform is running OSX or not.</returns>
         public static bool IsMacPlatform()
         {
             return System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
         }
 
         /// <summary>
-        ///  Is this a windows platform
+        /// Gets a flag indicating whether the platform is running Windows or not.
         /// </summary>
-        /// <returns>A  value indicating if we are running on windows or not</returns>
+        /// <returns>A value indicating the platform is running Windows or not.</returns>
         public static bool IsWindowsPlatform()
         {
             return Environment.OSVersion.Platform == PlatformID.Win32NT;

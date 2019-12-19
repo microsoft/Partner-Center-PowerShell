@@ -11,27 +11,45 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using System.Threading.Tasks;
     using Extensions;
 
+    /// <summary>
+    /// A cross platform mechanism for creating a lockfile for the token cache.
+    /// </summary>
     internal class CrossPlatformLock : IDisposable
     {
         /// <summary>
-        /// A flag indicating if the object has already been disposed.
+        /// The default size for a buffer.
         /// </summary>
-        private bool disposed = false;
-
-        private FileStream lockFileStream;
-
-        private readonly string lockFilePath;
-
         private const int DefaultBufferSize = 4096;
 
+        /// <summary>
+        /// The default delay for retrying the ability to create the lockfile.
+        /// </summary>
         private const int LockfileRetryDelayDefault = 100;
 
+        /// <summary>
+        /// The default number of times that creating the lockfile operation will be attempted.
+        /// </summary>
         private const int LockfileRetryCountDefault = 60000 / LockfileRetryDelayDefault;
+
+        /// <summary>
+        /// The path for the lockfile.
+        /// </summary>
+        private readonly string lockFilePath;
+
+        /// <summary>
+        /// The stream used for accessing the lockfile.
+        /// </summary>
+        private FileStream lockFileStream;
+
+        /// <summary>
+        /// A flag indiciating whether or not this instance has been disposed.
+        /// </summary>
+        private bool disposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrossPlatformLock" /> class.
         /// </summary>
-        /// <param name="lockFilePath"></param>
+        /// <param name="lockFilePath">The path for the lockfile.</param>
         public CrossPlatformLock(string lockFilePath)
         {
             lockFilePath.AssertNotEmpty(nameof(lockFilePath));
@@ -66,6 +84,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             disposed = true;
         }
 
+        /// <summary>
+        /// Creates the token cache lock file.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>An instance of the <see cref="Task" /> class that represents the asynchronous operation.</returns>
         public async Task CreateLockAsync(CancellationToken cancellationToken = default)
         {
             Exception exception = null;
@@ -80,7 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
                 try
                 {
                     // We are using the file locking to synchronize the store, do not allow multiple writers or readers for the file.
-                    var fileShare = FileShare.None;
+                    FileShare fileShare = FileShare.None;
 
                     if (SharedUtilities.IsWindowsPlatform())
                     {
