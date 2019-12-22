@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Azure.Management.Profiles.Subscription;
+    using Azure.Management.Profiles.Subscription.Models;
     using Models.Authentication;
 
     [Cmdlet(VerbsLifecycle.Enable, "PartnerAzureSubscription")]
@@ -37,7 +38,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
                     CustomerId);
 
-                WriteObject(client.Subscriptions.EnableAsync(SubscriptionId, CancellationToken).ConfigureAwait(false));
+                EnabledSubscriptionId response = await client.Subscriptions.EnableAsync(SubscriptionId, CancellationToken).ConfigureAwait(false);
+
+                WriteObject(response);
             }, true);
         }
     }

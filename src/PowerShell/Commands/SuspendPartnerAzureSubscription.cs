@@ -38,7 +38,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
                     CustomerId);
 
-                CanceledSubscriptionId response = await client.Subscriptions.CancelAsync(SubscriptionId, CancellationToken).ConfigureAwait(false);
+                CanceledSubscriptionId response = await client.Subscriptions.CancelAsync(
+                    SubscriptionId, 
+                    true, 
+                    CancellationToken).ConfigureAwait(false);
 
                 WriteObject(response);
             }, true);
