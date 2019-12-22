@@ -27,5 +27,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Gets or sets the account type.
         /// </summary>
         AccountType Type { get; set; }
+
+        /// <summary>
+        /// Create a clone of this instance.
+        /// </summary>
+        /// <returns>A clone of the <see cref="PartnerAccount" /> class.</returns>
+        PartnerAccount Clone();
     }
 }
