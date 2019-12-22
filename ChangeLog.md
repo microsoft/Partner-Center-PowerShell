@@ -20,6 +20,11 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Subscription
+  * Addressed issue [#228](https://github.com/microsoft/Partner-Center-PowerShell/issues/228) that was causing issues with enabling and suspend an Azure subscription that is part of an Azure Plan
+
 ## 3.0.2 - December 2019
 
 * Authentication

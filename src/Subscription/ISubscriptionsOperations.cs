@@ -27,6 +27,9 @@ namespace Microsoft.Azure.Management.Profiles.Subscription
         /// <param name='subscriptionId'>
         /// Subscription Id.
         /// </param>
+        /// <param name="ignoreResourceCheck">
+        /// A flag indicating whether or not to ignore the resource check.
+        /// </param>
         /// <param name='customHeaders'>
         /// The headers that will be added to request.
         /// </param>
@@ -42,7 +45,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription
         /// <exception cref="Microsoft.Rest.ValidationException">
         /// Thrown when a required parameter is null
         /// </exception>
-        Task<AzureOperationResponse<CanceledSubscriptionId>> CancelWithHttpMessagesAsync(string subscriptionId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AzureOperationResponse<CanceledSubscriptionId>> CancelWithHttpMessagesAsync(string subscriptionId, bool ignoreResourceCheck, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
         /// <summary>
         /// The operation to rename a subscription
         /// </summary>
