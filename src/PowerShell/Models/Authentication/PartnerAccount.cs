@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// Gets the extended properties.
         /// </summary>
-        public IDictionary<string, string> ExtendedProperties { get; } = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public IDictionary<string, string> ExtendedProperties { get; private set; } = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets or sets the unique identifier.
@@ -36,5 +36,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Gets or sets the account type.
         /// </summary>
         public AccountType Type { get; set; }
+
+        /// <summary>
+        /// Create a clone of this instance.
+        /// </summary>
+        /// <returns>A clone of the <see cref="PartnerAccount" /> class.</returns>
+        public PartnerAccount Clone()
+        {
+            return new PartnerAccount
+            {
+                ExtendedProperties = ExtendedProperties,
+                Identifier = Identifier,
+                ObjectId = ObjectId,
+                Tenant = Tenant,
+                Type = Type
+            };
+        }
     }
 }

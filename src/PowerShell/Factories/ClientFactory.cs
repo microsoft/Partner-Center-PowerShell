@@ -86,7 +86,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <returns>An instance of a service client that is connected to a specific service.</returns>
         public virtual async Task<TClient> CreateServiceClientAsync<TClient>(string[] scopes, string tenantId = null) where TClient : ServiceClient<TClient>
         {
-            PartnerAccount account = PartnerSession.Instance.Context.Account;
+            PartnerAccount account = PartnerSession.Instance.Context.Account.Clone();
 
             if (!string.IsNullOrEmpty(tenantId))
             {
