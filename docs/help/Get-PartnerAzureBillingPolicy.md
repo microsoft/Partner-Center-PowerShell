@@ -15,7 +15,7 @@ Gets the billing policy for the specified customer.
 ## SYNTAX
 
 ```powershell
-Get-PartnerAzureBillingPolicy -BillingAccountName <String> -CustomerId <String> [<CommonParameters>]
+ Get-PartnerAzureBillingPolicy -BillingAccountName <String> -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

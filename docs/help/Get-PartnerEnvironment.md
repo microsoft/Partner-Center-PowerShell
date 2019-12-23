@@ -15,7 +15,7 @@ Get endpoints and metadata for an instance of Partner Center.
 ## SYNTAX
 
 ```powershell
-Get-PartnerEnvironment [[-Name] <String>] [<CommonParameters>]
+ Get-PartnerEnvironment [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

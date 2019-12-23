@@ -15,7 +15,7 @@ Gets a list of offer categories.
 ## SYNTAX
 
 ```powershell
-Get-PartnerOfferCategory -CountryCode <String> [<CommonParameters>]
+ Get-PartnerOfferCategory -CountryCode <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -17,15 +17,15 @@ Updates the specified customer subscription.
 ### CustomerObject
 ```powershell
 Set-PartnerCustomerSubscription -InputObject <PSCustomer> [-BillingCycle <BillingCycleType>]
- [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+ [-FriendlyName <String>] [-PartnerId <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>]
+ -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Customer
 ```powershell
 Set-PartnerCustomerSubscription [-BillingCycle <BillingCycleType>] -CustomerId <String>
- [-FriendlyName <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>] -SubscriptionId <String> [-WhatIf]
- [-Confirm] [<CommonParameters>]
+ [-FriendlyName <String>] [-PartnerId <String>] [-Quantity <Int32>] [-Status <SubscriptionStatus>]
+ -SubscriptionId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -97,6 +97,21 @@ Parameter Sets: CustomerObject
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PartnerId
+The Microsoft Partner Network (MPN) identifier for the reseller of record.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -15,7 +15,7 @@ Gets the roles at the partner level.
 ## SYNTAX
 
 ```powershell
-Get-PartnerRole [<CommonParameters>]
+ Get-PartnerRole [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -15,7 +15,7 @@ Gets a list of devices in the specified device batch for the specified customer.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerDevice [-CustomerId] <String> -BatchId <String> [<CommonParameters>]
+ Get-PartnerCustomerDevice [-CustomerId] <String> -BatchId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -15,7 +15,7 @@ Gets a collection of a partner's Government Community Cloud validation codes.
 ## SYNTAX
 
 ```powershell
-Get-PartnerValidationCode [<CommonParameters>]
+ Get-PartnerValidationCode [<CommonParameters>]
 ```
 
 ## DESCRIPTION

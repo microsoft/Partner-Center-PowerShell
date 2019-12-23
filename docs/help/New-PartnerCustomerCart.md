@@ -15,7 +15,7 @@ Creates a cart for a customer.
 ## SYNTAX
 
 ```powershell
-New-PartnerCustomerCart -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf] [-Confirm]
+ New-PartnerCustomerCart -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 

@@ -15,7 +15,7 @@ Gets the partner's support profile.
 ## SYNTAX
 
 ```powershell
-Get-PartnerSupportProfile [<CommonParameters>]
+ Get-PartnerSupportProfile [<CommonParameters>]
 ```
 
 ## DESCRIPTION

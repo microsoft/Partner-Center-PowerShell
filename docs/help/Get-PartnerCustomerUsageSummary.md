@@ -15,7 +15,7 @@ Gets the customer's usage of a specific Azure service or resource during the cur
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerUsageSummary -CustomerId <String> [<CommonParameters>]
+ Get-PartnerCustomerUsageSummary -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

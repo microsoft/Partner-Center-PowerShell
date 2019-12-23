@@ -15,7 +15,7 @@ Gets a collection of entitlements.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerEntitlement -CustomerId <String> [-ShowExpiry] [-OrderId <String>] [<CommonParameters>]
+ Get-PartnerCustomerEntitlement -CustomerId <String> [-ShowExpiry] [-OrderId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -15,7 +15,7 @@ Gets the activation link for the specified order line item.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerOrderLineItemActivationLink -CustomerId <String> -OrderId <String>
+ Get-PartnerCustomerOrderLineItemActivationLink -CustomerId <String> -OrderId <String>
  -OrderLineItemNumber <Int32> [<CommonParameters>]
 ```
 

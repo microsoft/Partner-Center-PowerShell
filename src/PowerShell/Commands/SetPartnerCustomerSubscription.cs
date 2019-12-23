@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Customers;
     using Models.Subscriptions;
     using PartnerCenter.Models.Offers;
@@ -14,8 +15,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Subscriptions;
     using Properties;
 
-    [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscription", SupportsShouldProcess = true), OutputType(typeof(PSSubscription))]
-    public class SetPartnerCustomerSubscription : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscription", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSSubscription))]
+    public class SetPartnerCustomerSubscription : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer object used to scope the request.
@@ -45,6 +47,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         public string FriendlyName { get; set; }
 
         /// <summary>
+        /// Gets or sets the Microsoft Partner Network (MPN) identifier for the reseller of record.
+        /// </summary>
+        [Parameter(HelpMessage = "The Microsoft Partner Network (MPN) identifier for the reseller of record.", Mandatory = false)]
+        [ValidateNotNullOrEmpty]
+        public string PartnerId { get; set; }
+
+        /// <summary>
         /// Gets or sets the quantity.
         /// </summary>
         [Parameter(HelpMessage = "The quantity of the subscription.", ParameterSetName = "Customer", Mandatory = false)]
@@ -72,62 +81,72 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Subscription subscription;
-            string customerId;
-
-            customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-
-            if (!ShouldProcess(
-                string.Format(
-                    CultureInfo.CurrentCulture, Resources.SetPartnerCustomerSubscriptionWhatIf, SubscriptionId,
-                    customerId)))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
 
-            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                Subscription subscription;
+                string customerId;
 
+                customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
-            if (BillingCycle.HasValue)
-            {
-                Partner.Customers[customerId].Orders[subscription.OrderId].PatchAsync(new Order
+                if (!ShouldProcess(
+                    string.Format(
+                        CultureInfo.CurrentCulture, Resources.SetPartnerCustomerSubscriptionWhatIf, SubscriptionId,
+                        customerId)))
                 {
-                    BillingCycle = BillingCycle.Value,
-                    LineItems = new List<OrderLineItem>
+                    return;
+                }
+
+                subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false);
+
+
+                if (BillingCycle.HasValue)
+                {
+                    await partner.Customers[customerId].Orders[subscription.OrderId].PatchAsync(new Order
                     {
-                       new OrderLineItem
-                       {
-                           LineItemNumber = 0,
-                           OfferId = subscription.OfferId,
-                           ParentSubscriptionId = subscription.ParentSubscriptionId,
-                           SubscriptionId = subscription.Id,
-                           Quantity = subscription.Quantity
-                       }
-                    },
-                    ReferenceCustomerId = customerId
-                }).GetAwaiter().GetResult();
+                        BillingCycle = BillingCycle.Value,
+                        LineItems = new List<OrderLineItem>
+                        {
+                           new OrderLineItem
+                           {
+                               LineItemNumber = 0,
+                               OfferId = subscription.OfferId,
+                               ParentSubscriptionId = subscription.ParentSubscriptionId,
+                               SubscriptionId = subscription.Id,
+                               Quantity = subscription.Quantity
+                           }
+                        },
+                        ReferenceCustomerId = customerId
+                    }).ConfigureAwait(false);
 
-                subscription.BillingCycle = BillingCycle.Value;
-            }
+                    subscription.BillingCycle = BillingCycle.Value;
+                }
 
-            if (!string.IsNullOrEmpty(FriendlyName))
-            {
-                subscription.FriendlyName = FriendlyName;
-            }
+                if (!string.IsNullOrEmpty(FriendlyName))
+                {
+                    subscription.FriendlyName = FriendlyName;
+                }
 
-            if (Quantity.HasValue)
-            {
-                subscription.Quantity = Quantity.Value;
-            }
+                if (!string.IsNullOrEmpty(PartnerId))
+                {
+                    subscription.PartnerId = PartnerId;
+                }
 
-            if (Status.HasValue)
-            {
-                subscription.Status = Status.Value;
-            }
+                if (Quantity.HasValue)
+                {
+                    subscription.Quantity = Quantity.Value;
+                }
 
-            subscription = Partner.Customers[customerId].Subscriptions[SubscriptionId].PatchAsync(subscription).GetAwaiter().GetResult();
+                if (Status.HasValue)
+                {
+                    subscription.Status = Status.Value;
+                }
 
-            WriteObject(new PSSubscription(subscription));
+                subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].PatchAsync(subscription).ConfigureAwait(false);
+
+                WriteObject(new PSSubscription(subscription));
+            });
         }
     }
 }

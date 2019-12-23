@@ -15,7 +15,7 @@ Gets the links to download or view the Microsoft Customer Agreement template.
 ## SYNTAX
 
 ```powershell
-Get-PartnerAgreementDocument [-Country <String>] [-Language <String>] -TemplateId <String> [<CommonParameters>]
+ Get-PartnerAgreementDocument [-Country <String>] [-Language <String>] -TemplateId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

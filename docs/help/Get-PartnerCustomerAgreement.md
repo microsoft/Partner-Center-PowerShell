@@ -15,7 +15,7 @@ Gets confirmation of customer acceptance provided previously.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerAgreement [-AgreementType <String>] -CustomerId <String> [<CommonParameters>]
+ Get-PartnerCustomerAgreement [-AgreementType <String>] -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

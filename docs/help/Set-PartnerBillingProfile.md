@@ -15,7 +15,7 @@ Updates the partner's billing profile.
 ## SYNTAX
 
 ```powershell
-Set-PartnerBillingProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>]
+ Set-PartnerBillingProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>]
  [-DisableValidation] [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>]
  [-PhoneNumber <String>] [-PostalCode <String>] [-PurchaseOrderNumber <String>] [-Region <String>]
  [-State <String>] [-TaxId <String>] [-WhatIf] [-Confirm] [<CommonParameters>]

@@ -15,7 +15,7 @@ Update a subscription's support contact to one of the partner's value added rese
 ## SYNTAX
 
 ```powershell
-Set-PartnerCustomerSubscriptionSupportContact -CustomerId <String> -Name <String> -SubscriptionId <String>
+ Set-PartnerCustomerSubscriptionSupportContact -CustomerId <String> -Name <String> -SubscriptionId <String>
  -SupportMpnId <String> -SupportTenantId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
