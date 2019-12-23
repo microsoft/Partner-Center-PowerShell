@@ -15,7 +15,7 @@ Gets the customer's billing profile.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerBillingProfile -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerBillingProfile -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

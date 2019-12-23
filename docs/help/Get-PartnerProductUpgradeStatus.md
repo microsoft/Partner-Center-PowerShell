@@ -15,7 +15,7 @@ Gets the product upgrade status for the specified customer and product family.
 ## SYNTAX
 
 ```powershell
- Get-PartnerProductUpgradeStatus -CustomerId <String> -ProductFamily <String> -UpgradeId <String>
+Get-PartnerProductUpgradeStatus -CustomerId <String> -ProductFamily <String> -UpgradeId <String>
  [<CommonParameters>]
 ```
 

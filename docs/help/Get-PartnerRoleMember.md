@@ -15,7 +15,7 @@ Gets the members of the specified partner role.
 ## SYNTAX
 
 ```powershell
- Get-PartnerRoleMember [[-RoleId] <String>] [<CommonParameters>]
+Get-PartnerRoleMember [[-RoleId] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

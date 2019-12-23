@@ -15,7 +15,7 @@ Gets a list of users from the partner tenant
 ## SYNTAX
 
 ```powershell
- Get-PartnerUser [-UserId <String>] [-UserPrincipalName <String>] [<CommonParameters>]
+Get-PartnerUser [-UserId <String>] [-UserPrincipalName <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

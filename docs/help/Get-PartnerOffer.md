@@ -15,7 +15,7 @@ Gets a specific offer or a list of available offers from Partner Center.
 ## SYNTAX
 
 ```powershell
- Get-PartnerOffer [-AddOn] [-Category <String>] [-CountryCode <String>] [-OfferId <String>] [-Trial]
+Get-PartnerOffer [-AddOn] [-Category <String>] [-CountryCode <String>] [-OfferId <String>] [-Trial]
  [<CommonParameters>]
 ```
 

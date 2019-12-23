@@ -15,7 +15,7 @@ Creates a new user in the specified customer Azure Active Directory tenant.
 ## SYNTAX
 
 ```powershell
- New-PartnerCustomerUser -CustomerId <String> [-FirstName <String>] [-LastName <String>] -DisplayName <String>
+New-PartnerCustomerUser -CustomerId <String> [-FirstName <String>] [-LastName <String>] -DisplayName <String>
  -UserPrincipalName <String> -Password <SecureString> [-ForceChangePassword] [-UsageLocation <String>]
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```

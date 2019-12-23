@@ -15,7 +15,7 @@ Gets the provisioning status for a customer order.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerOrderProvisioningStatus -CustomerId <String> -OrderId <String> [<CommonParameters>]
+Get-PartnerCustomerOrderProvisioningStatus -CustomerId <String> -OrderId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

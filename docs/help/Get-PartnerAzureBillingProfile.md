@@ -15,7 +15,7 @@ Gets the billing profiles for specified billing account.
 ## SYNTAX
 
 ```powershell
- Get-PartnerAzureBillingProfile -BillingAccountName <String> [<CommonParameters>]
+Get-PartnerAzureBillingProfile -BillingAccountName <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

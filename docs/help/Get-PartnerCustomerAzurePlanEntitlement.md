@@ -15,7 +15,7 @@ Gets an Azure Plan's subscription entitlements.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerAzurePlanEntitlement -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+Get-PartnerCustomerAzurePlanEntitlement -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

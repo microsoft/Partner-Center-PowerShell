@@ -15,7 +15,7 @@ Enables an Azure subscription that is part of an Azure Plan.
 ## SYNTAX
 
 ```powershell
- Enable-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+Enable-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

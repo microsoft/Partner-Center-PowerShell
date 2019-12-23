@@ -15,7 +15,7 @@ Gets a customer's service cost line items for the specified billing period.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerServiceCosts -BillingPeriod <ServiceCostsBillingPeriod> -CustomerId <String>
+Get-PartnerCustomerServiceCosts -BillingPeriod <ServiceCostsBillingPeriod> -CustomerId <String>
  [<CommonParameters>]
 ```
 

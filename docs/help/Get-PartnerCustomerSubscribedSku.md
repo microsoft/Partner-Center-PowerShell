@@ -15,7 +15,7 @@ Gets a list of licenses available to users of the specified customer.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerSubscribedSku -CustomerId <String> [-LicenseGroup <LicenseGroupId[]>] [<CommonParameters>]
+Get-PartnerCustomerSubscribedSku -CustomerId <String> [-LicenseGroup <LicenseGroupId[]>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

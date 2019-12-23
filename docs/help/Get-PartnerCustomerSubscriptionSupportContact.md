@@ -15,7 +15,7 @@ Gets the support contact for the specified subscription.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerSubscriptionSupportContact -CustomerId <String> -SubscriptionId <String>
+Get-PartnerCustomerSubscriptionSupportContact -CustomerId <String> -SubscriptionId <String>
  [<CommonParameters>]
 ```
 

@@ -15,7 +15,7 @@ Gets customer monthly usage records for all customers.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerUsageRecord [<CommonParameters>]
+Get-PartnerCustomerUsageRecord [<CommonParameters>]
 ```
 
 ## DESCRIPTION
