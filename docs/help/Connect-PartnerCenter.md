@@ -16,34 +16,33 @@ Connect to Partner Center with an authenticated account for use with partner cmd
 
 ### User (Default)
 ```powershell
-Connect-PartnerCenter [-EnforceMFA] [-Environment <EnvironmentName>] [-Tenant <String>]
- [-UseDeviceAuthentication] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter [-Environment <EnvironmentName>] [-Tenant <String>] [-UseDeviceAuthentication] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### AccessToken
 ```powershell
-Connect-PartnerCenter -AccessToken <String> [-EnforceMFA] [-Environment <EnvironmentName>] [-Tenant <String>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -AccessToken <String> [-Environment <EnvironmentName>] [-Tenant <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### RefreshToken
 ```powershell
 Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-Credential <PSCredential>]
- [-EnforceMFA] [-Environment <EnvironmentName>] -RefreshToken <String> [-Tenant <String>] [-WhatIf] [-Confirm]
+ [-Environment <EnvironmentName>] -RefreshToken <String> [-Tenant <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> -CertificateThumbprint <String> [-EnforceMFA]
- [-Environment <EnvironmentName>] [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Connect-PartnerCenter -ApplicationId <String> -CertificateThumbprint <String> [-Environment <EnvironmentName>]
+ [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
-Connect-PartnerCenter -Credential <PSCredential> [-EnforceMFA] [-Environment <EnvironmentName>]
- [-ServicePrincipal] -Tenant <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -Credential <PSCredential> [-Environment <EnvironmentName>] [-ServicePrincipal]
+ -Tenant <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -157,21 +156,6 @@ Parameter Sets: ServicePrincipal
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EnforceMFA
-A flag indicating whether or not multi-factor authentication is enforced. The is only configurable while the Partner Center API is not requiring multi-factor authentication.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

@@ -15,7 +15,7 @@ Creates a new Azure subscription for Microsoft Partner Agreement billing account
 ## SYNTAX
 
 ```powershell
-New-PartnerAzureSubscription -BillingAccountName <String> -CustomerId <String> -DisplayName <String>
+ New-PartnerAzureSubscription -BillingAccountName <String> -CustomerId <String> -DisplayName <String>
  [-ResellerId <String>] [<CommonParameters>]
 ```
 

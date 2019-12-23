@@ -15,7 +15,7 @@ Gets the metadata used to authenticate Partner Center requests.
 ## SYNTAX
 
 ```powershell
-Get-PartnerContext [<CommonParameters>]
+ Get-PartnerContext [<CommonParameters>]
 ```
 
 ## DESCRIPTION

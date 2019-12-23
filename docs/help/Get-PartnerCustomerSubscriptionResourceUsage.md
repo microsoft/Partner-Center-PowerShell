@@ -15,7 +15,7 @@ Gets the subscription's resource usage records.
 ## SYNTAX
 
 ```powershell
-Get-PartnerCustomerSubscriptionResourceUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+ Get-PartnerCustomerSubscriptionResourceUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

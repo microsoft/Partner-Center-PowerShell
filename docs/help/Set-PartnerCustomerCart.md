@@ -15,7 +15,7 @@ Updates an order for a customer in a cart.
 ## SYNTAX
 
 ```powershell
-Set-PartnerCustomerCart -CartId <String> -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf]
+ Set-PartnerCustomerCart -CartId <String> -CustomerId <String> -LineItems <PSCartLineItem[]> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 

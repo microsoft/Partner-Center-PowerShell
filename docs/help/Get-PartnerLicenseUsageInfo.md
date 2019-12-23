@@ -15,7 +15,7 @@ Gets aggregated data on licenses deployment
 ## SYNTAX
 
 ```powershell
-Get-PartnerLicenseUsageInfo [<CommonParameters>]
+ Get-PartnerLicenseUsageInfo [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -15,7 +15,7 @@ Creates a product upgrade request for the specified customer.
 ## SYNTAX
 
 ```powershell
-New-PartnerProductUpgrade -CustomerId <String> -ProductFamily <String> [<CommonParameters>]
+ New-PartnerProductUpgrade -CustomerId <String> -ProductFamily <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

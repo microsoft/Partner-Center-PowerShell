@@ -15,7 +15,7 @@ Activates a third-party subscription in the integration sandbox.
 ## SYNTAX
 
 ```powershell
-New-PartnerCustomerSubscriptionActivation -CustomerId <String> -SubscriptionId <String> [-WhatIf] [-Confirm]
+ New-PartnerCustomerSubscriptionActivation -CustomerId <String> -SubscriptionId <String> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 

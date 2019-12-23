@@ -15,7 +15,7 @@ Suspends an Azure subscription that is part of an Azure Plan.
 ## SYNTAX
 
 ```powershell
-Suspend-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+ Suspend-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

@@ -15,7 +15,7 @@ Gets the product upgrade eligibility for the specified customer and product fami
 ## SYNTAX
 
 ```powershell
-Get-PartnerProductUpgradeEligibility -CustomerId <String> -ProductFamily <String> [<CommonParameters>]
+ Get-PartnerProductUpgradeEligibility -CustomerId <String> -ProductFamily <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

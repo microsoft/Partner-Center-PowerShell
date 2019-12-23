@@ -15,7 +15,7 @@ Gets the tax receipt statement for the specified invoice.
 ## SYNTAX
 
 ```powershell
-Get-PartnerInvoiceTaxReceiptStatement -InvoiceId <String> [-OutputPath <String>] [-Overwrite]
+ Get-PartnerInvoiceTaxReceiptStatement -InvoiceId <String> [-OutputPath <String>] [-Overwrite]
  -TaxReceiptId <String> [<CommonParameters>]
 ```
 

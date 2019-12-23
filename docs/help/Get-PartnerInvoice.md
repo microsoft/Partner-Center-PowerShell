@@ -15,7 +15,7 @@ Gets a list of invoices available to the partner.
 ## SYNTAX
 
 ```powershell
-Get-PartnerInvoice [-InvoiceId <String>] [<CommonParameters>]
+ Get-PartnerInvoice [-InvoiceId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

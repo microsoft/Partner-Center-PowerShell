@@ -15,7 +15,7 @@ Updates the billing policy for the specified customer.
 ## SYNTAX
 
 ```powershell
-Set-PartnerAzureBillingPolicy -BillingAccountName <String> -CustomerId <String> [-ViewCharges]
+ Set-PartnerAzureBillingPolicy -BillingAccountName <String> -CustomerId <String> [-ViewCharges]
  [<CommonParameters>]
 ```
 

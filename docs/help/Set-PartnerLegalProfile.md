@@ -15,7 +15,7 @@ Updates the partner's legal profile.
 ## SYNTAX
 
 ```powershell
-Set-PartnerLegalProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>] [-Country <String>]
+ Set-PartnerLegalProfile [-AddressLine1 <String>] [-AddressLine2 <String>] [-City <String>] [-Country <String>]
  [-DisableValidation] [-EmailAddress <String>] [-FirstName <String>] [-LastName <String>]
  [-PhoneNumber <String>] [-PostalCode <String>] [-Region <String>] [-State <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]

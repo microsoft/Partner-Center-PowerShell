@@ -15,7 +15,7 @@ Checks out the specified cart.
 ## SYNTAX
 
 ```powershell
-Submit-PartnerCustomerCart -CartId <String> -CustomerId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+ Submit-PartnerCustomerCart -CartId <String> -CustomerId <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

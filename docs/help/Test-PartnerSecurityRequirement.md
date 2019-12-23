@@ -15,7 +15,7 @@ Tests the account, used during authentication, if multi-factor authentication wa
 ## SYNTAX
 
 ```powershell
-Test-PartnerSecurityRequirement [-Environment <EnvironmentName>] [-UseDeviceAuthentication]
+ Test-PartnerSecurityRequirement [-Environment <EnvironmentName>] [-UseDeviceAuthentication]
  [<CommonParameters>]
 ```
 

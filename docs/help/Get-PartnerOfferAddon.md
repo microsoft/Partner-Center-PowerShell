@@ -15,7 +15,7 @@ Gets the add-ons for an offer by identifier.
 ## SYNTAX
 
 ```powershell
-Get-PartnerOfferAddon [-CountryCode <String>] [-OfferId] <String> [<CommonParameters>]
+ Get-PartnerOfferAddon [-CountryCode <String>] [-OfferId] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

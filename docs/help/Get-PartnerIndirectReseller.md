@@ -15,7 +15,7 @@ Gets a list of indirect resellers.
 ## SYNTAX
 
 ```powershell
-Get-PartnerIndirectReseller [-CustomerId <String>] [<CommonParameters>]
+ Get-PartnerIndirectReseller [-CustomerId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
