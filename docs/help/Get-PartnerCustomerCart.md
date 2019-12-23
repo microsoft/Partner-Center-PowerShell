@@ -15,7 +15,7 @@ Gets a specific cart for the specified partner.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerCart -CartId <String> -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerCart -CartId <String> -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

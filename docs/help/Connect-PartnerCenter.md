@@ -50,16 +50,14 @@ The Connect-PartnerCenter cmdlet connects to Partner Center with an authenticate
 
 ## EXAMPLES
 
-### Example 1: Use an interactive login to connect to a Partner Center account
-
+### Example 1
 ```powershell
 PS C:\> Connect-PartnerCenter
 ```
 
 This command connects to a Partner Center account. To run partner cmdlets with this account, you must provide an organizational credentials, that are associated with the Cloud Solution Provider program, at the prompt.
 
-### Example 2: Connect to Partner Center using a service principal account
-
+### Example 2
 ```powershell
 PS C:\> $credential = Get-Credential
 PS C:\> Connect-PartnerCenter -Credential $credential -Tenant 'xxxx-xxxx-xxxx-xxxx' -ServicePrincipal
@@ -67,14 +65,27 @@ PS C:\> Connect-PartnerCenter -Credential $credential -Tenant 'xxxx-xxxx-xxxx-xx
 
 The first command gets the service principal credentials (application identifier and service principal secret), and then stores them in the $credential variable. The second command connects to Partner Center using the service principal credentials stored in $credential for the specified Tenant. The ServicePrincipal switch parameter indicates that the account authenticates as a service principal.
 
-### Example 3: Connect to Partner using a refresh token
-
+### Example 3
 ```powershell
 PS C:\> $refreshToken = '<refreshToken>'
 PS C:\> Connect-PartnerCenter -ApplicationId 'xxxx-xxxx-xxxx-xxxx' -RefreshToken $refreshToken
 ```
 
-Connects to Partner Center using a refresh token.
+Connects to Partner Center using a refresh token that was generated using a [native application](https://docs.microsoft.com/azure/active-directory/develop/native-app).
+
+### Example 4
+```powershell
+PS C:\> $appId = 'xxxx-xxxx-xxxx-xxxx'
+PS C:\> $secret =  ConvertTo-SecureString 'app-secret-here' -AsPlainText -Force
+PS C:\> $refreshToken = '<refreshToken>'
+PC C:\> $tenantId = 'yyyy-yyyy-yyyy-yyyy'
+PS C:\>
+PS C:\> $credential = New-Object System.Management.Automation.PSCredential($appId, $secret)
+PS C:\>
+PS C:\> Connect-PartnerCenter -ApplicationId $appId -Credential $credential -RefreshToken $refreshToken
+```
+
+Connects to Partner Center using a refresh token that was generated using a [web application](https://docs.microsoft.com/azure/active-directory/develop/web-app).
 
 ## PARAMETERS
 

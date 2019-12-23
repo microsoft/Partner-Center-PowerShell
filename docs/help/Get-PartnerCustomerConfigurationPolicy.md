@@ -15,7 +15,7 @@ Gets a list of all of a customer's policies.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerConfigurationPolicy [-CustomerId] <String> [-PolicyId <String>] [<CommonParameters>]
+Get-PartnerCustomerConfigurationPolicy [-CustomerId] <String> [-PolicyId <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION

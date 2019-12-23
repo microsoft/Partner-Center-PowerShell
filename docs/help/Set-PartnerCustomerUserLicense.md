@@ -15,7 +15,7 @@ Adds or removes licenses for a Microsoft online service to the list of assigned 
 ## SYNTAX
 
 ```powershell
- Set-PartnerCustomerUserLicense -CustomerId <String> -LicenseUpdate <PSLicenseUpdate> -UserId <String> [-WhatIf]
+Set-PartnerCustomerUserLicense -CustomerId <String> -LicenseUpdate <PSLicenseUpdate> -UserId <String> [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 

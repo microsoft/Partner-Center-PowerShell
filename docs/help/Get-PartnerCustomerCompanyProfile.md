@@ -15,7 +15,7 @@ Gets the customer's company profile.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerCompanyProfile -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerCompanyProfile -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

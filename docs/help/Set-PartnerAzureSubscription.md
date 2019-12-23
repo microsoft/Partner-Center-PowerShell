@@ -15,7 +15,7 @@ Updates an Azure subscription that is part of an Azure Plan.
 ## SYNTAX
 
 ```powershell
- Set-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> -SubscriptionName <String>
+Set-PartnerAzureSubscription -CustomerId <String> -SubscriptionId <String> -SubscriptionName <String>
  [<CommonParameters>]
 ```
 

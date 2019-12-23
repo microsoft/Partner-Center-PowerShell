@@ -15,7 +15,7 @@ Tests if the specified domain name is available for creating a new tenant.
 ## SYNTAX
 
 ```powershell
- Test-PartnerDomainAvailability [-Domain] <String> [<CommonParameters>]
+Test-PartnerDomainAvailability [-Domain] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

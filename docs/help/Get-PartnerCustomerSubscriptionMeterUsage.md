@@ -15,7 +15,7 @@ Gets the subscription's meter usage records.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerSubscriptionMeterUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
+Get-PartnerCustomerSubscriptionMeterUsage -CustomerId <String> -SubscriptionId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

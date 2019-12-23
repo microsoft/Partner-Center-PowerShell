@@ -376,4 +376,3 @@ Tests if the specified domain name is available for creating a new tenant.
 
 ### [Test-PartnerSecurityRequirement](Test-PartnerSecurityRequirement.md)
 Tests the account, used during authentication, if multi-factor authentication was enforced.
-

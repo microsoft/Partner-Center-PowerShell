@@ -15,7 +15,7 @@ Gets aggregated data on deployment for a specified customer.
 ## SYNTAX
 
 ```powershell
- Get-PartnerCustomerLicenseDeploymentInfo -CustomerId <String> [<CommonParameters>]
+Get-PartnerCustomerLicenseDeploymentInfo -CustomerId <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION

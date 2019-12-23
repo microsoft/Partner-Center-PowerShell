@@ -15,7 +15,7 @@ Gets the billing accounts where the authenticated user has access.
 ## SYNTAX
 
 ```powershell
- Get-PartnerAzureBillingAccount [<CommonParameters>]
+Get-PartnerAzureBillingAccount [<CommonParameters>]
 ```
 
 ## DESCRIPTION
