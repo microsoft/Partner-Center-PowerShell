@@ -224,7 +224,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 byte[] cacheData = PartnerTokenCache.GetMsalCacheStorage(ApplicationId).ReadData();
 
-                if (cacheData.Length > 0)
+                if (cacheData?.Length > 0)
                 {
                     IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
 
