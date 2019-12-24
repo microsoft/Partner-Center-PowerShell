@@ -45,27 +45,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="environment">The environment where the client is connecting.</param>
         /// <param name="redirectUri">The redirect URI for the client.</param>
         /// <returns>An aptly configured client.</returns>
-        public async Task<IClientApplicationBase> GetClientAsync(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
+        public IClientApplicationBase GetClient(PartnerAccount account, PartnerEnvironment environment, string redirectUri = null)
         {
             IClientApplicationBase app;
 
             if (account.IsPropertySet(PartnerAccountPropertyType.CertificateThumbprint) || account.IsPropertySet(PartnerAccountPropertyType.ServicePrincipalSecret))
             {
-                app = await CreateConfidentialClientAsync(
+                app = CreateConfidentialClient(
                     $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
                     GetCertificate(account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint)),
                     redirectUri,
-                    account.Tenant).ConfigureAwait(false);
+                    account.Tenant);
             }
             else
             {
-                app = await CreatePublicClient(
+                app = CreatePublicClient(
                     $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     redirectUri,
-                    account.Tenant).ConfigureAwait(false);
+                    account.Tenant);
             }
 
             return app;
@@ -102,7 +102,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="redirectUri">The redirect URI for the client.</param>
         /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
         /// <returns>An aptly configured confidential client.</returns>
-        private static async Task<IConfidentialClientApplication> CreateConfidentialClientAsync(
+        private static IConfidentialClientApplication CreateConfidentialClient(
             string authority = null,
             string clientId = null,
             string clientSecret = null,
@@ -142,13 +142,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
             }).Build();
 
-
-            PartnerTokenCache tokenCache = new PartnerTokenCache(clientId);
-
-            client.UserTokenCache.SetAfterAccess(tokenCache.AfterAccessNotification);
-            client.UserTokenCache.SetBeforeAccess(tokenCache.BeforeAccessNotification);
-
-            await Task.CompletedTask.ConfigureAwait(false);
+            if (PartnerSession.Instance.TryGetComponent(ComponentKey.TokenCache, out IPartnerTokenCache tokenCache))
+            {
+                tokenCache.RegisterCache(client);
+            }
 
             return client;
         }
@@ -161,7 +158,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="redirectUri">The redirect URI for the client.</param>
         /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
         /// <returns>An aptly configured public client.</returns>
-        private static async Task<IPublicClientApplication> CreatePublicClient(
+        private static IPublicClientApplication CreatePublicClient(
             string authority = null,
             string clientId = null,
             string redirectUri = null,
@@ -189,12 +186,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
             }).Build();
 
-            PartnerTokenCache tokenCache = new PartnerTokenCache(clientId);
 
-            client.UserTokenCache.SetAfterAccess(tokenCache.AfterAccessNotification);
-            client.UserTokenCache.SetBeforeAccess(tokenCache.BeforeAccessNotification);
-
-            await Task.CompletedTask.ConfigureAwait(false);
+            if (PartnerSession.Instance.TryGetComponent(ComponentKey.TokenCache, out IPartnerTokenCache tokenCache))
+            {
+                tokenCache.RegisterCache(client);
+            }
 
             return client;
         }

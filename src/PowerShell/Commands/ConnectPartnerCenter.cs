@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
+    using System.IO;
     using System.Management.Automation;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -12,6 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Factories;
     using Models.Authentication;
     using PartnerCenter.Models.Partners;
+    using Utilities;
 
     /// <summary>
     /// Cmdlet to login to a Partner Center environment.
@@ -157,6 +159,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 PartnerSession.Instance.ClientFactory = new ClientFactory();
             }
+
+            if (File.Exists(Path.Combine(SharedUtilities.GetUserRootDirectory(), ".PartnerCenter", "InMemoryTokenCache")))
+            {
+                PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new InMemoryTokenCache());
+            }
+            else
+            {
+                PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new PersistentTokenCache());
+            }
         }
 
         /// <summary>
@@ -164,69 +175,69 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IPartner partnerOperations;
-            OrganizationProfile profile;
-            PartnerAccount account = new PartnerAccount();
-            PartnerEnvironment environment = PartnerEnvironment.PublicEnvironments[Environment];
-
-            if (!string.IsNullOrEmpty(CertificateThumbprint))
+            Scheduler.RunTask(async () =>
             {
-                account.SetProperty(PartnerAccountPropertyType.CertificateThumbprint, CertificateThumbprint);
-            }
+                IPartner partnerOperations;
+                OrganizationProfile profile;
+                PartnerAccount account = new PartnerAccount();
+                PartnerEnvironment environment = PartnerEnvironment.PublicEnvironments[Environment];
 
-            if (!string.IsNullOrEmpty(RefreshToken))
-            {
-                account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
-            }
+                if (!string.IsNullOrEmpty(CertificateThumbprint))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.CertificateThumbprint, CertificateThumbprint);
+                }
 
-            account.SetProperty(PartnerAccountPropertyType.ApplicationId, string.IsNullOrEmpty(ApplicationId) ? PowerShellApplicationId : ApplicationId);
+                if (!string.IsNullOrEmpty(RefreshToken))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.RefreshToken, RefreshToken);
+                }
 
-            if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
-                account.Type = AccountType.AccessToken;
-            }
-            else if (ParameterSetName.Equals(RefreshTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (Credential != null)
+                account.SetProperty(PartnerAccountPropertyType.ApplicationId, string.IsNullOrEmpty(ApplicationId) ? PowerShellApplicationId : ApplicationId);
+
+                if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.AccessToken, AccessToken);
+                    account.Type = AccountType.AccessToken;
+                }
+                else if (ParameterSetName.Equals(RefreshTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (Credential != null)
+                    {
+                        account.ObjectId = Credential.UserName;
+                        account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
+                        account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
+                    }
+                }
+                else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
+                }
+                else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
                     account.ObjectId = Credential.UserName;
+                    account.Type = AccountType.ServicePrincipal;
+
                     account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
                     account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
                 }
-            }
-            else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
-            }
-            else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
-            {
-                account.ObjectId = Credential.UserName;
-                account.Type = AccountType.ServicePrincipal;
+                else
+                {
+                    account.Type = AccountType.User;
+                }
 
-                account.SetProperty(PartnerAccountPropertyType.ApplicationId, Credential.UserName);
-                account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
-            }
-            else
-            {
-                account.Type = AccountType.User;
-            }
+                if (UseDeviceAuthentication.IsPresent)
+                {
+                    account.SetProperty("UseDeviceAuth", "true");
+                }
 
-            if (UseDeviceAuthentication.IsPresent)
-            {
-                account.SetProperty("UseDeviceAuth", "true");
-            }
+                account.SetProperty(
+                    PartnerAccountPropertyType.Scope,
+                    ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase) ?
+                        $"{environment.AzureAdGraphEndpoint}/.default" :
+                        $"{environment.PartnerCenterEndpoint}/user_impersonation");
 
-            account.SetProperty(
-                PartnerAccountPropertyType.Scope,
-                ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase) ?
-                    $"{environment.AzureAdGraphEndpoint}/.default" :
-                    $"{environment.PartnerCenterEndpoint}/user_impersonation");
+                account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
 
-            account.Tenant = string.IsNullOrEmpty(Tenant) ? "organizations" : Tenant;
-
-            Scheduler.RunTask(async () =>
-            {
                 await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                     account,
                     environment,

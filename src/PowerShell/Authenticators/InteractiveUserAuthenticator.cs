@@ -57,7 +57,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 }
             }
 
-            app = await GetClientAsync(parameters.Account, parameters.Environment, redirectUri).ConfigureAwait(false);
+            app = GetClient(parameters.Account, parameters.Environment, redirectUri);
 
             if (app is IConfidentialClientApplication)
             {

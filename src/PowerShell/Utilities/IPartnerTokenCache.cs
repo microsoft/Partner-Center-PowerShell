@@ -6,60 +6,44 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using Identity.Client;
 
     /// <summary>
-    /// Implements the core functionality for a token cache.
+    /// Represents the core functionality for a token cache.
     /// </summary>
-    public abstract class PartnerTokenCache : IPartnerTokenCache
+    public interface IPartnerTokenCache
     {
         /// <summary>
-        /// Gets or sets the client identifier used to request a token.
+        /// Gets the client identifier used to request a token.
         /// </summary>
-        public string ClientId { get; private set; }
+        string ClientId { get; }
 
         /// <summary>
         /// Gets the data from the cache.
         /// </summary>
         /// <returns>The data from the token cache.</returns>
-        public virtual byte[] GetCacheData()
-        {
-            return null;
-        }
+        byte[] GetCacheData();
 
         /// <summary>
         /// Gets the key for the item in the token cache.
         /// </summary>
         /// <param name="authResult">The authentication result that represents the token retrieved.</param>
         /// <returns>The key for the item in the token cache.</returns>
-        public string GetCacheKey(AuthenticationResult authResult)
-        {
-            return $"{authResult.Account.HomeAccountId.Identifier}-{authResult.Account.Environment}-RefreshToken-{ClientId}--";
-        }
+        string GetCacheKey(AuthenticationResult authResult);
 
         /// <summary>
         /// Notification that is triggered after token acquisition.
         /// </summary>
         /// <param name="args">Arguments related to the cache item impacted</param>
-        public virtual void AfterAccessNotification(TokenCacheNotificationArgs args)
-        {
-        }
+        void AfterAccessNotification(TokenCacheNotificationArgs args);
 
         /// <summary>
         /// Notification that is triggered before token acquisition.
         /// </summary>
         /// <param name="args">Arguments related to the cache item impacted</param>
-        public virtual void BeforeAccessNotification(TokenCacheNotificationArgs args)
-        {
-        }
+        void BeforeAccessNotification(TokenCacheNotificationArgs args);
 
         /// <summary>
         /// Registers the token cache with client application.
         /// </summary>
-        /// <param name="client">The client application to be used when registering the token cache.</param>
-        public void RegisterCache(IClientApplicationBase client)
-        {
-            ClientId = client.AppConfig.ClientId;
-
-            client.UserTokenCache.SetAfterAccess(AfterAccessNotification);
-            client.UserTokenCache.SetBeforeAccess(BeforeAccessNotification);
-        }
+        /// <param name="client">The client application to be used when registering the token cache.</param
+        void RegisterCache(IClientApplicationBase client);
     }
 }

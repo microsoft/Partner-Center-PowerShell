@@ -222,48 +222,53 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     authResult.Scopes,
                     authResult.CorrelationId);
 
-                byte[] cacheData = PartnerTokenCache.GetMsalCacheStorage(ApplicationId).ReadData();
+                byte[] cacheData = null;
 
-                if (cacheData?.Length > 0)
+                if (PartnerSession.Instance.TryGetComponent(ComponentKey.TokenCache, out IPartnerTokenCache tokenCache))
                 {
-                    IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
+                    cacheData = tokenCache.GetCacheData();
 
-                    JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
-
-                    IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
-                        .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
-                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-                    IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
-
-                    if (known.ContainsKey("RefreshToken"))
+                    if (cacheData?.Length > 0)
                     {
-                        foreach (JToken token in root["RefreshToken"].Values())
-                        {
-                            if (token is JObject j)
-                            {
-                                TokenCacheItem item = new TokenCacheItem
-                                {
-                                    ClientId = ExtractExistingOrEmptyString(j, "client_id"),
-                                    CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
-                                    Environment = ExtractExistingOrEmptyString(j, "environment"),
-                                    HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
-                                    RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
-                                    Secret = ExtractExistingOrEmptyString(j, "secret")
-                                };
+                        IEnumerable<string> knownPropertyNames = new[] { "AccessToken", "RefreshToken", "IdToken", "Account", "AppMetadata" };
 
-                                tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                        JObject root = JObject.Parse(Encoding.UTF8.GetString(cacheData, 0, cacheData.Length));
+
+                        IDictionary<string, JToken> known = (root as IDictionary<string, JToken>)
+                            .Where(kvp => knownPropertyNames.Any(p => string.Equals(kvp.Key, p, StringComparison.OrdinalIgnoreCase)))
+                            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+                        IDictionary<string, TokenCacheItem> tokens = new Dictionary<string, TokenCacheItem>();
+
+                        if (known.ContainsKey("RefreshToken"))
+                        {
+                            foreach (JToken token in root["RefreshToken"].Values())
+                            {
+                                if (token is JObject j)
+                                {
+                                    TokenCacheItem item = new TokenCacheItem
+                                    {
+                                        ClientId = ExtractExistingOrEmptyString(j, "client_id"),
+                                        CredentialType = ExtractExistingOrEmptyString(j, "credential_type"),
+                                        Environment = ExtractExistingOrEmptyString(j, "environment"),
+                                        HomeAccountId = ExtractExistingOrEmptyString(j, "home_account_id"),
+                                        RawClientInfo = ExtractExistingOrEmptyString(j, "client_info"),
+                                        Secret = ExtractExistingOrEmptyString(j, "secret")
+                                    };
+
+                                    tokens.Add($"{item.HomeAccountId}-{item.Environment}-RefreshToken-{item.ClientId}--", item);
+                                }
                             }
                         }
-                    }
 
-                    if (authResult.Account != null)
-                    {
-                        string key = PartnerTokenCache.GetTokenCacheKey(authResult, applicationId);
-
-                        if (tokens.ContainsKey(key))
+                        if (authResult.Account != null)
                         {
-                            result.RefreshToken = tokens[key].Secret;
+                            string key = tokenCache.GetCacheKey(authResult);
+
+                            if (tokens.ContainsKey(key))
+                            {
+                                result.RefreshToken = tokens[key].Secret;
+                            }
                         }
                     }
                 }

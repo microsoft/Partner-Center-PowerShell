@@ -27,9 +27,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </returns>
         public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
-            IClientApplicationBase app = await GetClientAsync(parameters.Account, parameters.Environment).ConfigureAwait(false);
+            IClientApplicationBase app = GetClient(parameters.Account, parameters.Environment);
 
             ServiceClientTracing.Information($"[DeviceCodeAuthenticator] Calling AcquireTokenWithDeviceCode - Scopes: '{string.Join(", ", parameters.Scopes)}'");
+            
             return await app.AsPublicClient().AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
             {
                 WriteWarning(deviceCodeResult.Message);

@@ -59,6 +59,8 @@
                          '.\Microsoft.Azure.Management.Subscription.dll',
                          '.\Microsoft.Graph.Beta.dll',
                          '.\Microsoft.Graph.Core.dll',
+                         '.\Microsoft.Extensions.Caching.Abstractions.dll',
+                         '.\Microsoft.Extensions.Caching.Memory.dll',
                          '.\Microsoft.Extensions.Configuration.Abstractions.dll',
                          '.\Microsoft.Extensions.Configuration.Binder.dll',
                          '.\Microsoft.Extensions.Configuration.dll',
