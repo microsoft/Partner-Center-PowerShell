@@ -160,7 +160,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 PartnerSession.Instance.ClientFactory = new ClientFactory();
             }
 
-            if (File.Exists(Path.Combine(SharedUtilities.GetUserRootDirectory())))
+            if (File.Exists(Path.Combine(SharedUtilities.GetUserRootDirectory(), ".PartnerCenter", "InMemoryTokenCache")))
             {
                 PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new InMemoryTokenCache());
             }
