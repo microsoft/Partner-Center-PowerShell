@@ -22,6 +22,8 @@
 
 ## Upcoming Release
 
+* Authentication
+  * Addressed issue [#234](https://github.com/microsoft/Partner-Center-PowerShell/issues/234) that was preventing the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command from executing successfully when being invoked through an Azure Function app
 * Subscription
   * Added the `PartnerId` parameter to the [Set-PartnerCustomerSubscription](https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerCustomerSubscription) command
   * Addressed issue [#228](https://github.com/microsoft/Partner-Center-PowerShell/issues/228) that was causing issues with enabling and suspend an Azure subscription that is part of an Azure Plan
