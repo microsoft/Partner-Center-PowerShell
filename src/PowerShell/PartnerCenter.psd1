@@ -190,6 +190,7 @@
                       'New-PartnerCustomerUser',
                       'New-PartnerProductUpgrade',
                       'New-PartnerServiceRequest',
+                      'Register-PartnerTokenCache',
                       'Remove-PartnerCustomerConfigurationPolicy',
                       'Remove-PartnerCustomerUser',
                       'Remove-PartnerCustomerUserRoleMember',

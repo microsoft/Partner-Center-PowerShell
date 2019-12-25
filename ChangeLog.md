@@ -23,7 +23,7 @@
 ## Upcoming Release
 
 * Authentication
-  * Added the ability to leverage an in-memory token cache instead of the default persistent token cache by creating a InMemoryTokenCache control file
+  * Added the [Register-PartnerTokenCache](https://docs.microsoft.com/powershell/module/partnercenter/Register-PartnerTokenCache) to create, and delete, the control file that determines if a in-memory token cache should be used instead of the default persistent token cache
   * Addressed an issue where an InvalidOperationException exception was being encountering with the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) and [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) commands when specifying an environment
   * Addressed issue [#234](https://github.com/microsoft/Partner-Center-PowerShell/issues/234) that was preventing the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command from executing successfully when being invoked through an Azure Function app
 * Product Upgrades

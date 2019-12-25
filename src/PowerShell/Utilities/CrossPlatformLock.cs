@@ -42,7 +42,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         private FileStream lockFileStream;
 
         /// <summary>
-        /// A flag indiciating whether or not this instance has been disposed.
+        /// A flag indicating whether or not this instance has been disposed.
         /// </summary>
         private bool disposed = false;
 
