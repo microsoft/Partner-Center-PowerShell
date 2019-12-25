@@ -3,8 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
 {
-    using Microsoft.Extensions.Caching.Memory;
     using Identity.Client;
+    using Microsoft.Extensions.Caching.Memory;
 
     /// <summary>
     /// Provides an in-memory token cache for client applications.

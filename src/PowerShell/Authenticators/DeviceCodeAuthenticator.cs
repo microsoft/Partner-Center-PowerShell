@@ -30,7 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             IClientApplicationBase app = GetClient(parameters.Account, parameters.Environment);
 
             ServiceClientTracing.Information($"[DeviceCodeAuthenticator] Calling AcquireTokenWithDeviceCode - Scopes: '{string.Join(", ", parameters.Scopes)}'");
-            
+
             return await app.AsPublicClient().AcquireTokenWithDeviceCode(parameters.Scopes, deviceCodeResult =>
             {
                 WriteWarning(deviceCodeResult.Message);

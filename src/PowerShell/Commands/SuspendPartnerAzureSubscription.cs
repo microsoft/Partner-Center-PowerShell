@@ -39,8 +39,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     CustomerId);
 
                 CanceledSubscriptionId response = await client.Subscriptions.CancelAsync(
-                    SubscriptionId, 
-                    true, 
+                    SubscriptionId,
+                    true,
                     CancellationToken).ConfigureAwait(false);
 
                 WriteObject(response);

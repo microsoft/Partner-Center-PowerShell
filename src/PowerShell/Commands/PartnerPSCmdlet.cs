@@ -447,7 +447,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private void LogQosEvent()
         {
-            if (qosEvent == null)
+            if (qosEvent == null || PartnerSession.Instance.Context == null)
             {
                 return;
             }
