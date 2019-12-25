@@ -52,7 +52,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 throw new PartnerException("The access token has expired. Generate a new one and try again.");
             }
 
-            await Task.CompletedTask;
+            await Task.CompletedTask.ConfigureAwait(false);
 
             ServiceClientTracing.Information("[AccessTokenAuthenticator] Constructing the authentication result based on the specified access token");
 

@@ -36,7 +36,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 ISubscriptionClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<SubscriptionClient>(
                     new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}//user_impersonation" },
-                    CustomerId);
+                    CustomerId).ConfigureAwait(false);
 
                 CanceledSubscriptionId response = await client.Subscriptions.CancelAsync(
                     SubscriptionId,

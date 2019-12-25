@@ -115,6 +115,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell
         /// <returns>The name of the command from the type.</returns>
         public static string GetNameFromCmdletType(Type type)
         {
+            type.AssertNotNull(nameof(type));
+
             string cmdletName = null;
             CmdletAttribute cmdletAttrib = (CmdletAttribute)type.GetCustomAttributes(typeof(CmdletAttribute), false).FirstOrDefault();
 

@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             while (processAuthenticator != null && authResult == null)
             {
-                authResult = await processAuthenticator.TryAuthenticateAsync(GetAuthenticationParameters(account, environment, scopes, message), cancellationToken);
+                authResult = await processAuthenticator.TryAuthenticateAsync(GetAuthenticationParameters(account, environment, scopes, message), cancellationToken).ConfigureAwait(false);
 
                 if (authResult != null)
                 {

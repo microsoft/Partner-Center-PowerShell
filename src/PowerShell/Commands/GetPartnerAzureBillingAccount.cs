@@ -18,7 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Scheduler.RunTask(async () =>
             {
-                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+                IBillingManagementClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<BillingManagementClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" }).ConfigureAwait(false);
                 BillingAccountListResult data = await client.BillingAccounts.ListAsync(null, CancellationToken).ConfigureAwait(false);
 
                 WriteObject(data.Value, true);

@@ -46,10 +46,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Scheduler.RunTask(async () =>
             {
-                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync().ConfigureAwait(false);
 
                 ResourceCollection<License> licenses = await partner.Customers[CustomerId]
-                    .Users[UserId].Licenses.GetAsync(LicenseGroup?.Select(item => item).ToList());
+                    .Users[UserId].Licenses.GetAsync(LicenseGroup?.Select(item => item).ToList()).ConfigureAwait(false);
 
                 WriteObject(licenses.Items.Select(l => new PSLicense(l)), true);
             }, true);

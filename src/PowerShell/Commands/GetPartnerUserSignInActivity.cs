@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
     using System.Net;
@@ -79,12 +80,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 if (StartDate != null)
                 {
-                    filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                    filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
                 }
 
                 if (EndDate != null)
                 {
-                    filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                    filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
                 }
 
                 if (!string.IsNullOrEmpty(UserId))
@@ -113,7 +114,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 }
                 catch (ServiceException ex)
                 {
-                    if (!ex.Error.Code.Equals(RequestFromNonPremiumTenant))
+                    if (!ex.Error.Code.Equals(RequestFromNonPremiumTenant, StringComparison.InvariantCultureIgnoreCase))
                     {
                         throw;
                     }
@@ -145,12 +146,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (StartDate != null)
             {
-                filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                filter = AppendValue(filter, $"createdDateTime ge {StartDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
             }
 
             if (EndDate != null)
             {
-                filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ")}");
+                filter = AppendValue(filter, $"createdDateTime le {EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
             }
 
             signIns = new List<SignIn>();
@@ -200,7 +201,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
         }
 
-        private bool IsTransient(HttpResponseMessage response)
+        private static bool IsTransient(HttpResponseMessage response)
         {
             if (response.StatusCode == HttpStatusCode.RequestTimeout ||
                 response.StatusCode == (HttpStatusCode)429 ||

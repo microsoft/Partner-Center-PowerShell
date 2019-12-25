@@ -54,7 +54,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         /// Registers the token cache with client application.
         /// </summary>
         /// <param name="client">The client application to be used when registering the token cache.</param>
-        public void RegisterCache(IClientApplicationBase client)
+        public virtual void RegisterCache(IClientApplicationBase client)
         {
             ClientId = client.AppConfig.ClientId;
 
