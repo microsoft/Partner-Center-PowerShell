@@ -34,7 +34,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.3.0-preview" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="5.6.0" />
-    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.3" />
+    <PackageReference Include="PartnerCenter.DotNet" Version="1.15.4" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" PrivateAssets="All" />
   </ItemGroup>
 
