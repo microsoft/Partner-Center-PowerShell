@@ -61,7 +61,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// The Azure Active Directory authentication endpoint for the German cloud.
         /// </summary>
-        public const string GermanActiveDirectoryEndpoint = "https://login.microsoftonline.de";
+        public const string GermanActiveDirectoryEndpoint = "https://login.microsoftonline.de/";
 
         /// <summary>
         /// The Azure endpoint for the German cloud.
@@ -106,7 +106,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// <summary>
         /// The Azure Active Directory authentication endpoint for the US Government cloud.
         /// </summary>
-        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us";
+        public const string USGovernmentActiveDirectoryEndpoint = "https://login.microsoftonline.us/";
 
         /// <summary>
         /// The Azure endpoint address for the US Government cloud.

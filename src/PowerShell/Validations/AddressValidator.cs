@@ -15,21 +15,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     public sealed class AddressValidator : IValidator<Address>
     {
         /// <summary>
-        /// The country code for China.
-        /// </summary>
-        private const string ChinaCountryCode = "CN";
-
-        /// <summary>
-        /// The country code for Mexico.
-        /// </summary>
-        private const string MexicoCountryCode = "MX";
-
-        /// <summary>
-        /// The country code for the United States.
-        /// </summary>
-        private const string UnitedStatesCountryCode = "US";
-
-        /// <summary>
         /// Provides the ability to interact with Partner Center.
         /// </summary>
         private readonly IPartner partner;

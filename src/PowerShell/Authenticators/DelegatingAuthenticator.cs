@@ -52,7 +52,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             if (account.IsPropertySet(PartnerAccountPropertyType.CertificateThumbprint) || account.IsPropertySet(PartnerAccountPropertyType.ServicePrincipalSecret))
             {
                 app = CreateConfidentialClient(
-                    $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
+                    GetAzureCloudInstance(environment),
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     account.GetProperty(PartnerAccountPropertyType.ServicePrincipalSecret),
                     GetCertificate(account.GetProperty(PartnerAccountPropertyType.CertificateThumbprint)),
@@ -62,7 +62,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             else
             {
                 app = CreatePublicClient(
-                    $"{environment.ActiveDirectoryAuthority}{account.Tenant}",
+                    GetAzureCloudInstance(environment),
                     account.GetProperty(PartnerAccountPropertyType.ApplicationId),
                     redirectUri,
                     account.Tenant);
@@ -95,7 +95,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Creates a confidential client used for generating tokens.
         /// </summary>
-        /// <param name="authority">Address of the authority to issue the token</param>
+        /// <param name="cloudInstance">The cloud instance used for authentication.</param>
         /// <param name="clientId">Identifier of the client requesting the token.</param>
         /// <param name="certificate">Certificate used by the client requesting the token.</param>
         /// <param name="clientSecret">Secret of the client requesting the token.</param>
@@ -103,7 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
         /// <returns>An aptly configured confidential client.</returns>
         private static IConfidentialClientApplication CreateConfidentialClient(
-            string authority = null,
+            AzureCloudInstance cloudInstance,
             string clientId = null,
             string clientSecret = null,
             X509Certificate2 certificate = null,
@@ -112,10 +112,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             ConfidentialClientApplicationBuilder builder = ConfidentialClientApplicationBuilder.Create(clientId);
 
-            if (!string.IsNullOrEmpty(authority))
-            {
-                builder = builder.WithAuthority(authority);
-            }
+            builder = builder.WithAuthority(cloudInstance, tenantId);
 
             if (!string.IsNullOrEmpty(clientSecret))
             {
@@ -153,23 +150,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Creates a public client used for generating tokens.
         /// </summary>
-        /// <param name="authority">Address of the authority to issue the token</param>
+        /// <param name="cloudInstance">The cloud instance used for authentication.</param>
         /// <param name="clientId">Identifier of the client requesting the token.</param>
         /// <param name="redirectUri">The redirect URI for the client.</param>
         /// <param name="tenantId">Identifier of the tenant requesting the token.</param>
         /// <returns>An aptly configured public client.</returns>
         private static IPublicClientApplication CreatePublicClient(
-            string authority = null,
+            AzureCloudInstance cloudInstance,
             string clientId = null,
             string redirectUri = null,
             string tenantId = null)
         {
             PublicClientApplicationBuilder builder = PublicClientApplicationBuilder.Create(clientId);
 
-            if (!string.IsNullOrEmpty(authority))
-            {
-                builder = builder.WithAuthority(authority);
-            }
+            builder = builder.WithAuthority(cloudInstance, tenantId);
 
             if (!string.IsNullOrEmpty(redirectUri))
             {
@@ -193,6 +187,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
 
             return client;
+        }
+
+        /// <summary>
+        /// Gets the Azure cloud instance based an instance of the <see cref="PartnerEnvironment" /> class.
+        /// </summary>
+        /// <param name="environment">The environment information used to be generate the Azure Cloud instance.</param>
+        /// <returns>The Azure cloud instance based an instance of the <see cref="PartnerEnvironment" /> class.</returns>
+        private AzureCloudInstance GetAzureCloudInstance(PartnerEnvironment environment)
+        {
+            environment.AssertNotNull(nameof(environment));
+
+            if (environment.EnvironmentName == EnvironmentName.AzureChinaCloud)
+            {
+                return AzureCloudInstance.AzureChina;
+            }
+            else if (environment.EnvironmentName == EnvironmentName.AzureGermanCloud)
+            {
+                return AzureCloudInstance.AzureGermany;
+            }
+            else if (environment.EnvironmentName == EnvironmentName.AzureCloud)
+            {
+                return AzureCloudInstance.AzurePublic;
+            }
+            else if (environment.EnvironmentName == EnvironmentName.AzureUSGovernment)
+            {
+                return AzureCloudInstance.AzureUsGovernment;
+            }
+
+            return AzureCloudInstance.None;
         }
 
         /// <summary>
