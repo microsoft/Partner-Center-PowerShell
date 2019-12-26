@@ -150,7 +150,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 
             if (!match.Success)
             {
-                throw new InvalidOperationException($"Not a GET query. The following was returned {httpRequest}");
+                throw new InvalidOperationException("Not a GET query.");
             }
 
             getQuery = match.Groups[1].Value;
