@@ -14,16 +14,9 @@ Gets the line items for the specified invoice.
 
 ## SYNTAX
 
-### ByInvoice (Default)
 ```powershell
 Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> [-CurrencyCode <String>] -InvoiceId <String>
  -LineItemType <InvoiceLineItemType> [<CommonParameters>]
-```
-
-### ByBillingPeriod
-```powershell
-Get-PartnerInvoiceLineItem -BillingProvider <BillingProvider> [-CurrencyCode <String>] -InvoiceId <String>
- -LineItemType <InvoiceLineItemType> -Period <BillingPeriod> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -102,22 +95,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Period
-The billing period for the line items.
-
-```yaml
-Type: BillingPeriod
-Parameter Sets: ByBillingPeriod
-Aliases:
-Accepted values: Current, Previous
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -127,7 +104,15 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSInvoiceLineItem
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSDailyRatedUsageLineItem
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSDailyUsageLineItem
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSLicenseBasedLineItem
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSOneTimeInvoiceLineItem
+
+### Microsoft.Store.PartnerCenter.PowerShell.Models.Invoices.PSUsageBasedLineItem
 
 ## NOTES
 

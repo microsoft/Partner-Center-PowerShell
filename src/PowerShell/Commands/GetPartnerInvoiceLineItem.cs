@@ -3,71 +3,53 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using Models.Authentication;
+    using Models.Invoices;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
-    using PartnerCenter.PowerShell.Models.Invoices;
 
     /// <summary>
     /// Gets a list of line items for the specified invoice from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerInvoiceLineItem", DefaultParameterSetName = ByInvoiceParameterSet)]
-    [OutputType(typeof(PSInvoiceLineItem))]
+    [Cmdlet(VerbsCommon.Get, "PartnerInvoiceLineItem")]
+    [OutputType(typeof(PSDailyRatedUsageLineItem))]
+    [OutputType(typeof(PSDailyUsageLineItem))]
+    [OutputType(typeof(PSLicenseBasedLineItem))]
+    [OutputType(typeof(PSOneTimeInvoiceLineItem))]
+    [OutputType(typeof(PSUsageBasedLineItem))]
     public class GetPartnerInvoiceLineItem : PartnerAsyncCmdlet
     {
         /// <summary>
-        /// Name for the by invoice parameter set.
-        /// </summary>
-        private const string ByInvoiceParameterSet = "ByInvoice";
-
-        /// <summary>
-        /// Name for the by billing period parameter set.
-        /// </summary>
-        private const string ByBillingPeriodParameterSet = "ByBillingPeriod";
-
-        /// <summary>
         /// Gets or sets the billing provider.
         /// </summary>
-        [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true, ParameterSetName = ByBillingPeriodParameterSet)]
-        [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true, ParameterSetName = ByInvoiceParameterSet)]
+        [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true)]
         [ValidateSet(nameof(BillingProvider.All), nameof(BillingProvider.Azure), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime), nameof(BillingProvider.Marketplace))]
         public BillingProvider BillingProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the currenty code.
         /// </summary>
-        [Parameter(HelpMessage = "The currency code for the unbilled line items.", Mandatory = false, ParameterSetName = ByBillingPeriodParameterSet)]
-        [Parameter(HelpMessage = "The currency code for the unbilled line items.", Mandatory = false, ParameterSetName = ByInvoiceParameterSet)]
+        [Parameter(HelpMessage = "The currency code for the unbilled line items.", Mandatory = false)]
         [ValidateNotNull]
         public string CurrencyCode { get; set; }
 
         /// <summary>
         /// Gets or set the identifier for the invoice.
         /// </summary>
-        [Parameter(HelpMessage = "The identifier corresponding to the invoice.", Mandatory = true, ParameterSetName = ByBillingPeriodParameterSet)]
-        [Parameter(HelpMessage = "The identifier corresponding to the invoice.", Mandatory = true, ParameterSetName = ByInvoiceParameterSet)]
+        [Parameter(HelpMessage = "The identifier corresponding to the invoice.", Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public string InvoiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the invoice line item type.
         /// </summary>
-        [Parameter(HelpMessage = "The type of invoice line items.", Mandatory = true, ParameterSetName = ByBillingPeriodParameterSet)]
-        [Parameter(HelpMessage = "The type of invoice line items.", Mandatory = true, ParameterSetName = ByInvoiceParameterSet)]
+        [Parameter(HelpMessage = "The type of invoice line items.", Mandatory = true)]
         [ValidateSet(nameof(InvoiceLineItemType.BillingLineItems), nameof(InvoiceLineItemType.UsageLineItems))]
         public InvoiceLineItemType LineItemType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the billing period.
-        /// </summary>
-        [Parameter(HelpMessage = "The billing period for the line items.", Mandatory = true, ParameterSetName = ByBillingPeriodParameterSet)]
-        [ValidateSet(nameof(BillingPeriod.Current), nameof(BillingPeriod.Previous))]
-        public BillingPeriod Period { get; set; }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
@@ -81,14 +63,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 List<InvoiceLineItem> items;
                 ResourceCollection<InvoiceLineItem> lineItems;
 
-                if (ParameterSetName.Equals(ByBillingPeriodParameterSet, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType, CurrencyCode, Period).GetAsync().ConfigureAwait(false);
-                }
-                else
-                {
-                    lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).GetAsync().ConfigureAwait(false);
-                }
+                lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).GetAsync().ConfigureAwait(false);
 
                 enumerator = partner.Enumerators.InvoiceLineItems.Create(lineItems);
                 items = new List<InvoiceLineItem>();
