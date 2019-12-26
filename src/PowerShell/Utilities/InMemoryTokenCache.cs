@@ -3,13 +3,15 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
 {
+    using System;
     using Identity.Client;
     using Microsoft.Extensions.Caching.Memory;
+    using Rest;
 
     /// <summary>
     /// Provides an in-memory token cache for client applications.
     /// </summary>
-    public sealed class InMemoryTokenCache : PartnerTokenCache
+    public class InMemoryTokenCache : PartnerTokenCache, IDisposable
     {
         /// <summary>
         /// Identifier for the token cache.
@@ -27,11 +29,44 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         private readonly IMemoryCache memoryCache;
 
         /// <summary>
+        /// A flag indicating if the object has already been disposed.
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryTokenCache" /> class.
         /// </summary>
         public InMemoryTokenCache()
         {
             memoryCache = new MemoryCache(new MemoryCacheOptions());
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                memoryCache?.Dispose();
+            }
+
+            disposed = true;
         }
 
         /// <summary>
@@ -52,6 +87,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         /// <param name="args">Arguments related to the cache item impacted</param>
         public override void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
+            args.AssertNotNull(nameof(args));
+
             lock (resourceLock)
             {
                 memoryCache.Set(cacheId, args.TokenCache.SerializeMsalV3());
@@ -64,6 +101,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         /// <param name="args">Arguments related to the cache item impacted</param>
         public override void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
+            args.AssertNotNull(nameof(args));
+
             lock (resourceLock)
             {
                 if (memoryCache.TryGetValue(cacheId, out byte[] value))
@@ -71,6 +110,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
                     args.TokenCache.DeserializeMsalV3(value);
                 }
             }
+        }
+
+        /// <summary>
+        /// Registers the token cache with client application.
+        /// </summary>
+        /// <param name="client">The client application to be used when registering the token cache.</param>
+        public override void RegisterCache(IClientApplicationBase client)
+        {
+            ServiceClientTracing.Information("Registering the in-memory token cache.");
+
+            base.RegisterCache(client);
         }
     }
 }

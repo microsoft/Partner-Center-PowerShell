@@ -17,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     internal class AuthenticationFactory : IAuthenticationFactory
     {
-        internal IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
+        private static IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
         public async Task<AuthenticationResult> AuthenticateAsync(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, CancellationToken cancellationToken = default)
         {

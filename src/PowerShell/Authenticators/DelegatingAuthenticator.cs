@@ -194,7 +194,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </summary>
         /// <param name="environment">The environment information used to be generate the Azure Cloud instance.</param>
         /// <returns>The Azure cloud instance based an instance of the <see cref="PartnerEnvironment" /> class.</returns>
-        private AzureCloudInstance GetAzureCloudInstance(PartnerEnvironment environment)
+        private static AzureCloudInstance GetAzureCloudInstance(PartnerEnvironment environment)
         {
             environment.AssertNotNull(nameof(environment));
 
@@ -223,7 +223,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// </summary>
         /// <param name="thumbprint">Thumbprint of the certificate to be located.</param>
         /// <returns>An instance of the <see cref="X509Certificate2"/> class that represents the certificate.</returns>
-        private X509Certificate2 GetCertificate(string thumbprint)
+        private static X509Certificate2 GetCertificate(string thumbprint)
         {
             if (string.IsNullOrEmpty(thumbprint))
             {
@@ -245,7 +245,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="thumbprint">Thumbprint of the certificate to be located.</param>
         /// <param name="storeLocation">The location of the X.509 certifcate store.</param>
         /// <returns><c>true</c> if the certificate was found; otherwise <c>false</c>.</returns>
-        private bool FindCertificateByThumbprint(string thumbprint, StoreLocation storeLocation, out X509Certificate2 certificate)
+        private static bool FindCertificateByThumbprint(string thumbprint, StoreLocation storeLocation, out X509Certificate2 certificate)
         {
             X509Store store = null;
             X509Certificate2Collection col;

@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading;
@@ -46,7 +47,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 {
                     listener = new TcpListener(IPAddress.Loopback, port);
                     listener.Start();
-                    redirectUri = string.Format("http://localhost:{0}/", port);
+                    redirectUri = $"http://localhost:{port}/";
                     listener.Stop();
                     break;
                 }
@@ -80,7 +81,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
             }
             else
             {
-                ServiceClientTracing.Information(string.Format("[InteractiveUserAuthenticator] Calling AcquireTokenInteractive - Scopes: '{0}'", string.Join(",", parameters.Scopes)));
+                ServiceClientTracing.Information(string.Format(CultureInfo.InvariantCulture, "[InteractiveUserAuthenticator] Calling AcquireTokenInteractive - Scopes: '{0}'", string.Join(",", parameters.Scopes)));
 
                 authResult = await app.AsPublicClient().AcquireTokenInteractive(parameters.Scopes)
                     .WithCustomWebUi(new DefaultOsBrowserWebUi(interactiveParameters.Message))

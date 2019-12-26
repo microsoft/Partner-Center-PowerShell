@@ -3,6 +3,7 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -28,13 +29,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         {
             IClientApplicationBase app = GetClient(parameters.Account, parameters.Environment);
 
-            ServiceClientTracing.Information(string.Format("[SilentAuthenticator] Calling GetAccountsAsync"));
+            ServiceClientTracing.Information("[SilentAuthenticator] Calling GetAccountsAsync");
             IEnumerable<IAccount> accounts = await app.AsPublicClient().GetAccountsAsync().ConfigureAwait(false);
 
             ServiceClientTracing.Information($"[SilentAuthenticator] Calling AcquireTokenSilent - Scopes: '{string.Join(",", parameters.Scopes)}', UserId: '{((SilentParameters)parameters).UserId}', Number of accounts: '{accounts.Count()}'");
             AuthenticationResult authResult = await app.AsPublicClient().AcquireTokenSilent(
                 parameters.Scopes,
-                accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId)))
+                accounts.FirstOrDefault(a => a.HomeAccountId.ObjectId.Equals(((SilentParameters)parameters).UserId, StringComparison.InvariantCultureIgnoreCase)))
                 .ExecuteAsync(cancellationToken).ConfigureAwait(false);
 
             return authResult;
