@@ -245,6 +245,9 @@ Gets a list of service request topics.
 ### [Get-PartnerSupportProfile](Get-PartnerSupportProfile.md)
 Gets the partner's support profile.
 
+### [Get-PartnerUnbilledInvoiceLineItem](Get-PartnerUnbilledInvoiceLineItem.md)
+Gets the unbilled invoice line items.
+
 ### [Get-PartnerUser](Get-PartnerUser.md)
 Gets a list of users from the partner tenant
 

@@ -173,6 +173,7 @@
                       'Get-PartnerServiceRequest',
                       'Get-PartnerServiceRequestTopic',
                       'Get-PartnerSupportProfile',
+                      'Get-PartnerUnbilledInvoiceLineItem',
                       'Get-PartnerUser',
                       'Get-PartnerUserSignInActivity',
                       'Get-PartnerValidationCode',
