@@ -27,13 +27,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the billing provider.
         /// </summary>
         [Parameter(HelpMessage = "The billing provide for the line items.", Mandatory = true)]
-        [ValidateSet(nameof(BillingProvider.All), nameof(BillingProvider.Azure), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime), nameof(BillingProvider.Marketplace))]
+        [ValidateSet(nameof(BillingProvider.All), nameof(BillingProvider.Azure), nameof(BillingProvider.Marketplace), nameof(BillingProvider.Office), nameof(BillingProvider.OneTime))]
         public BillingProvider BillingProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the currenty code.
         /// </summary>
-        [Parameter(HelpMessage = "The currency code for the unbilled line items.", Mandatory = false)]
+        [Parameter(HelpMessage = "The currency code for the line items.", Mandatory = false)]
         [ValidateNotNull]
         public string CurrencyCode { get; set; }
 
@@ -63,7 +63,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 List<InvoiceLineItem> items;
                 ResourceCollection<InvoiceLineItem> lineItems;
 
-                lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).GetAsync().ConfigureAwait(false);
+                if (BillingProvider == BillingProvider.OneTime || BillingProvider == BillingProvider.Marketplace)
+                {
+                    lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType, CurrencyCode, BillingPeriod.Current).GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    lineItems = await partner.Invoices[InvoiceId].By(BillingProvider, LineItemType).GetAsync(CancellationToken).ConfigureAwait(false);
+                }
 
                 enumerator = partner.Enumerators.InvoiceLineItems.Create(lineItems);
                 items = new List<InvoiceLineItem>();
@@ -71,7 +78,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 while (enumerator.HasValue)
                 {
                     items.AddRange(enumerator.Current.Items);
-                    await enumerator.NextAsync().ConfigureAwait(false);
+                    await enumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
                 }
 
                 if (LineItemType == InvoiceLineItemType.BillingLineItems)
