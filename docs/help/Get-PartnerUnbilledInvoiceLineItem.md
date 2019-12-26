@@ -33,10 +33,10 @@ Gets reconciliation line items for the current billing period that have not been
 
 ### Example 2
 ```powershell
-PS C:\> Get-PartnerUnbilledInvoiceLineItem -CurrencyCode USD -LineItemType BillingLineItems -Period Pervious
+PS C:\> Get-PartnerUnbilledInvoiceLineItem -CurrencyCode USD -LineItemType BillingLineItems -Period Previous
 ```
 
-Gets reconciliation line items for the pervious billing period that have not been billed. The pervious billing period is defined as the pervious month.
+Gets reconciliation line items for the previous billing period that have not been billed. The previous billing period is defined as the previous month.
 
 ### Example 3
 ```powershell
@@ -47,10 +47,10 @@ Gets consumption line items for the current billing period that have not been bi
 
 ### Example 4
 ```powershell
-PS C:\> Get-PartnerUnbilledInvoiceLineItem -CurrencyCode USD -LineItemType UsageLineItems -Period Pervious
+PS C:\> Get-PartnerUnbilledInvoiceLineItem -CurrencyCode USD -LineItemType UsageLineItems -Period Previous
 ```
 
-Gets consumption line items for the pervious billing period that have not been billed. The pervious billing period is defined as the pervious month.
+Gets consumption line items for the previous billing period that have not been billed. The previous billing period is defined as the previous month.
 
 ## PARAMETERS
 
