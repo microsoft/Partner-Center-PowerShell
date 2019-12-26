@@ -48,7 +48,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Scheduler.RunTask(async () =>
             {
-                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync().ConfigureAwait(false);
                 IResourceCollectionEnumerator<SeekBasedResourceCollection<Customer>> customersEnumerator;
                 List<Customer> customers = new List<Customer>();
                 SeekBasedResourceCollection<Customer> seekCustomers;

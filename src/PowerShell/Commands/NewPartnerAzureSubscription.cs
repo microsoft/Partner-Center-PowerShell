@@ -45,7 +45,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Scheduler.RunTask(async () =>
             {
-                ISubscriptionClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" });
+                ISubscriptionClient client = await PartnerSession.Instance.ClientFactory.CreateServiceClientAsync<SubscriptionClient>(new[] { $"{PartnerSession.Instance.Context.Environment.AzureEndpoint}/user_impersonation" }).ConfigureAwait(false);
                 ModernCspSubscriptionCreationParameters parameters = new ModernCspSubscriptionCreationParameters
                 {
                     DisplayName = DisplayName,

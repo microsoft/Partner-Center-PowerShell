@@ -8,11 +8,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
     using System.IO;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
+    using Rest;
 
     /// <summary>
     /// Implements a token cache that leverages persistent storage.
     /// </summary>
-    public sealed class PersistentTokenCache : PartnerTokenCache
+    public class PersistentTokenCache : PartnerTokenCache, IDisposable
     {
         /// <summary>
         /// The file name for the token cache.
@@ -31,6 +32,39 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         private CrossPlatformLock cacheLock;
 
         /// <summary>
+        /// A flag indicating if the object has already been disposed.
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                cacheLock?.Dispose();
+            }
+
+            disposed = true;
+        }
+
+        /// <summary>
         /// Gets the data from the cache.
         /// </summary>
         /// <returns>The data from the token cache.</returns>
@@ -46,6 +80,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         public override void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             MsalCacheStorage cacheStorage = GetMsalCacheStorage();
+
+            args.AssertNotNull(nameof(args));
 
             try
             {
@@ -75,6 +111,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
         {
             MsalCacheStorage cacheStorage = GetMsalCacheStorage();
 
+            args.AssertNotNull(nameof(args));
+
             try
             {
                 cacheLock = new CrossPlatformLock($"{CacheFilePath}.lockfile");
@@ -89,6 +127,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
             }
         }
 
+        /// <summary>
+        /// Registers the token cache with client application.
+        /// </summary>
+        /// <param name="client">The client application to be used when registering the token cache.</param>
+        public override void RegisterCache(IClientApplicationBase client)
+        {
+            ServiceClientTracing.Information("Registering the persistent token cache.");
+
+            base.RegisterCache(client);
+        }
 
         /// <summary>
         /// Gets an aptly configured instance of the <see cref="MsalCacheStorage" /> class.

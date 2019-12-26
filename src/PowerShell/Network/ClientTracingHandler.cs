@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 {
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
@@ -27,9 +28,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             HttpResponseMessage response;
             string invocationId = null;
 
+            request.AssertNotNull(nameof(request));
+
             if (ServiceClientTracing.IsEnabled)
             {
-                invocationId = ServiceClientTracing.NextInvocationId.ToString();
+                invocationId = ServiceClientTracing.NextInvocationId.ToString(CultureInfo.InvariantCulture);
 
                 NameValueCollection queryParameters = HttpUtility.ParseQueryString(request.RequestUri.Query);
                 Dictionary<string, object> tracingParameters = new Dictionary<string, object>();

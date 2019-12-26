@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Text;
@@ -81,6 +82,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <param name="response">The response from the HTTP operation.</param>
         public void ReceiveResponse(string invocationId, HttpResponseMessage response)
         {
+            invocationId.AssertNotEmpty(nameof(invocationId));
+            response.AssertNotNull(nameof(response));
+
             StringBuilder output = new StringBuilder();
 
             output.AppendLine($"============================ HTTP RESPONSE ============================");
@@ -90,6 +94,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             foreach (KeyValuePair<string, IEnumerable<string>> item in response.Headers.ToDictionary(h => h.Key, h => h.Value).ToArray())
             {
                 output.AppendLine(string.Format(
+                    CultureInfo.InvariantCulture,
                     "{0,-30}: {1}",
                     item.Key,
                     string.Join(",", item.Value)));
@@ -112,6 +117,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <param name="request">The HTTP request to be sent.</param>
         public void SendRequest(string invocationId, HttpRequestMessage request)
         {
+            invocationId.AssertNotEmpty(nameof(invocationId));
+            request.AssertNotNull(nameof(request));
+
             StringBuilder output = new StringBuilder();
 
             output.AppendLine($"============================ HTTP REQUEST ============================");
@@ -119,9 +127,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             output.AppendLine($"Absolute Uri:{Environment.NewLine}{request.RequestUri}{Environment.NewLine}");
             output.AppendLine($"Headers:");
 
-            foreach (KeyValuePair<string, IEnumerable<string>> item in request.Headers.Where(h => !h.Key.Equals("Authorization")).ToDictionary(h => h.Key, h => h.Value).ToArray())
+            foreach (KeyValuePair<string, IEnumerable<string>> item in request.Headers.Where(h => !h.Key.Equals("Authorization", StringComparison.InvariantCultureIgnoreCase)).ToDictionary(h => h.Key, h => h.Value).ToArray())
             {
                 output.AppendLine(string.Format(
+                    CultureInfo.InvariantCulture,
                     "{0,-30}: {1}",
                     item.Key,
                     string.Join(",", item.Value)));

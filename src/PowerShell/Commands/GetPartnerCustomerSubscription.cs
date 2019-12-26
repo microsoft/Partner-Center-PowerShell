@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             Scheduler.RunTask(async () =>
             {
-                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync().ConfigureAwait(false);
                 string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
                 if (string.IsNullOrEmpty(SubscriptionId))

@@ -26,7 +26,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// The base class for Partner Center PowerShell cmdlets.
     /// </summary>
-    public abstract class PartnerPSCmdlet : PSCmdlet
+    public abstract class PartnerPSCmdlet : PSCmdlet, IDisposable
     {
         /// <summary>
         /// Name of the telemetry event.
@@ -57,6 +57,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private CancellationTokenSource cancellationSource;
 
         /// <summary>
+        /// A flag indicating if the object has already been disposed.
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
         /// A SHA 256 hash of the MAC address.
         /// </summary>
         private string hashMacAddress;
@@ -75,6 +80,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets the cancellation token used to propagate a notification that operations should be canceled.
         /// </summary>
         protected CancellationToken CancellationToken => cancellationSource.Token;
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                cancellationSource?.Dispose();
+            }
+
+            disposed = true;
+        }
 
         /// <summary>
         /// Gets the SHA 256 has the MAC address.
@@ -447,7 +480,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         private void LogQosEvent()
         {
-            if (qosEvent == null)
+            if (qosEvent == null || PartnerSession.Instance.Context == null)
             {
                 return;
             }
@@ -495,7 +528,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             eventProperties.Add("CommandParameters", qosEvent.Parameters);
             eventProperties.Add("HashMacAddress", HashMacAddress);
             eventProperties.Add("HostVersion", qosEvent.HostVersion);
-            eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString());
+            eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString(CultureInfo.InvariantCulture));
             eventProperties.Add("ModuleVersion", qosEvent.ModuleVersion);
             eventProperties.Add("PowerShellVersion", Host.Version.ToString());
 
@@ -510,7 +543,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         /// <param name="eventProperties">The telemetry event properties to be populated.</param>
         /// <param name="response">The HTTP response used to populate the event properties.</param>
-        private void PopulatePropertiesFromResponse(IDictionary<string, string> eventProperties, HttpResponseMessageWrapper response)
+        private static void PopulatePropertiesFromResponse(IDictionary<string, string> eventProperties, HttpResponseMessageWrapper response)
         {
             if (response == null)
             {

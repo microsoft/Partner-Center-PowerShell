@@ -271,10 +271,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                             }
                         }
                     }
+                    else
+                    {
+                        WriteDebug("There was not any data in the token cache, so a refresh token could not be retrieved.");
+                    }
                 }
                 else
                 {
-                    WriteDebug("There was not any data in the token cache, so a refresh token could not be retrieved.");
+                    WriteDebug("Unable to find a registered token cache.");
                 }
 
                 WriteObject(result);

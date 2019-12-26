@@ -22,6 +22,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <returns>An instance of the <see cref="Task"/> class that represents the asynchronous operation.</returns>
         public async Task AuthenticateRequestAsync(HttpRequestMessage request)
         {
+            request.AssertNotNull(nameof(request));
+
             AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
@@ -29,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
 
-            await Task.CompletedTask;
+            await Task.CompletedTask.ConfigureAwait(false);
         }
     }
 }

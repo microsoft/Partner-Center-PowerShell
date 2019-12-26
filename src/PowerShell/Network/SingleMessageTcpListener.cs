@@ -164,7 +164,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             return uriBuilder.Uri;
         }
 
-        private async Task WriteResponseAsync(string message, NetworkStream stream, CancellationToken cancellationToken)
+        private static async Task WriteResponseAsync(string message, NetworkStream stream, CancellationToken cancellationToken)
         {
             string fullResponse = $"HTTP/1.1 200 OK\r\n\r\n{message}";
             byte[] response = Encoding.ASCII.GetBytes(fullResponse);

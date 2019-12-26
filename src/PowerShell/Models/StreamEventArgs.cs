@@ -11,7 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
     public class StreamEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets or sets a flag indiciating whether or not the collection should be enumerated.
+        /// Gets or sets a flag indicating whether or not the collection should be enumerated.
         /// </summary>
         public bool EnumerateCollection { get; set; }
 

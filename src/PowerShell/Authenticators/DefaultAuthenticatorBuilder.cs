@@ -34,6 +34,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <param name="constructor">Delegate to initialize the authenticator.</param>
         public void AppendAuthenticator(Func<IAuthenticator> constructor)
         {
+            constructor.AssertNotNull(nameof(constructor));
+
             if (null == Authenticator)
             {
                 Authenticator = constructor();
