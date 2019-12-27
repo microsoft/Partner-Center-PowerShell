@@ -7,9 +7,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
+    using Rest;
 
+    /// <summary>
+    /// Provides the ability to listen and intercept HTTP operations.
+    /// </summary>
     internal class HttpListenerInterceptor
     {
+        /// <summary>
+        /// Listens for a single request and responds.
+        /// </summary>
+        /// <param name="port">The port where to listen for requests.</param>
+        /// <param name="responseProducer">The function responsible for responding.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns></returns>
         public async Task<Uri> ListenToSingleRequestAndRespondAsync(int port, Func<Uri, MessageAndHttpCode> responseProducer, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -24,11 +35,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
                 httpListener.Prefixes.Add(urlToListenTo);
 
                 httpListener.Start();
-                //_logger.Info("Listening for authorization code on " + urlToListenTo);
+                ServiceClientTracing.Information($"[HttpListenerInterceptor] Listening for authorization code on {urlToListenTo}");
 
                 using (cancellationToken.Register(() =>
                 {
-                    // _logger.Warning("HttpListener stopped because cancellation was requested.");
                     TryStopListening(httpListener);
                 }))
                 {
@@ -37,7 +47,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
                     cancellationToken.ThrowIfCancellationRequested();
 
                     Respond(responseProducer, context);
-                    //_logger.Verbose("HttpListner received a message on " + urlToListenTo);
+                    ServiceClientTracing.Information($"[HttpListenerInterceptor] Received a message on {urlToListenTo}");
 
                     // the request URL should now contain the auth code and pkce
                     return context.Request.Url;
@@ -45,10 +55,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             }
             catch (ObjectDisposedException)
             {
-                // If cancellation is requested before GetContextAsync is called
-                // then an ObjectDisposedException is fired by GetContextAsync.
-                // This is still just cancellation
-                //_logger.Warning("ObjectDisposedException - cancellation requested? " + cancellationToken.IsCancellationRequested);
                 cancellationToken.ThrowIfCancellationRequested();
 
                 throw;
@@ -62,7 +68,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         private void Respond(Func<Uri, MessageAndHttpCode> responseProducer, HttpListenerContext context)
         {
             MessageAndHttpCode messageAndCode = responseProducer(context.Request.Url);
-            // _logger.Info("Processing a response message to the browser. HttpStatus:" + messageAndCode.HttpCode);
+            ServiceClientTracing.Information($"[HttpListenerInterceptor] Processing a response message to the browser. HttpStatus: {messageAndCode.HttpCode}");
 
             switch (messageAndCode.HttpCode)
             {
