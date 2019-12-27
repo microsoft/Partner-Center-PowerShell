@@ -87,25 +87,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                         resource.PhoneNumber));
             }
 
-            //if (string.IsNullOrEmpty(resource.Country) && !string.IsNullOrEmpty(resource.Region))
-            //{
-            //    debugAction("The country parameter must be specified to perform address validation. Since it was not provided this operation will not be performed a default value of true will be returned.");
-            //    return true;
-            //}
-
-            //if (string.IsNullOrEmpty(resource.Country))
-            //{
-            //    debugAction("The country parameter must be specifed to perform address validation. Since it was not provided this operation will be performed and a value of false will be returned.");
-            //    return false;
-            //}
-
-            //if (resource.Country.Equals(ChinaCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
-            //    resource.Country.Equals(MexicoCountryCode, StringComparison.InvariantCultureIgnoreCase) ||
-            //    resource.Country.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase))
-            //{
             debugAction("Checking if the address is valid using the partner service.");
             return partner.Validations.IsAddressValidAsync(resource).ConfigureAwait(false).GetAwaiter().GetResult();
-            // }
         }
     }
 }

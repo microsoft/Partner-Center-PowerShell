@@ -20,15 +20,18 @@
 
 # Change Log
 
-## Upcoming Release
+## 3.0.3 - December 2019
 
 * Authentication
   * Added the [Register-PartnerTokenCache](https://docs.microsoft.com/powershell/module/partnercenter/Register-PartnerTokenCache) to create, and delete, the control file that determines if a in-memory token cache should be used instead of the default persistent token cache
-  * Addressed an issue where an InvalidOperationException exception was being encountering with the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) and [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) commands when specifying an environment
+  * Addressed an issue where an InvalidOperationException exception was being encountering with the [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) and [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) commands when specifying an environment
+  * Addressed an issue where an InvalidOperationException exception was being encountered under certain circumstances when invoking [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) and attempting to authenticate interactively
   * Addressed issue [#234](https://github.com/microsoft/Partner-Center-PowerShell/issues/234) that was preventing the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command from executing successfully when being invoked through an Azure Function app
 * Invoice
   * Added the [Get-PartnerUnbilledInvoiceLineItem](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUnbilledInvoiceLineItem) command to get unbilled invoice line items
   * Removed the `Period` parameter from the [Get-PartnerInvoiceLineItem](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerInvoiceLineItem) command because the functionality it enabled has been replaced with the [Get-PartnerUnbilledInvoiceLineItem](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUnbilledInvoiceLineItem) command
+* Network
+  * Addressed an issue where the HTTP response from [Get-PartnerUser](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUser) and [Get-PartnerUserSignInActivity](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerUserSignInActivity) was not being correctly written to the debug pipeline
 * Product Upgrades
   * Addressed an issue with starting the upgrade process for an Azure Plan
 * Subscription

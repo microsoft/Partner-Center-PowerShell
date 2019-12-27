@@ -7,24 +7,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     using System.Collections.Specialized;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Net;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using Extensions;
     using Identity.Client.Extensibility;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models;
-    using Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication;
+    using Models;
+    using Models.Authentication;
 
     /// <summary>
-    /// Provide a custom Web UI for public client applications to sign-in users and have them consent part of the Authorization code flow.
+    /// Provide a custom Web UI for client applications to sign-in users and have them consent part of the authorization code flow.
     /// </summary>
-    internal class DefaultOsBrowserWebUi : ICustomWebUi
+    public class DefaultOsBrowserWebUi : ICustomWebUi
     {
         /// <summary>
         /// The HTML returned after failed authentication.
         /// </summary>
-        private const string CloseWindowFailureHtml = @"<html>
+        private const string DefaultFailureHtml = @"<html>
   <head><title>Authentication Failed</title></head>
   <body>
     Authentication failed. You can return to the application. Feel free to close this browser tab.
@@ -36,7 +37,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         /// <summary>
         /// The HTML returned after successful authentication.
         /// </summary>
-        private const string CloseWindowSuccessHtml = @"<html>
+        private const string DefaultSuccessHtml = @"<html>
   <head><title>Authentication Complete</title></head>
   <body>
     Authentication complete. You can return to the application. Feel free to close this browser tab.
@@ -44,18 +45,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 </html>";
 
         /// <summary>
-        /// The message written to the console.
+        /// The message to be written to the console.
         /// </summary>
         private readonly string message;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOsBrowserWebUi" /> class.
         /// </summary>
-        /// <param name="message">The message written to the console.</param>
+        /// <param name="message">The message to be written to the console.</param>
         public DefaultOsBrowserWebUi(string message)
         {
             message.AssertNotEmpty(nameof(message));
-
             this.message = message;
         }
 
@@ -77,20 +77,40 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 
             WriteWarning(message);
 
-            using (SingleMessageTcpListener listener = new SingleMessageTcpListener(redirectUri.Port))
+            return await new HttpListenerInterceptor().ListenToSingleRequestAndRespondAsync(
+                redirectUri.Port,
+                GetResponseMessage,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets the response message to be sent to the browser.
+        /// </summary>
+        /// <param name="authCodeUri">The URI that contains the authorization code.</param>
+        /// <returns>The response message to be sent to the browser.</returns>
+        private MessageAndHttpCode GetResponseMessage(Uri authCodeUri)
+        {
+            // Parse the URI to understand if an error was returned. This is done just to show the user a nice error message in the browser.
+            NameValueCollection authCodeQueryKeyValue = HttpUtility.ParseQueryString(authCodeUri.Query);
+
+            string errorValue = authCodeQueryKeyValue.Get("error");
+
+            if (!string.IsNullOrEmpty(errorValue))
             {
-                Uri authCodeUri = null;
+                string errorDescription = authCodeQueryKeyValue.Get("error_description");
 
-                await listener.ListenToSingleRequestAndRespondAsync(
-                    (uri) =>
-                    {
-                        authCodeUri = uri;
-                        return GetMessageToShowInBroswerAfterAuth(uri);
-                    },
-                    cancellationToken).ConfigureAwait(false);
+                WriteWarning($"Default OS browser intercepted an URI with an error: {errorValue} {errorDescription}");
 
-                return authCodeUri;
+                string errorMessage = string.Format(
+                        CultureInfo.InvariantCulture,
+                        DefaultFailureHtml,
+                        errorValue,
+                        errorDescription);
+
+                return new MessageAndHttpCode(HttpStatusCode.OK, errorMessage);
             }
+
+            return new MessageAndHttpCode(HttpStatusCode.OK, DefaultSuccessHtml);
         }
 
         /// <summary>
@@ -130,31 +150,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         }
 
         /// <summary>
-        /// Gets the HTML that will be shown in the browser.
+        /// Writes the warning message to the pipeline.
         /// </summary>
-        /// <param name="uri">The URI returned back from the STS authorization endpoint.</param>
-        /// <returns>The HTML to be shown in the browser.</returns>
-        private static string GetMessageToShowInBroswerAfterAuth(Uri uri)
-        {
-            NameValueCollection authCodeQueryKeyValue = HttpUtility.ParseQueryString(uri.Query);
-
-            string errorString = authCodeQueryKeyValue.Get("error");
-
-            if (!string.IsNullOrEmpty(errorString))
-            {
-                return string.Format(
-                    CultureInfo.InvariantCulture,
-                    CloseWindowFailureHtml,
-                    errorString,
-                    authCodeQueryKeyValue.Get("error_description"));
-            }
-
-            return CloseWindowSuccessHtml;
-        }
-
+        /// <param name="text">The message to be written to the pipeline.</param>
         private void WriteWarning(string message)
         {
-            if (PartnerSession.Instance.TryGetComponent("WriteWarning", out EventHandler<StreamEventArgs> writeWarningEvent))
+            message.AssertNotEmpty(nameof(message));
+
+            if (PartnerSession.Instance.TryGetComponent(ComponentKey.WriteWarning, out EventHandler<StreamEventArgs> writeWarningEvent))
             {
                 writeWarningEvent(this, new StreamEventArgs { Resource = message });
             }

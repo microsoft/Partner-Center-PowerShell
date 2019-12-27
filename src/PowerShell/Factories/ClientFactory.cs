@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Net.Http;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     GraphClientFactory.CreateDefaultHandlers(null),
                     new ClientTracingHandler
                     {
-                        InnerHandler = new HttpClientHandler()
+                        InnerHandler = new HttpClientHandler() { AutomaticDecompression = DecompressionMethods.GZip }
                     }), false, null));
 
         /// <summary>
