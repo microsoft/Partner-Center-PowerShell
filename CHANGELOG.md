@@ -20,7 +20,7 @@
 
 # Change Log
 
-## Upcoming Release
+## 3.0.3 - December 2019
 
 * Authentication
   * Added the [Register-PartnerTokenCache](https://docs.microsoft.com/powershell/module/partnercenter/Register-PartnerTokenCache) to create, and delete, the control file that determines if a in-memory token cache should be used instead of the default persistent token cache
