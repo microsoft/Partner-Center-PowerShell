@@ -12,5 +12,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
         /// Key value for the token cache component.
         /// </summary>
         public const string TokenCache = "TokenCache";
+
+        /// <summary>
+        /// Key value for the write warning component.
+        /// </summary>
+        public const string WriteWarning = "WriteWarning";
     }
 }
