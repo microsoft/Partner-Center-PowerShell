@@ -253,7 +253,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 try
                 {
-                    partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                    partnerOperations = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId).ConfigureAwait(false);
                     profile = await partnerOperations.Profiles.OrganizationProfile.GetAsync().ConfigureAwait(false);
 
                     PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;

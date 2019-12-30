@@ -3,20 +3,21 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
+    using Models.Orders;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Orders;
-    using PartnerCenter.PowerShell.Models.Orders;
 
     /// <summary>
     /// Get a customer, or a list of customers, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrder"), OutputType(typeof(PSOrder))]
-    public class GetPartnerCustomerOrder : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrder")]
+    [OutputType(typeof(PSOrder))]
+    public class GetPartnerCustomerOrder : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the optional cilling cycle identifier.
@@ -55,64 +56,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(OrderId))
+            Scheduler.RunTask(async () =>
             {
-                GetCustomerOrders(CustomerId, BillingCycle);
-            }
-            else
-            {
-                GetCustomerOrder(CustomerId, OrderId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-        /// <summary>
-        /// Gets the specified customer order from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="orderId">Identifier of the order.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// or
-        /// <paramref name="orderId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerOrder(string customerId, string orderId)
-        {
-            Order order;
-            bool includePrice = IncludePrice.ToBool();
+                if (string.IsNullOrEmpty(OrderId))
+                {
+                    ResourceCollection<Order> orders;
 
-            customerId.AssertNotEmpty(nameof(customerId));
-            orderId.AssertNotEmpty(nameof(orderId));
+                    if (BillingCycle.HasValue)
+                    {
+                        orders = await partner.Customers.ById(CustomerId).Orders.ByBillingCycleType(BillingCycle.Value).GetAsync(IncludePrice.ToBool(), CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        orders = await partner.Customers.ById(CustomerId).Orders.GetAsync(IncludePrice.ToBool(), CancellationToken).ConfigureAwait(false);
+                    }
 
-            order = Partner.Customers.ById(customerId).Orders.ById(orderId).GetAsync(includePrice).GetAwaiter().GetResult();
+                    WriteObject(orders.Items.Select(o => new PSOrder(o)), true);
+                }
+                else
+                {
+                    Order order = await partner.Customers.ById(CustomerId).Orders.ById(OrderId).GetAsync(IncludePrice.ToBool(), CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSOrder(order));
+                }
 
-            WriteObject(new PSOrder(order));
-        }
-
-        /// <summary>
-        /// Gets a list of customer orders from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="billingCycle">BillingCycle identifier.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerOrders(string customerId, BillingCycleType? billingCycle)
-        {
-            IEnumerable<Order> orders;
-            bool includePrice = IncludePrice.ToBool();
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            if (billingCycle.HasValue)
-            {
-                orders = Partner.Customers.ById(customerId).Orders.ByBillingCycleType(billingCycle.Value).GetAsync(includePrice).GetAwaiter().GetResult().Items;
-            }
-            else
-            {
-                orders = Partner.Customers.ById(customerId).Orders.GetAsync(includePrice).GetAwaiter().GetResult().Items;
-            }
-
-            WriteObject(orders.Select(o => new PSOrder(o)), true);
+            }, true);
         }
     }
 }

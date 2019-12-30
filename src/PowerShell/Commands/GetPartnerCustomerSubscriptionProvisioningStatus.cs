@@ -5,14 +5,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Subscriptions;
     using PartnerCenter.Models.Subscriptions;
 
     /// <summary>
-    /// Retrieves the provisioning status for the specified subscription.
+    /// Gets the provisioning status for the specified subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionProvisioningStatus"), OutputType(typeof(PSSubscriptionProvisioningStatus))]
-    public class GetPartnerCustomerSubscriptionProvisioningStatus : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionProvisioningStatus")]
+    [OutputType(typeof(PSSubscriptionProvisioningStatus))]
+    public class GetPartnerCustomerSubscriptionProvisioningStatus : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -33,9 +35,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SubscriptionProvisioningStatus status = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].ProvisioningStatus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                SubscriptionProvisioningStatus status = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].ProvisioningStatus.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            WriteObject(new PSSubscriptionProvisioningStatus(status));
+                WriteObject(new PSSubscriptionProvisioningStatus(status));
+            }, true);
         }
     }
 }

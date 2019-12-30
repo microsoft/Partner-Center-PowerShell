@@ -4,10 +4,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.CountryValidationRules;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCountryValidation"), OutputType(typeof(PSCountryValidationRules))]
-    public class GetPartnerCountryValidation : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCountryValidation")]
+    [OutputType(typeof(PSCountryValidationRules))]
+    public class GetPartnerCountryValidation : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the country code in ISO2 format.
@@ -20,7 +22,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCountryValidationRules(Partner.CountryValidationRules.ByCountry(CountryCode).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                WriteObject(new PSCountryValidationRules(await partner.CountryValidationRules.ByCountry(CountryCode).GetAsync(CancellationToken).ConfigureAwait(false)));
+            }, true);
         }
     }
 }

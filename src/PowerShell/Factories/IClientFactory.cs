@@ -3,6 +3,8 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 {
+    using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Graph;
     using Rest;
@@ -21,14 +23,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
+        /// <param name="correlationId">The correlation identifier for the request context.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        IPartner CreatePartnerOperations();
-
-        /// <summary>
-        /// Creates a new instance of the object used to interface with Partner Center.
-        /// </summary>
-        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        Task<IPartner> CreatePartnerOperationsAsync();
+        Task<IPartner> CreatePartnerOperationsAsync(Guid correlationId = default, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Creates a new service client used interact with a specific service.

@@ -9,6 +9,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Extensions;
+    using Models.Authentication;
     using Models.Carts;
     using PartnerCenter.Models.Carts;
     using Properties;
@@ -16,8 +17,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Adds a cart line item to the specified cart.
     /// </summary>
-    [Cmdlet(VerbsCommon.Add, "PartnerCustomerCartLineItem", SupportsShouldProcess = true), OutputType(typeof(PSCart))]
-    public class AddPartnerCustomerCartLineItem : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Add, "PartnerCustomerCartLineItem", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSCart))]
+    public class AddPartnerCustomerCartLineItem : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.
@@ -45,24 +47,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Cart cart;
-            CartLineItem cartLineItem;
-            List<CartLineItem> lineItems;
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
+            Scheduler.RunTask(async () =>
             {
-                cart = Partner.Customers[CustomerId].Carts[CartId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                lineItems = cart.LineItems.ToList();
+                Cart cart;
+                CartLineItem cartLineItem;
+                List<CartLineItem> lineItems;
 
-                cartLineItem = new CartLineItem();
-                cartLineItem.CopyFrom(LineItem);
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.AddPartnerCustomerCartLineItemWhatIf, CartId)))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                lineItems.Add(cartLineItem);
+                    cart = await partner.Customers[CustomerId].Carts[CartId].GetAsync(CancellationToken).ConfigureAwait(false);
+                    lineItems = cart.LineItems.ToList();
 
-                cart = Partner.Customers[CustomerId].Carts[CartId].PutAsync(cart).GetAwaiter().GetResult();
+                    cartLineItem = new CartLineItem();
+                    cartLineItem.CopyFrom(LineItem);
 
-                WriteObject(new PSCart(cart));
-            }
+                    lineItems.Add(cartLineItem);
+
+                    cart = await partner.Customers[CustomerId].Carts[CartId].PutAsync(cart, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSCart(cart));
+                }
+            }, true);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Partners;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;
@@ -15,8 +16,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Sets the partner legal profile in Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerLegalProfile", SupportsShouldProcess = true), OutputType(typeof(PSLegalBusinessProfile))]
-    public class SetPartnerLegalProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerLegalProfile", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSLegalBusinessProfile))]
+    public class SetPartnerLegalProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.
@@ -106,36 +108,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IValidator<Address> validator;
-            LegalBusinessProfile profile;
-
             if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
             {
-                profile = Partner.Profiles.LegalBusinessProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
-                profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
-                profile.Address.City = UpdateValue(City, profile.Address.City);
-                profile.Address.Country = UpdateValue(Country, profile.Address.Country);
-                profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
-                profile.Address.Region = UpdateValue(Region, profile.Address.Region);
-                profile.Address.State = UpdateValue(State, profile.Address.State);
-                profile.CompanyApproverAddress = profile.Address;
-                profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
-
-                if (!DisableValidation.ToBool())
+                Scheduler.RunTask(async () =>
                 {
-                    validator = new AddressValidator(Partner);
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    LegalBusinessProfile profile = await partner.Profiles.LegalBusinessProfile.GetAsync(VettingVersion.Current, CancellationToken).ConfigureAwait(false);
 
-                    if (!validator.IsValid(profile.Address, d => WriteDebug(d)))
+                    profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
+                    profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
+                    profile.Address.City = UpdateValue(City, profile.Address.City);
+                    profile.Address.Country = UpdateValue(Country, profile.Address.Country);
+                    profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
+                    profile.Address.Region = UpdateValue(Region, profile.Address.Region);
+                    profile.Address.State = UpdateValue(State, profile.Address.State);
+                    profile.CompanyApproverAddress = profile.Address;
+                    profile.CompanyApproverEmail = UpdateValue(EmailAddress, profile.CompanyApproverEmail);
+
+                    if (!DisableValidation.ToBool())
                     {
-                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                        IValidator<Address> validator = new AddressValidator(partner);
+
+                        if (!await validator.IsValidAsync(profile.Address, CancellationToken).ConfigureAwait(false))
+                        {
+                            throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                        }
                     }
-                }
 
-                profile = Partner.Profiles.LegalBusinessProfile.UpdateAsync(profile).GetAwaiter().GetResult();
+                    profile = await partner.Profiles.LegalBusinessProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
 
-                WriteObject(new PSLegalBusinessProfile(profile));
+                    WriteObject(new PSLegalBusinessProfile(profile));
+                }, true);
             }
         }
 

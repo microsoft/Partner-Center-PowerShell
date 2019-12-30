@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
@@ -16,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Set, "PartnerCustomer", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(PSCustomer))]
-    public class SetPartnerCustomer : PartnerCmdlet
+    public class SetPartnerCustomer : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer being modified.
@@ -127,47 +128,45 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Customer customer;
-            IValidator<Address> validator;
-            string customerId;
+            string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
-            customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
+            Scheduler.RunTask(async () =>
             {
-                if (InputObject == null && string.IsNullOrEmpty(CustomerId))
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
                 {
-                    throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
-                }
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    Customer customer;
+                    IValidator<Address> validator;
 
-                customer = Partner.Customers[customerId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    customer = await partner.Customers[customerId].GetAsync(CancellationToken).ConfigureAwait(false);
 
-                customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
-                customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
-                customer.BillingProfile.DefaultAddress.City = UpdateValue(BillingAddressCity, customer.BillingProfile.DefaultAddress.City);
-                customer.BillingProfile.DefaultAddress.Country = UpdateValue(BillingAddressCountry, customer.BillingProfile.DefaultAddress.Country);
-                customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(BillingAddressPhoneNumber, customer.BillingProfile.DefaultAddress.PhoneNumber);
-                customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(BillingAddressPostalCode, customer.BillingProfile.DefaultAddress.PostalCode);
-                customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
-                customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
-                customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
-                customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
+                    customer.BillingProfile.DefaultAddress.AddressLine1 = UpdateValue(BillingAddressLine1, customer.BillingProfile.DefaultAddress.AddressLine1);
+                    customer.BillingProfile.DefaultAddress.AddressLine2 = UpdateValue(BillingAddressLine2, customer.BillingProfile.DefaultAddress.AddressLine2);
+                    customer.BillingProfile.DefaultAddress.City = UpdateValue(BillingAddressCity, customer.BillingProfile.DefaultAddress.City);
+                    customer.BillingProfile.DefaultAddress.Country = UpdateValue(BillingAddressCountry, customer.BillingProfile.DefaultAddress.Country);
+                    customer.BillingProfile.DefaultAddress.PhoneNumber = UpdateValue(BillingAddressPhoneNumber, customer.BillingProfile.DefaultAddress.PhoneNumber);
+                    customer.BillingProfile.DefaultAddress.PostalCode = UpdateValue(BillingAddressPostalCode, customer.BillingProfile.DefaultAddress.PostalCode);
+                    customer.BillingProfile.DefaultAddress.Region = UpdateValue(BillingAddressRegion, customer.BillingProfile.DefaultAddress.Region);
+                    customer.BillingProfile.DefaultAddress.State = UpdateValue(BillingAddressState, customer.BillingProfile.DefaultAddress.State);
+                    customer.BillingProfile.CompanyName = UpdateValue(Name, customer.BillingProfile.CompanyName);
+                    customer.BillingProfile.Email = UpdateValue(Email, customer.BillingProfile.Email);
 
 
-                if (!DisableValidation.ToBool())
-                {
-                    validator = new AddressValidator(Partner);
-
-                    if (!validator.IsValid(customer.BillingProfile.DefaultAddress, d => WriteDebug(d)))
+                    if (!DisableValidation.ToBool())
                     {
-                        throw new PartnerException("The address for the customer is not valid.");
+                        validator = new AddressValidator(partner);
+
+                        if (!await validator.IsValidAsync(customer.BillingProfile.DefaultAddress, CancellationToken))
+                        {
+                            throw new PartnerException("The address for the customer is not valid.");
+                        }
                     }
+
+                    await partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSCustomer(customer));
                 }
-
-                Partner.Customers[customerId].Profiles.Billing.UpdateAsync(customer.BillingProfile).GetAwaiter().GetResult();
-
-                WriteObject(new PSCustomer(customer));
-            }
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)

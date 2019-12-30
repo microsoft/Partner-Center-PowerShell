@@ -8,13 +8,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using PartnerCenter.Models.Offers;
     using PartnerCenter.Models.Orders;
     using PartnerCenter.PowerShell.Models.Orders;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerOrder", DefaultParameterSetName = SubscriptionParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PSOrder))]
-    public class NewPartnerCustomerOrder : PartnerCmdlet
+    public class NewPartnerCustomerOrder : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name for the add-on parameter set. 
@@ -59,50 +60,54 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            List<OrderLineItem> lineItems = new List<OrderLineItem>();
-            Order newOrder;
-
-            foreach (PSOrderLineItem item in LineItems)
+            Scheduler.RunTask(async () =>
             {
-                OrderLineItem lineItem = new OrderLineItem
-                {
-                    FriendlyName = item.FriendlyName,
-                    LineItemNumber = item.LineItemNumber,
-                    OfferId = item.OfferId,
-                    ParentSubscriptionId = item.ParentSubscriptionId,
-                    PartnerIdOnRecord = item.PartnerIdOnRecord,
-                    Quantity = item.Quantity,
-                    SubscriptionId = item.SubscriptionId
-                };
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                List<OrderLineItem> lineItems = new List<OrderLineItem>();
+                Order newOrder;
 
-                if (item.ProvisioningContext != null && item.ProvisioningContext.Count > 0)
+                foreach (PSOrderLineItem item in LineItems)
                 {
-                    foreach (KeyValuePair<string, string> kvp in item.ProvisioningContext.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value))
+                    OrderLineItem lineItem = new OrderLineItem
                     {
-                        lineItem.ProvisioningContext.Add(kvp.Key, kvp.Value);
+                        FriendlyName = item.FriendlyName,
+                        LineItemNumber = item.LineItemNumber,
+                        OfferId = item.OfferId,
+                        ParentSubscriptionId = item.ParentSubscriptionId,
+                        PartnerIdOnRecord = item.PartnerIdOnRecord,
+                        Quantity = item.Quantity,
+                        SubscriptionId = item.SubscriptionId
+                    };
+
+                    if (item.ProvisioningContext != null && item.ProvisioningContext.Count > 0)
+                    {
+                        foreach (KeyValuePair<string, string> kvp in item.ProvisioningContext.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, kvp => (string)kvp.Value))
+                        {
+                            lineItem.ProvisioningContext.Add(kvp.Key, kvp.Value);
+                        }
                     }
+
+                    lineItems.Add(lineItem);
                 }
 
-                lineItems.Add(lineItem);
-            }
+                newOrder = new Order
+                {
+                    BillingCycle = BillingCycle,
+                    LineItems = lineItems,
+                    ReferenceCustomerId = CustomerId
+                };
 
-            newOrder = new Order
-            {
-                BillingCycle = BillingCycle,
-                LineItems = lineItems,
-                ReferenceCustomerId = CustomerId
-            };
+                if (string.IsNullOrEmpty(OrderId))
+                {
+                    newOrder = await partner.Customers[CustomerId].Orders.CreateAsync(newOrder, CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    newOrder = await partner.Customers[CustomerId].Orders.ById(OrderId).PatchAsync(newOrder, CancellationToken).ConfigureAwait(false);
+                }
 
-            if (string.IsNullOrEmpty(OrderId))
-            {
-                newOrder = Partner.Customers[CustomerId].Orders.CreateAsync(newOrder).GetAwaiter().GetResult();
-            }
-            else
-            {
-                newOrder = Partner.Customers[CustomerId].Orders.ById(OrderId).PatchAsync(newOrder).GetAwaiter().GetResult();
-            }
-
-            WriteObject(new PSOrder(newOrder));
+                WriteObject(new PSOrder(newOrder));
+            }, true);
         }
     }
 }

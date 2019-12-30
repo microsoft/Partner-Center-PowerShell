@@ -74,22 +74,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     if (!string.IsNullOrWhiteSpace(MpnId))
                     {
-                        subscriptions = await partner.Customers[customerId].Subscriptions.ByPartner(MpnId).GetAsync().ConfigureAwait(false);
+                        subscriptions = await partner.Customers[customerId].Subscriptions.ByPartner(MpnId).GetAsync(CancellationToken).ConfigureAwait(false);
                     }
                     else if (!string.IsNullOrWhiteSpace(OrderId))
                     {
-                        subscriptions = await partner.Customers[customerId].Subscriptions.ByOrder(OrderId).GetAsync().ConfigureAwait(false);
+                        subscriptions = await partner.Customers[customerId].Subscriptions.ByOrder(OrderId).GetAsync(CancellationToken).ConfigureAwait(false);
                     }
                     else
                     {
-                        subscriptions = await partner.Customers[customerId].Subscriptions.GetAsync().ConfigureAwait(false);
+                        subscriptions = await partner.Customers[customerId].Subscriptions.GetAsync(CancellationToken).ConfigureAwait(false);
                     }
 
                     WriteObject(subscriptions.Items.Select(s => new PSSubscription(s)), true);
                 }
                 else
                 {
-                    WriteObject(new PSSubscription(await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false)));
+                    WriteObject(new PSSubscription(await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync(CancellationToken).ConfigureAwait(false)));
                 }
             }, true);
         }

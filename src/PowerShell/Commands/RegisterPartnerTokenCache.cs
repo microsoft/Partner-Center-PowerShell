@@ -44,6 +44,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 if (!File.Exists(inMemoryControlFilePath))
                 {
+                    Directory.CreateDirectory(Path.GetDirectoryName(inMemoryControlFilePath));
                     File.Create(inMemoryControlFilePath).Dispose();
                 }
 

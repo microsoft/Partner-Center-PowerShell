@@ -6,14 +6,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
+    using Models.Authentication;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Incidents;
 
     /// <summary>
     /// Gets a list of service incidents from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerServiceIncident"), OutputType(typeof(ServiceIncidentDetail))]
-    public class GetPartnerServiceIncident : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerServiceIncident")]
+    [OutputType(typeof(ServiceIncidentDetail))]
+    public class GetPartnerServiceIncident : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the optional status type.
@@ -33,27 +35,32 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<ServiceIncidents> incidents;
-            IEnumerable<ServiceIncidentDetail> results;
-
-            incidents = Partner.ServiceIncidents.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (incidents.TotalCount > 0)
+            Scheduler.RunTask(async () =>
             {
-                results = incidents.Items.SelectMany(i => i.Incidents);
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<ServiceIncidents> incidents;
+                IEnumerable<ServiceIncidentDetail> results;
 
-                if (Status.HasValue)
+                incidents = await partner.ServiceIncidents.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                if (incidents.TotalCount > 0)
                 {
-                    results = results.Where(i => i.Status == Status);
+                    results = incidents.Items.SelectMany(i => i.Incidents);
+
+                    if (Status.HasValue)
+                    {
+                        results = results.Where(i => i.Status == Status);
+                    }
+
+                    if (!Resolved)
+                    {
+                        results = results.Where(i => !i.Resolved);
+                    }
+
+                    WriteObject(results, true);
                 }
 
-                if (!Resolved)
-                {
-                    results = results.Where(i => !i.Resolved);
-                }
-
-                WriteObject(results, true);
-            }
+            }, true);
         }
     }
 }

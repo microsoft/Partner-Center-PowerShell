@@ -5,10 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Carts;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerCart"), OutputType(typeof(PSCart))]
-    public class GetPartnerCustomerCart : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerCart")]
+    [OutputType(typeof(PSCart))]
+    public class GetPartnerCustomerCart : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.
@@ -29,7 +31,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCart(Partner.Customers[CustomerId].Carts[CartId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                WriteObject(new PSCart(await partner.Customers[CustomerId].Carts[CartId].GetAsync(CancellationToken).ConfigureAwait(false)));
+            }, true);
         }
     }
 }

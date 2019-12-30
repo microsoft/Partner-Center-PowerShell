@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models.Customers;
     using PartnerCenter.Models.ValidationCodes;
@@ -16,7 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Set, "PartnerCustomerQualification", DefaultParameterSetName = "Customer", SupportsShouldProcess = true)]
     [OutputType(typeof(CustomerQualification))]
-    public class SetPartnerCustomerQualification : PartnerCmdlet
+    public class SetPartnerCustomerQualification : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer being modified.
@@ -58,24 +59,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
             {
-                if (InputObject == null && string.IsNullOrEmpty(CustomerId))
+                Scheduler.RunTask(async () =>
                 {
-                    throw new PSInvalidOperationException(Resources.InvalidSetCustomerIdentifierException);
-                }
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                if (Qualification == CustomerQualification.GovernmentCommunityCloud)
-                {
-                    if (ValidationCode == null)
+                    if (Qualification == CustomerQualification.GovernmentCommunityCloud)
                     {
-                        throw new PSInvalidOperationException("The validation code must be set when assigning the Government Community Cloud qualification. Use the Get-PartnerValidation command to get the validation code.");
-                    }
+                        if (ValidationCode == null)
+                        {
+                            throw new PSInvalidOperationException("The validation code must be set when assigning the Government Community Cloud qualification. Use the Get-PartnerValidation command to get the validation code.");
+                        }
 
-                    WriteObject(Partner.Customers[customerId].Qualification.UpdateAsync(Qualification, ValidationCode).GetAwaiter().GetResult());
-                }
-                else
-                {
-                    WriteObject(Partner.Customers[customerId].Qualification.UpdateAsync(Qualification).GetAwaiter().GetResult());
-                }
+                        WriteObject(await partner.Customers[customerId].Qualification.UpdateAsync(Qualification, ValidationCode, CancellationToken).ConfigureAwait(false));
+                    }
+                    else
+                    {
+                        WriteObject(await partner.Customers[customerId].Qualification.UpdateAsync(Qualification).ConfigureAwait(false));
+                    }
+                }, true);
             }
         }
     }

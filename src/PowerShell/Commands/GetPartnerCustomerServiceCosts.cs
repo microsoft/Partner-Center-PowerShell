@@ -6,12 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.ServiceCosts;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceCosts;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCosts"), OutputType(typeof(PSServiceCostLineItem))]
-    public class GetPartnerCustomerServiceCosts : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCosts")]
+    [OutputType(typeof(PSServiceCostLineItem))]
+    public class GetPartnerCustomerServiceCosts : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the billing period.
@@ -32,11 +34,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<ServiceCostLineItem> lineItems;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<ServiceCostLineItem> lineItems = await partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            lineItems = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).LineItems.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                WriteObject(lineItems.Items.Select(i => new PSServiceCostLineItem(i)), true);
+            }, true);
 
-            WriteObject(lineItems.Items.Select(i => new PSServiceCostLineItem(i)), true);
+
         }
     }
 }

@@ -5,14 +5,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Linq;
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.Orders;
+    using PartnerCenter.Models;
+    using PartnerCenter.Models.Orders;
 
     /// <summary>
     /// Gets the provisioning status for the specified order.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrderProvisioningStatus")]
     [OutputType(typeof(PSOrderLineItemProvisioningStatus))]
-    public class GetPartnerCustomerOrderProvisioningStatus : PartnerCmdlet
+    public class GetPartnerCustomerOrderProvisioningStatus : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -31,7 +34,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].ProvisioningStatus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSOrderLineItemProvisioningStatus(s)));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<OrderLineItemProvisioningStatus> status = await partner.Customers[CustomerId].Orders[OrderId].ProvisioningStatus.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(status.Items.Select(s => new PSOrderLineItemProvisioningStatus(s)));
+            }, true);
         }
     }
 }

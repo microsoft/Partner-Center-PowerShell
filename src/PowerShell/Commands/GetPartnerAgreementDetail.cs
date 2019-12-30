@@ -7,14 +7,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using Models.Agreements;
+    using Models.Authentication;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Agreements;
 
     /// <summary>
     /// Gets a metadata for the available agreements.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerAgreementDetail"), OutputType(typeof(PSAgreementMetaData))]
-    public class GetPartnerAgreementDetail : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerAgreementDetail")]
+    [OutputType(typeof(PSAgreementMetaData))]
+    public class GetPartnerAgreementDetail : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 
@@ -28,22 +30,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<AgreementMetaData> agreements;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<AgreementMetaData> agreements;
 
-            if (string.IsNullOrEmpty(AgreementType))
-            {
-                agreements = Partner.AgreementDetails.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else if (AgreementType.Equals("All", StringComparison.InvariantCultureIgnoreCase))
-            {
-                agreements = Partner.AgreementDetails.ByAgreementType("*").GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-            else
-            {
-                agreements = Partner.AgreementDetails.ByAgreementType(AgreementType).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                if (string.IsNullOrEmpty(AgreementType))
+                {
+                    agreements = await partner.AgreementDetails.GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+                else if (AgreementType.Equals("All", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    agreements = await partner.AgreementDetails.ByAgreementType("*").GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    agreements = await partner.AgreementDetails.ByAgreementType(AgreementType).GetAsync(CancellationToken).ConfigureAwait(false);
+                }
 
-            WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);
+                WriteObject(agreements.Items.Select(a => new PSAgreementMetaData(a)), true);
+
+            }, true);
         }
     }
 }

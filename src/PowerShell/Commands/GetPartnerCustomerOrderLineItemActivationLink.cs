@@ -5,6 +5,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.Orders;
 
     /// <summary>
@@ -12,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerCustomerOrderLineItemActivationLink")]
     [OutputType(typeof(OrderLineItemActivationLink))]
-    public class GetPartnerCustomerOrderLineItemActivationLink : PartnerCmdlet
+    public class GetPartnerCustomerOrderLineItemActivationLink : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -40,7 +42,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Customers[CustomerId].Orders[OrderId].OrderLineItems[OrderLineItemNumber].ActivationLink.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items, true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<OrderLineItemActivationLink> links = await partner.Customers[CustomerId].Orders[OrderId].OrderLineItems[OrderLineItemNumber].ActivationLink.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(links.Items, true);
+
+            }, true);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
     using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Extensions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ValidationRules;
@@ -36,15 +38,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
         /// Determines if the resource is valid.
         /// </summary>
         /// <param name="resource">The resource to be validate.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns><c>true</c> if the resource is valid; otherwise <c>false</c>.</returns>
-        public bool IsValid(Address resource, Action<string> debugAction)
+        public async Task<bool> IsValidAsync(Address resource, CancellationToken cancellationToken = default)
         {
             CountryValidationRules validationRules;
 
             resource.AssertNotNull(nameof(resource));
 
-            debugAction("Requesting country validation services from the partner service.");
-            validationRules = partner.CountryValidationRules.ByCountry(resource.Country).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            validationRules = await partner.CountryValidationRules.ByCountry(resource.Country).GetAsync(cancellationToken).ConfigureAwait(false);
 
             if (validationRules.IsCityRequired && string.IsNullOrEmpty(resource.City))
             {
@@ -87,8 +89,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
                         resource.PhoneNumber));
             }
 
-            debugAction("Checking if the address is valid using the partner service.");
-            return partner.Validations.IsAddressValidAsync(resource).ConfigureAwait(false).GetAwaiter().GetResult();
+            return await partner.Validations.IsAddressValidAsync(resource, cancellationToken).ConfigureAwait(false);
         }
     }
 }

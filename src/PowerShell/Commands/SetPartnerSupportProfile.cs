@@ -6,14 +6,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Partners;
     using PartnerCenter.Models.Partners;
 
     /// <summary>
     /// Sets the partner support profile in Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerSupportProfile", SupportsShouldProcess = true), OutputType(typeof(PSSupportProfile))]
-    public class SetPartnerSupportProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerSupportProfile", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSSupportProfile))]
+    public class SetPartnerSupportProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the email address of the support contact.
@@ -41,17 +43,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportProfile profile;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                SupportProfile profile = await partner.Profiles.SupportProfile.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            profile = Partner.Profiles.SupportProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                profile.Email = UpdateValue(SupportEmail, profile.Email);
+                profile.Telephone = UpdateValue(SupportPhoneNumber, profile.Telephone);
+                profile.Website = UpdateValue(SupportWebsite, profile.Website);
 
-            profile.Email = UpdateValue(SupportEmail, profile.Email);
-            profile.Telephone = UpdateValue(SupportPhoneNumber, profile.Telephone);
-            profile.Website = UpdateValue(SupportWebsite, profile.Website);
+                profile = await partner.Profiles.SupportProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
 
-            profile = Partner.Profiles.SupportProfile.UpdateAsync(profile).GetAwaiter().GetResult();
-
-            WriteObject(new PSSupportProfile(profile));
+                WriteObject(new PSSupportProfile(profile));
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)

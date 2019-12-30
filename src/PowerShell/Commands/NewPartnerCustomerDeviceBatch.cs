@@ -9,14 +9,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using System.Threading;
+    using System.Threading.Tasks;
+    using Models.Authentication;
     using Models.DevicesDeployment;
     using PartnerCenter.Models;
     using PartnerCenter.Models.DevicesDeployment;
     using Properties;
 
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerDeviceBatch", SupportsShouldProcess = true), OutputType(typeof(PSBatchUploadDetails))]
-    public class NewPartnerCustomerDeviceBatch : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerDeviceBatch", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSBatchUploadDetails))]
+    public class NewPartnerCustomerDeviceBatch : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier for the device batch.
@@ -44,62 +46,64 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            DeviceBatchCreationRequest request;
-            ResourceCollection<DeviceBatch> batches;
-            IEnumerable<Device> devices;
-            BatchUploadDetails status;
-            string location;
-
-            if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerDeviceBatchWhatIf, BatchId)))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
-
-            batches = Partner.Customers[CustomerId].DeviceBatches.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            devices = Devices.Select(d => new Device
-            {
-                HardwareHash = d.HardwareHash,
-                ModelName = d.ModelName,
-                OemManufacturerName = d.OemManufacturerName,
-                Policies = d.Policies,
-                ProductKey = d.ProductKey,
-                SerialNumber = d.SerialNumber
-            });
-
-            if (batches.Items.SingleOrDefault(b => b.Id.Equals(BatchId, StringComparison.InvariantCultureIgnoreCase)) != null)
-            {
-                location = Partner.Customers[CustomerId].DeviceBatches[BatchId].Devices.CreateAsync(Devices.Select(d => new Device
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerDeviceBatchWhatIf, BatchId)))
                 {
-                    HardwareHash = d.HardwareHash,
-                    ModelName = d.ModelName,
-                    OemManufacturerName = d.OemManufacturerName,
-                    Policies = d.Policies,
-                    ProductKey = d.ProductKey,
-                    SerialNumber = d.SerialNumber
-                })).GetAwaiter().GetResult();
-            }
-            else
-            {
-                request = new DeviceBatchCreationRequest
-                {
-                    BatchId = BatchId,
-                    Devices = devices
-                };
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    DeviceBatchCreationRequest request;
+                    ResourceCollection<DeviceBatch> batches;
+                    IEnumerable<Device> devices;
+                    BatchUploadDetails status;
+                    string location;
 
-                location = Partner.Customers[CustomerId].DeviceBatches.CreateAsync(request).GetAwaiter().GetResult();
-            }
+                    batches = await partner.Customers[CustomerId].DeviceBatches.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    devices = Devices.Select(d => new Device
+                    {
+                        HardwareHash = d.HardwareHash,
+                        ModelName = d.ModelName,
+                        OemManufacturerName = d.OemManufacturerName,
+                        Policies = d.Policies,
+                        ProductKey = d.ProductKey,
+                        SerialNumber = d.SerialNumber
+                    });
 
-            while (status.Status == DeviceUploadStatusType.Processing || status.Status == DeviceUploadStatusType.Queued)
-            {
-                Thread.Sleep(5000);
+                    if (batches.Items.SingleOrDefault(b => b.Id.Equals(BatchId, StringComparison.InvariantCultureIgnoreCase)) != null)
+                    {
+                        location = await partner.Customers[CustomerId].DeviceBatches[BatchId].Devices.CreateAsync(Devices.Select(d => new Device
+                        {
+                            HardwareHash = d.HardwareHash,
+                            ModelName = d.ModelName,
+                            OemManufacturerName = d.OemManufacturerName,
+                            Policies = d.Policies,
+                            ProductKey = d.ProductKey,
+                            SerialNumber = d.SerialNumber
+                        }), CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        request = new DeviceBatchCreationRequest
+                        {
+                            BatchId = BatchId,
+                            Devices = devices
+                        };
 
-                status = Partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                        location = await partner.Customers[CustomerId].DeviceBatches.CreateAsync(request, CancellationToken).ConfigureAwait(false);
+                    }
 
-            WriteObject(new PSBatchUploadDetails(status));
+                    status = await partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync(CancellationToken).ConfigureAwait(false);
+
+                    while (status.Status == DeviceUploadStatusType.Processing || status.Status == DeviceUploadStatusType.Queued)
+                    {
+                        await Task.Delay(5000, CancellationToken).ConfigureAwait(false);
+
+                        status = await partner.Customers[CustomerId].BatchUploadStatus.ById(location.Split('/')[4]).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(new PSBatchUploadDetails(status));
+                }
+            }, true);
         }
     }
 }

@@ -7,14 +7,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Agreements;
+    using Models.Authentication;
     using PartnerCenter.Models.Agreements;
     using Properties;
 
     /// <summary>
     /// Create a new agreement for the specified customer.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerAgreement"), OutputType(typeof(PSAgreement))]
-    public class NewPartnerCustomerAgreement : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerAgreement")]
+    [OutputType(typeof(PSAgreement))]
+    public class NewPartnerCustomerAgreement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 
@@ -76,31 +78,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Agreement agreement;
-            DateTime dateAgreed = DateAgreed ?? DateTime.Now;
-
-            if (ShouldProcess(Resources.NewPartnerCustomerAgreementWhatIf))
+            Scheduler.RunTask(async () =>
             {
-                agreement = new Agreement
+                if (ShouldProcess(Resources.NewPartnerCustomerAgreementWhatIf))
                 {
-                    DateAgreed = dateAgreed,
-                    PrimaryContact = new Contact
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    Agreement agreement;
+                    DateTime dateAgreed = DateAgreed ?? DateTime.Now;
+
+                    agreement = new Agreement
                     {
-                        Email = ContactEmail,
-                        FirstName = ContactFirstName,
-                        LastName = ContactLastName,
-                        PhoneNumber = ContactPhoneNumber
+                        DateAgreed = dateAgreed,
+                        PrimaryContact = new Contact
+                        {
+                            Email = ContactEmail,
+                            FirstName = ContactFirstName,
+                            LastName = ContactLastName,
+                            PhoneNumber = ContactPhoneNumber
 
-                    },
-                    TemplateId = TemplateId,
-                    Type = AgreementType,
-                };
+                        },
+                        TemplateId = TemplateId,
+                        Type = AgreementType,
+                    };
 
-                agreement = Partner.Customers[CustomerId].Agreements.CreateAsync(agreement).GetAwaiter().GetResult();
+                    agreement = await partner.Customers[CustomerId].Agreements.CreateAsync(agreement, CancellationToken).ConfigureAwait(false);
 
-                WriteObject(agreement);
-            }
-
+                    WriteObject(agreement);
+                }
+            }, true);
         }
     }
 }

@@ -5,15 +5,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using PartnerCenter.Models.Roles;
     using PartnerCenter.Models.Users;
 
     /// <summary>
     /// Gets a list of roles for the specified customer user from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Add, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
-    public class AddPartnerCustomerUserRoleMember : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Add, "PartnerCustomerUserRoleMember")]
+    [OutputType(typeof(bool))]
+    public class AddPartnerCustomerUserRoleMember : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -41,38 +42,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            UserId.AssertNotEmpty(nameof(UserId));
-            RoleId.AssertNotEmpty(nameof(RoleId));
-
-            CustomerUser user = GetUserById(CustomerId, UserId);
-
-            UserMember newMember = new UserMember()
+            Scheduler.RunTask(async () =>
             {
-                UserPrincipalName = user.UserPrincipalName,
-                DisplayName = user.DisplayName,
-                Id = user.Id
-            };
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                CustomerUser user = await partner.Customers[CustomerId].Users[UserId].GetAsync(CancellationToken).ConfigureAwait(false);
 
-            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember).GetAwaiter().GetResult();
-            WriteObject(true);
+                UserMember newMember = new UserMember()
+                {
+                    UserPrincipalName = user.UserPrincipalName,
+                    DisplayName = user.DisplayName,
+                    Id = user.Id
+                };
 
-        }
+                await partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers.CreateAsync(newMember, CancellationToken).ConfigureAwait(false);
 
-        /// <summary>
-        /// Gets details for a specified user and customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private CustomerUser GetUserById(string customerId, string userId)
-        {
-            customerId.AssertNotEmpty(nameof(customerId));
-            userId.AssertNotEmpty(nameof(userId));
-
-            return Partner.Customers[customerId].Users[userId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult(); ;
-
+                WriteObject(true);
+            }, true);
         }
     }
 }

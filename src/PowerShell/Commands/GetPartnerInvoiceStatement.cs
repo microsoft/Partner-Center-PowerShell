@@ -6,12 +6,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.IO;
     using System.Management.Automation;
+    using Models.Authentication;
 
     /// <summary>
-    /// Get partner licenses usage information aggregated to include all customers from Partner Center.
+    /// Get partner invoice statement from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerInvoiceStatement")]
-    public class GetPartnerInvoiceStatement : PartnerCmdlet
+    public class GetPartnerInvoiceStatement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The invoice id of the statement to retrieve.
@@ -39,36 +40,41 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(OutputPath))
+            Scheduler.RunTask(async () =>
             {
-                OutputPath = Directory.GetCurrentDirectory();
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            DirectoryInfo dirInfo = Directory.CreateDirectory(OutputPath);
-            string filePath;
+                if (string.IsNullOrEmpty(OutputPath))
+                {
+                    OutputPath = Directory.GetCurrentDirectory();
+                }
 
-            if (dirInfo.FullName.EndsWith(Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture), System.StringComparison.CurrentCulture))
-            {
-                filePath = $"{dirInfo.FullName}{InvoiceId}.pdf";
-            }
-            else
-            {
-                filePath = $"{dirInfo.FullName}{Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture)}{InvoiceId}.pdf";
-            }
+                DirectoryInfo dirInfo = Directory.CreateDirectory(OutputPath);
+                string filePath;
 
-            if (File.Exists(filePath) && !Overwrite.IsPresent)
-            {
-                throw new PSInvalidOperationException($"The path already exists: {filePath}. Specify the -Overwrite switch to overwrite the file");
-            }
+                if (dirInfo.FullName.EndsWith(Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture), System.StringComparison.CurrentCulture))
+                {
+                    filePath = $"{dirInfo.FullName}{InvoiceId}.pdf";
+                }
+                else
+                {
+                    filePath = $"{dirInfo.FullName}{Path.DirectorySeparatorChar.ToString(CultureInfo.CurrentCulture)}{InvoiceId}.pdf";
+                }
 
-            using (Stream stream = Partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-            {
-                FileStream file = File.Create(filePath);
-                stream.Seek(0, SeekOrigin.Begin);
-                stream.CopyTo(file);
+                if (File.Exists(filePath) && !Overwrite.IsPresent)
+                {
+                    throw new PSInvalidOperationException($"The path already exists: {filePath}. Specify the -Overwrite switch to overwrite the file");
+                }
 
-                file.Close();
-            }
+                using (Stream stream = await partner.Invoices.ById(InvoiceId).Documents.Statement.GetAsync(CancellationToken).ConfigureAwait(false))
+                {
+                    FileStream file = File.Create(filePath);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(file);
+
+                    file.Close();
+                }
+            }, true);
         }
     }
 }

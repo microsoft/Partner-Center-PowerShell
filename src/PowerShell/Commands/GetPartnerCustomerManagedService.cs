@@ -6,16 +6,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
+    using Models.ManagedServices;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ManagedServices;
-    using PartnerCenter.PowerShell.Models.ManagedServices;
 
     /// <summary>
     /// Gets the customer's managed services from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerManagedService"), OutputType(typeof(PSManagedService))]
-    public class GetPartnerCustomerManagedService : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerManagedService")]
+    [OutputType(typeof(PSManagedService))]
+    public class GetPartnerCustomerManagedService : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -36,60 +37,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(ManagedServiceId))
+            Scheduler.RunTask(async () =>
             {
-                GetManagedService(CustomerId, ManagedServiceId);
-            }
-            else
-            {
-                GetManagedServices(CustomerId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<ManagedService> managedServices = await partner.Customers.ById(CustomerId).ManagedServices.GetAsync(CancellationToken).ConfigureAwait(false);
 
-        /// <summary>
-        /// Gets the managed services for the customer.
-        /// </summary>
-        /// <param name="customerId">Identifier for the customer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetManagedServices(string customerId)
-        {
-            ResourceCollection<ManagedService> managedServices;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (managedServices.TotalCount > 0)
-            {
-                WriteObject(managedServices.Items.Select(s => new PSManagedService(s)), true);
-            }
-        }
-
-        /// <summary>
-        /// Gets a specific managed service for a customer.
-        /// </summary>
-        /// <param name="customerId">The idnentifier for the customer.</param>
-        /// <param name="managedServiceId">The identifier of the managed service.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId" /> is empty or null.
-        /// or
-        /// <paramref name="managedServiceId" /> is empty or null.
-        /// </exception>
-        private void GetManagedService(string customerId, string managedServiceId)
-        {
-            ResourceCollection<ManagedService> managedServices;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-            managedServiceId.AssertNotEmpty(nameof(managedServiceId));
-
-            managedServices = Partner.Customers.ById(CustomerId).ManagedServices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (managedServices.TotalCount > 0)
-            {
-                WriteObject(managedServices.Items.Where(s => s.Id == managedServiceId).Select(i => new PSManagedService(i)), true);
-            }
+                if (string.IsNullOrEmpty(ManagedServiceId))
+                {
+                    WriteObject(managedServices.Items.Select(s => new PSManagedService(s)), true);
+                }
+                else
+                {
+                    WriteObject(managedServices.Items.Where(s => s.Id == ManagedServiceId).Select(i => new PSManagedService(i)), true);
+                }
+            }, true);
         }
     }
 }

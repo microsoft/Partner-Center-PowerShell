@@ -13,8 +13,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using PartnerCenter.Models.Offers;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerOfferAddon"), OutputType(typeof(PSOffer))]
-    public class GetPartnerOfferAddon : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerOfferAddon")]
+    [OutputType(typeof(PSOffer))]
+    public class GetPartnerOfferAddon : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the country code.
@@ -36,12 +37,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Offer> offers;
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Offer> offers;
+                string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
-            offers = Partner.Offers.ByCountry(countryCode).ById(OfferId).AddOns.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                offers = await partner.Offers.ByCountry(countryCode).ById(OfferId).AddOns.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            WriteObject(offers.Items.Select(o => new PSOffer(o)), true);
+                WriteObject(offers.Items.Select(o => new PSOffer(o)), true);
+            }, true);
         }
     }
 }

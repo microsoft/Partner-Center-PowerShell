@@ -6,12 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Subscriptions;
     using PartnerCenter.Models.Subscriptions;
     using Properties;
 
-    [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscriptionSupportContact", SupportsShouldProcess = true), OutputType(typeof(PSSupportContact))]
-    public class SetPartnerCustomerSubscriptionSupportContact : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerSubscriptionSupportContact", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSSupportContact))]
+    public class SetPartnerCustomerSubscriptionSupportContact : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -53,22 +55,24 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportContact contact;
-
             if (ShouldProcess(string.Format(
                 CultureInfo.CurrentCulture,
                 Resources.SetPartnerCustomerSubscriptionSupportContactWhatIf,
                 SubscriptionId)))
             {
-                contact = new SupportContact
+                Scheduler.RunTask(async () =>
                 {
-                    Name = Name,
-                    SupportMpnId = SupportMpnId,
-                    SupportTenantId = SupportTenantId
-                };
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    SupportContact contact = new SupportContact
+                    {
+                        Name = Name,
+                        SupportMpnId = SupportMpnId,
+                        SupportTenantId = SupportTenantId
+                    };
 
-                contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.UpdateAsync(contact).GetAwaiter().GetResult();
-                WriteObject(new PSSupportContact(contact));
+                    contact = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.UpdateAsync(contact, CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSSupportContact(contact));
+                }, true);
             }
         }
     }

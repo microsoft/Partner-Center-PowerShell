@@ -68,6 +68,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         public string Parameters { get; set; }
 
         /// <summary>
+        /// Gets or sets the session identifier.
+        /// </summary>
+        public string SessionId { get; set; }
+
+        /// <summary>
         /// Gets or sets the start time of the event.
         /// </summary>
         public DateTimeOffset StartTime { get; set; }

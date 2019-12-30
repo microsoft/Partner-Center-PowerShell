@@ -6,12 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Licenses;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Licenses;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscribedSku"), OutputType(typeof(PSSubscribedSku))]
-    public class GetPartnerCustomerSubscribedSku : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscribedSku")]
+    [OutputType(typeof(PSSubscribedSku))]
+    public class GetPartnerCustomerSubscribedSku : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -32,8 +34,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<SubscribedSku> subscribedSkus = Partner.Customers[CustomerId].SubscribedSkus.GetAsync(LicenseGroup?.Select(item => item).ToList()).GetAwaiter().GetResult();
-            WriteObject(subscribedSkus.Items.Select(s => new PSSubscribedSku(s)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<SubscribedSku> subscribedSkus = await partner.Customers[CustomerId].SubscribedSkus.GetAsync(LicenseGroup?.Select(item => item).ToList(), CancellationToken).ConfigureAwait(false);
+
+                WriteObject(subscribedSkus.Items.Select(s => new PSSubscribedSku(s)), true);
+            }, true);
+
         }
     }
 }

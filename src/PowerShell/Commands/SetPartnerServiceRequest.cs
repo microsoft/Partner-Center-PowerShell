@@ -11,8 +11,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.ServiceRequests;
     using Properties;
 
-    [Cmdlet(VerbsCommon.Set, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
-    public class SetPartnerServiceRequest : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerServiceRequest", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSServiceRequest))]
+    public class SetPartnerServiceRequest : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or set the text of the new note that will be added to the service request.
@@ -40,30 +41,33 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ServiceRequest request;
-
             if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerServiceRequestWhatIf, ServiceRequestId)))
             {
-                request = new ServiceRequest();
-
-                if (!string.IsNullOrEmpty(NewNote))
+                Scheduler.RunTask(async () =>
                 {
-                    request.NewNote = new ServiceRequestNote
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                    ServiceRequest request = new ServiceRequest();
+
+                    if (!string.IsNullOrEmpty(NewNote))
                     {
-                        CreatedByName = PartnerSession.Instance.Context.Account.ObjectId,
-                        CreatedDate = DateTime.UtcNow,
-                        Text = NewNote
-                    };
-                }
+                        request.NewNote = new ServiceRequestNote
+                        {
+                            CreatedByName = PartnerSession.Instance.Context.Account.ObjectId,
+                            CreatedDate = DateTime.UtcNow,
+                            Text = NewNote
+                        };
+                    }
 
-                if (Status.HasValue)
-                {
-                    request.Status = Status.Value;
-                }
+                    if (Status.HasValue)
+                    {
+                        request.Status = Status.Value;
+                    }
 
-                request = Partner.ServiceRequests[ServiceRequestId].PatchAsync(request).GetAwaiter().GetResult();
+                    request = await partner.ServiceRequests[ServiceRequestId].PatchAsync(request, CancellationToken).ConfigureAwait(false);
 
-                WriteObject(new PSServiceRequest(request));
+                    WriteObject(new PSServiceRequest(request));
+                }, true);
             }
         }
     }

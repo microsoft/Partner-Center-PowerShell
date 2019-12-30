@@ -3,19 +3,20 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using Models.Entitlements;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.Entitlements;
 
     /// <summary>
     /// Gets a list of entitlements for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerEntitlement"), OutputType(typeof(PSEntitlement))]
-    public class GetPartnerCustomerEntitlement : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerEntitlement")]
+    [OutputType(typeof(PSEntitlement))]
+    public class GetPartnerCustomerEntitlement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -41,51 +42,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(OrderId))
+            Scheduler.RunTask(async () =>
             {
-                GetEntitlements(CustomerId);
-            }
-            else
-            {
-                GetEntitlements(CustomerId, OrderId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Entitlement> entitlements = await partner.Customers[CustomerId].Entitlements.GetAsync(ShowExpiry.ToBool(), CancellationToken).ConfigureAwait(false);
 
-        /// <summary>
-        /// Gets a list of entitlements from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="orderId">Identifier of the order.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetEntitlements(string customerId, string orderId)
-        {
-            IEnumerable<Entitlement> entitlements;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            entitlements = Partner.Customers[customerId].Entitlements.GetAsync(ShowExpiry.ToBool()).GetAwaiter().GetResult().Items.Where(e => e.ReferenceOrder.Id == orderId);
-
-            WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
-        }
-
-        /// <summary>
-        /// Gets a list of customers from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetEntitlements(string customerId)
-        {
-            IEnumerable<Entitlement> entitlements;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            entitlements = Partner.Customers[customerId].Entitlements.GetAsync(ShowExpiry.ToBool()).GetAwaiter().GetResult().Items;
-
-            WriteObject(entitlements.Select(e => new PSEntitlement(e)), true);
+                if (string.IsNullOrEmpty(OrderId))
+                {
+                    WriteObject(entitlements.Items.Select(e => new PSEntitlement(e)), true);
+                }
+                else
+                {
+                    WriteObject(entitlements.Items.Where(e => e.ReferenceOrder.Id == OrderId).Select(e => new PSEntitlement(e)), true);
+                }
+            }, true);
         }
     }
 }

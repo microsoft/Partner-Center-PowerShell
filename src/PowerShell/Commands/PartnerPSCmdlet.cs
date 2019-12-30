@@ -39,6 +39,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK = "https://aka.ms/partnercenterps-changewarnings";
 
         /// <summary>
+        /// The identifier for the session.
+        /// </summary>
+        private static readonly Guid sessionId = Guid.NewGuid();
+
+        /// <summary>
         /// Client that provides the ability to interact with the Application Insights service.
         /// </summary>
         private static readonly TelemetryClient telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault())
@@ -55,6 +60,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Provides a signal to <see cref="System.Threading.CancellationToken" /> that it should be canceled.
         /// </summary>
         private CancellationTokenSource cancellationSource;
+
+        /// <summary>
+        /// The correlation identifier used to correlate events.
+        /// </summary>
+        private Guid correlationId;
 
         /// <summary>
         /// A flag indicating if the object has already been disposed.
@@ -80,6 +90,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets the cancellation token used to propagate a notification that operations should be canceled.
         /// </summary>
         protected CancellationToken CancellationToken => cancellationSource.Token;
+
+        /// <summary>
+        /// Gets the correlation identifier used for correlating events.
+        /// </summary>
+        protected Guid CorrelationId => correlationId;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -154,6 +169,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource = new CancellationTokenSource();
             }
 
+            if (correlationId == default)
+            {
+                correlationId = Guid.NewGuid();
+            }
+
             httpTracingInterceptor ??= new RecordingTracingInterceptor(PartnerSession.Instance.DebugMessages);
 
             ServiceClientTracing.IsEnabled = true;
@@ -169,7 +189,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 CommandName = commandAlias,
                 IsSuccess = true,
                 ModuleVersion = GetType().Assembly.GetName().Version.ToString(),
-                ParameterSetName = ParameterSetName
+                ParameterSetName = ParameterSetName,
+                SessionId = sessionId.ToString()
             };
 
             if (MyInvocation != null && MyInvocation.BoundParameters != null && MyInvocation.BoundParameters.Keys != null)
@@ -489,8 +510,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             PageViewTelemetry pageViewTelemetry = new PageViewTelemetry
             {
-                Name = EventName,
                 Duration = qosEvent.Duration,
+                Name = EventName,
                 Timestamp = qosEvent.StartTime
             };
 
@@ -531,6 +552,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString(CultureInfo.InvariantCulture));
             eventProperties.Add("ModuleVersion", qosEvent.ModuleVersion);
             eventProperties.Add("PowerShellVersion", Host.Version.ToString());
+            eventProperties.Add("SessionId", qosEvent.SessionId);
 
             if (!string.IsNullOrEmpty(PartnerSession.Instance.Context?.Account?.Tenant))
             {

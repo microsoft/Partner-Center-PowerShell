@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Partners;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;
@@ -14,8 +15,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Sets the partner billing profile in Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerBillingProfile", SupportsShouldProcess = true), OutputType(typeof(PSBillingProfile))]
-    public class SetPartnerBillingProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerBillingProfile", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSBillingProfile))]
+    public class SetPartnerBillingProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.
@@ -112,43 +114,48 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            BillingProfile profile;
-            IValidator<Address> validator;
-
-            if (ShouldProcess("Updates the partner's billing profile"))
+            Scheduler.RunTask(async () =>
             {
-                profile = Partner.Profiles.BillingProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
-                profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
-                profile.Address.City = UpdateValue(City, profile.Address.City);
-                profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
-                profile.Address.Region = UpdateValue(Region, profile.Address.Region);
-                profile.Address.State = UpdateValue(State, profile.Address.State);
+                BillingProfile profile;
+                IValidator<Address> validator;
 
-                profile.PrimaryContact.Email = UpdateValue(EmailAddress, profile.PrimaryContact.Email);
-                profile.PrimaryContact.FirstName = UpdateValue(FirstName, profile.PrimaryContact.FirstName);
-                profile.PrimaryContact.LastName = UpdateValue(LastName, profile.PrimaryContact.LastName);
-                profile.PrimaryContact.PhoneNumber = UpdateValue(PhoneNumber, profile.PrimaryContact.PhoneNumber);
-
-                profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
-                profile.TaxId = UpdateValue(TaxId, profile.TaxId);
-
-
-                if (!DisableValidation.ToBool())
+                if (ShouldProcess("Updates the partner's billing profile"))
                 {
-                    validator = new AddressValidator(Partner);
+                    profile = await partner.Profiles.BillingProfile.GetAsync(CancellationToken).ConfigureAwait(false);
 
-                    if (!validator.IsValid(profile.Address, d => WriteDebug(d)))
+                    profile.Address.AddressLine1 = UpdateValue(AddressLine1, profile.Address.AddressLine1);
+                    profile.Address.AddressLine2 = UpdateValue(AddressLine2, profile.Address.AddressLine2);
+                    profile.Address.City = UpdateValue(City, profile.Address.City);
+                    profile.Address.PostalCode = UpdateValue(PostalCode, profile.Address.PostalCode);
+                    profile.Address.Region = UpdateValue(Region, profile.Address.Region);
+                    profile.Address.State = UpdateValue(State, profile.Address.State);
+
+                    profile.PrimaryContact.Email = UpdateValue(EmailAddress, profile.PrimaryContact.Email);
+                    profile.PrimaryContact.FirstName = UpdateValue(FirstName, profile.PrimaryContact.FirstName);
+                    profile.PrimaryContact.LastName = UpdateValue(LastName, profile.PrimaryContact.LastName);
+                    profile.PrimaryContact.PhoneNumber = UpdateValue(PhoneNumber, profile.PrimaryContact.PhoneNumber);
+
+                    profile.PurchaseOrderNumber = UpdateValue(PurchaseOrderNumber, profile.PurchaseOrderNumber);
+                    profile.TaxId = UpdateValue(TaxId, profile.TaxId);
+
+
+                    if (!DisableValidation.ToBool())
                     {
-                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                        validator = new AddressValidator(partner);
+
+                        if (!await validator.IsValidAsync(profile.Address, CancellationToken))
+                        {
+                            throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                        }
                     }
+
+                    await partner.Profiles.BillingProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSBillingProfile(profile));
                 }
-
-                Partner.Profiles.BillingProfile.UpdateAsync(profile).GetAwaiter().GetResult();
-
-                WriteObject(new PSBillingProfile(profile));
-            }
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)

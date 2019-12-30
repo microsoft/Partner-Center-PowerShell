@@ -8,7 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using Models.Users;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
@@ -18,14 +18,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Gets a list of users for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUser", DefaultParameterSetName = "ByCustomerId"), OutputType(typeof(PSCustomerUser))]
-    public class GetPartnerCustomerUser : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUser", DefaultParameterSetName = "ByCustomerId")]
+    [OutputType(typeof(PSCustomerUser))]
+    public class GetPartnerCustomerUser : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
         /// </summary>
         [Parameter(ParameterSetName = "ByCustomerId", Mandatory = true, Position = 0, HelpMessage = "The identifier for the customer.")]
         [Parameter(ParameterSetName = "ByUserId", Mandatory = true, Position = 0, HelpMessage = "The identifier for the customer.")]
+        [Parameter(ParameterSetName = "ByUserState", Mandatory = true, Position = 0, HelpMessage = "The identifier for the customer.")]
         [Parameter(ParameterSetName = "ByUpn", Mandatory = true, Position = 0, HelpMessage = "The identifier for the customer.")]
         [ValidatePattern(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$", Options = RegexOptions.Compiled | RegexOptions.IgnoreCase)]
         public string CustomerId { get; set; }
@@ -47,7 +49,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the optional user identifier.
         /// </summary>
-        [Parameter(ParameterSetName = "ByCustomerId", Mandatory = false, HelpMessage = "A flag that indicates whether or not to show deleted users.")]
+        [Parameter(ParameterSetName = "ByUserState", Mandatory = true, HelpMessage = "A flag that indicates whether or not to get deleted users.")]
         [ValidateNotNullOrEmpty]
         public SwitchParameter ReturnDeletedUsers { get; set; }
 
@@ -56,128 +58,82 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            switch (ParameterSetName)
+            Scheduler.RunTask(async () =>
             {
-                case "ByCustomerId":
-                    if (ReturnDeletedUsers)
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                if (ParameterSetName.Equals("ByCustomerId", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
+                    List<CustomerUser> users;
+                    SeekBasedResourceCollection<CustomerUser> seekUsers;
+
+                    users = new List<CustomerUser>();
+
+                    seekUsers = await partner.Customers[CustomerId].Users.GetAsync(CancellationToken).ConfigureAwait(false);
+                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+                    while (usersEnumerator.HasValue)
                     {
-                        List<CustomerUser> users = GetDeletedUsers(CustomerId);
-                        WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                        users.AddRange(usersEnumerator.Current.Items);
+                        // TODO - Need to populate the request context here.
+                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
                     }
-                    else
+
+                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                }
+                else if (ParameterSetName.Equals("ByUserId", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    CustomerUser customerUser = await partner.Customers[CustomerId].Users[UserId].GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSCustomerUser(customerUser));
+                }
+                else if (ParameterSetName.Equals("ByUserState", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
+                    IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
+                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
+                    List<CustomerUser> users;
+                    SeekBasedResourceCollection<CustomerUser> seekUsers;
+
+                    users = new List<CustomerUser>();
+
+                    seekUsers = await partner.Customers[CustomerId].Users.QueryAsync(simpleQueryWithFilter, CancellationToken).ConfigureAwait(false);
+                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+                    while (usersEnumerator.HasValue)
                     {
-                        List<CustomerUser> users = GetUsers(CustomerId);
-                        WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                        users.AddRange(usersEnumerator.Current.Items);
+                        // TODO - Need to populate the request context here.
+                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
                     }
 
-                    break;
-                case "ByUpn":
-                    GetUserByUpn(CustomerId, UserPrincipalName);
-                    break;
-                case "ByUserId":
-                    GetUserById(CustomerId, UserId);
-                    break;
-            }
-        }
+                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                }
+                else if (ParameterSetName.Equals("ByUpn", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // TODO -- This needs to be tested and we should look into replacing this with a call to Microsoft Graph
 
-        /// <summary>
-        /// Gets a details for a specified user and customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetUserById(string customerId, string userId)
-        {
+                    SimpleFieldFilter filter = new SimpleFieldFilter("UserPrincipalName", FieldFilterOperation.Equals, UserPrincipalName);
+                    IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
+                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
+                    List<CustomerUser> users;
+                    SeekBasedResourceCollection<CustomerUser> seekUsers;
 
-            customerId.AssertNotEmpty(nameof(customerId));
-            userId.AssertNotEmpty(nameof(userId));
+                    users = new List<CustomerUser>();
 
-            WriteObject(new PSCustomerUser(Partner.Customers[customerId].Users[userId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-        }
+                    seekUsers = await partner.Customers[CustomerId].Users.QueryAsync(simpleQueryWithFilter, CancellationToken).ConfigureAwait(false);
+                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
 
-        /// <summary>
-        /// Gets a list of users from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private List<CustomerUser> GetUsers(string customerId)
-        {
-            IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-            List<CustomerUser> users;
-            SeekBasedResourceCollection<CustomerUser> seekUsers;
+                    while (usersEnumerator.HasValue)
+                    {
+                        users.AddRange(usersEnumerator.Current.Items);
+                        // TODO - Need to populate the request context here.
+                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                    }
 
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            users = new List<CustomerUser>();
-
-            seekUsers = Partner.Customers[customerId].Users.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-            while (usersEnumerator.HasValue)
-            {
-                users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-
-            return users;
-        }
-
-        /// <summary>
-        /// Gets a list of deleted users from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private List<CustomerUser> GetDeletedUsers(string customerId)
-        {
-            SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
-            IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
-            IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-            List<CustomerUser> users;
-            SeekBasedResourceCollection<CustomerUser> seekUsers;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            users = new List<CustomerUser>();
-
-            seekUsers = Partner.Customers[customerId].Users.QueryAsync(simpleQueryWithFilter).GetAwaiter().GetResult();
-            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-            while (usersEnumerator.HasValue)
-            {
-                users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-
-            return users;
-        }
-
-        /// <summary>
-        /// Gets a list of users by searching for the user principal name from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userPrincipalName">Identifier of the user principal name.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetUserByUpn(string customerId, string userPrincipalName)
-        {
-
-            customerId.AssertNotEmpty(nameof(customerId));
-            customerId.AssertNotEmpty(nameof(userPrincipalName));
-
-            List<CustomerUser> gUsers = GetUsers(customerId);
-            CustomerUser fUser = gUsers.SingleOrDefault(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase));
-
-            if (fUser != null)
-            {
-                WriteObject(new PSCustomerUser(fUser));
-            }
+                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                }
+            }, true);
         }
     }
 }

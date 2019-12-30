@@ -6,16 +6,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
     using Models;
+    using Models.Authentication;
     using PartnerCenter.Models.DevicesDeployment;
     using Properties;
 
     /// <summary>
     /// Creates a new configuration policies for the specified customer identifier.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerCustomerConfigurationPolicy", SupportsShouldProcess = true), OutputType(typeof(PSConfigurationPolicy))]
-    public class SetPartnerCustomerConfigurationPolicy : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerConfigurationPolicy", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSConfigurationPolicy))]
+    public class SetPartnerCustomerConfigurationPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -78,71 +79,56 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ConfigurationPolicy configurationPolicy = GetCustomerPolicy(CustomerId, PolicyId);
-            List<PolicySettingsTypes> policySettings = new List<PolicySettingsTypes>();
-
-            if (!ShouldProcess(Resources.SetPartnerCustomerConfigurationPolicyWhatIf, PolicyId))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
+                if (ShouldProcess(Resources.SetPartnerCustomerConfigurationPolicyWhatIf, PolicyId))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    ConfigurationPolicy configurationPolicy = await partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].GetAsync(CancellationToken).ConfigureAwait(false);
+                    List<PolicySettingsTypes> policySettings = new List<PolicySettingsTypes>();
 
-            if (OobeUserNotLocalAdmin)
-            {
-                policySettings.Add(PolicySettingsTypes.OobeUserNotLocalAdmin);
-            }
+                    if (OobeUserNotLocalAdmin)
+                    {
+                        policySettings.Add(PolicySettingsTypes.OobeUserNotLocalAdmin);
+                    }
 
-            if (SkipEula)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipEula);
-            }
+                    if (SkipEula)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipEula);
+                    }
 
-            if (SkipExpressSettings)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipExpressSettings);
-            }
+                    if (SkipExpressSettings)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipExpressSettings);
+                    }
 
-            if (RemoveOemPreinstalls)
-            {
-                policySettings.Add(PolicySettingsTypes.RemoveOemPreinstalls);
-            }
+                    if (RemoveOemPreinstalls)
+                    {
+                        policySettings.Add(PolicySettingsTypes.RemoveOemPreinstalls);
+                    }
 
-            if (SkipOemRegistration)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipOemRegistration);
-            }
+                    if (SkipOemRegistration)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipOemRegistration);
+                    }
 
-            if (!string.IsNullOrEmpty(Name))
-            {
-                configurationPolicy.Name = Name;
-            }
+                    if (!string.IsNullOrEmpty(Name))
+                    {
+                        configurationPolicy.Name = Name;
+                    }
 
-            if (!string.IsNullOrEmpty(Description))
-            {
-                configurationPolicy.Description = Description;
-            }
+                    if (!string.IsNullOrEmpty(Description))
+                    {
+                        configurationPolicy.Description = Description;
+                    }
 
-            configurationPolicy.PolicySettings = policySettings;
+                    configurationPolicy.PolicySettings = policySettings;
 
-            ConfigurationPolicy devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].PatchAsync(configurationPolicy).GetAwaiter().GetResult();
-            WriteObject(new PSConfigurationPolicy(devicePolicy));
-        }
+                    ConfigurationPolicy devicePolicy = await partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].PatchAsync(configurationPolicy, CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSConfigurationPolicy(devicePolicy));
 
-        /// <summary>
-        /// Gets the specified policy from the specified customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="policyId">Identifier of the policy.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// or
-        /// <paramref name="policyId"/> is empty or null.
-        /// </exception>
-        private ConfigurationPolicy GetCustomerPolicy(string customerId, string policyId)
-        {
-            customerId.AssertNotEmpty(nameof(customerId));
-            policyId.AssertNotEmpty(nameof(policyId));
-
-            return Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                }
+            }, true);
         }
     }
 }

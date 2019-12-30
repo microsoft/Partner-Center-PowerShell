@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.CustomerSubscriptionUpgrades;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Gets the available upgrade offers for the specified subscription.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUpgrades"), OutputType(typeof(PSCustomerSubscriptionUpgrades))]
-    public class GetCustomerSubscriptionUpgrades : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionUpgrades")]
+    [OutputType(typeof(PSCustomerSubscriptionUpgrades))]
+    public class GetCustomerSubscriptionUpgrades : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -35,10 +37,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Upgrade> upgrades;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Upgrade> upgrades = await partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            upgrades = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Upgrades.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(upgrades.Items.Select(c => new PSCustomerSubscriptionUpgrades(c)), true);
+                WriteObject(upgrades.Items.Select(c => new PSCustomerSubscriptionUpgrades(c)), true);
+            }, true);
         }
     }
 }

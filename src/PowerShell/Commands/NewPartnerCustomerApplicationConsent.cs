@@ -5,13 +5,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using PartnerCenter.Models.ApplicationConsents;
 
     /// <summary>
     /// Create a new application consent for the specified customer.
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerApplicationConsent"), OutputType(typeof(ApplicationConsent))]
-    public class NewPartnerCustomerApplicationConsent : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerApplicationConsent")]
+    [OutputType(typeof(ApplicationConsent))]
+    public class NewPartnerCustomerApplicationConsent : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the application grants.
@@ -45,17 +47,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ApplicationConsent consent = new ApplicationConsent
+            Scheduler.RunTask(async () =>
             {
-                ApplicationId = ApplicationId,
-                DisplayName = DisplayName
-            };
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            consent.ApplicationGrants.AddRange(ApplicationGrants);
+                ApplicationConsent consent = new ApplicationConsent
+                {
+                    ApplicationId = ApplicationId,
+                    DisplayName = DisplayName
+                };
 
-            consent = Partner.Customers[CustomerId].ApplicationConsents.CreateAsync(consent).GetAwaiter().GetResult();
+                consent.ApplicationGrants.AddRange(ApplicationGrants);
 
-            WriteObject(consent);
+                consent = await partner.Customers[CustomerId].ApplicationConsents.CreateAsync(consent, CancellationToken).ConfigureAwait(false);
+
+                WriteObject(consent);
+            }, true);
         }
     }
 }

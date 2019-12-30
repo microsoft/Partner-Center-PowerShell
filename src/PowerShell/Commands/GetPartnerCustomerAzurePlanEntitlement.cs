@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Gets a list of Azure Plan entitlements for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement"), OutputType(typeof(PSAzureEntitlement))]
-    public class GetPartnerCustomerAzurePlanEntitlement : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAzurePlanEntitlement")]
+    [OutputType(typeof(PSAzureEntitlement))]
+    public class GetPartnerCustomerAzurePlanEntitlement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -35,14 +37,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<AzureEntitlement> entitlements = Partner.Customers[CustomerId]
-                .Subscriptions[SubscriptionId]
-                .GetAzurePlanSubscriptionEntitlementsAsync()
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            WriteObject(entitlements.Items.Select(e => new PSAzureEntitlement(e)), true);
+                ResourceCollection<AzureEntitlement> entitlements = await partner.Customers[CustomerId]
+                    .Subscriptions[SubscriptionId]
+                    .GetAzurePlanSubscriptionEntitlementsAsync(CancellationToken)
+                    .ConfigureAwait(false);
+
+                WriteObject(entitlements.Items.Select(e => new PSAzureEntitlement(e)), true);
+            }, true);
         }
     }
 }

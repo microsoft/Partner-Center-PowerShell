@@ -7,12 +7,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Agreements;
+    using Models.Authentication;
+    using PartnerCenter.Models;
+    using PartnerCenter.Models.Agreements;
 
     /// <summary>
     /// Gets a list of agreements the customer in place.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAgreement"), OutputType(typeof(PSAgreement))]
-    public class GetPartnerCustomerAgreement : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerAgreement")]
+    [OutputType(typeof(PSAgreement))]
+    public class GetPartnerCustomerAgreement : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the agreement type. 
@@ -33,14 +37,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(AgreementType))
+            Scheduler.RunTask(async () =>
             {
-                WriteObject(Partner.Customers[CustomerId].Agreements.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
-            }
-            else
-            {
-                WriteObject(Partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(a => new PSAgreement(a)), true);
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Agreement> agreements;
+
+                if (string.IsNullOrEmpty(AgreementType))
+                {
+                    agreements = await partner.Customers[CustomerId].Agreements.GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    agreements = await partner.Customers[CustomerId].Agreements.ByAgreementType(AgreementType).GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+
+                WriteObject(agreements.Items.Select(a => new PSAgreement(a)), true);
+            }, true);
         }
     }
 }

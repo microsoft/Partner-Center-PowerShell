@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Roles;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Roles;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Gets the members for the specified partner roles.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerRoleMember"), OutputType(typeof(PSUserMember))]
-    public class GetPartnerRoleMember : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerRoleMember")]
+    [OutputType(typeof(PSUserMember))]
+    public class GetPartnerRoleMember : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the role identifier.
@@ -28,9 +30,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SeekBasedResourceCollection<UserMember> members = Partner.Roles[RoleId].Members.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                SeekBasedResourceCollection<UserMember> members = await partner.Roles[RoleId].Members.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            WriteObject(members.Items.Select(m => new PSUserMember(m)), true);
+                WriteObject(members.Items.Select(m => new PSUserMember(m)), true);
+            }, true);
         }
     }
 }

@@ -5,10 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Customers;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerBillingProfile"), OutputType(typeof(PSCustomerBillingProfile))]
-    public class GetPartnerCustomerBillingProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerBillingProfile")]
+    [OutputType(typeof(PSCustomerBillingProfile))]
+    public class GetPartnerCustomerBillingProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -22,7 +24,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCustomerBillingProfile(Partner.Customers[CustomerId].Profiles.Billing.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                WriteObject(new PSCustomerBillingProfile(await partner.Customers[CustomerId].Profiles.Billing.GetAsync(CancellationToken).ConfigureAwait(false)));
+            }, true);
         }
     }
 }

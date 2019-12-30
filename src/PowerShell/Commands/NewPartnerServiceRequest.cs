@@ -9,8 +9,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.ServiceRequests;
     using Properties;
 
-    [Cmdlet(VerbsCommon.New, "PartnerServiceRequest", SupportsShouldProcess = true), OutputType(typeof(PSServiceRequest))]
-    public class NewPartnerServiceRequest : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerServiceRequest", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSServiceRequest))]
+    public class NewPartnerServiceRequest : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the locale of the organization creating the service request.
@@ -51,25 +52,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ServiceRequest request;
-            string agentLocale;
-
-            if (ShouldProcess(Resources.NewPartnerServiceRequestWhatIf))
+            Scheduler.RunTask(async () =>
             {
-                agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
-
-                request = new ServiceRequest
+                if (ShouldProcess(Resources.NewPartnerServiceRequestWhatIf))
                 {
-                    Description = Description,
-                    Severity = Severity,
-                    SupportTopicId = SupportTopicId,
-                    Title = Title
-                };
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    ServiceRequest request;
+                    string agentLocale;
 
-                request = Partner.ServiceRequests.CreateAsync(request, agentLocale).GetAwaiter().GetResult();
+                    agentLocale = string.IsNullOrEmpty(AgentLocale) ? PartnerSession.Instance.Context.Locale : AgentLocale;
 
-                WriteObject(new PSServiceRequest(request));
-            }
+                    request = new ServiceRequest
+                    {
+                        Description = Description,
+                        Severity = Severity,
+                        SupportTopicId = SupportTopicId,
+                        Title = Title
+                    };
+
+                    request = await partner.ServiceRequests.CreateAsync(request, agentLocale, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSServiceRequest(request));
+                }
+
+            }, true);
         }
     }
 }

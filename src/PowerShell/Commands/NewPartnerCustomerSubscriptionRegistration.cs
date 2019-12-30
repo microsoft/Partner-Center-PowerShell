@@ -6,13 +6,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Properties;
 
     /// <summary>
     /// Registers an existing Subscription so that it is enabled for ordering Azure Reserved VM Instances. 
     /// </summary>
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionRegistration", SupportsShouldProcess = true), OutputType(typeof(string))]
-    public class NewPartnerCustomerSubscriptionRegistration : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerSubscriptionRegistration", SupportsShouldProcess = true)]
+    [OutputType(typeof(string))]
+    public class NewPartnerCustomerSubscriptionRegistration : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -33,14 +35,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.SubscriptionRegistrationWhatIf,
-                SubscriptionId,
-                CustomerId)))
+            Scheduler.RunTask(async () =>
             {
-                WriteObject(Partner.Customers[CustomerId].Subscriptions[SubscriptionId].Registration.RegisterAsync().ConfigureAwait(false).GetAwaiter().GetResult());
-            }
+                if (ShouldProcess(string.Format(
+                    CultureInfo.CurrentCulture,
+                    Resources.SubscriptionRegistrationWhatIf,
+                    SubscriptionId,
+                    CustomerId)))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(await partner.Customers[CustomerId].Subscriptions[SubscriptionId].Registration.RegisterAsync(CancellationToken).ConfigureAwait(false));
+                }
+            }, true);
         }
     }
 }

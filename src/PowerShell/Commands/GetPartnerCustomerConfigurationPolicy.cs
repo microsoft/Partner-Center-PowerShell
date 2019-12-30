@@ -3,19 +3,20 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
     using Models;
+    using Models.Authentication;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.DevicesDeployment;
 
     /// <summary>
     /// Return a list of configuration policies or a specific configration policy for the specified customer identifier.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerConfigurationPolicy"), OutputType(typeof(PSConfigurationPolicy))]
-    public class GetPartnerCustomerConfigurationPolicy : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerConfigurationPolicy")]
+    [OutputType(typeof(PSConfigurationPolicy))]
+    public class GetPartnerCustomerConfigurationPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -40,51 +41,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(PolicyId))
+
+            Scheduler.RunTask(async () =>
             {
-                GetCustomerPolicies(CustomerId);
-            }
-            else
-            {
-                GetCustomerPolicy(CustomerId, PolicyId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-        /// <summary>
-        /// Gets the configuration policies for the specified customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerPolicies(string customerId)
-        {
-            IEnumerable<ConfigurationPolicy> devicePolicy;
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
-            WriteObject(devicePolicy.Select(d => new PSConfigurationPolicy(d)), true);
-        }
-
-        /// <summary>
-        /// Gets the specified policy from the specified customer from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="policyId">Identifier of the policy.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// or
-        /// <paramref name="policyId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerPolicy(string customerId, string policyId)
-        {
-            ConfigurationPolicy devicePolicy;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-            policyId.AssertNotEmpty(nameof(policyId));
-
-            devicePolicy = Partner.Customers[customerId].ConfigurationPolicies[policyId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(new PSConfigurationPolicy(devicePolicy), true);
+                if (string.IsNullOrEmpty(PolicyId))
+                {
+                    ResourceCollection<ConfigurationPolicy> policies = await partner.Customers[CustomerId].ConfigurationPolicies.GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(policies.Items.Select(d => new PSConfigurationPolicy(d)), true);
+                }
+                else
+                {
+                    ConfigurationPolicy policy = await partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(policy);
+                }
+            }, true);
         }
     }
 }

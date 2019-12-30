@@ -14,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Properties;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomerUser", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
-    public class NewPartnerCustomerUser : PartnerCmdlet
+    public class NewPartnerCustomerUser : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -76,31 +76,35 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerUser newUser;
-            string country;
-            CustomerId.AssertNotEmpty(nameof(CustomerId));
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
+            Scheduler.RunTask(async () =>
             {
-                country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
-                string stringPassword = SecureStringExtensions.ConvertToString(Password);
-
-                newUser = new CustomerUser
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerUserWhatIf, UserPrincipalName)))
                 {
-                    PasswordProfile = new PasswordProfile()
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    CustomerUser newUser;
+                    string country;
+
+                    country = (string.IsNullOrEmpty(UsageLocation)) ? PartnerSession.Instance.Context.CountryCode : UsageLocation;
+                    string stringPassword = SecureStringExtensions.ConvertToString(Password);
+
+                    newUser = new CustomerUser
                     {
-                        ForceChangePassword = ForceChangePassword.IsPresent,
-                        Password = stringPassword
-                    },
-                    DisplayName = DisplayName,
-                    FirstName = FirstName,
-                    LastName = LastName,
-                    UsageLocation = country,
-                    UserPrincipalName = UserPrincipalName
-                };
-                CustomerUser createdUser = Partner.Customers[CustomerId].Users.CreateAsync(newUser).GetAwaiter().GetResult();
-                WriteObject(new PSCustomerUser(createdUser));
-            }
+                        PasswordProfile = new PasswordProfile()
+                        {
+                            ForceChangePassword = ForceChangePassword.IsPresent,
+                            Password = stringPassword
+                        },
+                        DisplayName = DisplayName,
+                        FirstName = FirstName,
+                        LastName = LastName,
+                        UsageLocation = country,
+                        UserPrincipalName = UserPrincipalName
+                    };
+                    CustomerUser createdUser = await partner.Customers[CustomerId].Users.CreateAsync(newUser, CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSCustomerUser(createdUser));
+                }
+            }, true);
+
         }
     }
 }

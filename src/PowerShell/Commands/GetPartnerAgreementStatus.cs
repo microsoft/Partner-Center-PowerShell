@@ -5,11 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using PartnerCenter.Models.Compliance;
 
     [Cmdlet(VerbsCommon.Get, "PartnerAgreementStatus", DefaultParameterSetName = "ByTenantId")]
     [OutputType(typeof(AgreementSignatureStatus))]
-    public class GetPartnerAgreementStatus : PartnerCmdlet
+    public class GetPartnerAgreementStatus : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the Microsoft Partner Network (MPN) identifier.
@@ -29,7 +30,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(Partner.Compliance.AgreementSignatureStatus.GetAsync(MpnId, TenantId, CancellationToken).ConfigureAwait(false).GetAwaiter().GetResult());
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                WriteObject(await partner.Compliance.AgreementSignatureStatus.GetAsync(MpnId, TenantId, CancellationToken).ConfigureAwait(false));
+            }, true);
         }
     }
 }

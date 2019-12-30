@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Models.Authentication;
     using PartnerCenter.Models;
     using Validations;
 
@@ -12,7 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsDiagnostic.Test, "PartnerAddress")]
     [OutputType(typeof(bool))]
-    public class TestPartnerAddress : PartnerCmdlet
+    public class TestPartnerAddress : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the first line of the address.
@@ -68,23 +69,27 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Address address;
-            IValidator<Address> validator;
-
-            address = new Address
+            Scheduler.RunTask(async () =>
             {
-                AddressLine1 = AddressLine1,
-                AddressLine2 = AddressLine2,
-                City = City,
-                Country = Country,
-                PostalCode = PostalCode,
-                Region = Region,
-                State = State
-            };
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            validator = new AddressValidator(Partner);
 
-            WriteObject(validator.IsValid(address, d => WriteDebug(d)));
+                Address address = new Address
+                {
+                    AddressLine1 = AddressLine1,
+                    AddressLine2 = AddressLine2,
+                    City = City,
+                    Country = Country,
+                    PostalCode = PostalCode,
+                    Region = Region,
+                    State = State
+                };
+
+                IValidator<Address> validator = new AddressValidator(partner);
+                bool isValid = await validator.IsValidAsync(address);
+
+                WriteObject(isValid);
+            }, true);
         }
     }
 }
