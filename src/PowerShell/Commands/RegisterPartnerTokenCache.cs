@@ -40,6 +40,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             string inMemoryControlFilePath = Path.Combine(SharedUtilities.GetUserRootDirectory(), ".PartnerCenter", "InMemoryTokenCache");
 
+            // TODO - Need to clone the cache if already connected; otherwise, the user will need to connect.
+
             if (InMemory.IsPresent && InMemory.ToBool())
             {
                 if (!File.Exists(inMemoryControlFilePath))

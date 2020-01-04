@@ -78,6 +78,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models
         public DateTimeOffset StartTime { get; set; }
 
         /// <summary>
+        /// Gets or sets the user identifier.
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// Finishes the quality of service event.
         /// </summary>
         public void FinishQosEvent()

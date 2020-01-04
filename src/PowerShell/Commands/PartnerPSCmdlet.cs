@@ -191,8 +191,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 IsSuccess = true,
                 ModuleVersion = GetType().Assembly.GetName().Version.ToString(),
                 ParameterSetName = ParameterSetName,
-                SessionId = sessionId.ToString()
+                SessionId = sessionId.ToString(),
             };
+
+            if (!string.IsNullOrEmpty(PartnerSession.Instance?.Context?.Account?.Identifier))
+            {
+                qosEvent.UserId = GenerateSha256HashString(PartnerSession.Instance.Context.Account.Identifier);
+            }
 
             if (MyInvocation != null && MyInvocation.BoundParameters != null && MyInvocation.BoundParameters.Keys != null)
             {
@@ -344,7 +349,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Generate a SHA 256 hash string from the originInput.
+        /// Generate a SHA 256 hash string from the input.
         /// </summary>
         /// <param name="input">The input value to be hashed.</param>
         /// <returns>The SHA 256 hash, or empty if the input is only whtespace.</returns>
@@ -526,8 +531,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             };
 
             pageViewTelemetry.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
+            pageViewTelemetry.Context.Session.Id = qosEvent.SessionId;
+            pageViewTelemetry.Context.User.Id = qosEvent.UserId;
+
             PopulatePropertiesFromQos(pageViewTelemetry.Properties);
 
+#if !DEBUG
             try
             {
                 telemetryClient.TrackPageView(pageViewTelemetry);
@@ -541,6 +550,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 LogExceptionEvent();
             }
+#endif
         }
 
         /// <summary>
