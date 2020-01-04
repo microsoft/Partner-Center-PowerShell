@@ -11,6 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Models.Invoices;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of invoices from Partner Center.
@@ -49,8 +50,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     while (enumerator.HasValue)
                     {
                         invoices.AddRange(enumerator.Current.Items.Select(i => new PSInvoice(i)));
-                        // TOOD - The request context should be here as well
-                        await enumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                        await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                     }
 
                     WriteObject(invoices, true);

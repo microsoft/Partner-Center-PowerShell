@@ -108,9 +108,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(Resources.SetPartnerLegalProfileWhatIf))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
                     LegalBusinessProfile profile = await partner.Profiles.LegalBusinessProfile.GetAsync(VettingVersion.Current, CancellationToken).ConfigureAwait(false);
@@ -138,8 +138,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     profile = await partner.Profiles.LegalBusinessProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
 
                     WriteObject(new PSLegalBusinessProfile(profile));
-                }, true);
-            }
+                }
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)

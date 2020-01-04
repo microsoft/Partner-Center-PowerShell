@@ -94,9 +94,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             string userId = InputObject == null ? UserId : InputObject.UserId;
 
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, userId)))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, userId)))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
                     PasswordProfile profile;
@@ -153,8 +153,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     user = await partner.Customers[CustomerId].Users[userId].PatchAsync(user, CancellationToken).ConfigureAwait(false);
 
                     WriteObject(new PSCustomerUser(user), true);
-                }, true);
-            }
+                }
+            }, true);
         }
     }
 }

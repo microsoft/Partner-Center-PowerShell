@@ -73,7 +73,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-
                 Address address = new Address
                 {
                     AddressLine1 = AddressLine1,

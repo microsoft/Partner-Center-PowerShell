@@ -40,7 +40,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             Scheduler.RunTask(async () =>
             {
                 IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
-                ResourceCollection<Subscription> subscripions = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync().ConfigureAwait(false);
+                ResourceCollection<Subscription> subscripions = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync(CancellationToken).ConfigureAwait(false);
 
                 WriteObject(subscripions.Items.Select(s => new PSSubscription(s)), true);
             }, true);

@@ -57,9 +57,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             string customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerWhatIf, customerId)))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
@@ -76,8 +76,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         WriteObject(await partner.Customers[customerId].Qualification.UpdateAsync(Qualification).ConfigureAwait(false));
                     }
-                }, true);
-            }
+                }
+            }, true);
         }
     }
 }

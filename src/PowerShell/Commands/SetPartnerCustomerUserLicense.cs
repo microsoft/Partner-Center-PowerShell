@@ -42,12 +42,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.SetPartnerCustomerUserLicenseWhatIf,
-                UserId)))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(string.Format(
+                    CultureInfo.CurrentCulture,
+                    Resources.SetPartnerCustomerUserLicenseWhatIf,
+                    UserId)))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
                     List<LicenseAssignment> licensesToAssign = new List<LicenseAssignment>();
@@ -70,8 +70,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     update = await partner.Customers[CustomerId].Users[UserId].LicenseUpdates.CreateAsync(update, CancellationToken).ConfigureAwait(false);
 
                     WriteObject(new PSLicenseUpdate(update));
-                }, true);
-            }
+                }
+            }, true);
         }
     }
 }

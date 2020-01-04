@@ -90,23 +90,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 customerId = (InputObject == null) ? CustomerId : InputObject.CustomerId;
 
-                if (!ShouldProcess(
+                if (ShouldProcess(
                     string.Format(
                         CultureInfo.CurrentCulture, Resources.SetPartnerCustomerSubscriptionWhatIf, SubscriptionId,
                         customerId)))
                 {
-                    return;
-                }
+                    subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false);
 
-                subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].GetAsync().ConfigureAwait(false);
-
-
-                if (BillingCycle.HasValue)
-                {
-                    await partner.Customers[customerId].Orders[subscription.OrderId].PatchAsync(new Order
+                    if (BillingCycle.HasValue)
                     {
-                        BillingCycle = BillingCycle.Value,
-                        LineItems = new List<OrderLineItem>
+                        await partner.Customers[customerId].Orders[subscription.OrderId].PatchAsync(new Order
+                        {
+                            BillingCycle = BillingCycle.Value,
+                            LineItems = new List<OrderLineItem>
                         {
                            new OrderLineItem
                            {
@@ -117,35 +113,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                                Quantity = subscription.Quantity
                            }
                         },
-                        ReferenceCustomerId = customerId
-                    }).ConfigureAwait(false);
+                            ReferenceCustomerId = customerId
+                        }).ConfigureAwait(false);
 
-                    subscription.BillingCycle = BillingCycle.Value;
+                        subscription.BillingCycle = BillingCycle.Value;
+                    }
+
+                    if (!string.IsNullOrEmpty(FriendlyName))
+                    {
+                        subscription.FriendlyName = FriendlyName;
+                    }
+
+                    if (!string.IsNullOrEmpty(PartnerId))
+                    {
+                        subscription.PartnerId = PartnerId;
+                    }
+
+                    if (Quantity.HasValue)
+                    {
+                        subscription.Quantity = Quantity.Value;
+                    }
+
+                    if (Status.HasValue)
+                    {
+                        subscription.Status = Status.Value;
+                    }
+
+                    subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].PatchAsync(subscription).ConfigureAwait(false);
+
+                    WriteObject(new PSSubscription(subscription));
                 }
-
-                if (!string.IsNullOrEmpty(FriendlyName))
-                {
-                    subscription.FriendlyName = FriendlyName;
-                }
-
-                if (!string.IsNullOrEmpty(PartnerId))
-                {
-                    subscription.PartnerId = PartnerId;
-                }
-
-                if (Quantity.HasValue)
-                {
-                    subscription.Quantity = Quantity.Value;
-                }
-
-                if (Status.HasValue)
-                {
-                    subscription.Status = Status.Value;
-                }
-
-                subscription = await partner.Customers[customerId].Subscriptions[SubscriptionId].PatchAsync(subscription).ConfigureAwait(false);
-
-                WriteObject(new PSSubscription(subscription));
             });
         }
     }

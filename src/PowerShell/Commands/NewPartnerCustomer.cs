@@ -145,9 +145,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
@@ -217,8 +217,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     }
 
                     WriteObject(await partner.Customers.CreateAsync(customer).ConfigureAwait(false));
-                }, true);
-            }
+                }
+            }, true);
         }
     }
 }

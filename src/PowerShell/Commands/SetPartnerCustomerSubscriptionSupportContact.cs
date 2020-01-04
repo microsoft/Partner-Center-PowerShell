@@ -55,12 +55,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.SetPartnerCustomerSubscriptionSupportContactWhatIf,
-                SubscriptionId)))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess(string.Format(
+                    CultureInfo.CurrentCulture,
+                    Resources.SetPartnerCustomerSubscriptionSupportContactWhatIf,
+                    SubscriptionId)))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
                     SupportContact contact = new SupportContact
@@ -72,8 +72,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     contact = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.UpdateAsync(contact, CancellationToken).ConfigureAwait(false);
                     WriteObject(new PSSupportContact(contact));
-                }, true);
-            }
+                }
+            }, true);
         }
     }
 }

@@ -121,9 +121,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess("Updates the partner's organization profile"))
+            Scheduler.RunTask(async () =>
             {
-                Scheduler.RunTask(async () =>
+                if (ShouldProcess("Updates the partner's organization profile"))
                 {
                     IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
@@ -156,8 +156,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     profile = await partner.Profiles.OrganizationProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
                     WriteObject(new PSOrganizationProfile(profile));
-                }, true);
-            }
+                }
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)
