@@ -34,6 +34,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string Message = "We have launched a browser for you to login. For the old experience with device code flow, please run 'New-PartnerAccessToken -UseDeviceAuthentication'.";
 
         /// <summary>
+        /// The name of the refresh token parameter set.
+        /// </summary>
+        private const string RefreshTokenParameterSet = "RefreshToken";
+
+        /// <summary>
         /// The name of the service principal parameter set.
         /// </summary>
         private const string ServicePrincipalParameterSet = "ServicePrincipal";
@@ -59,6 +64,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the application identifier.
         /// </summary>
         [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
         [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         [Parameter(HelpMessage = "The application identifier to be used during authentication.", Mandatory = true, ParameterSetName = UserParameterSet)]
@@ -76,6 +82,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the service principal credential.
         /// </summary>
         [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
         [Parameter(HelpMessage = "Credentials that represents the service principal.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [ValidateNotNull]
         public PSCredential Credential { get; set; }
@@ -92,6 +99,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the module that an access token is being generated.
         /// </summary>
         [Parameter(HelpMessage = "The module that an access token is being generated.", Mandatory = true, ParameterSetName = ByModuleParameterSet)]
+        [Parameter(HelpMessage = "The module that an access token is being generated.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
         [Alias("ModuleName")]
         [ValidateSet(nameof(ModuleName.ExchangeOnline))]
         public ModuleName Module { get; set; }
@@ -99,22 +107,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the refresh token to use during authentication.
         /// </summary>
-        [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = false)]
+        [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
         [ValidateNotNullOrEmpty]
         public string RefreshToken { get; set; }
 
         /// <summary>
         /// Gets or sets the scopes used for authentication.
         /// </summary>
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = UserParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true)]
         public string[] Scopes { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating that a service principal is being used.
         /// </summary>
+        [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
         [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
         [Parameter(HelpMessage = "Indicates that this account authenticates by providing service principal credentials.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         public SwitchParameter ServicePrincipal { get; set; }
@@ -123,11 +129,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the tenant identifier.
         /// </summary>
         [Alias("Domain", "TenantId")]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = ByModuleParameterSet)]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string Tenant { get; set; }
 
@@ -135,14 +137,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets a flag indicating if the authorization code flow should be used.
         /// </summary>
         [Alias("AuthCode")]
-        [Parameter(HelpMessage = "Use the authorization code flow during authentication.", Mandatory = false)]
+        [Parameter(HelpMessage = "Use the authorization code flow during authentication.", Mandatory = false, ParameterSetName = ByModuleParameterSet)]
+        [Parameter(HelpMessage = "Use the authorization code flow during authentication.", Mandatory = false, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Use the authorization code flow during authentication.", Mandatory = false, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Use the authorization code flow during authentication.", Mandatory = false, ParameterSetName = UserParameterSet)]
         public SwitchParameter UseAuthorizationCode { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the device code flow should be used.
         /// </summary>
         [Alias("DeviceCode", "DeviceAuth", "Device")]
-        [Parameter(ParameterSetName = UserParameterSet, Mandatory = false, HelpMessage = "Use device code authentication instead of a browser control.")]
+        [Parameter(HelpMessage = "Use device code authentication instead of a browser control.", Mandatory = false, ParameterSetName = UserParameterSet)]
         public SwitchParameter UseDeviceAuthentication { get; set; }
 
         /// <summary>
@@ -154,6 +159,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 PartnerAccount account = new PartnerAccount();
                 string applicationId;
+
+                if (!string.IsNullOrEmpty(CertificateThumbprint))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.CertificateThumbprint, CertificateThumbprint);
+                }
 
                 if (ParameterSetName.Equals(AccessTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -168,6 +178,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     applicationId = PowerShellModule.KnownModules[Module].ApplicationId;
 
                     Scopes = PowerShellModule.KnownModules[Module].Scopes.ToArray();
+                }
+                else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
+                    account.Type = AccountType.Certificate;
+                    applicationId = ApplicationId;
                 }
                 else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {

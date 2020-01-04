@@ -77,7 +77,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
                 return new InteractiveParameters(account, environment, scopes, message);
             }
-            else if (account.Type == AccountType.ServicePrincipal || account.Type == AccountType.Certificate)
+            else if (account.Type == AccountType.Certificate || account.Type == AccountType.ServicePrincipal)
             {
                 return new ServicePrincipalParameters(account, environment, scopes);
             }

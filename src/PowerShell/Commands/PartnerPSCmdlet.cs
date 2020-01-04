@@ -17,6 +17,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using ApplicationInsights.DataContracts;
     using ApplicationInsights.Extensibility;
     using Exceptions;
+    using Microsoft.Identity.Client;
     using Models;
     using Models.Authentication;
     using Network;
@@ -462,6 +463,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 Message = "The message has been removed due to PII"
             };
 
+
+            if (qosEvent.Exception is MsalServiceException)
+            {
+                MsalServiceException ex = qosEvent.Exception as MsalServiceException;
+
+                exceptionTelemetry.Properties.Add("CorrelationId", ex.CorrelationId);
+                exceptionTelemetry.Properties.Add("ErrorCode", ex.ErrorCode);
+                exceptionTelemetry.Properties.Add("StatusCode", ex.StatusCode.ToString());
+            }
             if (qosEvent.Exception is PartnerException)
             {
                 PartnerException ex = qosEvent.Exception as PartnerException;

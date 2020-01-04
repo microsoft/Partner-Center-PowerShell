@@ -211,6 +211,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
                     account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
+                    account.Type = AccountType.Certificate;
                 }
                 else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
