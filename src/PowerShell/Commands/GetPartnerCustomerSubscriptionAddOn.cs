@@ -9,12 +9,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Subscriptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionAddOn"), OutputType(typeof(PSSubscription))]
-    public class GetPartnerCustomerSubscriptionAddOn : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionAddOn")]
+    [OutputType(typeof(PSSubscription))]
+    public class GetPartnerCustomerSubscriptionAddOn : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -35,8 +37,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Subscription> subscripions = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(subscripions.Items.Select(s => new PSSubscription(s)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Subscription> subscripions = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].AddOns.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(subscripions.Items.Select(s => new PSSubscription(s)), true);
+            }, true);
+
         }
     }
 }

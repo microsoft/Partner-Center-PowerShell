@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Relationships;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Relationships;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Gets a list of indirect resellers from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerIndirectReseller"), OutputType(typeof(PSPartnerRelationship))]
-    public class GetPartnerIndirectReseller : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerIndirectReseller")]
+    [OutputType(typeof(PSPartnerRelationship))]
+    public class GetPartnerIndirectReseller : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -28,19 +30,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<PartnerRelationship> resellers;
-
-            if (string.IsNullOrEmpty(CustomerId))
+            Scheduler.RunTask(async () =>
             {
-                resellers = Partner.Relationships.GetAsync(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf).GetAwaiter().GetResult();
-            }
-            else
-            {
-                resellers = Partner.Customers[CustomerId].Relationships.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<PartnerRelationship> resellers;
 
-            WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);
+                if (string.IsNullOrEmpty(CustomerId))
+                {
+                    resellers = await partner.Relationships.GetAsync(PartnerRelationshipType.IsIndirectCloudSolutionProviderOf, CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    resellers = await partner.Customers[CustomerId].Relationships.GetAsync(CancellationToken).ConfigureAwait(false);
+                }
 
+                WriteObject(resellers.Items.Select(r => new PSPartnerRelationship(r)), true);
+            }, true);
         }
     }
 }

@@ -4,6 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Graph;
     using Network;
@@ -66,17 +67,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.UnitTests.Factories
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
+        /// <param name="correlationId">The correlation identifier for the request context.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public virtual IPartner CreatePartnerOperations()
-        {
-            return CreatePartnerOperationsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Creates a new instance of the object used to interface with Partner Center.
-        /// </summary>
-        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public virtual async Task<IPartner> CreatePartnerOperationsAsync()
+        public virtual async Task<IPartner> CreatePartnerOperationsAsync(Guid correlationId = default, CancellationToken cancellationToken = default)
         {
             if (partnerOperations == null)
             {

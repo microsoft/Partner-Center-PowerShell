@@ -7,13 +7,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using Models.Authentication;
     using Models.Products;
+    using PartnerCenter.Models;
+    using PartnerCenter.Models.Products;
     using Products;
 
     /// <summary>
     /// Get a product SKU, or a list product SKUs, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerProductSku", DefaultParameterSetName = ByProductIdParameterSetName), OutputType(typeof(PSSku))]
-    public class GetPartnerProductSku : PartnerCmdlet
+    public class GetPartnerProductSku : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name of the by product identifier parameter set.
@@ -68,41 +70,58 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IProductCollectionByCountry operations = Partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                IProductCollectionByCountry operations = partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
 
-            if (ParameterSetName == ByProductIdParameterSetName)
-            {
-                if (string.IsNullOrEmpty(ReservationScope))
+                if (ParameterSetName == ByProductIdParameterSetName)
                 {
-                    WriteObject(operations.ById(ProductId).Skus.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                    ResourceCollection<Sku> skus;
+
+                    if (string.IsNullOrEmpty(ReservationScope))
+                    {
+                        skus = await operations.ById(ProductId).Skus.GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        skus = await operations.ById(ProductId).Skus.ByReservationScope(ReservationScope).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(skus.Items.Select(s => new PSSku(s)), true);
                 }
-                else
+                else if (ParameterSetName == BySkuIdParameterSetName)
                 {
-                    WriteObject(operations.ById(ProductId).Skus.ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
+                    Sku sku;
+
+                    if (string.IsNullOrEmpty(ReservationScope))
+                    {
+                        sku = await operations.ById(ProductId).Skus.ById(SkuId).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        sku = await operations.ById(ProductId).Skus.ById(SkuId).ByReservationScope(ReservationScope).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(new PSSku(sku));
+
                 }
-            }
-            else if (ParameterSetName == BySkuIdParameterSetName)
-            {
-                if (string.IsNullOrEmpty(ReservationScope))
+                else if (ParameterSetName == BySegmentParameterSetName)
                 {
-                    WriteObject(new PSSku(operations.ById(ProductId).Skus.ById(SkuId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+                    ResourceCollection<Sku> skus;
+
+                    if (string.IsNullOrEmpty(ReservationScope))
+                    {
+                        skus = await operations.ById(ProductId).Skus.ByTargetSegment(Segment).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        skus = await operations.ById(ProductId).Skus.ByTargetSegment(Segment).ByReservationScope(ReservationScope).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(skus.Items.Select(s => new PSSku(s)), true);
                 }
-                else
-                {
-                    WriteObject(new PSSku(operations.ById(ProductId).Skus.ById(SkuId).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-                }
-            }
-            else if (ParameterSetName == BySegmentParameterSetName)
-            {
-                if (string.IsNullOrEmpty(ReservationScope))
-                {
-                    WriteObject(operations.ById(ProductId).Skus.ByTargetSegment(Segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
-                }
-                else
-                {
-                    WriteObject(operations.ById(ProductId).Skus.ByTargetSegment(Segment).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items.Select(s => new PSSku(s)), true);
-                }
-            }
+            }, true);
         }
     }
 }

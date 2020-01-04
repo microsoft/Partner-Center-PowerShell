@@ -6,7 +6,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
-    using Extensions;
     using Models.Authentication;
     using Models.Offers;
     using PartnerCenter.Models;
@@ -15,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Get an offer, or a list offers, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerOffer"), OutputType(typeof(PSOffer))]
-    public class GetPartnerOffer : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerOffer")]
+    [OutputType(typeof(PSOffer))]
+    public class GetPartnerOffer : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the switch indicating whether or not to scope the results to add-ons.
@@ -53,74 +53,28 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
-
-            if (!string.IsNullOrEmpty(Category) && string.IsNullOrEmpty(OfferId))
+            Scheduler.RunTask(async () =>
             {
-                GetOffersByCategory(countryCode, Category);
-            }
-            else if (string.IsNullOrEmpty(OfferId))
-            {
-                GetOffers(countryCode);
-            }
-            else
-            {
-                GetOffer(countryCode, OfferId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
 
-        /// <summary>
-        /// Gets the specified offer.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="offerId">Identifier for the offer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// or
-        /// <paramref name="offerId"/> is empty or null.
-        /// </exception>
-        private void GetOffer(string countryCode, string offerId)
-        {
-            Offer offer;
+                if (!string.IsNullOrEmpty(Category) && string.IsNullOrEmpty(OfferId))
+                {
+                    ResourceCollection<Offer> offers = await partner.Offers.ByCountry(countryCode).ByCategory(Category).GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteOutput(offers.Items);
+                }
+                else if (string.IsNullOrEmpty(OfferId))
+                {
+                    ResourceCollection<Offer> offers = await partner.Offers.ByCountry(countryCode).GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteOutput(offers.Items);
+                }
+                else
+                {
+                    Offer offer = await partner.Offers.ByCountry(countryCode).ById(OfferId).GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(offer);
+                }
 
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            offerId.AssertNotEmpty(nameof(offerId));
-
-            offer = Partner.Offers.ByCountry(countryCode).ById(offerId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(new PSOffer(offer));
-        }
-
-        /// <summary>
-        /// Gets a list of offers available for the specified country.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offers.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="countryCode"/> is empty or null.
-        /// </exception>
-        private void GetOffers(string countryCode)
-        {
-            ResourceCollection<Offer> offers;
-
-            countryCode.AssertNotEmpty(nameof(countryCode));
-
-            offers = Partner.Offers.ByCountry(countryCode).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteOutput(offers.Items);
-        }
-
-        /// <summary>
-        /// Gets a list of offers by country and category.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offers.</param>
-        /// <param name="category">The category for the offers.</param>
-        private void GetOffersByCategory(string countryCode, string category)
-        {
-            ResourceCollection<Offer> offers;
-
-            countryCode.AssertNotEmpty(nameof(countryCode));
-            category.AssertNotEmpty(nameof(category));
-
-            offers = Partner.Offers.ByCountry(countryCode).ByCategory(category).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteOutput(offers.Items);
+            }, true);
         }
 
         /// <summary>

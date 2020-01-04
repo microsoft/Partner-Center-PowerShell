@@ -6,10 +6,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using Agreements;
     using Models.Agreements;
+    using Models.Authentication;
 
     [Cmdlet(VerbsCommon.Get, "PartnerAgreementDocument")]
     [OutputType(typeof(PSAgreementDocument))]
-    public class GetPartnerAgreementDocument : PartnerCmdlet
+    public class GetPartnerAgreementDocument : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the country.
@@ -37,19 +38,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IAgreementDocument operation = Partner.AgreementTemplates.ById(TemplateId).Document;
-
-            if (!string.IsNullOrEmpty(Country))
+            Scheduler.RunTask(async () =>
             {
-                operation = operation.ByCountry(Country);
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                IAgreementDocument operation = partner.AgreementTemplates.ById(TemplateId).Document;
 
-            if (!string.IsNullOrEmpty(Language))
-            {
-                operation = operation.ByLanguage(Language);
-            }
+                if (!string.IsNullOrEmpty(Country))
+                {
+                    operation = operation.ByCountry(Country);
+                }
 
-            WriteObject(new PSAgreementDocument(operation.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+                if (!string.IsNullOrEmpty(Language))
+                {
+                    operation = operation.ByLanguage(Language);
+                }
+
+                WriteObject(new PSAgreementDocument(await operation.GetAsync(CancellationToken).ConfigureAwait(false)));
+            }, true);
         }
     }
 }

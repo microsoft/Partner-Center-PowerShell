@@ -9,12 +9,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Carts;
     using PartnerCenter.Models.Carts;
     using Properties;
 
-    [Cmdlet(VerbsCommon.New, "PartnerCustomerCart", SupportsShouldProcess = true), OutputType(typeof(PSCart))]
-    public class NewPartnerCustomerCart : PartnerCmdlet
+    [Cmdlet(VerbsCommon.New, "PartnerCustomerCart", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSCart))]
+    public class NewPartnerCustomerCart : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -34,48 +36,49 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Cart cart;
-            CartLineItem lineItem;
-            List<CartLineItem> lineItems;
-
-            if (!ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewCartWhatIf, CustomerId)))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
-
-            lineItems = new List<CartLineItem>();
-
-            foreach (PSCartLineItem item in LineItems)
-            {
-                lineItem = new CartLineItem
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewCartWhatIf, CustomerId)))
                 {
-                    BillingCycle = item.BillingCycle,
-                    CatalogItemId = item.CatalogItemId,
-                    CurrencyCode = item.CurrencyCode,
-                    Error = item.Error,
-                    FriendlyName = item.FriendlyName,
-                    Id = item.Id,
-                    OrderGroup = item.OrderGroup,
-                    Participants = item.Participants,
-                    Quantity = item.Quantity
-                };
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                foreach (KeyValuePair<string, string> kvp in item.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value))
-                {
-                    lineItem.ProvisioningContext.Add(kvp.Key, kvp.Value);
+                    Cart cart;
+                    CartLineItem lineItem;
+                    List<CartLineItem> lineItems = new List<CartLineItem>();
+
+                    foreach (PSCartLineItem item in LineItems)
+                    {
+                        lineItem = new CartLineItem
+                        {
+                            BillingCycle = item.BillingCycle,
+                            CatalogItemId = item.CatalogItemId,
+                            CurrencyCode = item.CurrencyCode,
+                            Error = item.Error,
+                            FriendlyName = item.FriendlyName,
+                            Id = item.Id,
+                            OrderGroup = item.OrderGroup,
+                            Participants = item.Participants,
+                            Quantity = item.Quantity
+                        };
+
+                        foreach (KeyValuePair<string, string> kvp in item.ProvisioningContext?.Cast<DictionaryEntry>().ToDictionary(entry => (string)entry.Key, entry => (string)entry.Value))
+                        {
+                            lineItem.ProvisioningContext.Add(kvp.Key, kvp.Value);
+                        }
+
+                        lineItems.Add(lineItem);
+                    }
+
+                    cart = new Cart
+                    {
+                        LineItems = lineItems
+                    };
+
+                    cart = await partner.Customers[CustomerId].Carts.CreateAsync(cart, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSCart(cart));
                 }
-
-                lineItems.Add(lineItem);
-            }
-
-            cart = new Cart
-            {
-                LineItems = lineItems
-            };
-
-            cart = Partner.Customers[CustomerId].Carts.CreateAsync(cart).GetAwaiter().GetResult();
-
-            WriteObject(new PSCart(cart));
+            }, true);
         }
     }
 }

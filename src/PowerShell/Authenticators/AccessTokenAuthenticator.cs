@@ -4,8 +4,6 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 {
     using System;
-    using System.Linq;
-    using System.Management.Automation;
     using System.Security.Claims;
     using System.Threading;
     using System.Threading.Tasks;
@@ -32,16 +30,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         public override async Task<AuthenticationResult> AuthenticateAsync(AuthenticationParameters parameters, CancellationToken cancellationToken = default)
         {
             JsonWebToken token;
-            string value;
-
-            if (parameters.Scopes.Contains($"{parameters.Environment.PartnerCenterEndpoint}/user_impersonation"))
-            {
-                value = parameters.Account.GetProperty(PartnerAccountPropertyType.AccessToken);
-            }
-            else
-            {
-                throw new PSInvalidOperationException("This operation is not supported when you connect using an access token. Please connect interactively or using a refresh token.");
-            }
+            string value = parameters.Account.GetProperty(PartnerAccountPropertyType.AccessToken);
 
             token = new JsonWebToken(value);
 

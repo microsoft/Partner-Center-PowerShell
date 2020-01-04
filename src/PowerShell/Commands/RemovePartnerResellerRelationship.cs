@@ -7,6 +7,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Microsoft.Store.PartnerCenter.Models.Customers;
+    using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
@@ -15,8 +17,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Removes the relationship between the specified customer and the partner.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "PartnerResellerRelationship", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true), OutputType(typeof(PSCustomer))]
-    public class RemovePartnerResellerRelationship : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Remove, "PartnerResellerRelationship", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true)]
+    [OutputType(typeof(PSCustomer))]
+    public class RemovePartnerResellerRelationship : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -30,27 +33,30 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            PartnerCenter.Models.Customers.Customer customer;
-            ResourceCollection<Subscription> subscriptions;
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerResellerRelationshipWhatIf, CustomerId)))
+            Scheduler.RunTask(async () =>
             {
-                subscriptions = Partner.Customers[CustomerId].Subscriptions.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                foreach (Subscription subscription in subscriptions.Items.Where(s => s.Status == SubscriptionStatus.Active))
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerResellerRelationshipWhatIf, CustomerId)))
                 {
-                    subscription.Status = SubscriptionStatus.Suspended;
-                    Partner.Customers[CustomerId].Subscriptions[subscription.Id].PatchAsync(subscription).GetAwaiter().GetResult();
-                }
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                customer = Partner.Customers[CustomerId].PatchAsync(
-                    new PartnerCenter.Models.Customers.Customer
+                    Customer customer;
+                    ResourceCollection<Subscription> subscriptions = await partner.Customers[CustomerId].Subscriptions.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                    foreach (Subscription subscription in subscriptions.Items.Where(s => s.Status == SubscriptionStatus.Active))
                     {
-                        RelationshipToPartner = PartnerCenter.Models.Customers.CustomerPartnerRelationship.None
-                    }).GetAwaiter().GetResult();
+                        subscription.Status = SubscriptionStatus.Suspended;
+                        await partner.Customers[CustomerId].Subscriptions[subscription.Id].PatchAsync(subscription, CancellationToken).ConfigureAwait(false);
+                    }
 
-                WriteObject(new PSCustomer(customer));
-            }
+                    customer = await partner.Customers[CustomerId].PatchAsync(
+                        new Customer
+                        {
+                            RelationshipToPartner = CustomerPartnerRelationship.None
+                        }, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSCustomer(customer));
+                }
+            }, true);
         }
     }
 }

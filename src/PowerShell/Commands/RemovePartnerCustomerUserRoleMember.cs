@@ -5,13 +5,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
 
     /// <summary>
     /// Removes the user from the specified role.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUserRoleMember"), OutputType(typeof(bool))]
-    public class RemovePartnerCustomerUserRoleMember : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Remove, "PartnerCustomerUserRoleMember")]
+    [OutputType(typeof(bool))]
+    public class RemovePartnerCustomerUserRoleMember : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -31,6 +32,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the role identifier.
         /// </summary>
         [Parameter(Mandatory = false, HelpMessage = "Identifier for the role.")]
+        [ValidateNotNull]
         public string RoleId { get; set; }
 
         /// <summary>
@@ -38,12 +40,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerId.AssertNotEmpty(nameof(CustomerId));
-            UserId.AssertNotEmpty(nameof(UserId));
-            RoleId.AssertNotEmpty(nameof(RoleId));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            Partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(true);
+                await partner.Customers[CustomerId].DirectoryRoles[RoleId].UserMembers[UserId].DeleteAsync(CancellationToken).ConfigureAwait(false);
+                WriteObject(true);
+            }, true);
         }
     }
 }

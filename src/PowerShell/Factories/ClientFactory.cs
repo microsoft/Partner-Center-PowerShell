@@ -8,10 +8,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using System.Net;
     using System.Net.Http;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
     using Extensions;
     using Graph;
     using Identity.Client;
+    using Microsoft.Store.PartnerCenter.RequestContext;
     using Models.Authentication;
     using Network;
     using Rest;
@@ -54,24 +56,21 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// Creates a new instance of the object used to interface with Partner Center.
         /// </summary>
+        /// <param name="correlationId">The correlation identifier for the request context.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public virtual IPartner CreatePartnerOperations()
-        {
-            return CreatePartnerOperationsAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
-        /// Creates a new instance of the object used to interface with Partner Center.
-        /// </summary>
-        /// <returns>An instance of the <see cref="PartnerOperations" /> class.</returns>
-        public virtual async Task<IPartner> CreatePartnerOperationsAsync()
+        public virtual async Task<IPartner> CreatePartnerOperationsAsync(Guid correlationId = default, CancellationToken cancellationToken = default)
         {
             PartnerService.Instance.ApiRootUrl = new Uri(PartnerSession.Instance.Context.Environment.PartnerCenterEndpoint);
+
+            RequestContext requestContext = new RequestContext(correlationId);
 
             AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
                 PartnerSession.Instance.Context.Account,
                 PartnerSession.Instance.Context.Environment,
-                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) }).ConfigureAwait(false);
+                new[] { PartnerSession.Instance.Context.Account.GetProperty(PartnerAccountPropertyType.Scope) },
+                null,
+                cancellationToken).ConfigureAwait(false);
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),

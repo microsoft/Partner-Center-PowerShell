@@ -8,6 +8,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Security;
     using System.Text.RegularExpressions;
     using Extensions;
+    using Models.Authentication;
     using Models.Users;
     using PartnerCenter.Models.Users;
     using Properties;
@@ -15,8 +16,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Sets user information for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerCustomerUser", DefaultParameterSetName = "UserId", SupportsShouldProcess = true), OutputType(typeof(PSCustomerUser))]
-    public class SetPartnerCustomerUser : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerUser", DefaultParameterSetName = "UserId", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSCustomerUser))]
+    public class SetPartnerCustomerUser : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the display name for the user.
@@ -90,74 +92,69 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CustomerUser user;
-            PasswordProfile profile;
+            string userId = InputObject == null ? UserId : InputObject.UserId;
 
-            UserId = (InputObject == null) ? UserId : InputObject.UserId;
-
-            user = Partner.Customers[CustomerId].Users[UserId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (user.Id == UserId)
+            Scheduler.RunTask(async () =>
             {
-                if (UserPrincipalName != null)
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, userId)))
                 {
-                    user.UserPrincipalName = UserPrincipalName;
-                }
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    PasswordProfile profile;
 
-                if (!string.IsNullOrEmpty(FirstName))
-                {
-                    user.FirstName = FirstName;
-                }
+                    CustomerUser user = await partner.Customers[CustomerId].Users[userId].GetAsync(CancellationToken).ConfigureAwait(false);
 
-                if (!string.IsNullOrEmpty(LastName))
-                {
-                    user.LastName = LastName;
-                }
-
-                if (!string.IsNullOrEmpty(DisplayName))
-                {
-                    user.DisplayName = DisplayName;
-                }
-
-                if (!string.IsNullOrEmpty(UsageLocation))
-                {
-                    user.UsageLocation = UsageLocation;
-                }
-
-                if (Password != null && Password.Length > 0)
-                {
-                    string stringPassword = SecureStringExtensions.ConvertToString(Password);
-
-                    profile = new PasswordProfile
+                    if (UserPrincipalName != null)
                     {
-                        Password = stringPassword,
-                        ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
-                    };
-
-                    user.PasswordProfile = profile;
-                }
-                else if (ForceChangePasswordNextLogin.IsPresent)
-                {
-                    profile = new PasswordProfile
-                    {
-                        ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
-                    };
-
-                    user.PasswordProfile = profile;
-                }
-
-                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.SetPartnerCustomerUserWhatIf, UserId)))
-                {
-                    if (InputObject == null && string.IsNullOrEmpty(UserId))
-                    {
-                        throw new PSInvalidOperationException(Resources.InvalidSetCustomerUserIdentifierException);
+                        user.UserPrincipalName = UserPrincipalName;
                     }
 
-                    user = Partner.Customers[CustomerId].Users[UserId].PatchAsync(user).GetAwaiter().GetResult();
+                    if (!string.IsNullOrEmpty(FirstName))
+                    {
+                        user.FirstName = FirstName;
+                    }
+
+                    if (!string.IsNullOrEmpty(LastName))
+                    {
+                        user.LastName = LastName;
+                    }
+
+                    if (!string.IsNullOrEmpty(DisplayName))
+                    {
+                        user.DisplayName = DisplayName;
+                    }
+
+                    if (!string.IsNullOrEmpty(UsageLocation))
+                    {
+                        user.UsageLocation = UsageLocation;
+                    }
+
+                    if (Password != null && Password.Length > 0)
+                    {
+                        string stringPassword = SecureStringExtensions.ConvertToString(Password);
+
+                        profile = new PasswordProfile
+                        {
+                            Password = stringPassword,
+                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
+                        };
+
+                        user.PasswordProfile = profile;
+                    }
+                    else if (ForceChangePasswordNextLogin.IsPresent)
+                    {
+                        profile = new PasswordProfile
+                        {
+                            ForceChangePassword = ForceChangePasswordNextLogin.IsPresent
+                        };
+
+                        user.PasswordProfile = profile;
+                    }
+
+                    user = await partner.Customers[CustomerId].Users[userId].PatchAsync(user, CancellationToken).ConfigureAwait(false);
 
                     WriteObject(new PSCustomerUser(user), true);
                 }
-            }
+            }, true);
         }
     }
 }

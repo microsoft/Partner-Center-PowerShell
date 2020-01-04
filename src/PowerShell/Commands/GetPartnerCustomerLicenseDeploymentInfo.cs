@@ -7,11 +7,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models.Analytics;
+    using Models.Authentication;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Analytics;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerLicenseDeploymentInfo"), OutputType(typeof(PSCustomerLicensesDeploymentInsights))]
-    public class GetPartnerCustomerLicenseDeploymentInfo : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerLicenseDeploymentInfo")]
+    [OutputType(typeof(PSCustomerLicensesDeploymentInsights))]
+    public class GetPartnerCustomerLicenseDeploymentInfo : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -25,11 +27,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<CustomerLicensesDeploymentInsights> insights;
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<CustomerLicensesDeploymentInsights> insights = await partner.Customers[CustomerId].Analytics.Licenses.Deployment.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            insights = Partner.Customers[CustomerId].Analytics.Licenses.Deployment.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            WriteObject(insights.Items.Select(i => new PSCustomerLicensesDeploymentInsights(i)), true);
+                WriteObject(insights.Items.Select(i => new PSCustomerLicensesDeploymentInsights(i)), true);
+            }, true);
         }
     }
 }

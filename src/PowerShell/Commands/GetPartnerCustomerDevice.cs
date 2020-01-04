@@ -3,18 +3,20 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.DevicesDeployment;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.DevicesDeployment;
 
     /// <summary>
-    /// Return a list of devices in the specified device batch for the specified customer.
+    /// Gets a list of devices in the specified device batch for the specified customer.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerDevice"), OutputType(typeof(PSDevice))]
-    public class GetPartnerCustomerDevice : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerDevice")]
+    [OutputType(typeof(PSDevice))]
+    public class GetPartnerCustomerDevice : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -35,8 +37,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IEnumerable<Device> devices = Partner.Customers[CustomerId].DeviceBatches[BatchId].Devices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
-            WriteObject(devices.Select(d => new PSDevice(d)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Device> devices = await partner.Customers[CustomerId].DeviceBatches[BatchId].Devices.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(devices.Items.Select(d => new PSDevice(d)), true);
+            }, true);
         }
     }
 }

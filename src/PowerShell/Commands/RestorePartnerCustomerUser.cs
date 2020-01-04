@@ -9,18 +9,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
     using Properties;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of users for a customer from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsData.Restore, "PartnerCustomerUser", DefaultParameterSetName = "ByUserId", SupportsShouldProcess = true), OutputType(typeof(bool))]
-    public class RestorePartnerCustomerUser : PartnerCmdlet
+    [Cmdlet(VerbsData.Restore, "PartnerCustomerUser", DefaultParameterSetName = "ByUserId", SupportsShouldProcess = true)]
+    [OutputType(typeof(bool))]
+    public class RestorePartnerCustomerUser : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -49,104 +51,54 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RestorePartnerCustomerUserWhatIf, UserId)))
+            Scheduler.RunTask(async () =>
             {
-                switch (ParameterSetName)
+                string value = string.IsNullOrEmpty(UserId) ? UserPrincipalName : UserId;
+
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RestorePartnerCustomerUserWhatIf, value)))
                 {
-                    case "ByUpn":
-                        RestoreUserByUpn(CustomerId, UserPrincipalName);
-                        break;
-                    case "ByUserId":
-                        RestoreUserById(CustomerId, UserId);
-                        break;
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    string userId;
+
+                    if (ParameterSetName.Equals("ByUpn", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
+                        IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
+                        IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
+                        List<CustomerUser> users = new List<CustomerUser>();
+                        SeekBasedResourceCollection<CustomerUser> seekUsers;
+
+                        seekUsers = await partner.Customers[CustomerId].Users.QueryAsync(simpleQueryWithFilter, CancellationToken).ConfigureAwait(false);
+                        usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+                        while (usersEnumerator.HasValue)
+                        {
+                            users.AddRange(usersEnumerator.Current.Items);
+                            await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
+                        }
+
+                        CustomerUser user = users.SingleOrDefault(u => string.Equals(u.UserPrincipalName, UserPrincipalName, StringComparison.CurrentCultureIgnoreCase));
+
+                        if (user == null)
+                        {
+                            throw new PSInvalidOperationException($"Unable to locate {UserPrincipalName}");
+                        }
+
+                        userId = user.Id;
+                    }
+                    else
+                    {
+                        userId = UserId;
+                    }
+
+                    CustomerUser updatedCustomerUser = new CustomerUser
+                    {
+                        State = UserState.Active
+                    };
+
+                    await partner.Customers.ById(CustomerId).Users.ById(userId).PatchAsync(updatedCustomerUser, CancellationToken).ConfigureAwait(false);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Restores the specified customer user id.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void RestoreUserById(string customerId, string userId)
-        {
-            customerId.AssertNotEmpty(nameof(customerId));
-            userId.AssertNotEmpty(nameof(userId));
-
-            CustomerUser updatedCustomerUser = new CustomerUser
-            {
-                State = UserState.Active
-            };
-
-            Partner.Customers.ById(customerId).Users.ById(userId).PatchAsync(updatedCustomerUser).GetAwaiter().GetResult();
-            WriteObject(true);
-        }
-
-        /// <summary>
-        /// Restores the customer user from Partner Center based on the specified user principal name.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userPrincipalName">Identifier of the user principal name.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void RestoreUserByUpn(string customerId, string userPrincipalName)
-        {
-            customerId.AssertNotEmpty(nameof(customerId));
-            userPrincipalName.AssertNotEmpty(nameof(userPrincipalName));
-
-            RestoreUserById(customerId, GetUserIdByUpn(customerId, userPrincipalName));
-        }
-
-        /// <summary>
-        /// Gets a user id by searching for the user principal name from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userPrincipalName">Identifier of the user principal name.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private string GetUserIdByUpn(string customerId, string userPrincipalName)
-        {
-            customerId.AssertNotEmpty(nameof(customerId));
-            customerId.AssertNotEmpty(nameof(userPrincipalName));
-
-            List<CustomerUser> gUsers = GetDeletedUsers(customerId);
-
-            return gUsers.SingleOrDefault(u => string.Equals(u.UserPrincipalName, userPrincipalName, StringComparison.CurrentCultureIgnoreCase)).Id;
-        }
-
-        /// <summary>
-        /// Gets a list of deleted users from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private List<CustomerUser> GetDeletedUsers(string customerId)
-        {
-            SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
-            IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
-            IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-            List<CustomerUser> users;
-            SeekBasedResourceCollection<CustomerUser> seekUsers;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            users = new List<CustomerUser>();
-
-            seekUsers = Partner.Customers[customerId].Users.QueryAsync(simpleQueryWithFilter).GetAwaiter().GetResult();
-            usersEnumerator = Partner.Enumerators.CustomerUsers.Create(seekUsers);
-            while (usersEnumerator.HasValue)
-            {
-                users.AddRange(usersEnumerator.Current.Items);
-                usersEnumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
-
-            return users;
+            }, true);
         }
     }
 }

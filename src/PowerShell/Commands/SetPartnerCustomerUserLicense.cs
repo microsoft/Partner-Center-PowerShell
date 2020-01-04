@@ -7,12 +7,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Licenses;
     using PartnerCenter.Models.Licenses;
     using Properties;
 
-    [Cmdlet(VerbsCommon.Set, "PartnerCustomerUserLicense", SupportsShouldProcess = true), OutputType(typeof(PSLicenseUpdate))]
-    public class SetPartnerCustomerUserLicense : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerCustomerUserLicense", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSLicenseUpdate))]
+    public class SetPartnerCustomerUserLicense : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -40,35 +42,36 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            LicenseUpdate update;
-            List<LicenseAssignment> licensesToAssign;
-
-            if (ShouldProcess(string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.SetPartnerCustomerUserLicenseWhatIf,
-                UserId)))
+            Scheduler.RunTask(async () =>
             {
-                licensesToAssign = new List<LicenseAssignment>();
-
-                foreach (PSLicenseAssignment licenseAssignment in LicenseUpdate.LicensesToAssign)
+                if (ShouldProcess(string.Format(
+                    CultureInfo.CurrentCulture,
+                    Resources.SetPartnerCustomerUserLicenseWhatIf,
+                    UserId)))
                 {
-                    licensesToAssign.Add(new LicenseAssignment
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    List<LicenseAssignment> licensesToAssign = new List<LicenseAssignment>();
+
+                    foreach (PSLicenseAssignment licenseAssignment in LicenseUpdate.LicensesToAssign)
                     {
-                        ExcludedPlans = licenseAssignment.ExcludedPlans,
-                        SkuId = licenseAssignment.SkuId
-                    });
+                        licensesToAssign.Add(new LicenseAssignment
+                        {
+                            ExcludedPlans = licenseAssignment.ExcludedPlans,
+                            SkuId = licenseAssignment.SkuId
+                        });
+                    }
+
+                    LicenseUpdate update = new LicenseUpdate
+                    {
+                        LicensesToAssign = licensesToAssign,
+                        LicensesToRemove = LicenseUpdate.LicensesToRemove
+                    };
+
+                    update = await partner.Customers[CustomerId].Users[UserId].LicenseUpdates.CreateAsync(update, CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSLicenseUpdate(update));
                 }
-
-                update = new LicenseUpdate
-                {
-                    LicensesToAssign = licensesToAssign,
-                    LicensesToRemove = LicenseUpdate.LicensesToRemove
-                };
-
-                update = Partner.Customers[CustomerId].Users[UserId].LicenseUpdates.CreateAsync(update).GetAwaiter().GetResult();
-
-                WriteObject(new PSLicenseUpdate(update));
-            }
+            }, true);
         }
     }
 }

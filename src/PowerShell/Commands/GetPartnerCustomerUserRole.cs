@@ -3,19 +3,20 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using Models.Authentication;
     using Models.Roles;
+    using PartnerCenter.Models;
     using PartnerCenter.Models.Roles;
 
     /// <summary>
     /// Gets a list of roles for the specified customer user from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUserRole"), OutputType(typeof(PSDirectoryRole))]
-    public class GetPartnerCustomerUserRole : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUserRole")]
+    [OutputType(typeof(PSDirectoryRole))]
+    public class GetPartnerCustomerUserRole : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -36,52 +37,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(UserId))
+            Scheduler.RunTask(async () =>
             {
-                GetRole(CustomerId);
-            }
-            else
-            {
-                GetRole(CustomerId, UserId);
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<DirectoryRole> roles;
 
-        /// <summary>
-        /// Gets a list of roles from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <param name="userId">Identifier of the user.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// or
-        /// <paramref name="userId"/> is empty or null.
-        /// </exception>
-        private void GetRole(string customerId, string userId)
-        {
-            IEnumerable<DirectoryRole> roles;
+                if (string.IsNullOrEmpty(UserId))
+                {
+                    roles = await partner.Customers[CustomerId].DirectoryRoles.GetAsync(CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    roles = await partner.Customers[CustomerId].Users[UserId].DirectoryRoles.GetAsync(CancellationToken).ConfigureAwait(false);
+                }
 
-            customerId.AssertNotEmpty(nameof(customerId));
-            userId.AssertNotEmpty(nameof(userId));
-
-            roles = Partner.Customers[customerId].Users[userId].DirectoryRoles.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
-            WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
-        }
-
-        /// <summary>
-        /// Gets a list of customers from Partner Center.
-        /// </summary>
-        /// <param name="customerId">Identifier of the customer.</param>
-        /// <exception cref="System.ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetRole(string customerId)
-        {
-            IEnumerable<DirectoryRole> roles;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            roles = Partner.Customers[customerId].DirectoryRoles.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult().Items;
-            WriteObject(roles.Select(e => new PSDirectoryRole(e)), true);
+                WriteObject(roles.Items.Select(r => new PSDirectoryRole(r)), true);
+            }, true);
         }
     }
 }

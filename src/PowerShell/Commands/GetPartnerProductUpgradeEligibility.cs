@@ -5,10 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using PartnerCenter.Models.ProductUpgrades;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerProductUpgradeEligibility"), OutputType(typeof(ProductUpgradeEligibility))]
-    public class GetPartnerProductUpgradeEligibility : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerProductUpgradeEligibility")]
+    [OutputType(typeof(ProductUpgradeEligibility))]
+    public class GetPartnerProductUpgradeEligibility : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -29,11 +31,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Partner.ProductUpgrades.CheckEligibilityAsync(new ProductUpgradeRequest
+            Scheduler.RunTask(async () =>
             {
-                CustomerId = CustomerId,
-                ProductFamily = ProductFamily
-            }).ConfigureAwait(false).GetAwaiter().GetResult();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                WriteObject(await partner.ProductUpgrades.CheckEligibilityAsync(new ProductUpgradeRequest
+                {
+                    CustomerId = CustomerId,
+                    ProductFamily = ProductFamily
+                }, CancellationToken).ConfigureAwait(false));
+            }, true);
         }
     }
 }

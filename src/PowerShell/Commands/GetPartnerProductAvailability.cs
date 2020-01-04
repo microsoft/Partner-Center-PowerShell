@@ -13,8 +13,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerProductAvailability", DefaultParameterSetName = "BySku"), OutputType(typeof(PSProductAvailability))]
-    public class GetPartnerProductAvailability : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerProductAvailability", DefaultParameterSetName = "BySku")]
+    [OutputType(typeof(PSProductAvailability))]
+    public class GetPartnerProductAvailability : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the product identifier.
@@ -55,76 +56,44 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
-
-            if (string.IsNullOrEmpty(AvailabilityId))
+            Scheduler.RunTask(async () =>
             {
-                if (!string.IsNullOrEmpty(Segment))
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                string countryCode = (string.IsNullOrEmpty(CountryCode)) ? PartnerSession.Instance.Context.CountryCode : CountryCode;
+
+                if (string.IsNullOrEmpty(AvailabilityId))
                 {
-                    GetProductAvailabilityBySku(countryCode, ProductId, SkuId);
+                    ResourceCollection<Availability> productAvailability;
+
+                    if (!string.IsNullOrEmpty(Segment))
+                    {
+                        productAvailability = await partner.Products.ByCountry(countryCode).ById(ProductId).Skus.ById(SkuId).Availabilities.ByTargetSegment(Segment).GetAsync(CancellationToken).ConfigureAwait(false);
+
+                        if (productAvailability.TotalCount > 0)
+                        {
+                            WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
+                        }
+                    }
+                    else
+                    {
+                        productAvailability = await partner.Products.ByCountry(countryCode).ById(ProductId).Skus.ById(SkuId).Availabilities.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                        if (productAvailability.TotalCount > 0)
+                        {
+                            WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
+                        }
+                    }
+                }
+                else if (!string.IsNullOrEmpty(AvailabilityId))
+                {
+                    Availability availability = await partner.Products.ByCountry(countryCode).ById(ProductId).Skus.ById(SkuId).Availabilities.ById(AvailabilityId).GetAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(availability);
                 }
                 else
                 {
-                    GetProductAvailabilityBySku(countryCode, ProductId, SkuId, Segment);
+                    throw new PSInvalidOperationException("You must specify a ProductId or Catalog.");
                 }
-            }
-            else if (!string.IsNullOrEmpty(AvailabilityId))
-            {
-                GetProductAvailabilityById(countryCode, ProductId, SkuId, AvailabilityId);
-            }
-            else
-            {
-                throw new PSInvalidOperationException("You must specify a ProductId or Catalog.");
-            }
-        }
-
-        /// <summary>
-        /// Gets the specified product availability.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="productId">Identifier for the product.</param>
-        /// <param name="skuId">Identifier for the product Sku.</param>
-        /// <param name="segment">Identifier for the target segment.</param>
-        private void GetProductAvailabilityBySku(string countryCode, string productId, string skuId, string segment = null)
-        {
-            ResourceCollection<Availability> productAvailability;
-
-            // If segment is specified, get the information using the segment. Otherwise don't
-            if (!string.IsNullOrEmpty(segment))
-            {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ByTargetSegment(segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                if (productAvailability.TotalCount > 0)
-                {
-                    WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
-                }
-            }
-            else
-            {
-                productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                if (productAvailability.TotalCount > 0)
-                {
-                    WriteObject(productAvailability.Items.Select(pa => new PSProductAvailability(pa)), true);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the specified product availability.
-        /// </summary>
-        /// <param name="countryCode">The country used to obtain the offer.</param>
-        /// <param name="productId">Identifier for the product.</param>
-        /// <param name="skuId">Identifier for the product Sku.</param>
-        /// <param name="availabilityId">Identifier for the product availability.</param>
-        private void GetProductAvailabilityById(string countryCode, string productId, string skuId, string availabilityId)
-        {
-            Availability productAvailability = Partner.Products.ByCountry(countryCode).ById(productId).Skus.ById(skuId).Availabilities.ById(availabilityId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (productAvailability != null)
-            {
-                WriteObject(new PSProductAvailability(productAvailability));
-            }
+            }, true);
         }
     }
 }

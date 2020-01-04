@@ -5,11 +5,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.ServiceCosts;
     using PartnerCenter.Models.ServiceCosts;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCostsSummary"), OutputType(typeof(PSServiceCostsSummary))]
-    public class GetPartnerCustomerServiceCostsSummary : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerServiceCostsSummary")]
+    [OutputType(typeof(PSServiceCostsSummary))]
+    public class GetPartnerCustomerServiceCostsSummary : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the billing period.
@@ -30,9 +32,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ServiceCostsSummary summary = Partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ServiceCostsSummary summary = await partner.Customers[CustomerId].ServiceCosts.ByBillingPeriod(BillingPeriod).Summary.GetAsync(CancellationToken).ConfigureAwait(false);
 
-            WriteObject(new PSServiceCostsSummary(summary));
+                WriteObject(new PSServiceCostsSummary(summary));
+            }, true);
         }
     }
 }

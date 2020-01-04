@@ -4,14 +4,16 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.RateCards;
     using PartnerCenter.Models.RateCards;
 
     /// <summary>
     /// Cmdlet that retrieves Azrue Rate Card details.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerAzureRateCard"), OutputType(typeof(PSAzureRateCard))]
-    public class GetPartnerAzureRateCard : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerAzureRateCard")]
+    [OutputType(typeof(PSAzureRateCard))]
+    public class GetPartnerAzureRateCard : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -36,18 +38,22 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            AzureRateCard rateCard;
-
-            if (SharedServices.IsPresent && SharedServices.ToBool())
+            Scheduler.RunTask(async () =>
             {
-                rateCard = Partner.RateCards.Azure.GetSharedAsync(Currency, Region).GetAwaiter().GetResult();
-            }
-            else
-            {
-                rateCard = Partner.RateCards.Azure.GetAsync(Currency, Region).GetAwaiter().GetResult();
-            }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                AzureRateCard rateCard;
 
-            WriteObject(new PSAzureRateCard(rateCard));
+                if (SharedServices.IsPresent && SharedServices.ToBool())
+                {
+                    rateCard = await partner.RateCards.Azure.GetSharedAsync(Currency, Region, CancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    rateCard = await partner.RateCards.Azure.GetAsync(Currency, Region, CancellationToken).ConfigureAwait(false);
+                }
+
+                WriteObject(new PSAzureRateCard(rateCard));
+            }, true);
         }
     }
 }

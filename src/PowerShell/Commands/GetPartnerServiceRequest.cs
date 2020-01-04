@@ -3,22 +3,24 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Extensions;
+    using System.Threading.Tasks;
+    using Models.Authentication;
     using Models.ServiceRequests;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceRequests;
+    using RequestContext;
 
     /// <summary>
     /// Get a service request, or a list of service requests, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerServiceRequest", DefaultParameterSetName = "ByStatus"), OutputType(typeof(PSServiceRequest))]
-    public class GetPartnerServiceRequest : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerServiceRequest", DefaultParameterSetName = "ByStatus")]
+    [OutputType(typeof(PSServiceRequest))]
+    public class GetPartnerServiceRequest : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the request status
@@ -57,131 +59,51 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(CustomerId))
+            Scheduler.RunTask(async () =>
             {
-                if (!string.IsNullOrEmpty(RequestId))
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(CustomerId))
                 {
-                    GetCustomerServiceRequest(CustomerId, RequestId);
+                    if (!string.IsNullOrEmpty(RequestId))
+                    {
+                        ServiceRequest request = await partner.Customers.ById(CustomerId).ServiceRequests.ById(RequestId).GetAsync(CancellationToken).ConfigureAwait(false);
+                        WriteObject(request);
+                    }
+                    else
+                    {
+                        ResourceCollection<ServiceRequest> requests = await partner.Customers.ById(CustomerId).ServiceRequests.GetAsync(CancellationToken).ConfigureAwait(false);
+                        await HandleOutputAsync(partner, requests, Severity, Status).ConfigureAwait(false);
+                    }
                 }
                 else
                 {
-                    GetCustomerServiceRequests(CustomerId, Status, Severity);
+                    if (!string.IsNullOrEmpty(RequestId))
+                    {
+                        ServiceRequest request = await partner.ServiceRequests.ById(RequestId).GetAsync(CancellationToken).ConfigureAwait(false);
+                        WriteObject(request);
+                    }
+                    else
+                    {
+                        ResourceCollection<ServiceRequest> requests = await partner.ServiceRequests.GetAsync(CancellationToken).ConfigureAwait(false);
+                        await HandleOutputAsync(partner, requests, Severity, Status).ConfigureAwait(false);
+                    }
                 }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(RequestId))
-                {
-                    GetServiceRequest(RequestId);
-                }
-                else
-                {
-                    GetServiceRequests(Status, Severity);
-                }
-            }
+            }, true);
         }
 
-        /// <summary>
-        /// Gets the specified service request for a customer.
-        /// </summary>
-        /// <param name="customerId">The identifier for the customer.</param>
-        /// <param name="requestId">The identifier for the service request.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// or
-        /// <paramref name="requestId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerServiceRequest(string customerId, string requestId)
-        {
-            ServiceRequest request;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-            requestId.AssertNotEmpty(nameof(requestId));
-
-
-            request = Partner.Customers.ById(customerId).ServiceRequests.ById(requestId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (request != null)
-            {
-                WriteObject(new PSServiceRequest(request));
-            }
-
-        }
-
-        /// <summary>
-        /// Gets a list of service requests for a customer.
-        /// </summary>
-        /// <param name="customerId">The identifier of the customer.</param>
-        /// <param name="status">The status of the service request.</param>
-        /// <param name="severity">The severity of the service request.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="customerId"/> is empty or null.
-        /// </exception>
-        private void GetCustomerServiceRequests(string customerId, ServiceRequestStatus? status, ServiceRequestSeverity? severity)
-        {
-            ResourceCollection<ServiceRequest> requests;
-
-            customerId.AssertNotEmpty(nameof(customerId));
-
-            requests = Partner.Customers.ById(customerId).ServiceRequests.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (requests.TotalCount > 0)
-            {
-                HandleOutput(requests, severity, status);
-            }
-        }
-
-        /// <summary>
-        /// Gets the specified service request for a partner.
-        /// </summary>
-        /// <param name="requestId">Identifier for the service request.</param>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="requestId"/> is empty or null.
-        /// </exception>
-        private void GetServiceRequest(string requestId)
-        {
-            ServiceRequest request;
-
-            requestId.AssertNotEmpty(nameof(requestId));
-
-            request = Partner.ServiceRequests.ById(requestId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (request != null)
-            {
-                WriteObject(new PSServiceRequest(request));
-            }
-
-        }
-
-        /// <summary>
-        /// Gets a list of service requests for a partner.
-        /// </summary>
-        /// <param name="status">Identifier for the service request.</param>
-        /// <param name="severity">Identifier for the service request.</param>
-        private void GetServiceRequests(ServiceRequestStatus? status, ServiceRequestSeverity? severity)
-        {
-            ResourceCollection<ServiceRequest> requests;
-
-            requests = Partner.ServiceRequests.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (requests.TotalCount > 0)
-            {
-                HandleOutput(requests, severity, status);
-            }
-        }
-
-        private void HandleOutput(ResourceCollection<ServiceRequest> requests, ServiceRequestSeverity? severity, ServiceRequestStatus? status)
+        private async Task HandleOutputAsync(IPartner partner, ResourceCollection<ServiceRequest> requests, ServiceRequestSeverity? severity, ServiceRequestStatus? status)
         {
             IResourceCollectionEnumerator<ResourceCollection<ServiceRequest>> enumerator;
             List<ServiceRequest> serviceRequests;
 
-            enumerator = Partner.Enumerators.ServiceRequests.Create(requests);
+            enumerator = partner.Enumerators.ServiceRequests.Create(requests);
             serviceRequests = new List<ServiceRequest>();
 
             while (enumerator.HasValue)
             {
                 serviceRequests.AddRange(enumerator.Current.Items);
-                enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
             }
 
             if (severity.HasValue && status.HasValue)

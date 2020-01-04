@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Partners;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Partners;
@@ -14,8 +15,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Sets the partner organization profile in Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Set, "PartnerOrganizationProfile", SupportsShouldProcess = true), OutputType(typeof(PSOrganizationProfile))]
-    public class SetPartnerOrganizationProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Set, "PartnerOrganizationProfile", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSOrganizationProfile))]
+    public class SetPartnerOrganizationProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the company name.
@@ -119,41 +121,43 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            OrganizationProfile profile;
-            IValidator<Address> validator;
-
-            if (ShouldProcess("Updates the partner's organization profile"))
+            Scheduler.RunTask(async () =>
             {
-                profile = Partner.Profiles.OrganizationProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-                profile.CompanyName = UpdateValue(CompanyName, profile.CompanyName);
-                profile.Email = UpdateValue(Email, profile.Email);
-                profile.Language = UpdateValue(Language, profile.Language);
-                profile.Culture = UpdateValue(Culture, profile.Culture);
-
-                profile.DefaultAddress.AddressLine1 = UpdateValue(AddressLine1, profile.DefaultAddress.AddressLine1);
-                profile.DefaultAddress.AddressLine2 = UpdateValue(AddressLine2, profile.DefaultAddress.AddressLine2);
-                profile.DefaultAddress.City = UpdateValue(City, profile.DefaultAddress.City);
-                profile.DefaultAddress.Country = UpdateValue(Country, profile.DefaultAddress.Country);
-                profile.DefaultAddress.PostalCode = UpdateValue(PostalCode, profile.DefaultAddress.PostalCode);
-                profile.DefaultAddress.State = UpdateValue(State, profile.DefaultAddress.State);
-                profile.DefaultAddress.FirstName = UpdateValue(FirstName, profile.DefaultAddress.FirstName);
-                profile.DefaultAddress.LastName = UpdateValue(LastName, profile.DefaultAddress.LastName);
-                profile.DefaultAddress.PhoneNumber = UpdateValue(PhoneNumber, profile.DefaultAddress.PhoneNumber);
-
-                if (!DisableValidation.ToBool())
+                if (ShouldProcess("Updates the partner's organization profile"))
                 {
-                    validator = new AddressValidator(Partner);
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                    if (!validator.IsValid(profile.DefaultAddress, d => WriteDebug(d)))
+                    OrganizationProfile profile = await partner.Profiles.OrganizationProfile.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                    profile.CompanyName = UpdateValue(CompanyName, profile.CompanyName);
+                    profile.Email = UpdateValue(Email, profile.Email);
+                    profile.Language = UpdateValue(Language, profile.Language);
+                    profile.Culture = UpdateValue(Culture, profile.Culture);
+
+                    profile.DefaultAddress.AddressLine1 = UpdateValue(AddressLine1, profile.DefaultAddress.AddressLine1);
+                    profile.DefaultAddress.AddressLine2 = UpdateValue(AddressLine2, profile.DefaultAddress.AddressLine2);
+                    profile.DefaultAddress.City = UpdateValue(City, profile.DefaultAddress.City);
+                    profile.DefaultAddress.Country = UpdateValue(Country, profile.DefaultAddress.Country);
+                    profile.DefaultAddress.PostalCode = UpdateValue(PostalCode, profile.DefaultAddress.PostalCode);
+                    profile.DefaultAddress.State = UpdateValue(State, profile.DefaultAddress.State);
+                    profile.DefaultAddress.FirstName = UpdateValue(FirstName, profile.DefaultAddress.FirstName);
+                    profile.DefaultAddress.LastName = UpdateValue(LastName, profile.DefaultAddress.LastName);
+                    profile.DefaultAddress.PhoneNumber = UpdateValue(PhoneNumber, profile.DefaultAddress.PhoneNumber);
+
+                    if (!DisableValidation.ToBool())
                     {
-                        throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
-                    }
-                }
+                        IValidator<Address> validator = new AddressValidator(partner);
 
-                profile = Partner.Profiles.OrganizationProfile.UpdateAsync(profile).GetAwaiter().GetResult();
-                WriteObject(new PSOrganizationProfile(profile));
-            }
+                        if (!await validator.IsValidAsync(profile.DefaultAddress, CancellationToken))
+                        {
+                            throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
+                        }
+                    }
+
+                    profile = await partner.Profiles.OrganizationProfile.UpdateAsync(profile, CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSOrganizationProfile(profile));
+                }
+            }, true);
         }
 
         private static string UpdateValue(string input, string output)

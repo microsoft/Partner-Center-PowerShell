@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using Validations;
 
     [Cmdlet(VerbsCommon.New, "PartnerCustomer", SupportsShouldProcess = true), OutputType(typeof(PSCustomer))]
-    public class NewPartnerCustomer : PartnerCmdlet
+    public class NewPartnerCustomer : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The country code for the United States.
@@ -145,80 +145,80 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            PartnerCenter.Models.Customers.Customer customer;
-            IValidator<Address> validator;
-            string country;
-            string culture;
-            string region;
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
+            Scheduler.RunTask(async () =>
             {
-
-                country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
-                culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
-
-                if (string.IsNullOrEmpty(BillingAddressRegion))
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.NewPartnerCustomerWhatIf, Name)))
                 {
-                    region = null;
-                }
-                else
-                {
-                    region = BillingAddressRegion.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
-                }
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                customer = new PartnerCenter.Models.Customers.Customer
-                {
-                    AssociatedPartnerId = AssociatedPartnerId,
-                    BillingProfile = new PartnerCenter.Models.Customers.CustomerBillingProfile
+                    PartnerCenter.Models.Customers.Customer customer;
+                    string country = (string.IsNullOrEmpty(BillingAddressCountry)) ? PartnerSession.Instance.Context.CountryCode : BillingAddressCountry;
+                    string culture = (string.IsNullOrEmpty(Culture)) ? PartnerSession.Instance.Context.Locale : Culture;
+                    string region;
+
+                    if (string.IsNullOrEmpty(BillingAddressRegion))
                     {
-                        CompanyName = Name,
-                        Culture = culture,
-                        DefaultAddress = new Address
+                        region = null;
+                    }
+                    else
+                    {
+                        region = BillingAddressRegion.Equals(UnitedStatesCountryCode, StringComparison.InvariantCultureIgnoreCase) ? string.Empty : BillingAddressRegion;
+                    }
+
+                    customer = new PartnerCenter.Models.Customers.Customer
+                    {
+                        AssociatedPartnerId = AssociatedPartnerId,
+                        BillingProfile = new PartnerCenter.Models.Customers.CustomerBillingProfile
                         {
-                            AddressLine1 = BillingAddressLine1,
-                            AddressLine2 = BillingAddressLine2,
-                            City = BillingAddressCity,
-                            Country = country,
+                            CompanyName = Name,
+                            Culture = culture,
+                            DefaultAddress = new Address
+                            {
+                                AddressLine1 = BillingAddressLine1,
+                                AddressLine2 = BillingAddressLine2,
+                                City = BillingAddressCity,
+                                Country = country,
+                                FirstName = ContactFirstName,
+                                LastName = ContactLastName,
+                                PhoneNumber = ContactPhoneNumber,
+                                PostalCode = BillingAddressPostalCode,
+                                Region = region,
+                                State = BillingAddressState
+                            },
+                            Email = ContactEmail,
                             FirstName = ContactFirstName,
-                            LastName = ContactLastName,
-                            PhoneNumber = ContactPhoneNumber,
-                            PostalCode = BillingAddressPostalCode,
-                            Region = region,
-                            State = BillingAddressState
+                            Language = Language,
+                            LastName = ContactLastName
                         },
-                        Email = ContactEmail,
-                        FirstName = ContactFirstName,
-                        Language = Language,
-                        LastName = ContactLastName
-                    },
-                    CompanyProfile = new PartnerCenter.Models.Customers.CustomerCompanyProfile
-                    {
-                        CompanyName = Name,
-                        Domain = Domain
-                    }
-                };
+                        CompanyProfile = new PartnerCenter.Models.Customers.CustomerCompanyProfile
+                        {
+                            CompanyName = Name,
+                            Domain = Domain
+                        }
+                    };
 
-                if (!DisableValidation.ToBool())
-                {
-                    if (Partner.Domains.ByDomain(Domain).ExistsAsync().ConfigureAwait(false).GetAwaiter().GetResult())
+                    if (!DisableValidation.ToBool())
                     {
-                        throw new PSInvalidOperationException(
-                            string.Format(
-                                CultureInfo.CurrentCulture,
-                                Resources.DomainExistsError,
-                                Domain));
+                        if (await partner.Domains.ByDomain(Domain).ExistsAsync(CancellationToken).ConfigureAwait(false))
+                        {
+                            throw new PSInvalidOperationException(
+                                string.Format(
+                                    CultureInfo.CurrentCulture,
+                                    Resources.DomainExistsError,
+                                    Domain));
+                        }
+
+                        IValidator<Address> validator = new AddressValidator(partner);
+
+                        if (!await validator.IsValidAsync(customer.BillingProfile.DefaultAddress, CancellationToken).ConfigureAwait(false))
+                        {
+                            throw new PartnerException("The address for the customer is not valid.");
+                        }
                     }
 
-                    validator = new AddressValidator(Partner);
-
-                    if (!validator.IsValid(customer.BillingProfile.DefaultAddress, d => WriteDebug(d)))
-                    {
-                        throw new PartnerException("The address for the customer is not valid.");
-                    }
+                    WriteObject(await partner.Customers.CreateAsync(customer).ConfigureAwait(false));
                 }
-
-                WriteObject(Partner.Customers.CreateAsync(customer).GetAwaiter().GetResult());
-            }
+            }, true);
         }
     }
 }

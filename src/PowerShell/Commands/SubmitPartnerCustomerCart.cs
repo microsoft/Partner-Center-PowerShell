@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Carts;
     using PartnerCenter.Models.Carts;
     using Properties;
@@ -13,8 +14,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// <summary>
     /// Checks out the specified cart.
     /// </summary>
-    [Cmdlet(VerbsLifecycle.Submit, "PartnerCustomerCart", SupportsShouldProcess = true), OutputType(typeof(PSCartCheckoutResult))]
-    public class SubmitPartnerCustomerCart : PartnerCmdlet
+    [Cmdlet(VerbsLifecycle.Submit, "PartnerCustomerCart", SupportsShouldProcess = true)]
+    [OutputType(typeof(PSCartCheckoutResult))]
+    public class SubmitPartnerCustomerCart : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required cart identifier.
@@ -35,13 +37,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            CartCheckoutResult checkoutResult;
-
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.CheckoutPartnerCustomerCartWhatIf, CartId)))
+            Scheduler.RunTask(async () =>
             {
-                checkoutResult = Partner.Customers[CustomerId].Carts[CartId].CheckoutAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                WriteObject(new PSCartCheckoutResult(checkoutResult));
-            }
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.CheckoutPartnerCustomerCartWhatIf, CartId)))
+                {
+
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    CartCheckoutResult checkoutResult = await partner.Customers[CustomerId].Carts[CartId].CheckoutAsync(CancellationToken).ConfigureAwait(false);
+
+                    WriteObject(new PSCartCheckoutResult(checkoutResult));
+                }
+            }, true);
         }
     }
 }

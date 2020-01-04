@@ -6,6 +6,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Properties;
 
     /// <summary>
@@ -13,7 +14,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.Remove, "PartnerSandboxCustomer", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true)]
     [OutputType(typeof(bool))]
-    public class RemovePartnerSandboxCustomer : PartnerCmdlet
+    public class RemovePartnerSandboxCustomer : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -27,11 +28,17 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerSandboxCustomerWhatIf, CustomerId)))
+            Scheduler.RunTask(async () =>
             {
-                Partner.Customers[CustomerId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-                WriteObject(true);
-            }
+                if (ShouldProcess(string.Format(CultureInfo.CurrentCulture, Resources.RemovePartnerSandboxCustomerWhatIf, CustomerId)))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                    await partner.Customers[CustomerId].DeleteAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(true);
+                }
+
+            }, true);
         }
     }
 }

@@ -6,22 +6,29 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using Models.Analytics;
+    using Models.Authentication;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Analytics;
 
     /// <summary>
     /// Get partner licenses deployment information aggregated to include all customers from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerLicenseDeploymentInfo"), OutputType(typeof(PSPartnerLicensesDeploymentInsight))]
-    public class GetPartnerLicenseDeploymentInfo : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerLicenseDeploymentInfo")]
+    [OutputType(typeof(PSPartnerLicensesDeploymentInsight))]
+    public class GetPartnerLicenseDeploymentInfo : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<PartnerLicensesDeploymentInsights> insights = Partner.Analytics.Licenses.Deployment.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(insights.Items.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<PartnerLicensesDeploymentInsights> insights = await partner.Analytics.Licenses.Deployment.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(insights.Items.Select(l => new PSPartnerLicensesDeploymentInsight(l)), true);
+            }, true);
         }
     }
 }

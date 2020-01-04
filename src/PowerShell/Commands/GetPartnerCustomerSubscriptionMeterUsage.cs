@@ -6,12 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Usage;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Usage;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionMeterUsage"), OutputType(typeof(PSMeterUsageRecord))]
-    public class GetPartnerCustomerSubscriptionMeterUsage : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionMeterUsage")]
+    [OutputType(typeof(PSMeterUsageRecord))]
+    public class GetPartnerCustomerSubscriptionMeterUsage : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -32,10 +34,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<MeterUsageRecord> usageRecords;
-
-            usageRecords = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByMeter.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(usageRecords.Items.Select(r => new PSMeterUsageRecord(r)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<MeterUsageRecord> usageRecords = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].UsageRecords.ByMeter.GetAsync(CancellationToken).ConfigureAwait(false);
+                WriteObject(usageRecords.Items.Select(r => new PSMeterUsageRecord(r)), true);
+            }, true);
         }
     }
 }

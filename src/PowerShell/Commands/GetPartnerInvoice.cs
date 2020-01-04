@@ -7,15 +7,18 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using Enumerators;
+    using Models.Authentication;
     using Models.Invoices;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of invoices from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerInvoice"), OutputType(typeof(PSInvoice))]
-    public class GetPartnerInvoice : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerInvoice")]
+    [OutputType(typeof(PSInvoice))]
+    public class GetPartnerInvoice : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the invoice identifier.
@@ -29,34 +32,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (string.IsNullOrEmpty(InvoiceId))
+            Scheduler.RunTask(async () =>
             {
-                GetInvoices();
-            }
-            else
-            {
-                WriteObject(new PSInvoice(Partner.Invoices[InvoiceId].GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-            }
-        }
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-        private void GetInvoices()
-        {
-            IResourceCollectionEnumerator<ResourceCollection<Invoice>> enumerator;
-            List<PSInvoice> invoices;
-            ResourceCollection<Invoice> resources;
+                if (string.IsNullOrEmpty(InvoiceId))
+                {
+                    IResourceCollectionEnumerator<ResourceCollection<Invoice>> enumerator;
+                    List<PSInvoice> invoices;
+                    ResourceCollection<Invoice> resources;
 
-            resources = Partner.Invoices.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            enumerator = Partner.Enumerators.Invoices.Create(resources);
+                    resources = await partner.Invoices.GetAsync(CancellationToken).ConfigureAwait(false);
+                    enumerator = partner.Enumerators.Invoices.Create(resources);
 
-            invoices = new List<PSInvoice>();
+                    invoices = new List<PSInvoice>();
 
-            while (enumerator.HasValue)
-            {
-                invoices.AddRange(enumerator.Current.Items.Select(i => new PSInvoice(i)));
-                enumerator.NextAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            }
+                    while (enumerator.HasValue)
+                    {
+                        invoices.AddRange(enumerator.Current.Items.Select(i => new PSInvoice(i)));
+                        await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
+                    }
 
-            WriteObject(invoices, true);
+                    WriteObject(invoices, true);
+                }
+                else
+                {
+                    WriteObject(new PSInvoice(await partner.Invoices[InvoiceId].GetAsync(CancellationToken).ConfigureAwait(false)));
+                }
+            }, true);
         }
     }
 }

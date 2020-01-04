@@ -3,10 +3,17 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Validations
 {
-    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public interface IValidator<in T>
     {
-        bool IsValid(T resource, Action<string> debugAction);
+        /// <summary>
+        /// Determines if the resource is valid.
+        /// </summary>
+        /// <param name="resource">The resource to be validate.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns><c>true</c> if the resource is valid; otherwise <c>false</c>.</returns>
+        Task<bool> IsValidAsync(T resource, CancellationToken cancellationToken = default);
     }
 }

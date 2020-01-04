@@ -6,12 +6,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.CustomerTrialConversion;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Subscriptions;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerTrialConversion"), OutputType(typeof(PSCustomerTrialConversion))]
-    public class GetPartnerTrialConversion : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerTrialConversion")]
+    [OutputType(typeof(PSCustomerTrialConversion))]
+    public class GetPartnerTrialConversion : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the customer identifier.
@@ -32,8 +34,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<Conversion> conversions = Partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Conversions.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(conversions.Items.Select(c => new PSCustomerTrialConversion(c)), true);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<Conversion> conversions = await partner.Customers.ById(CustomerId).Subscriptions.ById(SubscriptionId).Conversions.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(conversions.Items.Select(c => new PSCustomerTrialConversion(c)), true);
+            }, true);
         }
     }
 }

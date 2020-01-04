@@ -5,10 +5,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using PartnerCenter.Models.ProductUpgrades;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerProductUpgradeStatus"), OutputType(typeof(ProductUpgradeStatus))]
-    public class GetPartnerProductUpgradeStatus : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerProductUpgradeStatus")]
+    [OutputType(typeof(ProductUpgradeStatus))]
+    public class GetPartnerProductUpgradeStatus : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -36,11 +38,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            Partner.ProductUpgrades.ById(UpgradeId).CheckStatusAsync(new ProductUpgradeRequest
+            Scheduler.RunTask(async () =>
             {
-                CustomerId = CustomerId,
-                ProductFamily = ProductFamily
-            }).ConfigureAwait(false).GetAwaiter().GetResult();
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                await partner.ProductUpgrades.ById(UpgradeId).CheckStatusAsync(new ProductUpgradeRequest
+                {
+                    CustomerId = CustomerId,
+                    ProductFamily = ProductFamily
+                }, CancellationToken).ConfigureAwait(false);
+            }, true);
         }
     }
 }

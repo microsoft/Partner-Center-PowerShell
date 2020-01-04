@@ -5,13 +5,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Properties;
 
     /// <summary>
     /// Return a list of configuration policies or a specific configration policy for the specified customer identifier.
     /// </summary>
-    [Cmdlet(VerbsCommon.Remove, "PartnerCustomerConfigurationPolicy"), OutputType(typeof(bool))]
-    public class RemovePartnerCustomerConfigurationPolicy : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Remove, "PartnerCustomerConfigurationPolicy")]
+    [OutputType(typeof(bool))]
+    public class RemovePartnerCustomerConfigurationPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -36,13 +38,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            if (!ShouldProcess(Resources.RemovePartnerCustomerConfigurationPolicyWhatIf, PolicyId))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
+                if (ShouldProcess(Resources.RemovePartnerCustomerConfigurationPolicyWhatIf, PolicyId))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-            Partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(true);
+                    await partner.Customers[CustomerId].ConfigurationPolicies[PolicyId].DeleteAsync(CancellationToken).ConfigureAwait(false);
+                    WriteObject(true);
+                }
+            }, true);
         }
     }
 }

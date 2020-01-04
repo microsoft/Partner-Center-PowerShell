@@ -16,12 +16,17 @@ Gets a list of all customer users or a specified user for the tenant.
 
 ### ByCustomerId (Default)
 ```powershell
-Get-PartnerCustomerUser [-CustomerId] <String> [-ReturnDeletedUsers] [<CommonParameters>]
+Get-PartnerCustomerUser [-CustomerId] <String> [<CommonParameters>]
 ```
 
 ### ByUserId
 ```powershell
 Get-PartnerCustomerUser [-CustomerId] <String> -UserId <String> [<CommonParameters>]
+```
+
+### ByUserState
+```powershell
+Get-PartnerCustomerUser [-CustomerId] <String> [-ReturnDeletedUsers] [<CommonParameters>]
 ```
 
 ### ByUpn
@@ -77,10 +82,10 @@ Specifies whether to show deleted users.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ByCustomerId
+Parameter Sets: ByUserState
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

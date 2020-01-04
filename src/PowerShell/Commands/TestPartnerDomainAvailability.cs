@@ -4,12 +4,14 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Models.Authentication;
 
     /// <summary>
     /// Check to see if the specified domain name is available.
     /// </summary>
-    [Cmdlet(VerbsDiagnostic.Test, "PartnerDomainAvailability"), OutputType(typeof(bool))]
-    public class TestPartnerDomainAvailability : PartnerCmdlet
+    [Cmdlet(VerbsDiagnostic.Test, "PartnerDomainAvailability")]
+    [OutputType(typeof(bool))]
+    public class TestPartnerDomainAvailability : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The domain name to be checked.
@@ -24,7 +26,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(!Partner.Domains.ByDomain(Domain).ExistsAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                bool exists = await partner.Domains.ByDomain(Domain).ExistsAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(!exists);
+            }, true);
         }
     }
 }

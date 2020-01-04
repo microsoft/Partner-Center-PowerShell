@@ -3,10 +3,10 @@
 
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.ServiceRequests;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceRequests;
@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// Get a service request, or a list of service requests, from Partner Center.
     /// </summary>
     [Cmdlet(VerbsCommon.Get, "PartnerServiceRequestTopic"), OutputType(typeof(PSSupportTopic))]
-    public class GetPartnerServiceRequestTopic : PartnerCmdlet
+    public class GetPartnerServiceRequestTopic : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the support topic identifier
@@ -28,22 +28,23 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ResourceCollection<SupportTopic> topics;
-            IEnumerable<SupportTopic> results;
-
-            topics = Partner.ServiceRequests.SupportTopics.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (topics.TotalCount > 0)
+            Scheduler.RunTask(async () =>
             {
-                results = topics.Items;
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                ResourceCollection<SupportTopic> topics;
+
+                topics = await partner.ServiceRequests.SupportTopics.GetAsync(CancellationToken).ConfigureAwait(false);
+
 
                 if (!string.IsNullOrEmpty(SupportTopicId))
                 {
-                    results = results.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == SupportTopicId);
+                    WriteObject(topics.Items.Where(t => t.Id.ToString(CultureInfo.CurrentCulture) == SupportTopicId));
                 }
-
-                WriteObject(results.Select(t => new PSSupportTopic(t)), true);
-            }
+                else
+                {
+                    WriteObject(topics.Items.Select(t => new PSSupportTopic(t)), true);
+                }
+            }, true);
         }
     }
 }

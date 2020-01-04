@@ -7,13 +7,16 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using Models.Authentication;
     using Models.Products;
+    using PartnerCenter.Models;
+    using PartnerCenter.Models.Products;
     using Products;
 
     /// <summary>
     /// Get a product, or a list products, from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerProduct", DefaultParameterSetName = ByTargetViewParameterSetName), OutputType(typeof(PSProduct))]
-    public class GetPartnerProduct : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerProduct", DefaultParameterSetName = ByTargetViewParameterSetName)]
+    [OutputType(typeof(PSProduct))]
+    public class GetPartnerProduct : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name of the by product identifier parameter set.
@@ -68,33 +71,37 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            IProductCollectionByCountry operations = Partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                IProductCollectionByCountry operations = partner.Products.ByCountry(string.IsNullOrEmpty(CountryCode) ? PartnerSession.Instance.Context.CountryCode : CountryCode);
 
-            if (ParameterSetName == ByProductIdParameterSetName)
-            {
-                WriteObject(new PSProduct(operations.ById(ProductId).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-            }
-            else if (ParameterSetName == ByReservationScopeParameterSetName)
-            {
-                WriteObject(
-                    new PSProduct(
-                        operations.ById(ProductId).ByReservationScope(ReservationScope).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
-            }
-            else if (ParameterSetName == ByTargetViewParameterSetName)
-            {
-                if (string.IsNullOrEmpty(Segment))
+                if (ParameterSetName == ByProductIdParameterSetName)
+                {
+                    WriteObject(new PSProduct(await operations.ById(ProductId).GetAsync(CancellationToken).ConfigureAwait(false)));
+                }
+                else if (ParameterSetName == ByReservationScopeParameterSetName)
                 {
                     WriteObject(
-                        operations.ByTargetView(Catalog).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()
-                            .Items.Select(p => new PSProduct(p)), true);
+                        new PSProduct(
+                            await operations.ById(ProductId).ByReservationScope(ReservationScope).GetAsync(CancellationToken).ConfigureAwait(false)));
                 }
-                else
+                else if (ParameterSetName == ByTargetViewParameterSetName)
                 {
-                    WriteObject(
-                        operations.ByTargetView(Catalog).ByTargetSegment(Segment).GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()
-                            .Items.Select(p => new PSProduct(p)), true);
+                    ResourceCollection<Product> products;
+
+                    if (string.IsNullOrEmpty(Segment))
+                    {
+                        products = await operations.ByTargetView(Catalog).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        products = await operations.ByTargetView(Catalog).ByTargetSegment(Segment).GetAsync(CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(products.Items.Select(p => new PSProduct(p)), true);
                 }
-            }
+            }, true);
         }
     }
 }

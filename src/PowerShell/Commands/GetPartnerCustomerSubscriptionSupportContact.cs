@@ -5,11 +5,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Subscriptions;
     using PartnerCenter.Models.Subscriptions;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionSupportContact"), OutputType(typeof(PSSupportContact))]
-    public class GetPartnerCustomerSubscriptionSupportContact : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerSubscriptionSupportContact")]
+    [OutputType(typeof(PSSupportContact))]
+    public class GetPartnerCustomerSubscriptionSupportContact : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -30,8 +32,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            SupportContact contact = Partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            WriteObject(new PSSupportContact(contact));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                SupportContact contact = await partner.Customers[CustomerId].Subscriptions[SubscriptionId].SupportContact.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(new PSSupportContact(contact));
+            }, true);
         }
     }
 }

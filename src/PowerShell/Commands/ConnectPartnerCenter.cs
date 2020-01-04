@@ -211,6 +211,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
                     account.SetProperty(PartnerAccountPropertyType.ApplicationId, ApplicationId);
+                    account.Type = AccountType.Certificate;
                 }
                 else if (ParameterSetName.Equals(ServicePrincipalParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -253,7 +254,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 try
                 {
-                    partnerOperations = PartnerSession.Instance.ClientFactory.CreatePartnerOperations();
+                    partnerOperations = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId).ConfigureAwait(false);
                     profile = await partnerOperations.Profiles.OrganizationProfile.GetAsync().ConfigureAwait(false);
 
                     PartnerSession.Instance.Context.CountryCode = profile.DefaultAddress.Country;

@@ -5,10 +5,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Models.Authentication;
     using Models.Usage;
+    using PartnerCenter.Models.Usage;
 
-    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUsageSummary"), OutputType(typeof(PSCustomerUsageSummary))]
-    public class GetPartnerCustomerUsageSummary : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerCustomerUsageSummary")]
+    [OutputType(typeof(PSCustomerUsageSummary))]
+    public class GetPartnerCustomerUsageSummary : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the identifier of the customer.
@@ -22,7 +25,13 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSCustomerUsageSummary(Partner.Customers[CustomerId].UsageSummary.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                CustomerUsageSummary usageSummary = await partner.Customers[CustomerId].UsageSummary.GetAsync(CancellationToken).ConfigureAwait(false);
+
+                WriteObject(new PSCustomerUsageSummary(usageSummary));
+            }, true);
         }
     }
 }

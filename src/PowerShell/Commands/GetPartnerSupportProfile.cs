@@ -4,20 +4,27 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System.Management.Automation;
+    using Models.Authentication;
     using Models.Partners;
 
     /// <summary>
     /// Gets the partner support profile from Partner Center.
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, "PartnerSupportProfile"), OutputType(typeof(PSSupportProfile))]
-    public class GetPartnerSupportProfile : PartnerCmdlet
+    [Cmdlet(VerbsCommon.Get, "PartnerSupportProfile")]
+    [OutputType(typeof(PSSupportProfile))]
+    public class GetPartnerSupportProfile : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Executes the operations associated with the cmdlet.
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            WriteObject(new PSSupportProfile(Partner.Profiles.SupportProfile.GetAsync().ConfigureAwait(false).GetAwaiter().GetResult()));
+            Scheduler.RunTask(async () =>
+            {
+                IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+
+                WriteObject(new PSSupportProfile(await partner.Profiles.SupportProfile.GetAsync(CancellationToken).ConfigureAwait(false)));
+            }, true);
         }
     }
 }

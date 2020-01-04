@@ -7,6 +7,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Management.Automation;
     using System.Text.RegularExpressions;
     using Models;
+    using Models.Authentication;
     using PartnerCenter.Models.DevicesDeployment;
     using PartnerCenter.PowerShell.Properties;
 
@@ -15,7 +16,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     /// </summary>
     [Cmdlet(VerbsCommon.New, "PartnerCustomerConfigurationPolicy", SupportsShouldProcess = true)]
     [OutputType(typeof(PSConfigurationPolicy))]
-    public class NewPartnerCustomerConfigurationPolicy : PartnerCmdlet
+    public class NewPartnerCustomerConfigurationPolicy : PartnerAsyncCmdlet
     {
         /// <summary>
         /// Gets or sets the required customer identifier.
@@ -73,49 +74,51 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public override void ExecuteCmdlet()
         {
-            ConfigurationPolicy devicePolicy;
-            List<PolicySettingsTypes> policySettings = new List<PolicySettingsTypes>();
-
-            if (!ShouldProcess(Resources.NewPartnerCustomerConfigurationPolicyWhatIf))
+            Scheduler.RunTask(async () =>
             {
-                return;
-            }
+                if (ShouldProcess(Resources.NewPartnerCustomerConfigurationPolicyWhatIf))
+                {
+                    IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
+                    ConfigurationPolicy devicePolicy;
+                    List<PolicySettingsTypes> policySettings = new List<PolicySettingsTypes>();
 
-            if (OobeUserNotLocalAdmin)
-            {
-                policySettings.Add(PolicySettingsTypes.OobeUserNotLocalAdmin);
-            }
+                    if (OobeUserNotLocalAdmin)
+                    {
+                        policySettings.Add(PolicySettingsTypes.OobeUserNotLocalAdmin);
+                    }
 
-            if (SkipEula)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipEula);
-            }
+                    if (SkipEula)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipEula);
+                    }
 
-            if (SkipExpressSettings)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipExpressSettings);
-            }
+                    if (SkipExpressSettings)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipExpressSettings);
+                    }
 
-            if (RemoveOemPreinstalls)
-            {
-                policySettings.Add(PolicySettingsTypes.RemoveOemPreinstalls);
-            }
+                    if (RemoveOemPreinstalls)
+                    {
+                        policySettings.Add(PolicySettingsTypes.RemoveOemPreinstalls);
+                    }
 
-            if (SkipOemRegistration)
-            {
-                policySettings.Add(PolicySettingsTypes.SkipOemRegistration);
-            }
+                    if (SkipOemRegistration)
+                    {
+                        policySettings.Add(PolicySettingsTypes.SkipOemRegistration);
+                    }
 
-            ConfigurationPolicy configurationPolicy = new ConfigurationPolicy
-            {
-                Name = Name,
-                Description = Description,
-                PolicySettings = policySettings
-            };
+                    ConfigurationPolicy configurationPolicy = new ConfigurationPolicy
+                    {
+                        Name = Name,
+                        Description = Description,
+                        PolicySettings = policySettings
+                    };
 
 
-            devicePolicy = Partner.Customers[CustomerId].ConfigurationPolicies.CreateAsync(configurationPolicy).GetAwaiter().GetResult();
-            WriteObject(new PSConfigurationPolicy(devicePolicy));
+                    devicePolicy = await partner.Customers[CustomerId].ConfigurationPolicies.CreateAsync(configurationPolicy, CancellationToken).ConfigureAwait(false);
+                    WriteObject(new PSConfigurationPolicy(devicePolicy));
+                }
+            }, true);
         }
     }
 }
