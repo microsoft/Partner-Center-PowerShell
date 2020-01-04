@@ -17,33 +17,37 @@ Acquires an access token from Azure Active Directory.
 ### AccessToken
 ```powershell
 New-PartnerAccessToken -AccessToken <String> -ApplicationId <String> [-Credential <PSCredential>]
- [-Environment <EnvironmentName>] [-RefreshToken <String>] -Scopes <String[]> [-Tenant <String>]
- [-UseAuthorizationCode] [<CommonParameters>]
+ [-Environment <EnvironmentName>] -Scopes <String[]> [-Tenant <String>] [<CommonParameters>]
+```
+
+### RefreshToken
+```powershell
+New-PartnerAccessToken [-ApplicationId <String>] [-Credential <PSCredential>] [-Environment <EnvironmentName>]
+ [-Module <ModuleName>] -RefreshToken <String> -Scopes <String[]> [-ServicePrincipal] [-Tenant <String>]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipal
 ```powershell
 New-PartnerAccessToken -ApplicationId <String> -Credential <PSCredential> [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Scopes <String[]> [-ServicePrincipal] -Tenant <String> [-UseAuthorizationCode]
- [<CommonParameters>]
+ -Scopes <String[]> [-ServicePrincipal] -Tenant <String> [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
 ```powershell
 New-PartnerAccessToken -ApplicationId <String> -CertificateThumbprint <String> [-Environment <EnvironmentName>]
- [-RefreshToken <String>] -Scopes <String[]> [-ServicePrincipal] -Tenant <String> [-UseAuthorizationCode]
- [<CommonParameters>]
+ -Scopes <String[]> [-ServicePrincipal] -Tenant <String> [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
 ### User
 ```powershell
-New-PartnerAccessToken -ApplicationId <String> [-Environment <EnvironmentName>] [-RefreshToken <String>]
- -Scopes <String[]> [-Tenant <String>] [-UseAuthorizationCode] [-UseDeviceAuthentication] [<CommonParameters>]
+New-PartnerAccessToken -ApplicationId <String> [-Environment <EnvironmentName>] -Scopes <String[]>
+ [-Tenant <String>] [-UseAuthorizationCode] [-UseDeviceAuthentication] [<CommonParameters>]
 ```
 
 ### ByModule
 ```powershell
-New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> [-RefreshToken <String>]
+New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> -Scopes <String[]>
  [-Tenant <String>] [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
@@ -103,6 +107,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+```yaml
+Type: String
+Parameter Sets: RefreshToken
+Aliases: ClientId
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -CertificateThumbprint
 Certificate Hash (Thumbprint)
 
@@ -123,7 +139,7 @@ Credentials that represents the service principal.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: AccessToken
+Parameter Sets: AccessToken, RefreshToken
 Aliases:
 
 Required: False
@@ -166,6 +182,19 @@ The module that an access token is being generated.
 
 ```yaml
 Type: ModuleName
+Parameter Sets: RefreshToken
+Aliases: ModuleName
+Accepted values: ExchangeOnline
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: ModuleName
 Parameter Sets: ByModule
 Aliases: ModuleName
 Accepted values: ExchangeOnline
@@ -182,10 +211,10 @@ The refresh token to use during authentication.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: RefreshToken
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -197,7 +226,7 @@ Scopes requested to access a protected API.
 
 ```yaml
 Type: String[]
-Parameter Sets: AccessToken, ServicePrincipal, ServicePrincipalCertificate, User
+Parameter Sets: (All)
 Aliases:
 
 Required: True
@@ -212,10 +241,10 @@ Indicates that this account authenticates by providing service principal credent
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ServicePrincipal
+Parameter Sets: RefreshToken, ServicePrincipalCertificate
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -224,10 +253,10 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: ServicePrincipalCertificate
+Parameter Sets: ServicePrincipal
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -239,7 +268,7 @@ The identifier of the Azure AD tenant.
 
 ```yaml
 Type: String
-Parameter Sets: AccessToken, User, ByModule
+Parameter Sets: AccessToken, RefreshToken, User, ByModule
 Aliases: Domain, TenantId
 
 Required: False
@@ -266,7 +295,7 @@ Use the authorization code flow during authentication.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: ServicePrincipal, ServicePrincipalCertificate, User, ByModule
 Aliases: AuthCode
 
 Required: False

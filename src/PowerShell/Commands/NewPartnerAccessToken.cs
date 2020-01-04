@@ -75,6 +75,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the certificate thumbprint.
         /// </summary>
+        [Parameter(HelpMessage = "Certificate Hash (Thumbprint)", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
         [Parameter(HelpMessage = "Certificate Hash (Thumbprint)", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
         public string CertificateThumbprint { get; set; }
 
@@ -129,7 +130,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// Gets or sets the tenant identifier.
         /// </summary>
         [Alias("Domain", "TenantId")]
-        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = ByModuleParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Identifier or name for the tenant.", Mandatory = false, ParameterSetName = UserParameterSet)]
         [ValidateNotNullOrEmpty]
         public string Tenant { get; set; }
 
