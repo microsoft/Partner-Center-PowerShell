@@ -13,6 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.ServiceRequests;
+    using RequestContext;
 
     /// <summary>
     /// Get a service request, or a list of service requests, from Partner Center.
@@ -102,8 +103,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             while (enumerator.HasValue)
             {
                 serviceRequests.AddRange(enumerator.Current.Items);
-                // TODO - Inject request context here.
-                await enumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
             }
 
             if (severity.HasValue && status.HasValue)

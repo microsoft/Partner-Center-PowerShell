@@ -15,6 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
     using Properties;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of users for a customer from Partner Center.
@@ -73,8 +74,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         while (usersEnumerator.HasValue)
                         {
                             users.AddRange(usersEnumerator.Current.Items);
-                            // TODO - Inject request context here.
-                            await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                            await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                         }
 
                         CustomerUser user = users.SingleOrDefault(u => string.Equals(u.UserPrincipalName, UserPrincipalName, StringComparison.CurrentCultureIgnoreCase));

@@ -4,15 +4,12 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Graph;
     using Models.Authentication;
-    using PartnerCenter.Enumerators;
-    using PartnerCenter.Models;
-    using PartnerCenter.Models.Users;
+    using Network;
     using Properties;
 
     /// <summary>
@@ -60,27 +57,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                     if (ParameterSetName.Equals("ByUpn", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-                        List<CustomerUser> users = new List<CustomerUser>();
-                        SeekBasedResourceCollection<CustomerUser> seekUsers;
+                        GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+                        client.AuthenticationProvider = new GraphAuthenticationProvider(CustomerId);
 
-                        seekUsers = await partner.Customers[CustomerId].Users.GetAsync(CancellationToken).ConfigureAwait(false);
-                        usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-                        while (usersEnumerator.HasValue)
-                        {
-                            users.AddRange(usersEnumerator.Current.Items);
-                            // TODO - Inject the request context here as well
-                            await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
-                        }
-
-                        CustomerUser user = users.SingleOrDefault(u => string.Equals(u.UserPrincipalName, UserPrincipalName, StringComparison.CurrentCultureIgnoreCase));
-
-                        if (user == null)
-                        {
-                            throw new PSInvalidOperationException($"Unable to locate {UserPrincipalName}");
-                        }
-
+                        Graph.User user = await client.Users[UserPrincipalName].Request().GetAsync(CancellationToken).ConfigureAwait(false);
                         userId = user.Id;
                     }
                     else

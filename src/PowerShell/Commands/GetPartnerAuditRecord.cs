@@ -13,6 +13,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Models;
     using PartnerCenter.Models.Auditing;
     using Properties;
+    using RequestContext;
 
     /// <summary>
     /// Cmdlet that retrieves audit records from Partner Center.
@@ -64,8 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     while (enumerator.HasValue)
                     {
                         records.AddRange(enumerator.Current.Items.Select(r => new PSAuditRecord(r)));
-                        // TODO - Determine if the request context should be set here as well.
-                        await enumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                        await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                     }
                 }
 

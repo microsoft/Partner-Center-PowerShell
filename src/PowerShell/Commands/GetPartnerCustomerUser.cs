@@ -8,12 +8,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
+    using Microsoft.Graph;
     using Models.Authentication;
     using Models.Users;
+    using Network;
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Query;
     using PartnerCenter.Models.Users;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of users for a customer from Partner Center.
@@ -76,8 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     while (usersEnumerator.HasValue)
                     {
                         users.AddRange(usersEnumerator.Current.Items);
-                        // TODO - Need to populate the request context here.
-                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                        await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                     }
 
                     WriteObject(users.Select(u => new PSCustomerUser(u)), true);
@@ -103,35 +105,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     while (usersEnumerator.HasValue)
                     {
                         users.AddRange(usersEnumerator.Current.Items);
-                        // TODO - Need to populate the request context here.
-                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                        await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                     }
 
                     WriteObject(users.Select(u => new PSCustomerUser(u)), true);
                 }
                 else if (ParameterSetName.Equals("ByUpn", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // TODO -- This needs to be tested and we should look into replacing this with a call to Microsoft Graph
+                    GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
+                    client.AuthenticationProvider = new GraphAuthenticationProvider(CustomerId);
 
-                    SimpleFieldFilter filter = new SimpleFieldFilter("UserPrincipalName", FieldFilterOperation.Equals, UserPrincipalName);
-                    IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
-                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-                    List<CustomerUser> users;
-                    SeekBasedResourceCollection<CustomerUser> seekUsers;
+                    Graph.User user = await client.Users[UserPrincipalName].Request().GetAsync(CancellationToken).ConfigureAwait(false);
+                    CustomerUser customerUser = await partner.Customers[CustomerId].Users[user.Id].GetAsync(CancellationToken).ConfigureAwait(false);
 
-                    users = new List<CustomerUser>();
-
-                    seekUsers = await partner.Customers[CustomerId].Users.QueryAsync(simpleQueryWithFilter, CancellationToken).ConfigureAwait(false);
-                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-                    while (usersEnumerator.HasValue)
-                    {
-                        users.AddRange(usersEnumerator.Current.Items);
-                        // TODO - Need to populate the request context here.
-                        await usersEnumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
-                    }
-
-                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
+                    WriteObject(customerUser);
                 }
             }, true);
         }

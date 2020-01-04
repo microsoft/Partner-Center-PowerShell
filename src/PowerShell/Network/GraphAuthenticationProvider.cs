@@ -16,6 +16,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
     public class GraphAuthenticationProvider : IAuthenticationProvider
     {
         /// <summary>
+        /// The identifier of the tenant that owns the resources being accessed.
+        /// </summary>
+        private readonly string tenantId;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphAuthenticationProvider" /> class.
+        /// </summary>
+        /// <param name="tenantId">The identifier of the tenant that owns the resources being accessed.</param>
+        public GraphAuthenticationProvider(string tenantId = null)
+        {
+            this.tenantId = tenantId;
+        }
+
+        /// <summary>
         /// Authenticates the specified request message.
         /// </summary>
         /// <param name="request">The HTTP request to be authenticated.</param>
@@ -24,8 +38,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
         {
             request.AssertNotNull(nameof(request));
 
+            PartnerAccount account = PartnerSession.Instance.Context.Account.Clone();
+
+            if (!string.IsNullOrEmpty(tenantId))
+            {
+                account.Tenant = tenantId;
+            }
+
             AuthenticationResult authResult = await PartnerSession.Instance.AuthenticationFactory.AuthenticateAsync(
-                PartnerSession.Instance.Context.Account,
+                account,
                 PartnerSession.Instance.Context.Environment,
                 new[] { $"{PartnerSession.Instance.Context.Environment.GraphEndpoint}/.default" }).ConfigureAwait(false);
 
