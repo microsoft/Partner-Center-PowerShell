@@ -18,11 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Errors
         {
             if (exception != null)
             {
-                //if (exception.Body != null)
-                //{
-                //    ServerMessage = string.Format($"{exception.Body.Code}: {exception.Body.Message} ({exception.Body.Details})");
-                //}
-
                 if (exception.Response != null)
                 {
                     ServerResponse = new HttpResponseInfo(exception.Response);

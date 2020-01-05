@@ -19,7 +19,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Gets or sets the next authenticator in the chain.
         /// </summary>
-        public IAuthenticator Next { get; set; }
+        public IAuthenticator NextAuthenticator { get; set; }
 
         /// <summary>
         /// Apply this authenticator to the given authentication parameters.
@@ -84,9 +84,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 return await AuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
             }
 
-            if (Next != null)
+            if (NextAuthenticator != null)
             {
-                return await Next.TryAuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
+                return await NextAuthenticator.TryAuthenticateAsync(parameters, cancellationToken).ConfigureAwait(false);
             }
 
             return null;

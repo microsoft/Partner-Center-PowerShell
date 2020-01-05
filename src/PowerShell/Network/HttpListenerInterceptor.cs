@@ -29,7 +29,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
 
             try
             {
-                string urlToListenTo = "http://localhost:" + port + "/";
+                string urlToListenTo = $"http://localhost:{port}/";
 
                 httpListener = new HttpListener();
                 httpListener.Prefixes.Add(urlToListenTo);
@@ -65,7 +65,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             }
         }
 
-        private void Respond(Func<Uri, MessageAndHttpCode> responseProducer, HttpListenerContext context)
+        private static void Respond(Func<Uri, MessageAndHttpCode> responseProducer, HttpListenerContext context)
         {
             MessageAndHttpCode messageAndCode = responseProducer(context.Request.Url);
             ServiceClientTracing.Information($"[HttpListenerInterceptor] Processing a response message to the browser. HttpStatus: {messageAndCode.HttpCode}");
@@ -96,6 +96,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Network
             }
             catch
             {
+                // Exceptions with this operation can safely be ignored.
             }
         }
     }

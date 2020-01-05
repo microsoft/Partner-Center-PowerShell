@@ -17,8 +17,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     /// </summary>
     internal class AuthenticationFactory : IAuthenticationFactory
     {
+        /// <summary>
+        /// The authenticator builder used to chain authenticators.
+        /// </summary>
         private static IAuthenticatorBuilder Builder => new DefaultAuthenticatorBuilder();
 
+        /// <summary>
+        /// Acquires the security token from the authority.
+        /// </summary>
+        /// <param name="account">The account information to be used when generating the client.</param>
+        /// <param name="environment">The environment where the client is connecting.</param>
+        /// <param name="scopes">Scopes requested to access a protected service.</param>
+        /// <param name="message">The message to be written to the console.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>The result from the authentication request.</returns>
         public async Task<AuthenticationResult> AuthenticateAsync(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null, CancellationToken cancellationToken = default)
         {
             AuthenticationResult authResult = null;
@@ -44,12 +56,20 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
                     break;
                 }
 
-                processAuthenticator = processAuthenticator.Next;
+                processAuthenticator = processAuthenticator.NextAuthenticator;
             }
 
             return authResult;
         }
 
+        /// <summary>
+        /// Gets the parameters used to perform authentication..
+        /// </summary>
+        /// <param name="account">The account information to be used when generating the client.</param>
+        /// <param name="environment">The environment where the client is connecting.</param>
+        /// <param name="scopes">Scopes requested to access a protected service.</param>
+        /// <param name="message">The message to be written to the console.</param>
+        /// <returns>The parameters used to perform authentication.</returns>
         private AuthenticationParameters GetAuthenticationParameters(PartnerAccount account, PartnerEnvironment environment, IEnumerable<string> scopes, string message = null)
         {
             if (account.IsPropertySet(PartnerAccountPropertyType.AccessToken))

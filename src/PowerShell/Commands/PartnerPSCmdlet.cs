@@ -136,8 +136,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 {
                     try
                     {
-                        hashMacAddress = null;
-
                         if (string.IsNullOrEmpty(hashMacAddress))
                         {
                             string value = NetworkInterface.GetAllNetworkInterfaces()?
@@ -385,28 +383,26 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <param name="invocationInfo">The description of how and where this command was invoked.</param>
         private static IEnumerable<BreakingChangeBaseAttribute> GetAllBreakingChangeAttributesInType(Type type, InvocationInfo invocationInfo)
         {
+            List<BreakingChangeBaseAttribute> attributeList = new List<BreakingChangeBaseAttribute>();
+
+            attributeList.AddRange(type.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
+
+            foreach (MethodInfo m in type.GetRuntimeMethods())
             {
-                List<BreakingChangeBaseAttribute> attributeList = new List<BreakingChangeBaseAttribute>();
-
-                attributeList.AddRange(type.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
-
-                foreach (MethodInfo m in type.GetRuntimeMethods())
-                {
-                    attributeList.AddRange((m.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>()));
-                }
-
-                foreach (FieldInfo f in type.GetRuntimeFields())
-                {
-                    attributeList.AddRange(f.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
-                }
-
-                foreach (PropertyInfo p in type.GetRuntimeProperties())
-                {
-                    attributeList.AddRange(p.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
-                }
-
-                return invocationInfo == null ? attributeList : attributeList.Where(e => e.IsApplicableToInvocation(invocationInfo));
+                attributeList.AddRange((m.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>()));
             }
+
+            foreach (FieldInfo f in type.GetRuntimeFields())
+            {
+                attributeList.AddRange(f.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
+            }
+
+            foreach (PropertyInfo p in type.GetRuntimeProperties())
+            {
+                attributeList.AddRange(p.GetCustomAttributes(typeof(BreakingChangeBaseAttribute), false).Cast<BreakingChangeBaseAttribute>());
+            }
+
+            return invocationInfo == null ? attributeList : attributeList.Where(e => e.IsApplicableToInvocation(invocationInfo));
         }
 
         /// <summary>
@@ -475,7 +471,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
                 exceptionTelemetry.Properties.Add("CorrelationId", ex.CorrelationId);
                 exceptionTelemetry.Properties.Add("ErrorCode", ex.ErrorCode);
-                exceptionTelemetry.Properties.Add("StatusCode", ex.StatusCode.ToString());
+                exceptionTelemetry.Properties.Add("StatusCode", ex.StatusCode.ToString(CultureInfo.InvariantCulture));
             }
             if (qosEvent.Exception is PartnerException)
             {

@@ -15,7 +15,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
         /// <summary>
         /// Gets or sets the next authenticator in the chain.
         /// </summary>
-        IAuthenticator Next { get; set; }
+        IAuthenticator NextAuthenticator { get; set; }
 
         /// <summary>
         /// Apply this authenticator to the given authentication parameters.

@@ -148,7 +148,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         IValidator<Address> validator = new AddressValidator(partner);
 
-                        if (!await validator.IsValidAsync(profile.DefaultAddress, CancellationToken))
+                        if (!await validator.IsValidAsync(profile.DefaultAddress, CancellationToken).ConfigureAwait(false))
                         {
                             throw new PSInvalidOperationException("The specified address is invalid. Please verify the address and try again.");
                         }

@@ -60,7 +60,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         GraphServiceClient client = PartnerSession.Instance.ClientFactory.CreateGraphServiceClient() as GraphServiceClient;
                         client.AuthenticationProvider = new GraphAuthenticationProvider(CustomerId);
 
-                        Graph.User user = await client.Users[UserPrincipalName].Request().GetAsync(CancellationToken).ConfigureAwait(false);
+                        User user = await client.Users[UserPrincipalName].Request().GetAsync(CancellationToken).ConfigureAwait(false);
                         userId = user.Id;
                     }
                     else
@@ -68,7 +68,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                         userId = UserId;
                     }
 
-                    await partner.Customers.ById(CustomerId).Users.ById(UserId).DeleteAsync(CancellationToken).ConfigureAwait(false);
+                    await partner.Customers.ById(CustomerId).Users.ById(userId).DeleteAsync(CancellationToken).ConfigureAwait(false);
                     WriteObject(true);
                 }
             }, true);

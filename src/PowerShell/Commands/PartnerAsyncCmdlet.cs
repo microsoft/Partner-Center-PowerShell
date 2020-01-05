@@ -91,10 +91,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             OnWriteWarning -= Cmdlet_OnWriteWarning;
             OnWriteWarning += Cmdlet_OnWriteWarning;
 
-            PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteDebugKey);
-            PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteErrorKey);
-            PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteObjectKey);
-            PartnerSession.Instance.UnregisterComponent<EventHandler<StreamEventArgs>>(WriteWarningKey);
+            PartnerSession.Instance.UnregisterComponent(WriteDebugKey);
+            PartnerSession.Instance.UnregisterComponent(WriteErrorKey);
+            PartnerSession.Instance.UnregisterComponent(WriteObjectKey);
+            PartnerSession.Instance.UnregisterComponent(WriteWarningKey);
 
             PartnerSession.Instance.RegisterComponent(WriteDebugKey, () => OnWriteDebug);
             PartnerSession.Instance.RegisterComponent(WriteErrorKey, () => OnWriteError);
@@ -118,7 +118,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 }
                 while (!Scheduler.CheckForComplete(500, CancellationToken));
 
-                OnTaskCompleted?.Invoke(this, null);
+                OnTaskCompleted?.Invoke(this, EventArgs.Empty);
 
                 if (!outputTasks.IsEmpty)
                 {

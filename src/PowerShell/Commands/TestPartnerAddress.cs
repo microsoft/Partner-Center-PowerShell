@@ -85,7 +85,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 };
 
                 IValidator<Address> validator = new AddressValidator(partner);
-                bool isValid = await validator.IsValidAsync(address);
+                bool isValid = await validator.IsValidAsync(address).ConfigureAwait(false);
 
                 WriteObject(isValid);
             }, true);
