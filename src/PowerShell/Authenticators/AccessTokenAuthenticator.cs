@@ -7,11 +7,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
     using System.Security.Claims;
     using System.Threading;
     using System.Threading.Tasks;
+    using Exceptions;
     using Extensions;
     using Identity.Client;
     using IdentityModel.JsonWebTokens;
     using Models.Authentication;
-    using PartnerCenter.Exceptions;
     using Rest;
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             if (DateTimeOffset.UtcNow > token.ValidTo)
             {
-                throw new PartnerException("The access token has expired. Generate a new one and try again.");
+                throw new PartnerPowerShellException("The access token has expired. Generate a new one and try again.", PartnerPowerShellErrorCategory.TokenExpired);
             }
 
             await Task.CompletedTask.ConfigureAwait(false);

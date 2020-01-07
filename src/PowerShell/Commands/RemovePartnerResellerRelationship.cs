@@ -7,10 +7,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Linq;
     using System.Management.Automation;
     using System.Text.RegularExpressions;
-    using Microsoft.Store.PartnerCenter.Models.Customers;
     using Models.Authentication;
     using Models.Customers;
     using PartnerCenter.Models;
+    using PartnerCenter.Models.Customers;
     using PartnerCenter.Models.Subscriptions;
     using Properties;
 

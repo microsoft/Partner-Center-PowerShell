@@ -16,11 +16,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using ApplicationInsights;
     using ApplicationInsights.DataContracts;
     using ApplicationInsights.Extensibility;
-    using Exceptions;
     using Microsoft.Identity.Client;
     using Models;
     using Models.Authentication;
     using Network;
+    using PartnerCenter.Exceptions;
     using Properties;
     using Rest;
 
