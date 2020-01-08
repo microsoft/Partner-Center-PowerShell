@@ -44,14 +44,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
 
             IAuthenticator current;
 
-
-            for (current = Authenticator; current != null && current.Next != null; current = current.Next)
+            for (current = Authenticator; current != null && current.NextAuthenticator != null; current = current.NextAuthenticator)
             {
-                ;
             }
 
-            current.Next = constructor();
-            return;
+            current.NextAuthenticator = constructor();
         }
     }
 }

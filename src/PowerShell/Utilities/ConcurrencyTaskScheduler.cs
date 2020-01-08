@@ -172,12 +172,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
                 return;
             }
 
-            if (validateConnected)
+            if (validateConnected && PartnerSession.Instance.Context == null)
             {
-                if (PartnerSession.Instance.Context == null)
-                {
-                    throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
-                }
+                throw new PSInvalidOperationException(Resources.RunConnectPartnerCenter);
             }
 
             taskId = totalTaskCount;
@@ -231,7 +228,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
 
             Interlocked.Decrement(ref activeTaskCount);
 
-            if (disposed == false)
+            if (!disposed)
             {
                 taskCounter?.Signal();
                 RunRemainingTask();

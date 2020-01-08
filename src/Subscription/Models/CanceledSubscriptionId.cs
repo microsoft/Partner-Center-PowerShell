@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
         /// <param name="value">The ID of the canceled subscription</param>
         public CanceledSubscriptionId(string value = default(string))
         {
-            Value = value;
+            SubscriptionId = value;
             CustomInit();
         }
 
@@ -43,8 +43,8 @@ namespace Microsoft.Azure.Management.Profiles.Subscription.Models
         /// <summary>
         /// Gets the ID of the canceled subscription
         /// </summary>
-        [JsonProperty(PropertyName = "value")]
-        public string Value { get; private set; }
+        [JsonProperty(PropertyName = "subscriptionId")]
+        public string SubscriptionId { get; private set; }
 
     }
 }

@@ -4,7 +4,7 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
 {
     using Extensions;
-    using Microsoft.Store.PartnerCenter.Models.Usage;
+    using PartnerCenter.Models.Usage;
 
     /// <summary>
     /// Defines the estimated monetary cost of a subscription's meter level usage in the current billing cycle.
@@ -25,7 +25,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Usage
         {
             this.CopyFrom(resource);
         }
-
 
         /// <summary>
         /// Gets or sets the Azure resource category.

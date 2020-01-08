@@ -312,7 +312,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             if (json.TryGetValue(key, out JToken val))
             {
                 json.Remove(key);
-                return val.ToObject<string>(); ;
+                return val.ToObject<string>();
             }
 
             return string.Empty;

@@ -71,7 +71,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
 
         public void RegisterComponent<T>(string componentName, Func<T> componentInitializer) where T : class
         {
-            RegisterComponent(componentName, componentInitializer, false); ;
+            RegisterComponent(componentName, componentInitializer, false);
         }
 
         public void RegisterComponent<T>(string componentName, Func<T> componentInitializer, bool overwrite) where T : class
@@ -94,7 +94,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.Authentication
             return component != null;
         }
 
-        public void UnregisterComponent<T>(string componentName) where T : class
+        public void UnregisterComponent(string componentName)
         {
             if (componentRegistry.ContainsKey(componentName))
             {

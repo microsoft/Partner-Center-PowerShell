@@ -20,7 +20,7 @@
 
 # Change Log
 
-## Upcoming Release
+## 3.0.4 January 2020
 
 * Authentication
   * Addressed an issue where NullReferenceException exception was being encountered when invoking [Connect-PartnerCenter](https://docs.microsoft.com/powershell/module/partnercenter/Connect-PartnerCenter) using a certificate

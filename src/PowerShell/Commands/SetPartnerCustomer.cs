@@ -9,9 +9,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text.RegularExpressions;
     using Models.Authentication;
     using Models.Customers;
-    using PartnerCenter.Exceptions;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Customers;
+    using PowerShell.Exceptions;
     using Properties;
     using Validations;
 
@@ -156,9 +156,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         validator = new AddressValidator(partner);
 
-                        if (!await validator.IsValidAsync(customer.BillingProfile.DefaultAddress, CancellationToken))
+                        if (!await validator.IsValidAsync(customer.BillingProfile.DefaultAddress, CancellationToken).ConfigureAwait(false))
                         {
-                            throw new PartnerException("The address for the customer is not valid.");
+                            throw new PartnerPowerShellException("The address for the customer is not valid.", PartnerPowerShellErrorCategory.Validation);
                         }
                     }
 

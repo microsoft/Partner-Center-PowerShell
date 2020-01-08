@@ -11,6 +11,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using PartnerCenter.Enumerators;
     using PartnerCenter.Models;
     using PartnerCenter.Models.Invoices;
+    using RequestContext;
 
     /// <summary>
     /// Gets a list of line items for the specified invoice from Partner Center.
@@ -78,7 +79,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 while (enumerator.HasValue)
                 {
                     items.AddRange(enumerator.Current.Items);
-                    await enumerator.NextAsync(null, CancellationToken).ConfigureAwait(false);
+                    await enumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
                 }
 
                 if (LineItemType == InvoiceLineItemType.BillingLineItems)

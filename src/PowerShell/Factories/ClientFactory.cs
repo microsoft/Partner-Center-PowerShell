@@ -13,9 +13,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
     using Extensions;
     using Graph;
     using Identity.Client;
-    using Microsoft.Store.PartnerCenter.RequestContext;
     using Models.Authentication;
     using Network;
+    using RequestContext;
     using Rest;
 
     /// <summary>
@@ -74,6 +74,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
 
             return PartnerService.Instance.CreatePartnerOperations(
                 new PowerShellCredentials(new AuthenticationToken(authResult.AccessToken, authResult.ExpiresOn)),
+                requestContext,
                 HttpClient);
         }
 
