@@ -18,7 +18,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>3.0.4</Version>
+    <Version>3.0.5</Version>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>

@@ -115,7 +115,11 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the scopes used for authentication.
         /// </summary>
-        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = AccessTokenParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = ServicePrincipalCertificateParameterSet)]
+        [Parameter(HelpMessage = "Scopes requested to access a protected API.", Mandatory = true, ParameterSetName = UserParameterSet)]
         public string[] Scopes { get; set; }
 
         /// <summary>
