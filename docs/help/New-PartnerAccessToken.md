@@ -22,9 +22,9 @@ New-PartnerAccessToken -AccessToken <String> -ApplicationId <String> [-Credentia
 
 ### RefreshToken
 ```powershell
-New-PartnerAccessToken [-ApplicationId <String>] [-Credential <PSCredential>] [-Environment <EnvironmentName>]
- [-Module <ModuleName>] -RefreshToken <String> -Scopes <String[]> [-ServicePrincipal] [-Tenant <String>]
- [<CommonParameters>]
+New-PartnerAccessToken [-ApplicationId <String>] [-CertificateThumbprint <String>] [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] [-Module <ModuleName>] -RefreshToken <String> -Scopes <String[]>
+ [-ServicePrincipal] [-Tenant <String>] [<CommonParameters>]
 ```
 
 ### ServicePrincipal
@@ -47,8 +47,8 @@ New-PartnerAccessToken -ApplicationId <String> [-Environment <EnvironmentName>] 
 
 ### ByModule
 ```powershell
-New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> -Scopes <String[]>
- [-Tenant <String>] [-UseAuthorizationCode] [<CommonParameters>]
+New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> [-Tenant <String>]
+ [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -121,6 +121,18 @@ Accept wildcard characters: False
 
 ### -CertificateThumbprint
 Certificate Hash (Thumbprint)
+
+```yaml
+Type: String
+Parameter Sets: RefreshToken
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ```yaml
 Type: String
@@ -226,7 +238,7 @@ Scopes requested to access a protected API.
 
 ```yaml
 Type: String[]
-Parameter Sets: (All)
+Parameter Sets: AccessToken, RefreshToken, ServicePrincipal, ServicePrincipalCertificate, User
 Aliases:
 
 Required: True

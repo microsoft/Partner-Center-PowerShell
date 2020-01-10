@@ -194,7 +194,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 
             if (!string.IsNullOrEmpty(PartnerSession.Instance?.Context?.Account?.Identifier))
             {
-                qosEvent.UserId = GenerateSha256HashString(PartnerSession.Instance.Context.Account.Identifier);
+                qosEvent.UserId = GenerateSha256HashString(PartnerSession.Instance.Context.Account.Identifier)?.Replace("-", string.Empty)?.ToLowerInvariant();
             }
 
             if (MyInvocation != null && MyInvocation.BoundParameters != null && MyInvocation.BoundParameters.Keys != null)
@@ -270,7 +270,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             LogQosEvent();
             base.StopProcessing();
         }
-
 
         /// <summary>
         /// Terminate the command and report an error.
