@@ -28,8 +28,9 @@ Connect-PartnerCenter -AccessToken <String> [-Environment <EnvironmentName>] [-T
 
 ### RefreshToken
 ```powershell
-Connect-PartnerCenter -ApplicationId <String> [-Credential <PSCredential>] [-Environment <EnvironmentName>]
- -RefreshToken <String> [-Tenant <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Connect-PartnerCenter -ApplicationId <String> [-CertificateThumbprint <String>] [-Credential <PSCredential>]
+ [-Environment <EnvironmentName>] -RefreshToken <String> [-Tenant <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### ServicePrincipalCertificate
@@ -120,6 +121,18 @@ Accept wildcard characters: False
 
 ### -CertificateThumbprint
 Certificate Hash (Thumbprint)
+
+```yaml
+Type: String
+Parameter Sets: RefreshToken
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ```yaml
 Type: String
