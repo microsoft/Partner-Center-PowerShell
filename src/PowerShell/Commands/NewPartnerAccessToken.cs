@@ -10,6 +10,8 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text;
     using Extensions;
     using Identity.Client;
+    using Microsoft.Azure.Management.Billing;
+    using Microsoft.Graph;
     using Models.Authentication;
     using Newtonsoft.Json.Linq;
     using Utilities;
@@ -188,6 +190,19 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     applicationId = PowerShellModule.KnownModules[Module].ApplicationId;
 
                     Scopes = PowerShellModule.KnownModules[Module].Scopes.ToArray();
+                }
+                else if (ParameterSetName.Equals(RefreshTokenParameterSet, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (Credential != null)
+                    {
+                        account.ObjectId = Credential.UserName;
+                        account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
+                        applicationId = Credential.UserName;                   
+                    }
+                    else
+                    {
+                        applicationId = ApplicationId;
+                    }
                 }
                 else if (ParameterSetName.Equals(ServicePrincipalCertificateParameterSet, StringComparison.InvariantCultureIgnoreCase))
                 {
