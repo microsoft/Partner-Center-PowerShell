@@ -46,6 +46,9 @@ steps:
     custom: msbuild
     arguments: 'build.proj /t:Build /p:Configuration=$(buildConfiguration)'
 
+- task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0 
+  displayName: 'Component Detection'
+
 - pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
   displayName: 'Install platyPS'
 
