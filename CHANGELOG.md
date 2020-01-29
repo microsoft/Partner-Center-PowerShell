@@ -20,14 +20,17 @@
 
 # Change Log
 
-## 3.0.5 - January 2020
+## 3.0.6 - January 2020
 
-* Authentication
-  * Addressed issue [#254](https://github.com/microsoft/Partner-Center-PowerShell/issues/254) with the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) where the Scope parameter was incorrectly being required
 * Agreements
   * Addressed issue [#262](https://github.com/microsoft/Partner-Center-PowerShell/issues/262) that was preventing [Get-PartnerAgreementDocument](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAgreementDocument) from being invoked when the `Language` parameter was specified
 * Qualifications
   * Addressed issue [#258](https://github.com/microsoft/Partner-Center-PowerShell/issues/258) with the [Set-PartnerCustomerQualification](https://docs.microsoft.com/powershell/module/partnercenter/Set-PartnerCustomerQualification) command that was preventing API exception information from being parsed as excepted
+
+## 3.0.5 - January 2020
+
+* Authentication
+  * Addressed issue [#254](https://github.com/microsoft/Partner-Center-PowerShell/issues/254) with the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) where the Scope parameter was incorrectly being required
 
 ## 3.0.4 - January 2020
 

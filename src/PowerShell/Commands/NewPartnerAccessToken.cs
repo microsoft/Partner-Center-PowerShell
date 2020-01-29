@@ -10,8 +10,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Text;
     using Extensions;
     using Identity.Client;
-    using Microsoft.Azure.Management.Billing;
-    using Microsoft.Graph;
     using Models.Authentication;
     using Newtonsoft.Json.Linq;
     using Utilities;
@@ -110,6 +108,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// <summary>
         /// Gets or sets the refresh token to use during authentication.
         /// </summary>
+        [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = false, ParameterSetName = ByModuleParameterSet)]
         [Parameter(HelpMessage = "The refresh token to use during authentication.", Mandatory = true, ParameterSetName = RefreshTokenParameterSet)]
         [ValidateNotNullOrEmpty]
         public string RefreshToken { get; set; }
@@ -197,7 +196,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     {
                         account.ObjectId = Credential.UserName;
                         account.SetProperty(PartnerAccountPropertyType.ServicePrincipalSecret, Credential.Password.ConvertToString());
-                        applicationId = Credential.UserName;                   
+                        applicationId = Credential.UserName;
                     }
                     else
                     {

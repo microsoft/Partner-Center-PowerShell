@@ -47,8 +47,8 @@ New-PartnerAccessToken -ApplicationId <String> [-Environment <EnvironmentName>] 
 
 ### ByModule
 ```powershell
-New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> [-Tenant <String>]
- [-UseAuthorizationCode] [<CommonParameters>]
+New-PartnerAccessToken [-Environment <EnvironmentName>] -Module <ModuleName> [-RefreshToken <String>]
+ [-Tenant <String>] [-UseAuthorizationCode] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -227,6 +227,18 @@ Parameter Sets: RefreshToken
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ByModule
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
