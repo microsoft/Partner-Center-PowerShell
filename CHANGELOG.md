@@ -22,6 +22,8 @@
 
 ## 3.0.6 - January 2020
 
+* Authentication 
+  * Addressed issue [#268](https://github.com/microsoft/Partner-Center-PowerShell/issues/268) that was impacting the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command when trying to get an access token for Exchange Online with a refresh token
 * Agreements
   * Addressed issue [#262](https://github.com/microsoft/Partner-Center-PowerShell/issues/262) that was preventing [Get-PartnerAgreementDocument](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAgreementDocument) from being invoked when the `Language` parameter was specified
 * Qualifications
