@@ -20,6 +20,11 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Devices
+  * Addressed issue [#271](https://github.com/microsoft/Partner-Center-PowerShell/issues/271) that was preventing the `Policies` property from being poplulated
+
 ## 3.0.6 - January 2020
 
 * Authentication 

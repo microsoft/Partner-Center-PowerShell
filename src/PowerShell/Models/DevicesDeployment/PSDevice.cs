@@ -18,6 +18,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// </summary>
         public PSDevice()
         {
+            Policies = new List<KeyValuePair<PolicyCategory, string>>();
         }
 
         /// <summary>
@@ -26,6 +27,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// <param name="item">The base item for this instance.</param>
         public PSDevice(Device item)
         {
+            Policies = new List<KeyValuePair<PolicyCategory, string>>();
             this.CopyFrom(item, CloneAdditionalOperations);
         }
 
@@ -57,7 +59,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// <summary>
         /// Gets or sets the policies assigned. 
         /// </summary>
-        public List<KeyValuePair<PolicyCategory, string>> Policies { get; set; }
+        public List<KeyValuePair<PolicyCategory, string>> Policies { get; private set; }
 
         /// <summary>
         /// Gets or sets the product key.
@@ -78,6 +80,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// Additional operations to be performed when cloning an instance of <see cref="Device"/> to an instance of <see cref="PSDevice" />. 
         /// </summary>
         /// <param name="device">The device being cloned.</param>
-        private void CloneAdditionalOperations(Device device) => DeviceId = device.Id;
+        private void CloneAdditionalOperations(Device device)
+        {
+            DeviceId = device.Id;
+
+            foreach (KeyValuePair<PolicyCategory, string> item in device.Policies)
+            {
+                Policies.Add(new KeyValuePair<PolicyCategory, string>(item.Key, item.Value));
+            }
+        }
     }
 }
