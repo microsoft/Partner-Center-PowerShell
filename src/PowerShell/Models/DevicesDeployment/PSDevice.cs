@@ -18,7 +18,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// </summary>
         public PSDevice()
         {
-            Policies = new List<KeyValuePair<PolicyCategory, string>>();
         }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         /// <param name="item">The base item for this instance.</param>
         public PSDevice(Device item)
         {
-            Policies = new List<KeyValuePair<PolicyCategory, string>>();
             this.CopyFrom(item, CloneAdditionalOperations);
         }
 
@@ -84,9 +82,14 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Models.DevicesDeployment
         {
             DeviceId = device.Id;
 
-            foreach (KeyValuePair<PolicyCategory, string> item in device.Policies)
+            if (device.Policies != null)
             {
-                Policies.Add(new KeyValuePair<PolicyCategory, string>(item.Key, item.Value));
+                Policies = new List<KeyValuePair<PolicyCategory, string>>();
+
+                foreach (KeyValuePair<PolicyCategory, string> item in device.Policies)
+                {
+                    Policies.Add(new KeyValuePair<PolicyCategory, string>(item.Key, item.Value));
+                }
             }
         }
     }
