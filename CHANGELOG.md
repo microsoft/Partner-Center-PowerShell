@@ -20,7 +20,7 @@
 
 # Change Log
 
-## Upcoming Release
+## 3.0.7 - February 2020
 
 * Devices
   * Addressed issue [#271](https://github.com/microsoft/Partner-Center-PowerShell/issues/271) that was preventing the `Policies` property from being poplulated
