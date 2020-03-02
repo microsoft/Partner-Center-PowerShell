@@ -282,7 +282,7 @@
                 <PropertyName>DevicesCount</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
-                <PropertyName>DevicesCount</PropertyName>
+                <PropertyName>CreationDate</PropertyName>
               </TableColumnItem>
             </TableColumnItems>
           </TableRowEntry>
