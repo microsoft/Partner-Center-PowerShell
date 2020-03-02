@@ -5,6 +5,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using Identity.Client;
     using Identity.Client.Extensions.Msal;
@@ -154,7 +155,7 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Utilities
                 attribute1: new KeyValuePair<string, string>("MsalClientID", "Microsoft.Developer.IdentityService"),
                 attribute2: new KeyValuePair<string, string>("MsalClientVersion", "1.0.0.0"));
 
-            return new MsalCacheStorage(builder.Build());
+            return MsalCacheStorage.Create(builder.Build(), new TraceSource("Partner Center PowerShell"));
         }
     }
 }
