@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Microsoft.Azure.Management.Subscription</AssemblyName>
+    <AssemblyName>Microsoft.Store.PartnerCenter.Azure.Subscription</AssemblyName>
     <RootNamespace>Microsoft.Azure.Management.Subscription</RootNamespace>
   </PropertyGroup>
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>Microsoft.Azure.Management.Billing</AssemblyName>
+    <AssemblyName>Microsoft.Store.PartnerCenter.Azure.Billing</AssemblyName>
     <RootNamespace>Microsoft.Azure.Management.Billing</RootNamespace>
   </PropertyGroup>
 
