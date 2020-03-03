@@ -55,8 +55,8 @@
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = '.\Microsoft.Store.PartnerCenter.PowerShell.dll',
                          '.\Microsoft.ApplicationInsights.dll',
-                         '.\Microsoft.Azure.Management.Billing.dll',
-                         '.\Microsoft.Azure.Management.Subscription.dll',
+                         '.\Microsoft.Store.PartnerCenter.Azure.Billing.dll',
+                         '.\Microsoft.Store.PartnerCenter.Azure.Subscription.dll',
                          '.\Microsoft.Graph.Beta.dll',
                          '.\Microsoft.Graph.Core.dll',
                          '.\Microsoft.Extensions.Caching.Abstractions.dll',
