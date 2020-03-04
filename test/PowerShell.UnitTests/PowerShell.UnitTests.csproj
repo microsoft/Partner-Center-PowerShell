@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\repo.props" />
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <AssemblyName>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.Store.PartnerCenter.PowerShell.UnitTests</RootNamespace>
@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
-    <PackageReference Include="Microsoft.PowerShell.SDK" Version="6.2.4" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.0.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
   </ItemGroup>
