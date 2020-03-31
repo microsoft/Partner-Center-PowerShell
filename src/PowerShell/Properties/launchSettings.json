@@ -7,7 +7,7 @@
     },
     "PowerShell Core": {
       "commandName": "Executable",
-      "executablePath": "C:\\Program Files\\PowerShell\\6\\pwsh.exe",
+      "executablePath": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
       "commandLineArgs": "-NoProfile -NoExit -Command \"Import-Module .\\PartnerCenter.psd1\""
     }
   }

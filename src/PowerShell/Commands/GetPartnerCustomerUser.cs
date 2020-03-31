@@ -65,31 +65,12 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 IPartner partner = await PartnerSession.Instance.ClientFactory.CreatePartnerOperationsAsync(CorrelationId, CancellationToken).ConfigureAwait(false);
 
-                if (ParameterSetName.Equals("ByCustomerId", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
-                    List<CustomerUser> users;
-                    SeekBasedResourceCollection<CustomerUser> seekUsers;
-
-                    users = new List<CustomerUser>();
-
-                    seekUsers = await partner.Customers[CustomerId].Users.GetAsync(CancellationToken).ConfigureAwait(false);
-                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
-
-                    while (usersEnumerator.HasValue)
-                    {
-                        users.AddRange(usersEnumerator.Current.Items);
-                        await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
-                    }
-
-                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
-                }
-                else if (ParameterSetName.Equals("ByUserId", StringComparison.InvariantCultureIgnoreCase))
+                if (ParameterSetName.Equals("ByUserId", StringComparison.InvariantCultureIgnoreCase))
                 {
                     CustomerUser customerUser = await partner.Customers[CustomerId].Users[UserId].GetAsync(CancellationToken).ConfigureAwait(false);
                     WriteObject(new PSCustomerUser(customerUser));
                 }
-                else if (ParameterSetName.Equals("ByUserState", StringComparison.InvariantCultureIgnoreCase))
+                else if (ParameterSetName.Equals("ByUserState", StringComparison.InvariantCultureIgnoreCase) && ReturnDeletedUsers.ToBool())
                 {
                     SimpleFieldFilter filter = new SimpleFieldFilter("UserState", FieldFilterOperation.Equals, "Inactive");
                     IQuery simpleQueryWithFilter = QueryFactory.BuildSimpleQuery(filter);
@@ -119,6 +100,25 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                     CustomerUser customerUser = await partner.Customers[CustomerId].Users[user.Id].GetAsync(CancellationToken).ConfigureAwait(false);
 
                     WriteObject(customerUser);
+                }
+                else
+                {
+                    IResourceCollectionEnumerator<SeekBasedResourceCollection<CustomerUser>> usersEnumerator;
+                    List<CustomerUser> users;
+                    SeekBasedResourceCollection<CustomerUser> seekUsers;
+
+                    users = new List<CustomerUser>();
+
+                    seekUsers = await partner.Customers[CustomerId].Users.GetAsync(CancellationToken).ConfigureAwait(false);
+                    usersEnumerator = partner.Enumerators.CustomerUsers.Create(seekUsers);
+
+                    while (usersEnumerator.HasValue)
+                    {
+                        users.AddRange(usersEnumerator.Current.Items);
+                        await usersEnumerator.NextAsync(RequestContextFactory.Create(CorrelationId), CancellationToken).ConfigureAwait(false);
+                    }
+
+                    WriteObject(users.Select(u => new PSCustomerUser(u)), true);
                 }
             }, true);
         }
