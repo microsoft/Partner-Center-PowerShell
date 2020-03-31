@@ -8,19 +8,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     using System.Globalization;
     using System.Linq;
     using System.Management.Automation;
-    using System.Net.NetworkInformation;
     using System.Reflection;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading;
-    using ApplicationInsights;
-    using ApplicationInsights.DataContracts;
-    using ApplicationInsights.Extensibility;
-    using Microsoft.Identity.Client;
-    using Models;
     using Models.Authentication;
     using Network;
-    using PartnerCenter.Exceptions;
     using Properties;
     using Rest;
 
@@ -30,32 +21,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
     public abstract class PartnerPSCmdlet : PSCmdlet, IDisposable
     {
         /// <summary>
-        /// Name of the telemetry event.
-        /// </summary>
-        private const string EventName = "cmdletInvocation";
-
-        /// <summary>
         /// The link that provide addtional information regarding the breaking change.
         /// </summary>
         private const string BREAKING_CHANGE_ATTRIBUTE_INFORMATION_LINK = "https://aka.ms/partnercenterps-changewarnings";
-
-        /// <summary>
-        /// The identifier for the session.
-        /// </summary>
-        private static readonly Guid sessionId = Guid.NewGuid();
-
-        /// <summary>
-        /// Client that provides the ability to interact with the Application Insights service.
-        /// </summary>
-        private static readonly TelemetryClient telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault())
-        {
-            InstrumentationKey = "786d393c-be8e-46a8-b2b2-a3b6d5b417fc"
-        };
-
-        /// <summary>
-        /// Lock used to synchronize mutation of the tracing interceptors.
-        /// </summary>
-        private readonly object resourceLock = new object();
 
         /// <summary>
         /// Provides a signal to <see cref="System.Threading.CancellationToken" /> that it should be canceled.
@@ -73,19 +41,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private bool disposed = false;
 
         /// <summary>
-        /// A SHA 256 hash of the MAC address.
-        /// </summary>
-        private string hashMacAddress;
-
-        /// <summary>
         /// Provides the ability to log HTTP operations when the debug parameter is present.
         /// </summary>
         private RecordingTracingInterceptor httpTracingInterceptor;
-
-        /// <summary>
-        /// The quality of service event that will be captured by telemetry if enabled.
-        /// </summary>
-        private PartnerQosEvent qosEvent;
 
         /// <summary>
         /// Gets the cancellation token used to propagate a notification that operations should be canceled.
@@ -126,43 +84,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         }
 
         /// <summary>
-        /// Gets the SHA 256 has the MAC address.
-        /// </summary>
-        private string HashMacAddress
-        {
-            get
-            {
-                lock (resourceLock)
-                {
-                    try
-                    {
-                        if (string.IsNullOrEmpty(hashMacAddress))
-                        {
-                            string value = NetworkInterface.GetAllNetworkInterfaces()?
-                                 .FirstOrDefault(nic => nic != null &&
-                                     nic.OperationalStatus == OperationalStatus.Up &&
-                                     !string.IsNullOrWhiteSpace(nic.GetPhysicalAddress()?.ToString()))?.GetPhysicalAddress()?.ToString();
-
-                            hashMacAddress = string.IsNullOrWhiteSpace(value) ? null : GenerateSha256HashString(value)?.Replace("-", string.Empty)?.ToLowerInvariant();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Ignore errors with obtaining the MAC address
-                    }
-                }
-
-                return hashMacAddress;
-            }
-        }
-
-        /// <summary>
         /// Operations that happen before the cmdlet is invoked.
         /// </summary>
         protected override void BeginProcessing()
         {
-            string commandAlias = GetType().Name;
-
             if (cancellationSource == null)
             {
                 cancellationSource = new CancellationTokenSource();
@@ -178,31 +103,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             ServiceClientTracing.IsEnabled = true;
             ServiceClientTracing.AddTracingInterceptor(httpTracingInterceptor);
 
-            if (MyInvocation != null && MyInvocation.MyCommand != null)
-            {
-                commandAlias = MyInvocation.MyCommand.Name;
-            }
-
-            qosEvent = new PartnerQosEvent
-            {
-                CommandName = commandAlias,
-                IsSuccess = true,
-                ModuleVersion = GetType().Assembly.GetName().Version.ToString(),
-                ParameterSetName = ParameterSetName,
-                SessionId = sessionId.ToString(),
-            };
-
-            if (!string.IsNullOrEmpty(PartnerSession.Instance?.Context?.Account?.Identifier))
-            {
-                qosEvent.UserId = GenerateSha256HashString(PartnerSession.Instance.Context.Account.Identifier)?.Replace("-", string.Empty)?.ToLowerInvariant();
-            }
-
-            if (MyInvocation != null && MyInvocation.BoundParameters != null && MyInvocation.BoundParameters.Keys != null)
-            {
-                qosEvent.Parameters = string.Join(" ", MyInvocation.BoundParameters.Keys.Select(
-                    s => string.Format(CultureInfo.InvariantCulture, "-{0} ***", s)));
-            }
-
             ProcessBreakingChangeAttributesAtRuntime(GetType(), MyInvocation, WriteWarning);
         }
 
@@ -211,8 +111,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         protected override void EndProcessing()
         {
-            LogQosEvent();
-
             if (cancellationSource != null)
             {
                 if (!cancellationSource.IsCancellationRequested)
@@ -267,7 +165,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
                 cancellationSource = null;
             }
 
-            LogQosEvent();
             base.StopProcessing();
         }
 
@@ -278,13 +175,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         protected new void ThrowTerminatingError(ErrorRecord errorRecord)
         {
             FlushDebugMessages();
-
-            if (qosEvent != null && errorRecord != null)
-            {
-                qosEvent.Exception = errorRecord.Exception;
-                qosEvent.IsSuccess = false;
-            }
-
             base.ThrowTerminatingError(errorRecord);
         }
 
@@ -295,13 +185,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         protected new void WriteError(ErrorRecord errorRecord)
         {
             FlushDebugMessages();
-
-            if (qosEvent != null && errorRecord != null)
-            {
-                qosEvent.Exception = errorRecord.Exception;
-                qosEvent.IsSuccess = false;
-            }
-
             base.WriteError(errorRecord);
         }
 
@@ -343,36 +226,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         {
             FlushDebugMessages();
             base.WriteWarning(text);
-        }
-
-        /// <summary>
-        /// Generate a SHA 256 hash string from the input.
-        /// </summary>
-        /// <param name="input">The input value to be hashed.</param>
-        /// <returns>The SHA 256 hash, or empty if the input is only whtespace.</returns>
-        private static string GenerateSha256HashString(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return string.Empty;
-            }
-
-            string result = null;
-
-            try
-            {
-                using (SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider())
-                {
-                    byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
-                    result = BitConverter.ToString(bytes);
-                }
-            }
-            catch
-            {
-                // do not throw if CryptoProvider is not provided
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -446,149 +299,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Logs the execption event.
-        /// </summary>
-        private void LogExceptionEvent()
-        {
-            if (qosEvent == null)
-            {
-                return;
-            }
-
-            ExceptionTelemetry exceptionTelemetry = new ExceptionTelemetry(qosEvent.Exception)
-            {
-                Message = "The message has been removed due to PII"
-            };
-
-
-            if (qosEvent.Exception is MsalServiceException)
-            {
-                MsalServiceException ex = qosEvent.Exception as MsalServiceException;
-
-                exceptionTelemetry.Properties.Add("CorrelationId", ex.CorrelationId);
-                exceptionTelemetry.Properties.Add("ErrorCode", ex.ErrorCode);
-                exceptionTelemetry.Properties.Add("StatusCode", ex.StatusCode.ToString(CultureInfo.InvariantCulture));
-            }
-            if (qosEvent.Exception is PartnerException)
-            {
-                PartnerException ex = qosEvent.Exception as PartnerException;
-
-                exceptionTelemetry.Properties.Add("ErrorCategory", ex.ErrorCategory.ToString());
-
-                PopulatePropertiesFromResponse(exceptionTelemetry.Properties, ex.Response);
-
-                if (ex.ServiceErrorPayload != null)
-                {
-                    exceptionTelemetry.Properties.Add("ErrorCode", ex.ServiceErrorPayload.ErrorCode);
-                }
-            }
-            else if (qosEvent.Exception is RestException)
-            {
-                object ex = qosEvent.Exception as object;
-                HttpResponseMessageWrapper response = ex.GetType().GetProperty("Response").GetValue(ex, null) as HttpResponseMessageWrapper;
-
-                PopulatePropertiesFromResponse(exceptionTelemetry.Properties, response);
-            }
-
-            exceptionTelemetry.Metrics.Add("Duration", qosEvent.Duration.TotalMilliseconds);
-            PopulatePropertiesFromQos(exceptionTelemetry.Properties);
-
-            try
-            {
-                telemetryClient.TrackException(exceptionTelemetry);
-            }
-            catch
-            {
-                // Ignore any error with capturing the telemetry
-            }
-        }
-
-        /// <summary>
-        /// Logs the quality of srevice event.
-        /// </summary>
-        private void LogQosEvent()
-        {
-            if (qosEvent == null || PartnerSession.Instance.Context == null)
-            {
-                return;
-            }
-
-            qosEvent.FinishQosEvent();
-
-            PageViewTelemetry pageViewTelemetry = new PageViewTelemetry
-            {
-                Duration = qosEvent.Duration,
-                Name = EventName,
-                Timestamp = qosEvent.StartTime
-            };
-
-            pageViewTelemetry.Context.Device.OperatingSystem = Environment.OSVersion.ToString();
-            pageViewTelemetry.Context.Session.Id = qosEvent.SessionId;
-            pageViewTelemetry.Context.User.Id = qosEvent.UserId;
-
-            PopulatePropertiesFromQos(pageViewTelemetry.Properties);
-
-#if !DEBUG
-            try
-            {
-                telemetryClient.TrackPageView(pageViewTelemetry);
-            }
-            catch
-            {
-                // Ignore any error with capturing the telemetry
-            }
-
-            if (qosEvent.Exception != null)
-            {
-                LogExceptionEvent();
-            }
-#endif
-        }
-
-        /// <summary>
-        /// Populates the telemetry event properties based on the quality of service event.
-        /// </summary>
-        /// <param name="eventProperties">The telemetry event properties to be populated.</param>
-        private void PopulatePropertiesFromQos(IDictionary<string, string> eventProperties)
-        {
-            if (qosEvent == null)
-            {
-                return;
-            }
-
-            eventProperties.Add("Command", qosEvent.CommandName);
-            eventProperties.Add("CommandParameterSetName", qosEvent.ParameterSetName);
-            eventProperties.Add("CommandParameters", qosEvent.Parameters);
-            eventProperties.Add("HashMacAddress", HashMacAddress);
-            eventProperties.Add("HostVersion", qosEvent.HostVersion);
-            eventProperties.Add("IsSuccess", qosEvent.IsSuccess.ToString(CultureInfo.InvariantCulture));
-            eventProperties.Add("ModuleVersion", qosEvent.ModuleVersion);
-            eventProperties.Add("PowerShellVersion", Host.Version.ToString());
-            eventProperties.Add("SessionId", qosEvent.SessionId);
-
-            if (!string.IsNullOrEmpty(PartnerSession.Instance.Context?.Account?.Tenant))
-            {
-                eventProperties.Add("TenantId", PartnerSession.Instance.Context.Account.Tenant);
-            }
-        }
-
-        /// <summary>
-        /// Populates the telemetry event properties based on the HTTP response message.
-        /// </summary>
-        /// <param name="eventProperties">The telemetry event properties to be populated.</param>
-        /// <param name="response">The HTTP response used to populate the event properties.</param>
-        private static void PopulatePropertiesFromResponse(IDictionary<string, string> eventProperties, HttpResponseMessageWrapper response)
-        {
-            if (response == null)
-            {
-                return;
-            }
-
-            eventProperties.Add("ReasonPhrase", response.ReasonPhrase);
-            eventProperties.Add("StatusCode", response.StatusCode.ToString());
         }
 
         /// <summary>

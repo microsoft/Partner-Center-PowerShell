@@ -28,6 +28,8 @@
   * Addressed issue [#281](https://github.com/microsoft/Partner-Center-PowerShell/issues/281) that was causing the incorrect output for the creation date of a device batch
 * Module
   * Addressed issue [#261](https://github.com/microsoft/Partner-Center-PowerShell/issues/261) that was preventing the module from being loaded if the Az module was load first
+* Users
+  * Addressed issue [#290](https://github.com/microsoft/Partner-Center-PowerShell/issues/290) that was causing unexpected behavior when using `ReturnDeletedUsers:$false`
 
 ## 3.0.7 - February 2020
 
