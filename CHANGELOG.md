@@ -20,10 +20,10 @@
 
 # Change Log
 
-## 3.0.8 - March 2019
+## 3.0.8 - April 2020
 
 * Authentication
-  * Addressed issue [#266](https://github.com/microsoft/Partner-Center-PowerShell/issues/266) that was impacting the presistent token cache on Linux when libsecret was not installed
+  * Addressed issue [#266](https://github.com/microsoft/Partner-Center-PowerShell/issues/266) that was impacting the persistent token cache on Linux when libsecret was not installed
 * Devices
   * Addressed issue [#281](https://github.com/microsoft/Partner-Center-PowerShell/issues/281) that was causing the incorrect output for the creation date of a device batch
 * Module
@@ -38,7 +38,7 @@
 
 ## 3.0.6 - January 2020
 
-* Authentication 
+* Authentication
   * Addressed issue [#268](https://github.com/microsoft/Partner-Center-PowerShell/issues/268) that was impacting the [New-PartnerAccessToken](https://docs.microsoft.com/powershell/module/partnercenter/New-PartnerAccessToken) command when trying to get an access token for Exchange Online with a refresh token
 * Agreements
   * Addressed issue [#262](https://github.com/microsoft/Partner-Center-PowerShell/issues/262) that was preventing [Get-PartnerAgreementDocument](https://docs.microsoft.com/powershell/module/partnercenter/Get-PartnerAgreementDocument) from being invoked when the `Language` parameter was specified
