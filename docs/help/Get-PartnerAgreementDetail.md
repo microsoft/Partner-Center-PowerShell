@@ -10,7 +10,7 @@ schema: 2.0.0
 # Get-PartnerAgreementDetail
 
 ## SYNOPSIS
-Gets the agreement metadata for the Microsoft Cloud Agreement.
+Gets the agreement metadata for the Microsoft Customer Agreement.
 
 ## SYNTAX
 
@@ -19,16 +19,16 @@ Get-PartnerAgreementDetail [-AgreementType <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets the agreement metadata for the  Microsoft Cloud Agreement. This operation is currently supported by Partner Center in the Microsoft public cloud only.
+Gets the agreement metadata for the Microsoft Customer Agreement. This operation is currently supported by Partner Center in the Microsoft public cloud only.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-PartnerAgreementDetail
+PS C:\> Get-PartnerAgreementDetail -AgreementType MicrosoftCustomerAgreement
 ```
 
-Gets the agreement metadata for the Microsoft Cloud Agreement.
+Gets the agreement metadata for the Microsoft Customer Agreement.
 
 ## PARAMETERS
 
