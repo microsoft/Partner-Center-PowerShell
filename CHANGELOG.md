@@ -20,6 +20,11 @@
 
 # Change Log
 
+## 3.0.9 - May 2020
+
+* Module
+  * Addressed issue [#295](https://github.com/microsoft/Partner-Center-PowerShell/issues/295) and [#300](https://github.com/microsoft/Partner-Center-PowerShell/issues/300) where the module was digitally signed
+
 ## 3.0.8 - April 2020
 
 * Authentication
