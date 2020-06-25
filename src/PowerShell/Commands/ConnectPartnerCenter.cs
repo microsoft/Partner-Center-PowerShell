@@ -4,23 +4,19 @@
 namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
 {
     using System;
-    using System.IO;
     using System.Management.Automation;
-    using System.Reflection;
     using System.Text.RegularExpressions;
     using Extensions;
-    using Factories;
     using Models.Authentication;
     using PartnerCenter.Exceptions;
     using PartnerCenter.Models.Partners;
-    using Utilities;
 
     /// <summary>
     /// Cmdlet to login to a Partner Center environment.
     /// </summary>
     [Cmdlet(VerbsCommunications.Connect, "PartnerCenter", DefaultParameterSetName = UserParameterSet, SupportsShouldProcess = true)]
     [OutputType(typeof(PartnerContext))]
-    public class ConnectPartnerCenter : PartnerAsyncCmdlet, IModuleAssemblyInitializer
+    public class ConnectPartnerCenter : PartnerAsyncCmdlet
     {
         /// <summary>
         /// The name of the access token parameter set.
@@ -28,19 +24,9 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         private const string AccessTokenParameterSet = "AccessToken";
 
         /// <summary>
-        /// The name of the configuration property.
-        /// </summary>
-        private const string ConfigurationProperty = "Configuration";
-
-        /// <summary>
         /// The message written to the console.
         /// </summary>
         private const string Message = "We have launched a browser for you to login. For the old experience with device code flow, please run 'Connect-PartnerCenter -UseDeviceAuthentication'.";
-
-        /// <summary>
-        /// The value used to identify the client connect to the partner service.
-        /// </summary>
-        private const string PartnerCenterClient = "Partner Center PowerShell";
 
         /// <summary>
         /// The default application identifier value used when generating an access tokne.
@@ -136,39 +122,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         [Alias("Device", "DeviceAuth", "DeviceCode")]
         [Parameter(HelpMessage = "Use device code authentication instead of a browser control.", Mandatory = false, ParameterSetName = UserParameterSet)]
         public SwitchParameter UseDeviceAuthentication { get; set; }
-
-        /// <summary>
-        /// Performs the required operations when the module is imported.
-        /// </summary>
-        public void OnImport()
-        {
-            PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
-                ConfigurationProperty,
-                BindingFlags.Instance | BindingFlags.NonPublic);
-
-            dynamic configuration = prop.GetValue(PartnerService.Instance);
-
-            configuration.PartnerCenterClient = PartnerCenterClient;
-
-            if (PartnerSession.Instance.AuthenticationFactory == null)
-            {
-                PartnerSession.Instance.AuthenticationFactory = new AuthenticationFactory();
-            }
-
-            if (PartnerSession.Instance.ClientFactory == null)
-            {
-                PartnerSession.Instance.ClientFactory = new ClientFactory();
-            }
-
-            if (File.Exists(Path.Combine(SharedUtilities.GetUserRootDirectory(), ".PartnerCenter", "InMemoryTokenCache")))
-            {
-                PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new InMemoryTokenCache());
-            }
-            else
-            {
-                PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new PersistentTokenCache());
-            }
-        }
 
         /// <summary>
         /// Executes the operations associated with the cmdlet.
