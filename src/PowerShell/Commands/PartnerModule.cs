@@ -42,6 +42,15 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
         /// </summary>
         public void OnImport()
         {
+            PreloadAssemblyFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "PreloadAssemblies");
+
+            foreach (string file in Directory.GetFiles(PreloadAssemblyFolder, "*.dll"))
+            {
+                PreloadAssemblies.Add(Path.GetFileNameWithoutExtension(file));
+            }
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
             PropertyInfo prop = PartnerService.Instance.GetType().GetProperty(
                 ConfigurationProperty,
                 BindingFlags.Instance | BindingFlags.NonPublic);
@@ -68,15 +77,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Commands
             {
                 PartnerSession.Instance.RegisterComponent(ComponentKey.TokenCache, () => new PersistentTokenCache());
             }
-
-            PreloadAssemblyFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "PreloadAssemblies");
-
-            foreach (string file in Directory.GetFiles(PreloadAssemblyFolder, "*.dll"))
-            {
-                PreloadAssemblies.Add(Path.GetFileNameWithoutExtension(file));
-            }
-
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
         /// <summary>
