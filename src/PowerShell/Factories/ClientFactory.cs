@@ -39,10 +39,10 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
-        private static readonly HttpClient HttpClient = new HttpClient(new RetryDelegatingHandler
+        private static readonly HttpClient HttpClient = new HttpClient(new RetryDelegatingHandler { InnerHandler = new HttpClientHandler() })
         {
-            InnerHandler = new HttpClientHandler()
-        });
+            Timeout = TimeSpan.FromMinutes(3)
+        };
 
         /// <summary>
         /// Creates a new instance of the Microsoft Graph service client.
