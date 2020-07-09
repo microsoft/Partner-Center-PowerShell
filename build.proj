@@ -29,10 +29,6 @@
   <Target Name="Build">
 
     <!-- Build the project -->
-    <PropertyGroup>
-      <TestOutputDirectory>$(RepoArtifacts)/TestResults</TestOutputDirectory>
-    </PropertyGroup>
-
     <Exec Command="dotnet build Partner-Center-PowerShell.sln -c $(Configuration)" />
 
     <!-- Delete PowerShell runtime files -->
@@ -68,7 +64,7 @@
   <Target Name="Test">
     <Message Importance="high" Text="Running unit tests..." />
     <MakeDir Directories="$(TestOutputDirectory)" ContinueOnError="false" />
-    <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --framework netcoreapp3.0 --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
+    <Exec Command="dotnet test Partner-Center-PowerShell.sln --configuration $(Configuration) --logger trx --results-directory &quot;$(TestOutputDirectory)&quot;" />
   </Target>
 
   <Target Name="ValidateModule">
