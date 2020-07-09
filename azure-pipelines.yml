@@ -32,12 +32,6 @@ steps:
     result: 'PoliCheck.xml'
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
-- pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
-  displayName: 'Install platyPS'
-
-- pwsh: 'Set-ExecutionPolicy Unrestricted -Confirm:$false'
-  displayName: 'Setting the PowerShell execution policy'
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -45,15 +39,11 @@ steps:
     custom: msbuild
     arguments: 'build.proj /t:Build /p:Configuration=$(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: custom
-    custom: msbuild
-    arguments: 'build.proj /t:Test /p:Configuration=$(buildConfiguration)'
-
 - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0 
   displayName: 'Component Detection'
+
+- pwsh: 'Install-Module platyPS -Force -Confirm:$false -Scope CurrentUser'
+  displayName: 'Install platyPS'
 
 - task: DotNetCoreCLI@2
   displayName: 'Generate Help'

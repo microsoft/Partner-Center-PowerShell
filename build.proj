@@ -29,10 +29,6 @@
   <Target Name="Build">
 
     <!-- Build the project -->
-    <PropertyGroup>
-      <TestOutputDirectory>$(RepoArtifacts)/TestResults</TestOutputDirectory>
-    </PropertyGroup>
-
     <Exec Command="dotnet build Partner-Center-PowerShell.sln -c $(Configuration)" />
 
     <!-- Delete PowerShell runtime files -->
