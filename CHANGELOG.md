@@ -20,6 +20,13 @@
 
 # Change Log
 
+## 3.0.10 - July 2020
+
+* Module 
+  * Added a custom assembly resolve to help address conflicts
+* Network 
+  * Increased the HTTP timeout to contend with server latency
+
 ## 3.0.9 - May 2020
 
 * Module
