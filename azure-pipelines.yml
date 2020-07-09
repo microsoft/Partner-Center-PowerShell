@@ -39,6 +39,13 @@ steps:
     custom: msbuild
     arguments: 'build.proj /t:Build /p:Configuration=$(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: custom
+    custom: msbuild
+    arguments: 'build.proj /t:Test /p:Configuration=$(buildConfiguration)'
+
 - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0 
   displayName: 'Component Detection'
 
