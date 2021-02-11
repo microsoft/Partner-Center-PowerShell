@@ -10,7 +10,7 @@
     <Company>Microsoft Corporation</Company>
     <Product>Partner Center PowerShell</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Copyright>Copyright © 2020</Copyright>
+    <Copyright>Copyright © 2021</Copyright>
     <PackageProjectUrl>https://github.com/microsoft/Partner-Center-PowerShell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -18,7 +18,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>3.0.10</Version>
+    <Version>3.0.11</Version>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>

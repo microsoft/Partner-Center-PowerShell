@@ -20,6 +20,11 @@
 
 # Change Log
 
+## Upcoming Release
+
+* Dependencies
+  * Updating dependencies to support the latest version of PowerShell Core
+
 ## 3.0.10 - July 2020
 
 * Module 
