@@ -10,7 +10,7 @@
     <Company>Microsoft Corporation</Company>
     <Product>Partner Center PowerShell</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Copyright>Copyright © 2020</Copyright>
+    <Copyright>Copyright © 2021</Copyright>
     <PackageProjectUrl>https://github.com/microsoft/Partner-Center-PowerShell</PackageProjectUrl>
     <RepositoryUrl>https://github.com/microsoft/Partner-Center-PowerShell.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -18,7 +18,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>$(RepoArtifacts)$(Configuration)\</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
-    <Version>3.0.10</Version>
+    <Version>3.0.11</Version>
     <LangVersion>latest</LangVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
@@ -32,7 +32,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="Microsoft.Graph.Beta" Version="0.19.0-preview" />
-    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.6.0-preview" />
+    <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="2.16.2" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.6.0" />
     <PackageReference Include="PartnerCenter.DotNet" Version="1.15.6" />
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.0" PrivateAssets="All" />

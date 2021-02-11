@@ -1,6 +1,6 @@
 # Partner Center PowerShell
 
-[![Build Status](https://dev.azure.com/isaiahwilliams/public/_apis/build/status/partner-center-powershell?branchName=master)](https://dev.azure.com/isaiahwilliams/public/_build/latest?definitionId=50&branchName=master) ![Deployment status](https://vsrm.dev.azure.com/partnercenter/_apis/public/Release/badge/330fa980-0fb5-4550-8242-f162a4c6d7c7/6/9)
+[![Build Status](https://dev.azure.com/isaiahwilliams/public/_apis/build/status/partner-center-powershell?branchName=master)](https://dev.azure.com/isaiahwilliams/public/_build/latest?definitionId=57&branchName=master) ![Deployment status](https://vsrm.dev.azure.com/partnercenter/_apis/public/Release/badge/330fa980-0fb5-4550-8242-f162a4c6d7c7/6/9)
 
 [![PartnerCenter](https://img.shields.io/powershellgallery/v/PartnerCenter.svg?style=flat-square&label=PartnerCenter)](https://www.powershellgallery.com/packages/PartnerCenter/) [![GitHub issues](https://img.shields.io/github/issues/Microsoft/Partner-Center-PowerShell.svg)](https://github.com/Microsoft/Partner-Center-PowerShell/issues/) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Microsoft/Partner-Center-PowerShell.svg)](https://gitHub.com/Microsoft/Partner-Center-PowerShell/pull/)
 
