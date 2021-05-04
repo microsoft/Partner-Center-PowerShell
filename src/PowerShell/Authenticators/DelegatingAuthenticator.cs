@@ -139,11 +139,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
             }).Build();
 
-            if (PartnerSession.Instance.TryGetComponent(ComponentKey.TokenCache, out IPartnerTokenCache tokenCache))
-            {
-                tokenCache.RegisterCache(client);
-            }
-
             return client;
         }
 
@@ -180,11 +175,6 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Authenticators
                 PartnerSession.Instance.DebugMessages.Enqueue($"[MSAL] {level} {message}");
             }).Build();
 
-
-            if (PartnerSession.Instance.TryGetComponent(ComponentKey.TokenCache, out IPartnerTokenCache tokenCache))
-            {
-                tokenCache.RegisterCache(client);
-            }
 
             return client;
         }

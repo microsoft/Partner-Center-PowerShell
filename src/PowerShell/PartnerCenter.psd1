@@ -63,8 +63,6 @@
                          '.\Microsoft.Extensions.DependencyInjection.Abstractions.dll',
                          '.\Microsoft.Extensions.Options.dll',
                          '.\Microsoft.Extensions.Primitives.dll',
-                         '.\Microsoft.Identity.Client.dll', 
-                         '.\Microsoft.Identity.Client.Extensions.Msal.dll',
                          '.\Microsoft.IdentityModel.JsonWebTokens.dll',
                          '.\Microsoft.IdentityModel.Logging.dll',
                          '.\Microsoft.IdentityModel.Tokens.dll',
