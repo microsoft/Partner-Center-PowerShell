@@ -20,7 +20,7 @@ New-PartnerCustomerSubscriptionRegistration -CustomerId <String> -SubscriptionId
 ```
 
 ## DESCRIPTION
-Registers the specified subscription, so that is eligible to purcahse Azure reservations.
+Registers the specified subscription, so that is eligible to purchase Azure reservations.
 
 ## EXAMPLES
 
