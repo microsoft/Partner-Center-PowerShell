@@ -39,10 +39,34 @@ namespace Microsoft.Store.PartnerCenter.PowerShell.Factories
         /// <summary>
         /// The client used to perform HTTP operations.
         /// </summary>
-        private static readonly HttpClient HttpClient = new HttpClient(new RetryDelegatingHandler { InnerHandler = new HttpClientHandler() })
+        private static readonly HttpClient HttpClient = new ReplaceDuplicateVersionInUriClient(new RetryDelegatingHandler { InnerHandler = new HttpClientHandler() })
         {
             Timeout = TimeSpan.FromMinutes(3)
         };
+
+
+        /// <summary>
+        /// This HttpClient is a workaround for the problem outlined in this Github issue: https://github.com/microsoft/Partner-Center-PowerShell/issues/379
+        /// 
+        /// It appears that some of the APIs have started returned their 'next' URI in a different format.
+        /// This library concatenates the next URI to the base URI, resulted in URIs such as:
+        /// 
+        ///     https://api.partnercenter.microsoft.com/v1//v1/customers?size=500&seekOperation=Next    
+        /// 
+        /// The ReplaceDuplicateVersionInUriClient replaces the "v1//v1" with "v1", resulting in a correct URI, just before sending the request.
+        /// </summary>
+        private class ReplaceDuplicateVersionInUriClient : HttpClient
+        {
+            public ReplaceDuplicateVersionInUriClient(HttpMessageHandler handler) : base(handler) { }
+
+            public override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                request.RequestUri = new Uri(request.RequestUri.ToString().Replace("v1//v1", "v1"));
+
+                return base.SendAsync(request, cancellationToken);
+            }
+        }
+
 
         /// <summary>
         /// Creates a new instance of the Microsoft Graph service client.
